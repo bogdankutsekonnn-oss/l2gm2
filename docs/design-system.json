@@ -1,0 +1,93 @@
+{
+  "name": "IGM Design System",
+  "version": "1.0.0",
+  "tokens": {
+    "colors": {
+      "background": {
+        "main": "#06080A",
+        "surface": "#0F1113"
+      },
+      "primary": {
+        "main": "#DF2027",
+        "hover": "#C11B21",
+        "contrastText": "#F5F5F7"
+      },
+      "secondary": {
+        "main": "rgba(255, 255, 255, 0.05)",
+        "hover": "rgba(255, 255, 255, 0.1)",
+        "contrastText": "#F5F5F7"
+      },
+      "text": {
+        "primary": "#F5F5F7",
+        "secondary": "rgba(245, 245, 247, 0.6)",
+        "disabled": "rgba(245, 245, 247, 0.3)"
+      },
+      "status": {
+        "success": "#28A745",
+        "warning": "#FFC107",
+        "error": "#DC3545"
+      }
+    },
+    "typography": {
+      "fontFamily": "Onest, sans-serif",
+      "fontWeights": {
+        "regular": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "sizes": {
+        "xs": "12px",
+        "sm": "14px",
+        "base": "16px",
+        "lg": "18px",
+        "xl": "20px",
+        "h2": "32px",
+        "h1": "48px"
+      }
+    },
+    "borderRadius": {
+      "none": "0px",
+      "sm": "4px",
+      "base": "8px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px",
+      "button": "26px"
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px",
+      "xxl": "48px"
+    },
+    "shadows": {
+      "card": "0 4px 20px rgba(0, 0, 0, 0.5)"
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "bg": "tokens.colors.primary.main",
+        "color": "tokens.colors.primary.contrastText",
+        "borderRadius": "tokens.borderRadius.button",
+        "padding": "15px 24px",
+        "fontSize": "tokens.typography.sizes.base",
+        "fontWeight": "tokens.typography.fontWeights.semibold"
+      },
+      "secondary": {
+        "bg": "tokens.colors.secondary.main",
+        "color": "tokens.colors.secondary.contrastText",
+        "borderRadius": "tokens.borderRadius.button",
+        "padding": "15px 24px"
+      }
+    },
+    "card": {
+      "bg": "tokens.colors.background.surface",
+      "borderRadius": "tokens.borderRadius.xl",
+      "padding": "tokens.spacing.md"
+    }
+  }
+}

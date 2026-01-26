@@ -1,0 +1,47 @@
+[
+  {
+    "id": "interlude",
+    "name": "Interlude",
+    "slug": "interlude"
+  },
+  {
+    "id": "c4",
+    "name": "C4",
+    "slug": "c4"
+  },
+  {
+    "id": "interlude-plus",
+    "name": "Interlude+",
+    "slug": "interlude-plus"
+  },
+  {
+    "id": "classic",
+    "name": "Classic",
+    "slug": "classic"
+  },
+  {
+    "id": "high-five-plus",
+    "name": "High Five+",
+    "slug": "high-five-plus"
+  },
+  {
+    "id": "high-five",
+    "name": "High Five",
+    "slug": "high-five"
+  },
+  {
+    "id": "epilogue",
+    "name": "Epilogue",
+    "slug": "epilogue"
+  },
+  {
+    "id": "essence",
+    "name": "Essence",
+    "slug": "essence"
+  },
+  {
+    "id": "crusade",
+    "name": "Crusade",
+    "slug": "crusade"
+  }
+]

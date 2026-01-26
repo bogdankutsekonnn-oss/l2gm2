@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "L2Reborn",
+    "url": "https://l2reborn.com",
+    "chronicle": "Interlude",
+    "rate": "x1",
+    "startDate": "2026-01-28",
+    "status": "premium",
+    "badges": ["recommended", "hot-start"],
+    "tags": ["Low рейты", "RVR"]
+  },
+  {
+    "id": 2,
+    "name": "L2Classic",
+    "url": "https://l2classic.com",
+    "chronicle": "C4",
+    "rate": "x3",
+    "startDate": "2026-01-27",
+    "status": "vip",
+    "badges": ["bonus-start"],
+    "tags": ["Mid рейты"]
+  },
+  {
+    "id": 3,
+    "name": "L2Epic",
+    "url": "https://l2epic.com",
+    "chronicle": "High Five",
+    "rate": "x100",
+    "startDate": "2026-01-26",
+    "status": "top",
+    "badges": ["recommended"],
+    "tags": ["GVE", "Топ сервера л2"]
+  },
+  {
+    "id": 4,
+    "name": "L2Mega",
+    "url": "https://l2mega.com",
+    "chronicle": "Interlude+",
+    "rate": "x50",
+    "startDate": "2026-01-25",
+    "status": null,
+    "badges": [],
+    "tags": ["Мультикрафт"]
+  },
+  {
+    "id": 5,
+    "name": "L2Ultra",
+    "url": "https://l2ultra.com",
+    "chronicle": "Epilogue",
+    "rate": "x1000",
+    "startDate": "2026-02-01",
+    "status": "vip",
+    "badges": ["hot-start"],
+    "tags": ["Зарубежный"]
+  }
+]
