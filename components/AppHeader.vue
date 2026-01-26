@@ -99,8 +99,8 @@ onMounted(() => {
 .btn-primary {
   background: var(--primary-main);
   color: var(--primary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
+  padding: 12px 20px;
+  border-radius: 36px;
   text-decoration: none;
   font-weight: var(--font-semibold);
   font-size: var(--font-base);
