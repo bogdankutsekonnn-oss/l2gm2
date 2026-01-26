@@ -1,1 +1,19 @@
 /* Main CSS file - Design system variables are in layout */
+
+/* Глобальные стили для заголовков страниц */
+.page-header {
+  padding-top: calc(var(--spacing-xxl) * 2); /* Увеличенный отступ от header в 2 раза */
+  margin-bottom: calc(var(--spacing-xl) * 2); /* Увеличенный отступ снизу в 2 раза */
+}
+
+.page-header h1 {
+  font-size: var(--font-h1);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.page-header h2 {
+  font-size: var(--font-h2);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+}

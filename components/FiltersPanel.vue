@@ -15,6 +15,8 @@
       </div>
     </div>
 
+    <div class="filter-divider"></div>
+
     <div class="filter-section">
       <div class="ad-banner">
         <div class="ad-placeholder">
@@ -23,6 +25,8 @@
         </div>
       </div>
     </div>
+
+    <div class="filter-divider"></div>
 
     <div class="filter-section">
       <h3 class="filter-title">Подобрать сервер</h3>
@@ -48,6 +52,8 @@
       </div>
     </div>
 
+    <div class="filter-divider"></div>
+
     <div class="filter-section">
       <h3 class="filter-title">Рейты</h3>
       <div class="filter-chips">
@@ -62,6 +68,8 @@
         </NuxtLink>
       </div>
     </div>
+
+    <div class="filter-divider"></div>
 
     <div class="filter-section">
       <div class="filter-chips">
@@ -130,15 +138,34 @@ const isRateActive = (slug) => {
 
 <style scoped>
 .filters-panel {
+  background: var(--bg-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
 }
 
 .filter-section {
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+}
+
+.filter-section:first-child {
+  padding-top: 0;
+}
+
+.filter-section:last-child {
+  padding-bottom: 0;
+}
+
+.filter-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: var(--spacing-md) 0;
+}
+
+.filter-divider:first-child,
+.filter-divider:last-child {
+  display: none;
 }
 
 .filter-title {

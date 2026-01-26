@@ -1,7 +1,9 @@
 <template>
   <div class="app-layout">
     <AppHeader />
-    <TopBanner />
+    <div class="banner-wrapper">
+      <TopBanner />
+    </div>
     <main class="main-content">
       <slot />
     </main>
@@ -70,11 +72,21 @@ body {
   flex-direction: column;
 }
 
+.banner-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--spacing-lg);
+  margin-top: 0;
+}
+
 .main-content {
   flex: 1;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
+  padding-top: calc(var(--spacing-xxl) * 2); /* Отступ сверху для баннера */
+  position: relative;
+  z-index: 2;
 }
 </style>
