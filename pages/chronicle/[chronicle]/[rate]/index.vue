@@ -100,12 +100,13 @@ useHead({
 
 .page-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-xl);
+  grid-template-columns: 894px 240px;
+  gap: 24px;
   margin-bottom: var(--spacing-xxl);
 }
 
 .servers-column {
+  width: 894px;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);

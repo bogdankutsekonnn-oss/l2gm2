@@ -140,7 +140,8 @@ const isRateActive = (slug) => {
 .filters-panel {
   background: var(--bg-surface);
   border-radius: var(--radius-xl);
-  padding: var(--spacing-lg);
+  padding: 16px;
+  width: 240px;
   display: flex;
   flex-direction: column;
 }
