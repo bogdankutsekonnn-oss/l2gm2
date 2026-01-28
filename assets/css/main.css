@@ -1,5 +1,71 @@
 /* Main CSS file - Design system variables are in layout */
 
+/* Контейнер */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+/* Кнопки */
+.btn-primary {
+  background: var(--primary-main);
+  color: var(--primary-contrast);
+  padding: 12px 24px;
+  border-radius: var(--radius-button);
+  text-decoration: none;
+  font-weight: var(--font-semibold);
+  font-size: var(--font-base);
+  transition: background 0.2s;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: var(--secondary-main);
+  color: var(--secondary-contrast);
+  padding: 12px 24px;
+  border-radius: var(--radius-button);
+  text-decoration: none;
+  font-weight: var(--font-semibold);
+  font-size: var(--font-base);
+  transition: background 0.2s;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-secondary:hover {
+  background: var(--secondary-hover);
+}
+
+/* Инпуты и селекты */
+.input,
+.select {
+  background: var(--bg-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-base);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: var(--font-base);
+  font-family: inherit;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--primary-main);
+}
+
 /* Глобальные стили для заголовков страниц */
 .page-header {
   background: var(--bg-surface);

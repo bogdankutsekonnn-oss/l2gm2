@@ -91,35 +91,4 @@ useHead({
   flex-wrap: wrap;
 }
 
-.btn-primary {
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  transition: background 0.2s;
-  display: inline-block;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.btn-secondary {
-  background: var(--secondary-main);
-  color: var(--secondary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  transition: background 0.2s;
-  display: inline-block;
-}
-
-.btn-secondary:hover {
-  background: var(--secondary-hover);
-}
 </style>

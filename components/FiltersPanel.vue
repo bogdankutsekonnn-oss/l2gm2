@@ -31,7 +31,7 @@
     <div class="filter-section">
       <h3 class="filter-title">Подобрать сервер</h3>
       <div class="server-finder">
-        <select v-model="selectedChronicle" class="select-input">
+        <select v-model="selectedChronicle" class="select">
           <option value="">Хроники</option>
           <option
             v-for="chronicle in chronicles"
@@ -41,7 +41,7 @@
             {{ chronicle.name }}
           </option>
         </select>
-        <select v-model="selectedRate" class="select-input">
+        <select v-model="selectedRate" class="select">
           <option value="">Рейты</option>
           <option v-for="rate in rates" :key="rate.id" :value="rate.slug">
             {{ rate.name }}
@@ -222,25 +222,4 @@ const isRateActive = (slug) => {
   gap: var(--spacing-sm);
 }
 
-.select-input {
-  background: var(--bg-main);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-base);
-  padding: 12px 16px;
-  color: var(--text-primary);
-  font-size: var(--font-base);
-  width: 100%;
-}
-
-.btn-primary {
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  text-align: center;
-  display: block;
-}
 </style>

@@ -12,6 +12,7 @@
           id="server-url"
           v-model="form.serverUrl"
           type="url"
+          class="input"
           placeholder="Например: https://myserver.com/"
           required
         />
@@ -23,6 +24,7 @@
           id="server-name"
           v-model="form.serverName"
           type="text"
+          class="input"
           placeholder="MyServer"
           required
         />
@@ -34,6 +36,7 @@
           id="server-rate"
           v-model="form.serverRate"
           type="text"
+          class="input"
           placeholder="x1"
           required
         />
@@ -45,6 +48,7 @@
         <select
           id="server-chronicle"
           v-model="form.serverChronicle"
+          class="select"
           required
         >
           <option value="">Выберите хронику</option>
@@ -64,6 +68,7 @@
           id="server-date"
           v-model="form.serverDate"
           type="date"
+          class="input"
           placeholder="Укажите дату старта"
           required
         />
@@ -75,6 +80,7 @@
           id="server-email"
           v-model="form.serverEmail"
           type="email"
+          class="input"
           placeholder="example@mail.com"
           required
         />
@@ -170,24 +176,6 @@ useHead({
   color: var(--text-primary);
 }
 
-.form-group input,
-.form-group select {
-  background: var(--bg-main);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-base);
-  padding: 12px 16px;
-  color: var(--text-primary);
-  font-size: var(--font-base);
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: var(--primary-main);
-}
-
 .form-hint {
   font-size: var(--font-sm);
   color: var(--text-disabled);
@@ -206,20 +194,7 @@ useHead({
   justify-content: center;
 }
 
-.btn-primary {
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
-  border: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  cursor: pointer;
-  transition: background 0.2s;
+.add-server-form .btn-primary {
   margin-top: var(--spacing-md);
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
 }
 </style>

@@ -58,12 +58,6 @@ onUnmounted(() => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-}
-
 .header-content {
   display: flex;
   justify-content: space-between;
@@ -98,20 +92,5 @@ onUnmounted(() => {
 .nav-links a:hover,
 .nav-links a.router-link-active {
   color: var(--text-primary);
-}
-
-.btn-primary {
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  padding: 12px 20px;
-  border-radius: 36px;
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  transition: background 0.2s;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
 }
 </style>
