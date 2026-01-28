@@ -1,5 +1,6 @@
 <template>
   <div class="faq-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>Часто задаваемые вопросы</h1>
       <h2>Ответы на популярные вопросы о серверах Lineage 2</h2>

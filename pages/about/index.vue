@@ -1,5 +1,6 @@
 <template>
   <div class="about-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>О нас</h1>
       <h2>L2GM - ваш надежный источник информации о серверах Lineage 2</h2>

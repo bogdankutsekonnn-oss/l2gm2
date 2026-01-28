@@ -1,5 +1,6 @@
 <template>
   <div class="rating-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>Рейтинг серверов Lineage 2</h1>
       <h2>Топ серверов по популярности и качеству</h2>

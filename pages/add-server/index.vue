@@ -1,5 +1,6 @@
 <template>
   <div class="add-server-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>Добавить сервер Lineage 2</h1>
       <h2>Разместите информацию о вашем сервере на нашем сайте</h2>

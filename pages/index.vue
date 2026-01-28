@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>Анонсы серверов Lineage 2</h1>
     </div>

@@ -1,5 +1,6 @@
 <template>
   <div class="thanks-page">
+    <Breadcrumbs />
     <div class="thanks-content">
       <div class="thanks-icon">✓</div>
       <h1>Спасибо!</h1>

@@ -1,5 +1,6 @@
 <template>
   <div class="advertisement-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>Реклама сервера lineage 2</h1>
       <h2>Тарифы размещения в л2 топе серверов</h2>

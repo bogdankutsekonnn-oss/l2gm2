@@ -153,18 +153,6 @@ const getBadgeIcon = (badge) => {
   object-fit: contain;
 }
 
-.status-premium {
-  /* Фон и скругление убраны */
-}
-
-.status-vip {
-  /* Фон и скругление убраны */
-}
-
-.status-top {
-  /* Фон и скругление убраны */
-}
-
 .server-name {
   color: var(--text-primary);
   font-weight: var(--font-semibold);

@@ -1,5 +1,6 @@
 <template>
   <div class="chronicle-rate-page">
+    <Breadcrumbs />
     <div class="page-header">
       <h1>{{ h1 }}</h1>
     </div>
