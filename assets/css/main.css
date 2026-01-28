@@ -10,6 +10,12 @@
   ); /* Увеличенный отступ снизу в 2 раза */
 }
 
+.page-header {
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
 .page-header h1 {
   font-size: var(--font-h1);
   font-weight: var(--font-bold);
@@ -20,4 +26,82 @@
   font-size: var(--font-h2);
   font-weight: var(--font-medium);
   color: var(--text-secondary);
+}
+
+.page-layout {
+  display: grid;
+  grid-template-columns: 852px 240px;
+  gap: 24px;
+  margin-bottom: var(--spacing-xxl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.servers-column {
+  width: 852px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.server-category {
+  margin-bottom: var(--spacing-sm);
+}
+
+.category-title {
+  font-size: var(--font-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.servers-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.filters-column {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.seo-section {
+  margin-top: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+}
+
+.seo-section h2 {
+  font-size: var(--font-h2);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.seo-text {
+  color: var(--text-secondary);
+  font-size: var(--font-base);
+  line-height: 1.8;
+}
+
+.seo-text p {
+  margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 1024px) {
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-column {
+    position: static;
+  }
+
+  .servers-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -139,24 +139,9 @@ const isRateActive = (slug) => {
 
 <style scoped>
 .filters-panel {
-  background: var(--bg-surface);
-  border-radius: var(--radius-sm);
-  /* padding: 16px; */
   width: 240px;
   display: flex;
   flex-direction: column;
-}
-
-.filter-section {
-  padding: var(--spacing-md) 0;
-}
-
-.filter-section:first-child {
-  padding-top: 0;
-}
-
-.filter-section:last-child {
-  padding-bottom: 0;
 }
 
 .filter-divider {
