@@ -27,14 +27,10 @@
       </div>
     </div>
 
-    <div class="seo-section">
-      <h2>Новые сервера л2 с большим онлайном</h2>
-      <div class="seo-text">
-        <p v-for="(paragraph, index) in seoTextParagraphs" :key="index">
-          {{ paragraph }}
-        </p>
-      </div>
-    </div>
+    <SeoSection
+      title="Новые сервера л2 с большим онлайном"
+      :text="seoText"
+    />
   </div>
 </template>
 
@@ -47,7 +43,6 @@ const servers = getServers()
 const categorizedServers = categorizeServers(servers)
 
 const seoText = generateSeoText()
-const seoTextParagraphs = seoText.split('\n\n').filter((p) => p.trim())
 
 useHead({
   title: 'Анонсы серверов Lineage 2 - L2GM',

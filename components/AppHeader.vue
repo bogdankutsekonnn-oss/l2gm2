@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="header-left">
           <NuxtLink to="/" class="logo">
-            <img src="/public/logo.svg" alt="logo" />
+            <img src="/logo.svg" alt="logo" />
           </NuxtLink>
         </div>
         <div>
@@ -30,14 +30,16 @@
 <script setup>
 const isSticky = ref(false)
 
+const handleScroll = () => {
+  isSticky.value = window.scrollY > 0
+}
+
 onMounted(() => {
-  const handleScroll = () => {
-    isSticky.value = window.scrollY > 0
-  }
   window.addEventListener('scroll', handleScroll)
-  onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
-  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
 })
 </script>
 

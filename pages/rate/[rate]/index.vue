@@ -32,14 +32,10 @@
       </div>
     </div>
 
-    <div class="seo-section">
-      <h2>Новые сервера л2 {{ rateText }} с большим онлайном</h2>
-      <div class="seo-text">
-        <p v-for="(paragraph, index) in seoTextParagraphs" :key="index">
-          {{ paragraph }}
-        </p>
-      </div>
-    </div>
+    <SeoSection
+      :title="`Новые сервера л2 ${rateText} с большим онлайном`"
+      :text="seoText"
+    />
   </div>
 </template>
 
@@ -68,7 +64,6 @@ const title = generateTitle(filters)
 const h1 = generateH1(filters)
 const description = generateDescription(filters)
 const seoText = generateSeoText(filters)
-const seoTextParagraphs = seoText.split('\n\n').filter((p) => p.trim())
 
 useHead({
   title,

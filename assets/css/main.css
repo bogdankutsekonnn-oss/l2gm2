@@ -2,18 +2,10 @@
 
 /* Глобальные стили для заголовков страниц */
 .page-header {
-  padding-top: calc(
-    var(--spacing-xxl) * 2
-  ); /* Увеличенный отступ от header в 2 раза */
-  margin-bottom: calc(
-    var(--spacing-xl) * 1
-  ); /* Увеличенный отступ снизу в 2 раза */
-}
-
-.page-header {
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
   padding: 16px;
+  margin-bottom: var(--spacing-xl);
 }
 
 .page-header h1 {
@@ -30,7 +22,7 @@
 
 .page-layout {
   display: grid;
-  grid-template-columns: 852px 240px;
+  grid-template-columns: 1fr 240px;
   gap: 24px;
   margin-bottom: var(--spacing-xxl);
   background: var(--bg-surface);
@@ -39,7 +31,7 @@
 }
 
 .servers-column {
-  width: 852px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
