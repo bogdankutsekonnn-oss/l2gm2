@@ -1,10 +1,19 @@
 <template>
   <div class="server-card">
     <div class="server-card-content">
-      <span v-if="server.status" :class="['status-badge', `status-${server.status}`]" :title="statusText">
+      <span
+        v-if="server.status"
+        :class="['status-badge', `status-${server.status}`]"
+        :title="statusText"
+      >
         <component :is="getStatusIcon(server.status)" />
       </span>
-      <a :href="server.url" class="server-name" target="_blank" rel="noopener noreferrer">
+      <a
+        :href="server.url"
+        class="server-name"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {{ server.name }}
       </a>
       <div class="server-badges">
@@ -33,8 +42,8 @@ import { h } from 'vue'
 const props = defineProps({
   server: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
@@ -43,46 +52,27 @@ const statusText = computed(() => {
   const statusMap = {
     premium: 'PREM',
     vip: 'VIP',
-    top: 'TOP'
+    top: 'TOP',
   }
   return statusMap[props.server.status] || ''
 })
 
 // Функция для получения SVG иконки статуса
 const getStatusIcon = (status) => {
-  // Вариант 1: Использовать изображения из папки public (рекомендуется)
-  // Создайте папку public/images/status/ и поместите туда:
-  // - premium.svg (или premium.png)
-  // - vip.svg
-  // - top.svg
   return h('img', {
     src: `/images/status/${status}.svg`,
     alt: statusText.value,
     width: 24,
     height: 24,
-    style: 'display: block; object-fit: contain;'
+    style: 'display: block; object-fit: contain;',
   })
-  
-  // Вариант 2: Использовать встроенные SVG (раскомментируйте, если нужно)
-  // const iconMap = {
-  //   'premium': () => h('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none' }, [
-  //     h('path', { d: 'ВАШ_SVG_PATH_ДЛЯ_PREM', fill: 'currentColor' })
-  //   ]),
-  //   'vip': () => h('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none' }, [
-  //     h('path', { d: 'ВАШ_SVG_PATH_ДЛЯ_VIP', fill: 'currentColor' })
-  //   ]),
-  //   'top': () => h('svg', { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none' }, [
-  //     h('path', { d: 'ВАШ_SVG_PATH_ДЛЯ_TOP', fill: 'currentColor' })
-  //   ])
-  // }
-  // return iconMap[status] || (() => h('div', statusText.value))
 }
 
 const badgeText = (badge) => {
   const badgeMap = {
-    'recommended': 'Рекомендуем',
+    recommended: 'Рекомендуем',
     'hot-start': 'Горячий старт',
-    'bonus-start': 'Бонус старт'
+    'bonus-start': 'Бонус старт',
   }
   return badgeMap[badge] || badge
 }
@@ -97,32 +87,45 @@ const getBadgeIcon = (badge) => {
   //   width: 16,
   //   height: 16
   // })
-  
+
   // Вариант 2: Использовать разные SVG для каждого бейджа
   const iconMap = {
-    'recommended': () => h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-      h('path', { d: 'M8 0l1.5 3 3.5 0.5-2.5 2.5 0.5 3.5L8 8l-2.5 1.5 0.5-3.5-2.5-2.5 3.5-0.5L8 0z', fill: 'currentColor' })
-    ]),
-    'hot-start': () => h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-      h('path', { d: 'M8 2l1 2 2 0.5-1.5 1.5 0.5 2L8 7l-2 1 0.5-2-1.5-1.5 2-0.5L8 2z', fill: 'currentColor' }),
-      h('circle', { cx: 8, cy: 12, r: 1, fill: 'currentColor' })
-    ]),
-    'bonus-start': () => h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-      h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' })
-    ])
+    recommended: () =>
+      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
+        h('path', {
+          d: 'M8 0l1.5 3 3.5 0.5-2.5 2.5 0.5 3.5L8 8l-2.5 1.5 0.5-3.5-2.5-2.5 3.5-0.5L8 0z',
+          fill: 'currentColor',
+        }),
+      ]),
+    'hot-start': () =>
+      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
+        h('path', {
+          d: 'M8 2l1 2 2 0.5-1.5 1.5 0.5 2L8 7l-2 1 0.5-2-1.5-1.5 2-0.5L8 2z',
+          fill: 'currentColor',
+        }),
+        h('circle', { cx: 8, cy: 12, r: 1, fill: 'currentColor' }),
+      ]),
+    'bonus-start': () =>
+      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
+        h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' }),
+      ]),
   }
-  
+
   // Возвращаем иконку для бейджа или дефолтную
-  return iconMap[badge] || (() => h('svg', { width: 16, height: 16, viewBox: '0 0 16 16' }, [
-    h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' })
-  ]))
+  return (
+    iconMap[badge] ||
+    (() =>
+      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16' }, [
+        h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' }),
+      ]))
+  )
 }
 </script>
 
 <style scoped>
 .server-card {
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
+  background: var(--secondary-main);
+  border-radius: var(--radius-sm);
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-md);
 }

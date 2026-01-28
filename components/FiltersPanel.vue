@@ -33,7 +33,11 @@
       <div class="server-finder">
         <select v-model="selectedChronicle" class="select-input">
           <option value="">Хроники</option>
-          <option v-for="chronicle in chronicles" :key="chronicle.id" :value="chronicle.slug">
+          <option
+            v-for="chronicle in chronicles"
+            :key="chronicle.id"
+            :value="chronicle.slug"
+          >
             {{ chronicle.name }}
           </option>
         </select>
@@ -43,10 +47,7 @@
             {{ rate.name }}
           </option>
         </select>
-        <NuxtLink
-          :to="getFinderUrl()"
-          class="btn-primary"
-        >
+        <NuxtLink :to="getFinderUrl()" class="btn-primary">
           Подобрать сервер
         </NuxtLink>
       </div>
@@ -105,7 +106,7 @@ const tags = [
   'Мультикрафт',
   'Мультипрофа',
   'x50000',
-  'x100000'
+  'x100000',
 ]
 
 const getChronicleUrl = (slug) => {
@@ -139,8 +140,8 @@ const isRateActive = (slug) => {
 <style scoped>
 .filters-panel {
   background: var(--bg-surface);
-  border-radius: var(--radius-xl);
-  padding: 16px;
+  border-radius: var(--radius-sm);
+  /* padding: 16px; */
   width: 240px;
   display: flex;
   flex-direction: column;

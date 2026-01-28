@@ -13,20 +13,20 @@
 
 <style>
 :root {
-  --bg-main: #06080A;
-  --bg-surface: #0F1113;
-  --primary-main:rgb(254, 54, 0);
-  --primary-hover:rgb(179, 30, 0);
-  --primary-contrast: #F5F5F7;
+  --bg-main: #06080a;
+  --bg-surface: #0f1113;
+  --primary-main: rgb(254, 54, 0);
+  --primary-hover: rgb(179, 30, 0);
+  --primary-contrast: #f5f5f7;
   --secondary-main: rgba(255, 255, 255, 0.05);
   --secondary-hover: rgba(255, 255, 255, 0.1);
-  --secondary-contrast: #F5F5F7;
-  --text-primary: #F5F5F7;
+  --secondary-contrast: #f5f5f7;
+  --text-primary: #f5f5f7;
   --text-secondary: rgba(245, 245, 247, 0.6);
   --text-disabled: rgba(245, 245, 247, 0.3);
-  --status-success: #28A745;
-  --status-warning: #FFC107;
-  --status-error: #DC3545;
+  --status-success: #28a745;
+  --status-warning: #ffc107;
+  --status-error: #dc3545;
   --font-regular: 400;
   --font-medium: 500;
   --font-semibold: 600;
@@ -85,7 +85,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
-  padding-top: calc(var(--spacing-xxl) * 2); /* Отступ сверху для баннера */
+  padding-top: calc(var(--spacing-xxl) * 5); /* Отступ сверху для баннера */
   position: relative;
   z-index: 2;
 }

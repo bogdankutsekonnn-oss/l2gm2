@@ -4,8 +4,10 @@
       <div class="header-content">
         <div class="header-left">
           <NuxtLink to="/" class="logo">
-            <span>L2GM</span>
+            <img src="/public/logo.svg" alt="logo" />
           </NuxtLink>
+        </div>
+        <div>
           <nav class="nav-links">
             <NuxtLink to="/">Анонсы</NuxtLink>
             <NuxtLink to="/rating">Рейтинг</NuxtLink>

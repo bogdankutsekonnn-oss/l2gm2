@@ -6,7 +6,11 @@
 
     <div class="page-layout">
       <div class="servers-column">
-        <div v-for="(servers, category) in categorizedServers" :key="category" class="server-category">
+        <div
+          v-for="(servers, category) in categorizedServers"
+          :key="category"
+          class="server-category"
+        >
           <h2 class="category-title">{{ category }}</h2>
           <div class="servers-grid">
             <ServerCard
@@ -43,16 +47,17 @@ const servers = getServers()
 const categorizedServers = categorizeServers(servers)
 
 const seoText = generateSeoText()
-const seoTextParagraphs = seoText.split('\n\n').filter(p => p.trim())
+const seoTextParagraphs = seoText.split('\n\n').filter((p) => p.trim())
 
 useHead({
   title: 'Анонсы серверов Lineage 2 - L2GM',
   meta: [
     {
       name: 'description',
-      content: 'Анонсы серверов Lineage 2 всех рейтов и хроник. Не пропустите открытие серверов л2 уже сегодня!'
-    }
-  ]
+      content:
+        'Анонсы серверов Lineage 2 всех рейтов и хроник. Не пропустите открытие серверов л2 уже сегодня!',
+    },
+  ],
 })
 </script>
 
@@ -62,7 +67,9 @@ useHead({
 }
 
 .page-header {
-  margin-bottom: var(--spacing-xl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  padding: 16px;
 }
 
 .page-header h1 {
@@ -73,13 +80,16 @@ useHead({
 
 .page-layout {
   display: grid;
-  grid-template-columns: 894px 240px;
+  grid-template-columns: 852px 240px;
   gap: 24px;
   margin-bottom: var(--spacing-xxl);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  padding: 16px;
 }
 
 .servers-column {
-  width: 894px;
+  width: 852px;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
@@ -136,11 +146,11 @@ useHead({
   .page-layout {
     grid-template-columns: 1fr;
   }
-  
+
   .filters-column {
     position: static;
   }
-  
+
   .servers-grid {
     grid-template-columns: 1fr;
   }

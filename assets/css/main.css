@@ -2,8 +2,12 @@
 
 /* Глобальные стили для заголовков страниц */
 .page-header {
-  padding-top: calc(var(--spacing-xxl) * 2); /* Увеличенный отступ от header в 2 раза */
-  margin-bottom: calc(var(--spacing-xl) * 2); /* Увеличенный отступ снизу в 2 раза */
+  padding-top: calc(
+    var(--spacing-xxl) * 2
+  ); /* Увеличенный отступ от header в 2 раза */
+  margin-bottom: calc(
+    var(--spacing-xl) * 1
+  ); /* Увеличенный отступ снизу в 2 раза */
 }
 
 .page-header h1 {
