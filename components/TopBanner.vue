@@ -1,5 +1,5 @@
 <template>
-  <div class="top-banner">
+  <NuxtLink to="/" class="top-banner">
     <img
       v-if="bannerImage"
       :src="bannerImage"
@@ -11,14 +11,12 @@
       <span>Рекламный баннер</span>
       <span class="banner-size">1920x600px</span>
     </div>
-  </div>
+    <div class="banner-gradient"></div>
+  </NuxtLink>
 </template>
 
 <script setup>
-// Путь к изображению баннера
-// Разместите изображение в папке public/images/banner.jpg
-// Или используйте внешнюю ссылку
-const bannerImage = ref('/images/banner.jpg') // или null для показа placeholder
+const bannerImage = ref('/images/banner.jpg')
 
 const handleImageError = () => {
   // Если изображение не загрузилось, показываем placeholder
@@ -29,6 +27,7 @@ const handleImageError = () => {
 
 <style scoped>
 .top-banner {
+  display: block;
   width: 100vw;
   position: absolute;
   left: 50%;
@@ -39,6 +38,17 @@ const handleImageError = () => {
   overflow: hidden;
   min-height: 200px;
   z-index: 1;
+}
+
+.banner-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to bottom, transparent, var(--bg-main));
+  pointer-events: none;
+  z-index: 2;
 }
 
 .banner-image {

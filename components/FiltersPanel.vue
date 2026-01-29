@@ -18,12 +18,12 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <div class="ad-banner">
+      <NuxtLink to="/" class="ad-banner">
         <div class="ad-placeholder">
           <span>Реклама</span>
           <span class="ad-size">282x470px</span>
         </div>
-      </div>
+      </NuxtLink>
     </div>
 
     <div class="filter-divider"></div>

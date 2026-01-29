@@ -86,7 +86,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
-  padding-top: calc(var(--spacing-xxl) * 5); /* Отступ сверху для баннера */
+  padding-top: calc(var(--spacing-xxl) * 7); /* Отступ сверху для баннера */
   position: relative;
   z-index: 2;
 }
