@@ -6,9 +6,13 @@
     "chronicle": "Interlude",
     "rate": "x1",
     "startDate": "2026-01-28",
-    "status": "premium",
-    "badges": ["recommended", "hot-start"],
-    "tags": ["Low рейты", "RVR"]
+    "cardType": "premium",
+    "icons": ["recommended", "hot-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-20",
+    "expiresAt": null
   },
   {
     "id": 2,
@@ -17,9 +21,13 @@
     "chronicle": "C4",
     "rate": "x3",
     "startDate": "2026-01-27",
-    "status": "vip",
-    "badges": ["bonus-start"],
-    "tags": ["Mid рейты"]
+    "cardType": "vip-plus",
+    "icons": ["bonus-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-20",
+    "expiresAt": null
   },
   {
     "id": 3,
@@ -28,9 +36,13 @@
     "chronicle": "High Five",
     "rate": "x100",
     "startDate": "2026-01-26",
-    "status": "top",
-    "badges": ["recommended"],
-    "tags": ["GVE", "Топ сервера л2"]
+    "cardType": "vip",
+    "icons": ["recommended", "obt"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-20",
+    "expiresAt": null
   },
   {
     "id": 4,
@@ -39,9 +51,13 @@
     "chronicle": "Interlude+",
     "rate": "x50",
     "startDate": "2026-01-25",
-    "status": null,
-    "badges": [],
-    "tags": ["Мультикрафт"]
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-20",
+    "expiresAt": null
   },
   {
     "id": 5,
@@ -50,8 +66,12 @@
     "chronicle": "Epilogue",
     "rate": "x1000",
     "startDate": "2026-02-01",
-    "status": "vip",
-    "badges": ["hot-start"],
-    "tags": ["Зарубежный"]
+    "cardType": "vip",
+    "icons": ["hot-start", "bonus-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-20",
+    "expiresAt": null
   }
 ]

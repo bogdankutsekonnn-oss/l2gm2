@@ -7,16 +7,16 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} ${rateName} - L2GM`
+      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} ${rateName} | L2GM`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} - L2GM`
+      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} | L2GM`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${rateName} - L2GM`
+      return `Анонсы серверов Lineage 2 ${rateName} | L2GM`
     }
-    return 'Анонсы серверов Lineage 2 - L2GM'
+    return 'Анонсы серверов Lineage 2 | L2GM'
   }
   
   const generateH1 = (filters = {}) => {
