@@ -86,8 +86,13 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
-  padding-top: calc(var(--spacing-xxl) * 7); /* Отступ сверху для баннера */
+  margin-top: calc(var(--spacing-xxl) * 7);
   position: relative;
   z-index: 2;
+  pointer-events: none;
+}
+
+.main-content > * {
+  pointer-events: auto;
 }
 </style>

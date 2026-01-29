@@ -31,22 +31,24 @@
     <div class="filter-section">
       <h3 class="filter-title">Подобрать сервер</h3>
       <div class="server-finder">
-        <select v-model="selectedChronicle" class="select">
-          <option value="">Хроники</option>
-          <option
-            v-for="chronicle in chronicles"
-            :key="chronicle.id"
-            :value="chronicle.slug"
-          >
-            {{ chronicle.name }}
-          </option>
-        </select>
-        <select v-model="selectedRate" class="select">
-          <option value="">Рейты</option>
-          <option v-for="rate in rates" :key="rate.id" :value="rate.slug">
-            {{ rate.name }}
-          </option>
-        </select>
+        <div class="select-wrap">
+          <select v-model="selectedChronicle" class="select">
+            <option value="">Хроники</option>
+            <option
+              v-for="chronicle in chronicles"
+              :key="chronicle.id"
+              :value="chronicle.slug"
+            >
+              {{ chronicle.name }}
+            </option>
+          </select>
+          <select v-model="selectedRate" class="select">
+            <option value="">Рейты</option>
+            <option v-for="rate in rates" :key="rate.id" :value="rate.slug">
+              {{ rate.name }}
+            </option>
+          </select>
+        </div>
         <NuxtLink :to="getFinderUrl()" class="btn-primary">
           Подобрать сервер
         </NuxtLink>
@@ -139,7 +141,7 @@ const isRateActive = (slug) => {
 
 <style scoped>
 .filters-panel {
-  width: 240px;
+  width: 270px;
   display: flex;
   flex-direction: column;
 }
@@ -221,5 +223,4 @@ const isRateActive = (slug) => {
   flex-direction: column;
   gap: var(--spacing-sm);
 }
-
 </style>

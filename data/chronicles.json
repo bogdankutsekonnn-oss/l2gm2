@@ -1,13 +1,13 @@
 [
   {
-    "id": "interlude",
-    "name": "Interlude",
-    "slug": "interlude"
-  },
-  {
     "id": "c4",
     "name": "C4",
     "slug": "c4"
+  },
+  {
+    "id": "interlude",
+    "name": "Interlude",
+    "slug": "interlude"
   },
   {
     "id": "interlude-plus",

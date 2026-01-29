@@ -60,6 +60,23 @@
   transition: border-color 0.2s;
 }
 
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 32px;
+  background-image: url('/images/Arrow Down.svg');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.select-wrap {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
 .input:focus,
 .select:focus {
   outline: none;
@@ -88,7 +105,7 @@
 
 .page-layout {
   display: grid;
-  grid-template-columns: 1fr 240px;
+  grid-template-columns: 1fr 270px;
   gap: 24px;
   margin-bottom: var(--spacing-xxl);
   background: var(--bg-surface);
