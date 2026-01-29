@@ -33,7 +33,7 @@
       <div class="server-finder">
         <div class="select-wrap">
           <select v-model="selectedChronicle" class="select">
-            <option value="">Хроники</option>
+            <option value="">Все хроники</option>
             <option
               v-for="chronicle in chronicles"
               :key="chronicle.id"
@@ -43,9 +43,9 @@
             </option>
           </select>
           <select v-model="selectedRate" class="select">
-            <option value="">Рейты</option>
-            <option v-for="rate in rates" :key="rate.id" :value="rate.slug">
-              {{ rate.name }}
+            <option value="">Все рейты</option>
+            <option v-for="range in rateRanges" :key="range" :value="range">
+              {{ range }}
             </option>
           </select>
         </div>
@@ -96,6 +96,17 @@ const chronicles = getChronicles()
 const rates = getRates()
 const selectedChronicle = ref('')
 const selectedRate = ref('')
+
+// Уникальные ренжи рейтов
+const rateRanges = computed(() => {
+  const ranges = new Set()
+  rates.forEach((rate) => {
+    if (rate.range) {
+      ranges.add(rate.range)
+    }
+  })
+  return Array.from(ranges)
+})
 
 const tags = [
   'Сегодня',
@@ -220,5 +231,13 @@ const isRateActive = (slug) => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+}
+
+.server-finder .select-wrap .select:first-child {
+  flex: 1.1;
+}
+
+.server-finder .select-wrap .select:last-child {
+  flex: 0.9;
 }
 </style>

@@ -62,7 +62,8 @@ const chronicle = chronicles.find((c) => c.slug === chronicleSlug)
 const rate = rates.find((r) => r.slug === rateSlug)
 
 const chronicleName = chronicle?.name || ''
-const rateText = rate?.name || rateSlug
+// Если это ренж (содержит "-"), показываем как есть, иначе ищем в рейтах
+const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
 
 const filters = {
   chronicle: chronicleSlug,

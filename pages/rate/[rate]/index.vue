@@ -55,7 +55,8 @@ const { categorizeServers } = await import('~/utils/dateUtils.js')
 const rateSlug = route.params.rate
 const rates = getRates()
 const rate = rates.find((r) => r.slug === rateSlug)
-const rateText = rate?.name || rateSlug
+// Если это ренж (содержит "-"), показываем как есть, иначе ищем в рейтах
+const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
 
 const filters = { rate: rateSlug }
 const filteredServers = getServers(filters)
