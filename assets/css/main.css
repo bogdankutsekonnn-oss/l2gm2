@@ -71,7 +71,7 @@
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
   padding: 16px;
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
 }
 
 .page-header h1 {

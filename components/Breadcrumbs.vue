@@ -78,9 +78,10 @@ const crumbs = computed(() => {
   if (chronicleSlug) {
     const chronicles = getChronicles()
     const chronicle = chronicles.find((c) => c.slug === chronicleSlug)
+    const chronicleName = chronicle?.name || chronicleSlug
     result.push({
       path: `/chronicle/${chronicleSlug}`,
-      title: chronicle?.name || chronicleSlug,
+      title: `Сервера Lineage 2 ${chronicleName}`,
     })
   }
 
