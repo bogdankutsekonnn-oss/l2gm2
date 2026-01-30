@@ -46,6 +46,38 @@
 const route = useRoute()
 const { getChronicles, getRates } = useFilters()
 
+// Форматирование даты для хлебных крошек
+const formatDateForBreadcrumb = (dateString) => {
+  if (!dateString) return ''
+
+  const months = [
+    'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
+    'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+  ]
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const [year, month, day] = dateString.split('-').map(Number)
+  const targetDate = new Date(year, month - 1, day)
+  targetDate.setHours(0, 0, 0, 0)
+
+  const diffTime = targetDate - today
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+  if (diffDays === 0) {
+    return 'Сегодня'
+  } else if (diffDays === 1) {
+    return 'Завтра'
+  } else if (diffDays === -1) {
+    return 'Вчера'
+  } else {
+    const dayNum = parseInt(day, 10)
+    const monthName = months[month - 1]
+    return `${dayNum} ${monthName}`
+  }
+}
+
 const staticPages = {
   '/about': 'О нас',
   '/advertisement': 'Размещение',
@@ -74,6 +106,17 @@ const crumbs = computed(() => {
 
   const chronicleSlug = route.params.chronicle
   const rateSlug = route.params.rate
+  const dateSlug = route.params.date
+
+  // Страница даты
+  if (dateSlug) {
+    const dateTitle = formatDateForBreadcrumb(dateSlug)
+    result.push({
+      path: `/date/${dateSlug}`,
+      title: `Сервера Lineage 2 | ${dateTitle}`,
+    })
+    return result
+  }
 
   if (chronicleSlug) {
     const chronicles = getChronicles()
