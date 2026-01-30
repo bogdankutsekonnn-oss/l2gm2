@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="header-left">
           <NuxtLink to="/" class="logo">
-            <img src="/logo.svg" alt="logo" />
+            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" />
           </NuxtLink>
         </div>
         <div>

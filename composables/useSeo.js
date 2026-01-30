@@ -281,7 +281,60 @@ export const useSeo = () => {
       url: siteUrl,
       logo: `${siteUrl}/logo.png`,
       description: 'Портал анонсов серверов Lineage 2',
-      sameAs: []
+      sameAs: [
+        'https://t.me/l2gm'
+      ]
+    }
+  }
+
+  // JSON-LD Event разметка для серверов (как у L2-Top)
+  const generateServerEventsJsonLd = (servers = []) => {
+    const events = servers.slice(0, 10).map(server => ({
+      '@type': 'Event',
+      name: `Открытие сервера ${server.name}`,
+      description: `Запуск сервера Lineage 2 ${server.name}. Хроника: ${server.chronicle}, рейты: ${server.rate}`,
+      startDate: server.startDate,
+      endDate: server.startDate,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+      location: {
+        '@type': 'VirtualLocation',
+        url: server.url || siteUrl
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: server.name,
+        url: server.url || siteUrl
+      },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'RUB',
+        availability: 'https://schema.org/InStock',
+        url: server.url || siteUrl
+      }
+    }))
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: events.map((event, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: event
+      }))
+    }
+  }
+
+  // JSON-LD ImageObject для превью
+  const generateImageJsonLd = () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ImageObject',
+      url: `${siteUrl}/og-image.jpg`,
+      width: 1200,
+      height: 630,
+      caption: 'L2GM - Анонсы серверов Lineage 2'
     }
   }
 
@@ -325,6 +378,8 @@ export const useSeo = () => {
     generateHomeJsonLd,
     generateServerListJsonLd,
     generateOrganizationJsonLd,
+    generateServerEventsJsonLd,
+    generateImageJsonLd,
     generateFullMeta
   }
 }

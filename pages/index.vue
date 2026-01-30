@@ -67,6 +67,7 @@ const {
   getCanonicalUrl,
   generateHomeJsonLd,
   generateOrganizationJsonLd,
+  generateServerEventsJsonLd,
 } = useSeo()
 import { getOrderedCategories } from '~/utils/dateUtils.js'
 
@@ -81,6 +82,7 @@ const canonicalUrl = getCanonicalUrl('/')
 // JSON-LD разметка
 const homeJsonLd = generateHomeJsonLd()
 const orgJsonLd = generateOrganizationJsonLd()
+const eventsJsonLd = generateServerEventsJsonLd(servers)
 
 useHead({
   title: 'Анонсы серверов Lineage 2 | L2GM - новые серверы л2',
@@ -111,6 +113,10 @@ useHead({
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(orgJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(eventsJsonLd),
     },
   ],
 })
