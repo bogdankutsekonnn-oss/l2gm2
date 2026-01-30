@@ -85,15 +85,22 @@
         </span>
       </div>
     </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-section">
+      <CalendarFilter :servers="allServers" />
+    </div>
   </div>
 </template>
 
 <script setup>
-const { getChronicles, getRates } = useFilters()
+const { getChronicles, getRates, getServers } = useFilters()
 const route = useRoute()
 
 const chronicles = getChronicles()
 const rates = getRates()
+const allServers = getServers()
 const selectedChronicle = ref('')
 const selectedRate = ref('')
 
