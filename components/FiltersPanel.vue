@@ -18,17 +18,6 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <NuxtLink to="/" class="ad-banner">
-        <div class="ad-placeholder">
-          <span>Реклама</span>
-          <span class="ad-size">282x470px</span>
-        </div>
-      </NuxtLink>
-    </div>
-
-    <div class="filter-divider"></div>
-
-    <div class="filter-section">
       <h3 class="filter-title">Подобрать сервер</h3>
       <div class="server-finder">
         <div class="select-wrap">
@@ -53,6 +42,17 @@
           Подобрать сервер
         </NuxtLink>
       </div>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-section">
+      <NuxtLink to="/" class="ad-banner">
+        <div class="ad-placeholder">
+          <span>Реклама</span>
+          <span class="ad-size">282x470px</span>
+        </div>
+      </NuxtLink>
     </div>
 
     <div class="filter-divider"></div>

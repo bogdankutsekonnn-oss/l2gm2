@@ -26,7 +26,7 @@
           <component :is="getBadgeIcon(badge)" />
         </span>
       </div>
-      <span class="rate">{{ server.rate }}</span>
+      <span class="rate">x{{ server.rate }}</span>
       <span class="chronicle">{{ server.chronicle }}</span>
       <div class="server-date" :class="{ 'is-accent': dateInfo.isAccent }">
         {{ dateInfo.text }}

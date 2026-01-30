@@ -14,28 +14,25 @@ export const useFilters = () => {
     }
     
     if (filters.rate) {
-      // Handle exact rate match first
-      const exactMatch = filtered.filter(s => s.rate === filters.rate)
-      if (exactMatch.length > 0) {
-        filtered = exactMatch
+      // Handle rate ranges like "x1-x20"
+      if (filters.rate.includes('-')) {
+        // Parse range like "x1-x20" -> [1, 20]
+        const parts = filters.rate.split('-')
+        const min = parseInt(parts[0].replace('x', ''))
+        const max = parseInt(parts[1].replace('x', ''))
+        filtered = filtered.filter(s => {
+          const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+          return rateNum >= min && rateNum <= max
+        })
       } else {
-        // Handle rate ranges like "x1-x10" if no exact match
-        if (filters.rate.includes('-')) {
-          const [min, max] = filters.rate.replace('x', '').split('-').map(Number)
-          filtered = filtered.filter(s => {
-            const rateNum = parseInt(s.rate.replace('x', ''))
-            return rateNum >= min && rateNum <= max
-          })
-        } else {
-          // Try to find rate in ranges
-          const rateData = ratesData.find(r => r.slug === filters.rate)
-          if (rateData && rateData.range) {
-            const [min, max] = rateData.range.replace('x', '').split('-').map(Number)
-            filtered = filtered.filter(s => {
-              const rateNum = parseInt(s.rate.replace('x', ''))
-              return rateNum >= min && rateNum <= max
-            })
-          }
+        // Handle exact rate match (e.g. "x1" or 1)
+        const rateNum = parseInt(filters.rate.replace('x', ''))
+        const exactMatch = filtered.filter(s => {
+          const serverRate = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+          return serverRate === rateNum
+        })
+        if (exactMatch.length > 0) {
+          filtered = exactMatch
         }
       }
     }
