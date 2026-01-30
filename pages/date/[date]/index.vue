@@ -50,12 +50,18 @@
         <FiltersPanel />
       </div>
     </div>
+
+    <SeoSection
+      :title="`Серверы Lineage 2 на ${formattedDate}`"
+      :text="seoText"
+    />
   </div>
 </template>
 
 <script setup>
 const route = useRoute()
 const { getServers } = useFilters()
+const { generateDateSeoText } = useSeo()
 const { getOrderedCategories } = await import('~/utils/dateUtils.js')
 
 const dateSlug = route.params.date
@@ -113,6 +119,7 @@ const formattedDate = formatDateTitle(dateSlug)
 const h1 = `Сервера Lineage 2 | ${dateText}`
 const title = `Сервера Lineage 2 ${formattedDate} | L2GM`
 const description = `Список серверов Lineage 2 открывающихся ${formattedDate}. Не пропустите старт!`
+const seoText = generateDateSeoText(dateSlug)
 
 useHead({
   title,
