@@ -57,14 +57,29 @@
 </template>
 
 <script setup>
+const { getCanonicalUrl } = useSeo()
+const canonicalUrl = getCanonicalUrl('/about')
+
 useHead({
-  title: 'О нас - L2GM',
+  title: 'О нас | L2GM - анонсы серверов Lineage 2',
   meta: [
     {
       name: 'description',
-      content: 'Узнайте больше о L2GM - платформе для поиска и размещения серверов Lineage 2.'
-    }
-  ]
+      content: 'L2GM - платформа для поиска серверов Lineage 2. Актуальные анонсы, удобные фильтры, честная модерация. Размещение серверов для владельцев.'
+    },
+    { name: 'keywords', content: 'l2gm, о нас, lineage 2, анонсы серверов, размещение серверов л2' },
+    // Open Graph
+    { property: 'og:title', content: 'О нас | L2GM' },
+    { property: 'og:description', content: 'L2GM - платформа для поиска серверов Lineage 2. Актуальные анонсы, удобные фильтры, честная модерация.' },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'О нас | L2GM' },
+    { name: 'twitter:description', content: 'L2GM - платформа для поиска серверов Lineage 2.' },
+  ],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

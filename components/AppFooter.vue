@@ -21,12 +21,14 @@
             Email
           </a>
         </div>
+        <!-- TODO: Добавить страницы позже
         <div class="footer-links">
           <NuxtLink to="/privacy">Политика конфиденциальности</NuxtLink>
           <NuxtLink to="/terms">Пользовательское соглашение</NuxtLink>
           <NuxtLink to="/sitemap">Карта сайта</NuxtLink>
           <NuxtLink to="/cookies">Файлы Cookie</NuxtLink>
         </div>
+        -->
         <div class="footer-copyright">
           © 2026 L2GM.com
         </div>

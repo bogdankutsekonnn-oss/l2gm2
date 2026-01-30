@@ -2,19 +2,22 @@ import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
 
 export const useSeo = () => {
+  const config = useRuntimeConfig()
+  const siteUrl = config.public.siteUrl || 'https://l2gm.com'
+
   const generateTitle = (filters = {}) => {
     if (filters.chronicle && filters.rate) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} ${rateName} | L2GM`
+      return `Серверы Lineage 2 ${chronicle?.name || ''} ${rateName} | L2GM`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} | L2GM`
+      return `Серверы Lineage 2 ${chronicle?.name || ''} | L2GM`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${rateName} | L2GM`
+      return `Серверы Lineage 2 ${rateName} | L2GM`
     }
     return 'Анонсы серверов Lineage 2 | L2GM'
   }
@@ -24,14 +27,14 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} ${rateName}`
+      return `Серверы Lineage 2 ${chronicle?.name || ''} ${rateName}`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''}`
+      return `Серверы Lineage 2 ${chronicle?.name || ''}`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${rateName}`
+      return `Серверы Lineage 2 ${rateName}`
     }
     return 'Анонсы серверов Lineage 2'
   }
@@ -41,16 +44,44 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''} с рейтами ${rateName}. Актуальный список новых серверов с датами открытия.`
+      return `Новые серверы Lineage 2 ${chronicle?.name || ''} с рейтами ${rateName}. Актуальный список анонсов с датами открытия. Выбирайте лучший сервер л2!`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Анонсы серверов Lineage 2 ${chronicle?.name || ''}. Все новые серверы с актуальными датами открытия.`
+      return `Серверы Lineage 2 ${chronicle?.name || ''} - полный список анонсов. Новые проекты с актуальными датами открытия и онлайном.`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Анонсы серверов Lineage 2 с рейтами ${rateName}. Новые серверы с большим онлайном.`
+      return `Серверы Lineage 2 с рейтами ${rateName}. Анонсы новых проектов всех хроник с датами старта.`
     }
-    return 'Анонсы серверов Lineage 2 всех рейтов и хроник. Не пропустите открытие серверов л2 уже сегодня!'
+    return 'L2GM - актуальные анонсы серверов Lineage 2. Новые серверы л2 всех хроник и рейтов с датами открытия. Найдите идеальный сервер!'
+  }
+
+  // Генерация ключевых слов
+  const generateKeywords = (filters = {}) => {
+    const baseKeywords = ['lineage 2', 'л2', 'сервера lineage 2', 'анонсы серверов', 'новые серверы l2']
+
+    if (filters.chronicle) {
+      const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
+      if (chronicle) {
+        baseKeywords.push(
+          `lineage 2 ${chronicle.name.toLowerCase()}`,
+          `сервер л2 ${chronicle.name.toLowerCase()}`,
+          `${chronicle.name.toLowerCase()} сервер`
+        )
+      }
+    }
+
+    if (filters.rate) {
+      const rate = ratesData.find(r => r.slug === filters.rate)
+      const rateName = rate?.name || filters.rate
+      baseKeywords.push(
+        `сервер л2 ${rateName}`,
+        `lineage 2 ${rateName}`,
+        `${rateName} сервер`
+      )
+    }
+
+    return baseKeywords.join(', ')
   }
 
   // Описания для разных хроник
@@ -74,7 +105,6 @@ export const useSeo = () => {
   const getRateType = (rateSlug) => {
     if (!rateSlug) return null
 
-    // Если это диапазон
     if (rateSlug.includes('-')) {
       const parts = rateSlug.split('-')
       const max = parseInt(parts[1].replace('x', ''))
@@ -83,7 +113,6 @@ export const useSeo = () => {
       return 'high'
     }
 
-    // Если это конкретный рейт
     const rate = ratesData.find(r => r.slug === rateSlug)
     if (rate?.range) {
       const parts = rate.range.split('-')
@@ -104,7 +133,6 @@ export const useSeo = () => {
     const rateName = rate?.name || filters.rate
     const rateType = getRateType(filters.rate)
 
-    // Первый параграф - вступление под конкретную страницу
     if (chronicle && rate) {
       paragraphs.push(`Ищете сервер Lineage 2 ${chronicle.name} с рейтами ${rateName}? На L2GM собраны лучшие проекты с проверенным качеством и стабильным онлайном. Мы ежедневно обновляем список анонсов, чтобы вы всегда были в курсе новых открытий.`)
     } else if (chronicle) {
@@ -115,30 +143,24 @@ export const useSeo = () => {
       paragraphs.push(`L2GM — ваш надёжный гид в мире серверов Lineage 2. Мы собрали анонсы лучших проектов всех хроник и рейтов, чтобы вы могли легко найти идеальный сервер для игры.`)
     }
 
-    // Второй параграф - описание хроники (если выбрана)
     if (chronicle && chronicleDescriptions[chronicle.slug]) {
       paragraphs.push(chronicleDescriptions[chronicle.slug])
     }
 
-    // Третий параграф - описание рейтов (если выбраны)
     if (rateType && rateDescriptions[rateType]) {
       paragraphs.push(rateDescriptions[rateType])
     }
 
-    // Четвёртый параграф - о премиум серверах
     paragraphs.push(`В верхней части списка закреплены Премиум серверы — это проекты с гарантированным качеством, стабильной работой и активным сообществом. Выбирая такой сервер, вы получаете уверенность в долгосрочной игре.`)
 
-    // Пятый параграф - о функционале сайта
     if (chronicle || rate) {
       paragraphs.push(`Используйте фильтры для более точного поиска: выберите нужную хронику, диапазон рейтов или конкретную дату открытия. Календарь поможет найти серверы, стартующие в удобное для вас время.`)
     } else {
       paragraphs.push(`Удобная система фильтров поможет быстро найти подходящий проект. Выбирайте по хроникам, рейтам или дате открытия. Календарь покажет все ближайшие старты серверов.`)
     }
 
-    // Шестой параграф - о типах серверов
     paragraphs.push(`На L2GM представлены серверы различных направлений: классические PvE проекты для любителей прокачки, динамичные PvP серверы для ценителей сражений, а также GvE, RvR, мультипрофа и другие интересные концепции.`)
 
-    // Седьмой параграф - призыв к действию
     if (chronicle && rate) {
       paragraphs.push(`Следите за обновлениями раздела ${chronicle.name} ${rateName} — новые серверы появляются регулярно. Добавьте страницу в закладки, чтобы не пропустить интересный проект!`)
     } else if (chronicle) {
@@ -164,7 +186,6 @@ export const useSeo = () => {
     const [year, month, day] = dateString.split('-').map(Number)
     const formattedDate = `${day} ${months[month - 1]} ${year}`
 
-    // Определяем относительную дату
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const targetDate = new Date(year, month - 1, day)
@@ -190,17 +211,120 @@ export const useSeo = () => {
     return paragraphs.join('\n\n')
   }
 
-  const getCanonicalUrl = (route) => {
-    const baseUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://l2gm.com'
-    return `${baseUrl}${route}`
+  const getCanonicalUrl = (path) => {
+    return `${siteUrl}${path}`
+  }
+
+  // JSON-LD разметка для главной страницы
+  const generateHomeJsonLd = () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'L2GM',
+      description: 'Анонсы серверов Lineage 2 всех хроник и рейтов',
+      url: siteUrl,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${siteUrl}/search?q={search_term_string}`
+        },
+        'query-input': 'required name=search_term_string'
+      }
+    }
+  }
+
+  // JSON-LD разметка для страницы списка серверов
+  const generateServerListJsonLd = (filters = {}, servers = []) => {
+    const title = generateTitle(filters)
+    const description = generateDescription(filters)
+
+    let path = '/'
+    if (filters.chronicle && filters.rate) {
+      path = `/chronicle/${filters.chronicle}/rate/${filters.rate}`
+    } else if (filters.chronicle) {
+      path = `/chronicle/${filters.chronicle}`
+    } else if (filters.rate) {
+      path = `/rate/${filters.rate}`
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: title,
+      description: description,
+      url: getCanonicalUrl(path),
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: servers.length,
+        itemListElement: servers.slice(0, 10).map((server, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          item: {
+            '@type': 'VideoGame',
+            name: server.name,
+            url: server.url,
+            genre: 'MMORPG',
+            gamePlatform: 'PC'
+          }
+        }))
+      }
+    }
+  }
+
+  // JSON-LD для организации
+  const generateOrganizationJsonLd = () => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'L2GM',
+      url: siteUrl,
+      logo: `${siteUrl}/logo.png`,
+      description: 'Портал анонсов серверов Lineage 2',
+      sameAs: []
+    }
+  }
+
+  // Полная SEO мета-разметка для страницы
+  const generateFullMeta = (filters = {}, path = '/') => {
+    const title = generateTitle(filters)
+    const description = generateDescription(filters)
+    const keywords = generateKeywords(filters)
+    const canonicalUrl = getCanonicalUrl(path)
+
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description },
+        { name: 'keywords', content: keywords },
+
+        // Open Graph
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+        { property: 'og:type', content: 'website' },
+
+        // Twitter
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+      ],
+      link: [
+        { rel: 'canonical', href: canonicalUrl }
+      ]
+    }
   }
 
   return {
     generateTitle,
     generateH1,
     generateDescription,
+    generateKeywords,
     generateSeoText,
     generateDateSeoText,
-    getCanonicalUrl
+    getCanonicalUrl,
+    generateHomeJsonLd,
+    generateServerListJsonLd,
+    generateOrganizationJsonLd,
+    generateFullMeta
   }
 }

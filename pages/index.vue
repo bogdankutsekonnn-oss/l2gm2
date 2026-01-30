@@ -60,21 +60,57 @@
 
 <script setup>
 const { getServers } = useFilters()
-const { generateSeoText } = useSeo()
-const { getOrderedCategories } = await import('~/utils/dateUtils.js')
+const {
+  generateSeoText,
+  generateDescription,
+  generateKeywords,
+  getCanonicalUrl,
+  generateHomeJsonLd,
+  generateOrganizationJsonLd,
+} = useSeo()
+import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const servers = getServers()
 const categories = getOrderedCategories(servers)
 
 const seoText = generateSeoText()
+const description = generateDescription()
+const keywords = generateKeywords()
+const canonicalUrl = getCanonicalUrl('/')
+
+// JSON-LD разметка
+const homeJsonLd = generateHomeJsonLd()
+const orgJsonLd = generateOrganizationJsonLd()
 
 useHead({
-  title: 'Анонсы серверов Lineage 2 - L2GM',
+  title: 'Анонсы серверов Lineage 2 | L2GM - новые серверы л2',
   meta: [
+    { name: 'description', content: description },
+    { name: 'keywords', content: keywords },
+
+    // Open Graph
+    { property: 'og:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
+    { property: 'og:description', content: description },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+
+    // Twitter Card
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
+    { name: 'twitter:description', content: description },
+  ],
+  link: [
+    { rel: 'canonical', href: canonicalUrl },
+  ],
+  script: [
     {
-      name: 'description',
-      content:
-        'Анонсы серверов Lineage 2 всех рейтов и хроник. Не пропустите открытие серверов л2 уже сегодня!',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(homeJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(orgJsonLd),
     },
   ],
 })

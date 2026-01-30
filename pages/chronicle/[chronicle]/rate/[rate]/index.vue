@@ -68,7 +68,7 @@ const {
   generateSeoText,
   getCanonicalUrl,
 } = useSeo()
-const { getOrderedCategories } = await import('~/utils/dateUtils.js')
+import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const chronicleSlug = route.params.chronicle
 const rateSlug = route.params.rate

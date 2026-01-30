@@ -163,14 +163,29 @@ const copyCode = async () => {
   }
 }
 
+const { getCanonicalUrl } = useSeo()
+const canonicalUrl = getCanonicalUrl('/advertisement')
+
 useHead({
-  title: 'Реклама сервера Lineage 2 - L2GM',
+  title: 'Реклама сервера Lineage 2 | Размещение в топе L2GM',
   meta: [
     {
       name: 'description',
-      content: 'Тарифы размещения серверов Lineage 2. Premium, VIP статусы и рекламные баннеры.'
-    }
-  ]
+      content: 'Разместите сервер Lineage 2 в топе L2GM. Тарифы: Premium, VIP статусы, баннеры. Бесплатное размещение при установке кнопки.'
+    },
+    { name: 'keywords', content: 'реклама сервера lineage 2, размещение л2, топ серверов, vip статус, premium' },
+    // Open Graph
+    { property: 'og:title', content: 'Реклама сервера Lineage 2 | L2GM' },
+    { property: 'og:description', content: 'Разместите сервер Lineage 2 в топе L2GM. Premium, VIP статусы и рекламные баннеры.' },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Реклама сервера Lineage 2 | L2GM' },
+    { name: 'twitter:description', content: 'Тарифы размещения серверов в топе L2GM.' },
+  ],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

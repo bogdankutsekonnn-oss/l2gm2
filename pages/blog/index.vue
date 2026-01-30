@@ -16,6 +16,7 @@
           </nav>
         </div>
 
+        <!-- TODO: Добавить страницы топиков позже
         <div class="sidebar-section">
           <h3>Топик</h3>
           <nav class="topic-nav">
@@ -32,6 +33,7 @@
             </div>
           </nav>
         </div>
+        -->
       </aside>
 
       <main class="blog-content">
@@ -67,35 +69,35 @@
 const route = useRoute()
 const showMoreTopics = ref(false)
 
-// Mock data - в реальном проекте это будет из API или JSON
+// TODO: Добавить статьи позже
 const posts = ref([
-  {
-    id: 1,
-    title: 'Новые сервера Lineage 2 в январе 2026',
-    excerpt: 'Обзор самых интересных серверов, открывшихся в этом месяце',
-    category: 'news',
-    slug: 'new-servers-january-2026',
-    date: '2026-01-25',
-    image: '/images/blog/placeholder.jpg'
-  },
-  {
-    id: 2,
-    title: 'Гайд по прокачке персонажа на low rate серверах',
-    excerpt: 'Подробное руководство по эффективной прокачке на серверах с низким рейтом',
-    category: 'articles',
-    slug: 'leveling-guide-low-rate',
-    date: '2026-01-20',
-    image: '/images/blog/placeholder.jpg'
-  },
-  {
-    id: 3,
-    title: 'Обзор сервера L2Reborn',
-    excerpt: 'Детальный разбор одного из самых популярных серверов',
-    category: 'reviews',
-    slug: 'l2reborn-review',
-    date: '2026-01-15',
-    image: '/images/blog/placeholder.jpg'
-  }
+  // {
+  //   id: 1,
+  //   title: 'Новые сервера Lineage 2 в январе 2026',
+  //   excerpt: 'Обзор самых интересных серверов, открывшихся в этом месяце',
+  //   category: 'news',
+  //   slug: 'new-servers-january-2026',
+  //   date: '2026-01-25',
+  //   image: '/images/blog/placeholder.jpg'
+  // },
+  // {
+  //   id: 2,
+  //   title: 'Гайд по прокачке персонажа на low rate серверах',
+  //   excerpt: 'Подробное руководство по эффективной прокачке на серверах с низким рейтом',
+  //   category: 'articles',
+  //   slug: 'leveling-guide-low-rate',
+  //   date: '2026-01-20',
+  //   image: '/images/blog/placeholder.jpg'
+  // },
+  // {
+  //   id: 3,
+  //   title: 'Обзор сервера L2Reborn',
+  //   excerpt: 'Детальный разбор одного из самых популярных серверов',
+  //   category: 'reviews',
+  //   slug: 'l2reborn-review',
+  //   date: '2026-01-15',
+  //   image: '/images/blog/placeholder.jpg'
+  // }
 ])
 
 const getCategoryName = (category) => {
@@ -121,14 +123,29 @@ const loadMore = () => {
   console.log('Load more posts')
 }
 
+const { getCanonicalUrl } = useSeo()
+const canonicalUrl = getCanonicalUrl('/blog')
+
 useHead({
-  title: 'Новости Lineage 2 - L2GM',
+  title: 'Блог Lineage 2 | Новости, гайды и обзоры серверов - L2GM',
   meta: [
     {
       name: 'description',
-      content: 'Актуальные новости, статьи и обзоры о серверах Lineage 2. Гайды, стратегии и многое другое.'
-    }
-  ]
+      content: 'Блог L2GM: новости Lineage 2, гайды по прокачке, обзоры серверов, стратегии PvP и PvE. Полезные статьи для игроков л2.'
+    },
+    { name: 'keywords', content: 'блог lineage 2, новости л2, гайды lineage 2, обзоры серверов, стратегии l2' },
+    // Open Graph
+    { property: 'og:title', content: 'Блог Lineage 2 | L2GM' },
+    { property: 'og:description', content: 'Новости, гайды и обзоры серверов Lineage 2.' },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'Блог Lineage 2 | L2GM' },
+    { name: 'twitter:description', content: 'Новости, гайды и обзоры серверов Lineage 2.' },
+  ],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

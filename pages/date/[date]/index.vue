@@ -61,8 +61,8 @@
 <script setup>
 const route = useRoute()
 const { getServers } = useFilters()
-const { generateDateSeoText } = useSeo()
-const { getOrderedCategories } = await import('~/utils/dateUtils.js')
+const { generateDateSeoText, getCanonicalUrl } = useSeo()
+import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const dateSlug = route.params.date
 
@@ -119,15 +119,27 @@ const formattedDate = formatDateTitle(dateSlug)
 const h1 = `Сервера Lineage 2 | ${dateText}`
 const title = `Сервера Lineage 2 ${formattedDate} | L2GM`
 const description = `Список серверов Lineage 2 открывающихся ${formattedDate}. Не пропустите старт!`
+const keywords = `lineage 2, л2, сервера ${formattedDate}, открытие серверов, новые серверы l2`
 const seoText = generateDateSeoText(dateSlug)
+const canonicalUrl = getCanonicalUrl(route.path)
 
 useHead({
   title,
   meta: [
     { name: 'description', content: description },
+    { name: 'keywords', content: keywords },
+    // Open Graph
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
   ],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

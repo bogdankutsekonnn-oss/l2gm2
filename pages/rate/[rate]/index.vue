@@ -65,10 +65,12 @@ const {
   generateTitle,
   generateH1,
   generateDescription,
+  generateKeywords,
   generateSeoText,
   getCanonicalUrl,
+  generateServerListJsonLd,
 } = useSeo()
-const { getOrderedCategories } = await import('~/utils/dateUtils.js')
+import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const rateSlug = route.params.rate
 const rates = getRates()
@@ -83,16 +85,34 @@ const categories = getOrderedCategories(filteredServers)
 const title = generateTitle(filters)
 const h1 = generateH1(filters)
 const description = generateDescription(filters)
+const keywords = generateKeywords(filters)
 const seoText = generateSeoText(filters)
+const canonicalUrl = getCanonicalUrl(route.path)
+const jsonLd = generateServerListJsonLd(filters, filteredServers)
 
 useHead({
   title,
   meta: [
     { name: 'description', content: description },
+    { name: 'keywords', content: keywords },
+    // Open Graph
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
   ],
-  link: [{ rel: 'canonical', href: getCanonicalUrl(route.path) }],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(jsonLd),
+    },
+  ],
 })
 </script>
 

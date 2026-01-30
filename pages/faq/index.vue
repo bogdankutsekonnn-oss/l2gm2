@@ -77,14 +77,49 @@ const toggleFaq = (index) => {
   }
 }
 
+const { getCanonicalUrl } = useSeo()
+const canonicalUrl = getCanonicalUrl('/faq')
+
+// JSON-LD разметка FAQ
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(faq => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer
+    }
+  }))
+}
+
 useHead({
-  title: 'FAQ - Часто задаваемые вопросы - L2GM',
+  title: 'FAQ | Часто задаваемые вопросы о серверах Lineage 2 - L2GM',
   meta: [
     {
       name: 'description',
-      content: 'Ответы на часто задаваемые вопросы о серверах Lineage 2, размещении, статусах и работе сайта.'
-    }
-  ]
+      content: 'Ответы на частые вопросы: как добавить сервер, стоимость размещения, статусы Premium и VIP, фильтрация серверов Lineage 2.'
+    },
+    { name: 'keywords', content: 'faq lineage 2, вопросы л2, добавить сервер, размещение сервера, vip статус' },
+    // Open Graph
+    { property: 'og:title', content: 'FAQ | L2GM' },
+    { property: 'og:description', content: 'Ответы на частые вопросы о серверах Lineage 2 и работе сайта L2GM.' },
+    { property: 'og:url', content: canonicalUrl },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    // Twitter
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:title', content: 'FAQ | L2GM' },
+    { name: 'twitter:description', content: 'Ответы на частые вопросы о серверах Lineage 2.' },
+  ],
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(faqJsonLd),
+    },
+  ],
 })
 </script>
 
