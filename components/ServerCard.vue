@@ -127,7 +127,7 @@ const getBadgeIcon = (badge) => {
   background: var(--secondary-main);
   border-radius: var(--radius-sm);
   padding: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  /* margin-bottom: var(--spacing-md); */
 }
 
 .server-card-content {

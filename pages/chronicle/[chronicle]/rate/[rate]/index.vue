@@ -7,19 +7,37 @@
 
     <div class="page-layout">
       <div class="servers-column">
-        <div v-if="filteredServers.length > 0">
-          <div
-            v-for="(servers, category) in categorizedServers"
-            :key="category"
-            class="server-category"
-          >
-            <h2 class="category-title">{{ category }}</h2>
-            <div class="servers-grid">
-              <ServerCard
-                v-for="server in servers"
-                :key="server.id"
-                :server="server"
-              />
+        <div v-if="filteredServers.length > 0" class="categories-grid">
+          <div class="category-col">
+            <div
+              v-for="category in categories.leftColumn"
+              :key="category.name"
+              class="server-category"
+            >
+              <h2 class="category-title">{{ category.name }}</h2>
+              <div class="servers-grid">
+                <ServerCard
+                  v-for="server in category.servers"
+                  :key="server.id"
+                  :server="server"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="category-col">
+            <div
+              v-for="category in categories.rightColumn"
+              :key="category.name"
+              class="server-category"
+            >
+              <h2 class="category-title">{{ category.name }}</h2>
+              <div class="servers-grid">
+                <ServerCard
+                  v-for="server in category.servers"
+                  :key="server.id"
+                  :server="server"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -50,7 +68,7 @@ const {
   generateSeoText,
   getCanonicalUrl,
 } = useSeo()
-const { categorizeServers } = await import('~/utils/dateUtils.js')
+const { getOrderedCategories } = await import('~/utils/dateUtils.js')
 
 const chronicleSlug = route.params.chronicle
 const rateSlug = route.params.rate
@@ -70,7 +88,7 @@ const filters = {
   rate: rateSlug,
 }
 const filteredServers = getServers(filters)
-const categorizedServers = categorizeServers(filteredServers)
+const categories = getOrderedCategories(filteredServers)
 
 const title = generateTitle(filters)
 const h1 = generateH1(filters)

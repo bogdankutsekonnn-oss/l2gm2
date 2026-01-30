@@ -7,18 +7,41 @@
 
     <div class="page-layout">
       <div class="servers-column">
-        <div
-          v-for="(servers, category) in categorizedServers"
-          :key="category"
-          class="server-category"
-        >
-          <h2 class="category-title">{{ category }}</h2>
-          <div class="servers-grid">
-            <ServerCard
-              v-for="server in servers"
-              :key="server.id"
-              :server="server"
-            />
+        <div class="categories-grid">
+          <!-- Левая колонка (будущее) -->
+          <div class="category-col">
+            <div
+              v-for="category in categories.leftColumn"
+              :key="category.name"
+              class="server-category"
+            >
+              <h2 class="category-title">{{ category.name }}</h2>
+              <div class="servers-grid">
+                <ServerCard
+                  v-for="server in category.servers"
+                  :key="server.id"
+                  :server="server"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Правая колонка (прошлое) -->
+          <div class="category-col">
+            <div
+              v-for="category in categories.rightColumn"
+              :key="category.name"
+              class="server-category"
+            >
+              <h2 class="category-title">{{ category.name }}</h2>
+              <div class="servers-grid">
+                <ServerCard
+                  v-for="server in category.servers"
+                  :key="server.id"
+                  :server="server"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -38,10 +61,10 @@
 <script setup>
 const { getServers } = useFilters()
 const { generateSeoText } = useSeo()
-const { categorizeServers } = await import('~/utils/dateUtils.js')
+const { getOrderedCategories } = await import('~/utils/dateUtils.js')
 
 const servers = getServers()
-const categorizedServers = categorizeServers(servers)
+const categories = getOrderedCategories(servers)
 
 const seoText = generateSeoText()
 
