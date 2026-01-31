@@ -74,10 +74,12 @@ body {
 }
 
 .banner-wrapper {
-  position: relative;
+  position: fixed;
+  top: 70px; /* После шапки */
+  left: 0;
   width: 100%;
-  margin-bottom: var(--spacing-lg);
-  margin-top: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .main-content {
@@ -86,7 +88,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
-  margin-top: calc(var(--spacing-xxl) * 7);
+  margin-top: 250px;
   position: relative;
   z-index: 2;
   pointer-events: none;

@@ -17,9 +17,7 @@
           <a href="https://t.me/l2gm" class="btn-secondary" target="_blank">
             Telegram
           </a>
-          <a href="mailto:info@l2gm.com" class="btn-secondary">
-            Email
-          </a>
+          <a href="mailto:info@l2gm.com" class="btn-secondary"> Email </a>
         </div>
         <!-- TODO: Добавить страницы позже
         <div class="footer-links">
@@ -29,9 +27,7 @@
           <NuxtLink to="/cookies">Файлы Cookie</NuxtLink>
         </div>
         -->
-        <div class="footer-copyright">
-          © 2026 L2GM.com
-        </div>
+        <div class="footer-copyright">© 2026 L2GM.com</div>
       </div>
     </div>
   </footer>
@@ -42,7 +38,7 @@
   background: var(--bg-surface);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: var(--spacing-xxl) 0 var(--spacing-lg);
-  margin-top: var(--spacing-xxl);
+  z-index: 99;
 }
 
 .footer-content {

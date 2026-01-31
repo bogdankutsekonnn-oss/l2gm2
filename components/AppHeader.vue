@@ -48,8 +48,10 @@ onUnmounted(() => {
   background: var(--bg-surface);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: var(--spacing-md) 0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   transition: all 0.3s ease;
 }
