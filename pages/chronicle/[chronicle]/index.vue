@@ -70,6 +70,7 @@ const {
   generateKeywords,
   generateSeoText,
   getCanonicalUrl,
+  getOgImageMeta,
   generateServerListJsonLd,
 } = useSeo()
 import { getOrderedCategories } from '~/utils/dateUtils.js'
@@ -102,8 +103,8 @@ useHead({
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'L2GM' },
+    ...getOgImageMeta(),
     // Twitter
-    { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
   ],

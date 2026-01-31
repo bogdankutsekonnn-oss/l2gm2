@@ -63,7 +63,7 @@
 <script setup>
 const route = useRoute()
 const { getServers } = useFilters()
-const { generateDateSeoText, getCanonicalUrl } = useSeo()
+const { generateDateSeoText, getCanonicalUrl, getOgImageMeta } = useSeo()
 import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const dateSlug = route.params.date
@@ -136,8 +136,8 @@ useHead({
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'L2GM' },
+    ...getOgImageMeta(),
     // Twitter
-    { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
   ],

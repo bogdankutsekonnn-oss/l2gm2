@@ -431,6 +431,18 @@ export const useSeo = () => {
     }
   }
 
+  // OG и Twitter мета-теги (общие для всех страниц)
+  const getOgImageMeta = () => {
+    const ogImageUrl = `${siteUrl}/og-image.jpg`
+    return [
+      { property: 'og:image', content: ogImageUrl },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: ogImageUrl },
+    ]
+  }
+
   // Полная SEO мета-разметка для страницы
   const generateFullMeta = (filters = {}, path = '/') => {
     const title = generateTitle(filters)
@@ -449,6 +461,8 @@ export const useSeo = () => {
         { property: 'og:description', content: description },
         { property: 'og:url', content: canonicalUrl },
         { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'L2GM' },
+        ...getOgImageMeta(),
 
         // Twitter
         { name: 'twitter:title', content: title },
@@ -468,6 +482,7 @@ export const useSeo = () => {
     generateSeoText,
     generateDateSeoText,
     getCanonicalUrl,
+    getOgImageMeta,
     generateHomeJsonLd,
     generateServerListJsonLd,
     generateOrganizationJsonLd,

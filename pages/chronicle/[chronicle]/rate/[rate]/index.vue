@@ -69,6 +69,7 @@ const {
   generateDescription,
   generateSeoText,
   getCanonicalUrl,
+  getOgImageMeta,
 } = useSeo()
 import { getOrderedCategories } from '~/utils/dateUtils.js'
 
@@ -103,6 +104,7 @@ useHead({
     { name: 'description', content: description },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
+    ...getOgImageMeta(),
   ],
   link: [{ rel: 'canonical', href: getCanonicalUrl(route.path) }],
 })

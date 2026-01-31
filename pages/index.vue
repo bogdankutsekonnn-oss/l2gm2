@@ -67,6 +67,7 @@ const {
   generateDescription,
   generateKeywords,
   getCanonicalUrl,
+  getOgImageMeta,
   generateHomeJsonLd,
   generateOrganizationJsonLd,
   generateServerEventsJsonLd,
@@ -91,16 +92,14 @@ useHead({
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },
-
     // Open Graph
     { property: 'og:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
     { property: 'og:description', content: description },
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'L2GM' },
-
-    // Twitter Card
-    { name: 'twitter:card', content: 'summary_large_image' },
+    ...getOgImageMeta(),
+    // Twitter
     { name: 'twitter:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
     { name: 'twitter:description', content: description },
   ],
