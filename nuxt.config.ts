@@ -48,7 +48,7 @@ export default defineNuxtConfig({
             'lineage 2, л2, сервера lineage 2, анонсы серверов л2, новые серверы l2, interlude, high five, открытие сервера',
         },
         { name: 'author', content: 'L2GM' },
-        { name: 'robots', content: 'index, follow' },
+        { name: 'robots', content: 'noindex, nofollow' },
 
         // Open Graph (Facebook, VK, Telegram)
         { property: 'og:type', content: 'website' },
