@@ -21,10 +21,10 @@ export default defineNuxtConfig({
     groups: [
       {
         userAgent: ['*'],
-        allow: ['/'],
+        disallow: ['/'],
       },
     ],
-    sitemap: ['https://l2gm.com/sitemap.xml'],
+    sitemap: [],
   },
 
   app: {
