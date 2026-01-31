@@ -34,7 +34,6 @@ const handleImageError = () => {
   left: 50%;
   transform: translateX(-50%);
   top: 70px; /* После шапки */
-  background: var(--bg-surface);
   overflow: hidden;
   z-index: 0;
   pointer-events: auto;

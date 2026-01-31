@@ -87,7 +87,7 @@
 .page-wrapper {
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
-  margin-bottom: var(--spacing-xxl);
+  margin-bottom: var(--spacing-md);
 }
 
 /* Глобальные стили для заголовков страниц */
@@ -96,7 +96,7 @@
 }
 
 .page-header h1 {
-  background: #1B1D1F;
+  background: #1b1d1f;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-sm);
   padding: 16px;
@@ -162,7 +162,6 @@
 }
 
 .seo-section {
-  margin-top: var(--spacing-xxl);
   padding: var(--spacing-xl);
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
