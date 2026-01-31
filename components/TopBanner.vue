@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-const bannerImage = ref('/branding-section.png')
+const bannerImage = ref('/branding-section.jpg')
 
 const handleImageError = () => {
   // Если изображение не загрузилось, показываем placeholder
