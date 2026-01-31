@@ -151,7 +151,7 @@ const crumbs = computed(() => {
 
 <style scoped>
 .breadcrumbs {
-  margin-bottom: var(--spacing-md);
+  padding: 8px 16px;
 }
 
 .breadcrumbs-list {

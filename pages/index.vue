@@ -1,11 +1,12 @@
 <template>
   <div class="home-page">
-    <Breadcrumbs />
-    <div class="page-header">
-      <h1>Анонсы серверов Lineage 2</h1>
-    </div>
+    <div class="page-wrapper">
+      <Breadcrumbs />
+      <div class="page-header">
+        <h1>Анонсы серверов Lineage 2</h1>
+      </div>
 
-    <div class="page-layout">
+      <div class="page-layout">
       <div class="servers-column">
         <div class="categories-grid">
           <!-- Левая колонка (будущее) -->
@@ -49,6 +50,7 @@
       <div class="filters-column">
         <FiltersPanel />
       </div>
+    </div>
     </div>
 
     <SeoSection

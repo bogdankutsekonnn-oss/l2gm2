@@ -1,11 +1,12 @@
 <template>
   <div class="chronicle-page">
-    <Breadcrumbs />
-    <div class="page-header">
-      <h1>{{ h1 }}</h1>
-    </div>
+    <div class="page-wrapper">
+      <Breadcrumbs />
+      <div class="page-header">
+        <h1>{{ h1 }}</h1>
+      </div>
 
-    <div class="page-layout">
+      <div class="page-layout">
       <div class="servers-column">
         <div v-if="filteredServers.length > 0" class="categories-grid">
           <div class="category-col">
@@ -49,6 +50,7 @@
       <div class="filters-column">
         <FiltersPanel />
       </div>
+    </div>
     </div>
 
     <SeoSection
