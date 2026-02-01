@@ -13,7 +13,7 @@
             <!-- Левая колонка (будущее) -->
             <div class="category-col">
               <div
-                v-for="category in categories.leftColumn"
+                v-for="category in categories?.leftColumn"
                 :key="category.name"
                 class="server-category"
               >
@@ -31,7 +31,7 @@
             <!-- Правая колонка (прошлое) -->
             <div class="category-col">
               <div
-                v-for="category in categories.rightColumn"
+                v-for="category in categories?.rightColumn"
                 :key="category.name"
                 class="server-category"
               >
@@ -77,7 +77,7 @@ const {
 import { getOrderedCategories } from '~/utils/dateUtils.js'
 
 const servers = getServers()
-const categories = getOrderedCategories(servers)
+const categories = computed(() => getOrderedCategories(servers))
 
 const seoText = generateSeoText()
 const description = generateDescription()
