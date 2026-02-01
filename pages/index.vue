@@ -8,43 +8,45 @@
 
       <div class="page-layout">
       <div class="servers-column">
-        <div class="categories-grid">
-          <!-- Левая колонка (будущее) -->
-          <div class="category-col">
-            <div
-              v-for="category in categories.leftColumn"
-              :key="category.name"
-              class="server-category"
-            >
-              <h2 class="category-title">{{ category.name }}</h2>
-              <div class="servers-grid">
-                <ServerCard
-                  v-for="server in category.servers"
-                  :key="server.id"
-                  :server="server"
-                />
+        <ClientOnly>
+          <div class="categories-grid">
+            <!-- Левая колонка (будущее) -->
+            <div class="category-col">
+              <div
+                v-for="category in categories.leftColumn"
+                :key="category.name"
+                class="server-category"
+              >
+                <h2 class="category-title">{{ category.name }}</h2>
+                <div class="servers-grid">
+                  <ServerCard
+                    v-for="server in category.servers"
+                    :key="server.id"
+                    :server="server"
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Правая колонка (прошлое) -->
-          <div class="category-col">
-            <div
-              v-for="category in categories.rightColumn"
-              :key="category.name"
-              class="server-category"
-            >
-              <h2 class="category-title">{{ category.name }}</h2>
-              <div class="servers-grid">
-                <ServerCard
-                  v-for="server in category.servers"
-                  :key="server.id"
-                  :server="server"
-                />
+            <!-- Правая колонка (прошлое) -->
+            <div class="category-col">
+              <div
+                v-for="category in categories.rightColumn"
+                :key="category.name"
+                class="server-category"
+              >
+                <h2 class="category-title">{{ category.name }}</h2>
+                <div class="servers-grid">
+                  <ServerCard
+                    v-for="server in category.servers"
+                    :key="server.id"
+                    :server="server"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ClientOnly>
       </div>
 
       <div class="filters-column">

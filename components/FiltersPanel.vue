@@ -21,7 +21,7 @@
       <h3 class="filter-title">Подобрать сервер</h3>
       <div class="server-finder">
         <div class="select-wrap">
-          <select v-model="selectedChronicle" class="select">
+          <select id="chronicle-select" name="chronicle" v-model="selectedChronicle" class="select">
             <option value="">Все хроники</option>
             <option
               v-for="chronicle in chronicles"
@@ -31,7 +31,7 @@
               {{ chronicle.name }}
             </option>
           </select>
-          <select v-model="selectedRate" class="select">
+          <select id="rate-select" name="rate" v-model="selectedRate" class="select">
             <option value="">Все рейты</option>
             <option v-for="range in rateRanges" :key="range" :value="range">
               {{ range }}
@@ -89,7 +89,9 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <CalendarFilter :servers="allServers" />
+      <ClientOnly>
+        <CalendarFilter :servers="allServers" />
+      </ClientOnly>
     </div>
   </div>
 </template>

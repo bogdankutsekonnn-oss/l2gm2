@@ -1,15 +1,30 @@
+// Получить текущую дату в московском времени (UTC+3)
+const getMoscowToday = () => {
+  const now = new Date()
+  // Получаем UTC время и добавляем 3 часа для Москвы
+  const moscowOffset = 3 * 60 * 60 * 1000
+  const moscowTime = new Date(now.getTime() + now.getTimezoneOffset() * 60 * 1000 + moscowOffset)
+  moscowTime.setHours(0, 0, 0, 0)
+  return moscowTime
+}
+
+// Парсить дату сервера (YYYY-MM-DD) как московское время
+const parseServerDate = (dateString) => {
+  const [year, month, day] = dateString.split('-').map(Number)
+  return new Date(year, month - 1, day, 0, 0, 0, 0)
+}
+
 export const formatServerDate = (dateString) => {
   if (!dateString) return ''
 
-  const date = new Date(dateString)
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const date = parseServerDate(dateString)
+  const today = getMoscowToday()
 
   const serverDate = new Date(date)
   serverDate.setHours(0, 0, 0, 0)
 
   const diffTime = serverDate - today
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
 
   // Форматируем дату
   const day = String(date.getDate()).padStart(2, '0')
@@ -63,8 +78,7 @@ export const categorizeServers = (servers) => {
     'Неделю назад и более': []
   }
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
+  const today = getMoscowToday()
 
   servers.forEach(server => {
     if (!server.startDate) {
@@ -72,11 +86,10 @@ export const categorizeServers = (servers) => {
       return
     }
 
-    const serverDate = new Date(server.startDate)
-    serverDate.setHours(0, 0, 0, 0)
+    const serverDate = parseServerDate(server.startDate)
 
     const diffTime = serverDate - today
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
 
     if (diffDays === 0) {
       // Сегодня - "Скоро откроются"

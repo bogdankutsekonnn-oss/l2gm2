@@ -47,9 +47,18 @@ const props = defineProps({
 
 const route = useRoute()
 
-// Текущий отображаемый месяц/год
-const currentMonth = ref(new Date().getMonth())
-const currentYear = ref(new Date().getFullYear())
+// Получить текущую дату в московском времени (UTC+3)
+const getMoscowNow = () => {
+  const now = new Date()
+  const moscowOffset = 3 * 60 * 60 * 1000
+  return new Date(now.getTime() + now.getTimezoneOffset() * 60 * 1000 + moscowOffset)
+}
+
+const moscowNow = getMoscowNow()
+
+// Текущий отображаемый месяц/год (по Москве)
+const currentMonth = ref(moscowNow.getMonth())
+const currentYear = ref(moscowNow.getFullYear())
 
 // Названия месяцев
 const monthNames = [
@@ -82,7 +91,7 @@ const isDateSelected = (fullDate) => {
 // Генерация дней календаря
 const calendarDays = computed(() => {
   const days = []
-  const today = new Date()
+  const today = getMoscowNow()
   today.setHours(0, 0, 0, 0)
 
   // Первый день месяца
