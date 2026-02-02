@@ -76,13 +76,14 @@
 
     <div class="filter-section">
       <div class="filter-chips">
-        <span
+        <NuxtLink
           v-for="tag in tags"
-          :key="tag"
+          :key="tag.url"
+          :to="tag.url"
           class="filter-chip filter-chip-tag"
         >
-          {{ tag }}
-        </span>
+          {{ tag.name }}
+        </NuxtLink>
       </div>
     </div>
 
@@ -118,15 +119,15 @@ const rateRanges = computed(() => {
 })
 
 const tags = [
-  'Сегодня',
-  'Топ сервера л2',
-  'RVR',
-  'GVE',
-  'Зарубежный',
-  'Low рейты',
-  'Mid рейты',
-  'Мультикрафт',
-  'Мультипрофа',
+  { name: 'Сегодня', url: '/today' },
+  { name: 'Топ сервера л2', url: '/l2top' },
+  { name: 'PvP сервера', url: '/pvp' },
+  { name: 'GVE', url: '/gve' },
+  { name: 'Зарубежный', url: '/foreign' },
+  { name: 'Low рейты', url: '/low-rate' },
+  { name: 'Mid рейты', url: '/mid-rate' },
+  { name: 'Мультикрафт', url: '/multicraft' },
+  { name: 'Мультипрофа', url: '/multiprof' },
 ]
 
 const getChronicleUrl = (slug) => {
@@ -209,7 +210,7 @@ const isRateActive = (slug) => {
 }
 
 .filter-chip-tag {
-  cursor: default;
+  cursor: pointer;
 }
 
 .ad-banner {

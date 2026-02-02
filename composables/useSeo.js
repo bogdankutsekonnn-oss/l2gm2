@@ -1,19 +1,25 @@
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
+import tagsData from '~/data/tags.json'
 
 export const useSeo = () => {
   const config = useRuntimeConfig()
   const siteUrl = config.public.siteUrl || 'https://l2gm.com'
+
+  // Получить SEO-название хроники (с "с дополнениями" вместо "+")
+  const getChronicleSeoName = (chronicle) => {
+    return chronicle?.seoName || chronicle?.name || ''
+  }
 
   const generateTitle = (filters = {}) => {
     if (filters.chronicle && filters.rate) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${chronicle?.name || ''} ${rateName} | L2GM`
+      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName} | L2GM`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${chronicle?.name || ''} | L2GM`
+      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} | L2GM`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
@@ -27,10 +33,10 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${chronicle?.name || ''} ${rateName}`
+      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName}`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${chronicle?.name || ''}`
+      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)}`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
@@ -44,10 +50,10 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Новые серверы Lineage 2 ${chronicle?.name || ''} с рейтами ${rateName}. Актуальный список анонсов с датами открытия. Выбирайте лучший сервер л2!`
+      return `Новые серверы Lineage 2 ${getChronicleSeoName(chronicle)} с рейтами ${rateName}. Актуальный список анонсов с датами открытия. Выбирайте лучший сервер л2!`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${chronicle?.name || ''} - полный список анонсов. Новые проекты с актуальными датами открытия и онлайном.`
+      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} - полный список анонсов. Новые проекты с актуальными датами открытия и онлайном.`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
@@ -109,7 +115,7 @@ export const useSeo = () => {
     const rateKeywords = {
       'low': ['лоу рейт л2', 'x1 сервер', 'хардкор л2', 'low rate l2', 'lineage 2 interlude x1'],
       'mid': ['мид рейт л2', 'средние рейты л2', 'mid rate l2'],
-      'high': ['хай рейт л2', 'high rate l2', 'фан сервер л2'],
+      'high': ['пвп рейт л2', 'pvp rate l2', 'фан сервер л2', 'пвп сервер л2'],
     }
 
     if (filters.chronicle) {
@@ -167,7 +173,7 @@ export const useSeo = () => {
   const rateDescriptions = {
     'low': 'Лоу рейт серверы (x1-x15) — настоящий хардкор для ценителей. Каждый уровень здесь — маленькая победа, а топовая экипировка — результат месяцев упорного труда. На таких серверах формируются крепкие кланы, где каждый игрок на счету. Экономика стабильна, а PvP имеет реальные последствия. Если вы готовы вложить время и получить незабываемый опыт — лоу рейт ваш выбор.',
     'mid': 'Мид рейт серверы (x15-x100) — золотая середина мира Lineage 2. Комфортная прокачка без утомительного гринда, но с сохранением ценности достижений. Вы успеете насладиться всеми этапами игры: от первых шагов в Talking Island до эпических осад. Оптимальный выбор для игроков с ограниченным временем, которые не хотят жертвовать глубиной геймплея.',
-    'high': 'Хай рейт серверы (x100+) — чистый экшен без лишних прелюдий. Быстрый старт, топовая экипировка в первые дни и сразу в бой! Идеально для любителей PvP, осад и клановых войн. Если вы цените динамику и хотите сразу окунуться в эндгейм контент — хай рейты созданы для вас.',
+    'high': 'PvP серверы (x100+) — чистый экшен без лишних прелюдий. Быстрый старт, топовая экипировка в первые дни и сразу в бой! Идеально для любителей PvP, осад и клановых войн. Если вы цените динамику и хотите сразу окунуться в эндгейм контент — PvP рейты созданы для вас.',
   }
 
   // Определяем тип рейта
@@ -198,15 +204,16 @@ export const useSeo = () => {
     const paragraphs = []
 
     const chronicle = filters.chronicle ? chroniclesData.find(c => c.slug === filters.chronicle) : null
+    const chronicleSeoName = getChronicleSeoName(chronicle)
     const rate = filters.rate ? ratesData.find(r => r.slug === filters.rate) : null
     const rateName = rate?.name || filters.rate
     const rateType = getRateType(filters.rate)
 
     // Вступительный абзац
     if (chronicle && rate) {
-      paragraphs.push(`Ищете сервер Lineage 2 ${chronicle.name} с рейтами ${rateName}? Вы попали по адресу! L2GM — это актуальный топ серверов л2 и ла2, где собраны лучшие сервера lineage 2 с проверенным качеством и стабильным онлайном. Мы ежедневно мониторим новые сервера л2, проверяем информацию и обновляем рейтинг серверов л2, чтобы вы всегда видели только актуальные проекты.`)
+      paragraphs.push(`Ищете сервер Lineage 2 ${chronicleSeoName} с рейтами ${rateName}? Вы попали по адресу! L2GM — это актуальный топ серверов л2 и ла2, где собраны лучшие сервера lineage 2 с проверенным качеством и стабильным онлайном. Мы ежедневно мониторим новые сервера л2, проверяем информацию и обновляем рейтинг серверов л2, чтобы вы всегда видели только актуальные проекты.`)
     } else if (chronicle) {
-      paragraphs.push(`Добро пожаловать в раздел серверов Lineage 2 ${chronicle.name}! На этой странице собраны все актуальные анонсы серверов л2 на данной хронике — от лоу рейтов до хай рейтов, от хардкорных пвп сервера л2 до уютных PvE проектов. L2GM — один из лучших сайтов lineage 2 для поиска серверов ла2.`)
+      paragraphs.push(`Добро пожаловать в раздел серверов Lineage 2 ${chronicleSeoName}! На этой странице собраны все актуальные анонсы серверов л2 на данной хронике — от лоу рейтов до хай рейтов, от хардкорных пвп сервера л2 до уютных PvE проектов. L2GM — один из лучших сайтов lineage 2 для поиска серверов ла2.`)
     } else if (rate) {
       paragraphs.push(`Сервера Lineage 2 с рейтами ${rateName} — выбор игроков, которые точно знают, какой темп игры им подходит. В этом разделе топ серверов л2 собраны проекты всех популярных хроник: ла2 интерлюд, л2 хф, ла2 эссенс и другие. Каждый сервер л2 проверен на актуальность.`)
     } else {
@@ -243,9 +250,9 @@ export const useSeo = () => {
 
     // Призыв к действию
     if (chronicle && rate) {
-      paragraphs.push(`Раздел ${chronicle.name} ${rateName} регулярно пополняется новыми проектами. Добавьте страницу в закладки или подпишитесь на наш Telegram-канал, чтобы первыми узнавать о старте интересных серверов л2. Удачной игры и до встречи в мире Lineage 2!`)
+      paragraphs.push(`Раздел ${chronicleSeoName} ${rateName} регулярно пополняется новыми проектами. Добавьте страницу в закладки или подпишитесь на наш Telegram-канал, чтобы первыми узнавать о старте интересных серверов л2. Удачной игры и до встречи в мире Lineage 2!`)
     } else if (chronicle) {
-      paragraphs.push(`Сервера ${chronicle.name} — это особенная атмосфера и преданное комьюнити. Следите за обновлениями раздела, чтобы не пропустить открытие нового проекта л2 на любимой хронике. L2GM — ваш надёжный сайт л2 для поиска серверов!`)
+      paragraphs.push(`Сервера ${chronicleSeoName} — это особенная атмосфера и преданное комьюнити. Следите за обновлениями раздела, чтобы не пропустить открытие нового проекта л2 на любимой хронике. L2GM — ваш надёжный сайт л2 для поиска серверов!`)
     } else if (rate) {
       paragraphs.push(`Сервера л2 с рейтами ${rateName} стартуют регулярно. Заходите на L2GM, следите за календарём открытий и выбирайте проекты, которые подходят именно вам. Желаем удачи в поисках идеального сервера Lineage 2!`)
     } else {
@@ -474,6 +481,77 @@ export const useSeo = () => {
     }
   }
 
+  // SEO для страниц тегов
+  const getTagData = (tagSlug) => {
+    return tagsData.find(t => t.slug === tagSlug) || null
+  }
+
+  const generateTagTitle = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.title || 'Серверы Lineage 2 | L2GM'
+  }
+
+  const generateTagH1 = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.h1 || 'Серверы Lineage 2'
+  }
+
+  const generateTagDescription = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.description || 'Анонсы серверов Lineage 2 на L2GM.'
+  }
+
+  const generateTagKeywords = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.keywords || 'серверы л2, lineage 2, l2'
+  }
+
+  const generateTagSeoText = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.seoText || ''
+  }
+
+  const generateTagSeoTitle = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.seoTitle || 'Серверы Lineage 2'
+  }
+
+  const getTagFilter = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.filter || null
+  }
+
+  const getTagEmptyMessage = (tagSlug) => {
+    const tag = getTagData(tagSlug)
+    return tag?.emptyMessage || 'Серверы не найдены'
+  }
+
+  const generateTagFullMeta = (tagSlug) => {
+    const title = generateTagTitle(tagSlug)
+    const description = generateTagDescription(tagSlug)
+    const keywords = generateTagKeywords(tagSlug)
+    const canonicalUrl = getCanonicalUrl(`/${tagSlug}`)
+
+    return {
+      title,
+      meta: [
+        { name: 'description', content: description },
+        { name: 'keywords', content: keywords },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: canonicalUrl },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'L2GM' },
+        ...getOgImageMeta(),
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+      ],
+      link: [
+        { rel: 'canonical', href: canonicalUrl }
+      ]
+    }
+  }
+
   return {
     generateTitle,
     generateH1,
@@ -488,6 +566,17 @@ export const useSeo = () => {
     generateOrganizationJsonLd,
     generateServerEventsJsonLd,
     generateImageJsonLd,
-    generateFullMeta
+    generateFullMeta,
+    // Tag SEO functions
+    getTagData,
+    generateTagTitle,
+    generateTagH1,
+    generateTagDescription,
+    generateTagKeywords,
+    generateTagSeoText,
+    generateTagSeoTitle,
+    getTagFilter,
+    getTagEmptyMessage,
+    generateTagFullMeta
   }
 }
