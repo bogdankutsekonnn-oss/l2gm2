@@ -45,6 +45,7 @@
 <script setup>
 const route = useRoute()
 const { getChronicles, getRates } = useFilters()
+const { getTagData } = useSeo()
 
 // Форматирование даты для хлебных крошек
 const formatDateForBreadcrumb = (dateString) => {
@@ -107,6 +108,19 @@ const crumbs = computed(() => {
   const chronicleSlug = route.params.chronicle
   const rateSlug = route.params.rate
   const dateSlug = route.params.date
+  const tagSlug = route.params.tag
+
+  // Страница тега
+  if (tagSlug) {
+    const tagData = getTagData(tagSlug)
+    if (tagData) {
+      result.push({
+        path: `/${tagSlug}`,
+        title: tagData.name,
+      })
+      return result
+    }
+  }
 
   // Страница даты
   if (dateSlug) {
