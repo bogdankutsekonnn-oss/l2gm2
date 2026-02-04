@@ -114,13 +114,24 @@ export const categorizeServers = (servers) => {
     }
   })
 
+  // Приоритет типов карточек: premium > vip > top > basic
+  const cardTypePriority = {
+    premium: 1,
+    vip: 2,
+    top: 3,
+    basic: 4
+  }
+
   // Сортировка внутри каждой категории
-  // Будущие категории: ближайшие даты сначала (по возрастанию)
-  // Прошлые категории: недавние сначала (по убыванию)
+  // Сначала по типу карточки, потом по дате
 
   FUTURE_CATEGORIES.forEach(category => {
     if (categories[category]) {
       categories[category].sort((a, b) => {
+        const priorityA = cardTypePriority[a.cardType] || 99
+        const priorityB = cardTypePriority[b.cardType] || 99
+        if (priorityA !== priorityB) return priorityA - priorityB
+
         const dateA = new Date(a.startDate || '9999-12-31')
         const dateB = new Date(b.startDate || '9999-12-31')
         return dateA - dateB // По возрастанию (ближайшие сначала)
@@ -131,6 +142,10 @@ export const categorizeServers = (servers) => {
   PAST_CATEGORIES.forEach(category => {
     if (categories[category]) {
       categories[category].sort((a, b) => {
+        const priorityA = cardTypePriority[a.cardType] || 99
+        const priorityB = cardTypePriority[b.cardType] || 99
+        if (priorityA !== priorityB) return priorityA - priorityB
+
         const dateA = new Date(a.startDate || '1970-01-01')
         const dateB = new Date(b.startDate || '1970-01-01')
         return dateB - dateA // По убыванию (недавние сначала)

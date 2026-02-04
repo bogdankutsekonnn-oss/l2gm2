@@ -57,7 +57,6 @@ const dateInfo = computed(() => formatServerDate(props.server.startDate))
 const cardStatus = computed(() => {
   const typeMap = {
     premium: 'premium',
-    'vip-plus': 'vip',
     vip: 'vip',
     top: 'top',
     basic: 'regular',
