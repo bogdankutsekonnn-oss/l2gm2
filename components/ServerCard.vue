@@ -1,34 +1,40 @@
 <template>
-  <div class="server-card">
-    <div class="server-card-content">
-      <span
-        v-if="server.status"
-        :class="['status-badge', `status-${server.status}`]"
-        :title="statusText"
-      >
-        <component :is="getStatusIcon(server.status)" />
-      </span>
+  <div :class="['server-card', `server-card--${cardStatus}`]">
+    <SparksEffect v-if="cardStatus === 'premium'" />
+    <div class="server-card__left">
+      <div class="server-card__status">
+        <img
+          :src="`/images/status/${cardStatus}.png`"
+          :alt="statusText"
+          class="server-card__status-img"
+        />
+      </div>
+
       <a
         :href="server.url"
-        class="server-name"
+        class="server-card__name"
         target="_blank"
         rel="noopener noreferrer"
       >
         {{ server.name }}
       </a>
-      <div class="server-badges">
-        <span
-          v-for="badge in server.badges"
+
+      <div v-if="server.icons?.length" class="server-card__badges">
+        <img
+          v-for="badge in server.icons"
           :key="badge"
-          :class="['badge-icon', `badge-${badge}`]"
+          :src="`/images/badges/${badge}.png`"
+          :alt="badgeText(badge)"
           :title="badgeText(badge)"
-        >
-          <component :is="getBadgeIcon(badge)" />
-        </span>
+          class="server-card__badge"
+        />
       </div>
-      <span class="rate">x{{ server.rate }}</span>
-      <span class="chronicle">{{ server.chronicle }}</span>
-      <div class="server-date" :class="{ 'is-accent': dateInfo.isAccent }">
+    </div>
+
+    <div class="server-card__right">
+      <span class="server-card__rate">x{{ server.rate }}</span>
+      <span class="server-card__chronicle">{{ server.chronicle }}</span>
+      <div :class="['server-card__date', dateInfo.dateClass]">
         {{ dateInfo.text }}
       </div>
     </div>
@@ -37,7 +43,6 @@
 
 <script setup>
 import { formatServerDate } from '~/utils/dateUtils'
-import { h } from 'vue'
 
 const props = defineProps({
   server: {
@@ -48,164 +53,165 @@ const props = defineProps({
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
 
-const statusText = computed(() => {
-  const statusMap = {
-    premium: 'PREM',
-    vip: 'VIP',
-    top: 'TOP',
+// Маппинг cardType из JSON в status для отображения
+const cardStatus = computed(() => {
+  const typeMap = {
+    premium: 'premium',
+    'vip-plus': 'vip',
+    vip: 'vip',
+    top: 'top',
+    basic: 'regular',
   }
-  return statusMap[props.server.status] || ''
+  return typeMap[props.server.cardType] || 'regular'
 })
 
-// Функция для получения SVG иконки статуса
-const getStatusIcon = (status) => {
-  return h('img', {
-    src: `/images/status/${status}.svg`,
-    alt: statusText.value,
-    width: 24,
-    height: 24,
-    style: 'display: block; object-fit: contain;',
-  })
-}
+const statusText = computed(() => {
+  const statusMap = {
+    premium: 'Premium',
+    vip: 'VIP',
+    top: 'TOP',
+    regular: '',
+  }
+  return statusMap[cardStatus.value] || ''
+})
 
 const badgeText = (badge) => {
   const badgeMap = {
     recommended: 'Рекомендуем',
     'hot-start': 'Горячий старт',
     'bonus-start': 'Бонус старт',
+    obt: 'ОБТ',
   }
   return badgeMap[badge] || badge
-}
-
-// Функция для получения иконки бейджа
-const getBadgeIcon = (badge) => {
-  // Вариант 1: Использовать изображения из папки public
-  // Раскомментируйте, если хотите использовать изображения:
-  // return h('img', {
-  //   src: `/images/badges/${badge}.svg`,
-  //   alt: badgeText(badge),
-  //   width: 16,
-  //   height: 16
-  // })
-
-  // Вариант 2: Использовать разные SVG для каждого бейджа
-  const iconMap = {
-    recommended: () =>
-      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-        h('path', {
-          d: 'M8 0l1.5 3 3.5 0.5-2.5 2.5 0.5 3.5L8 8l-2.5 1.5 0.5-3.5-2.5-2.5 3.5-0.5L8 0z',
-          fill: 'currentColor',
-        }),
-      ]),
-    'hot-start': () =>
-      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-        h('path', {
-          d: 'M8 2l1 2 2 0.5-1.5 1.5 0.5 2L8 7l-2 1 0.5-2-1.5-1.5 2-0.5L8 2z',
-          fill: 'currentColor',
-        }),
-        h('circle', { cx: 8, cy: 12, r: 1, fill: 'currentColor' }),
-      ]),
-    'bonus-start': () =>
-      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'none' }, [
-        h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' }),
-      ]),
-  }
-
-  // Возвращаем иконку для бейджа или дефолтную
-  return (
-    iconMap[badge] ||
-    (() =>
-      h('svg', { width: 16, height: 16, viewBox: '0 0 16 16' }, [
-        h('circle', { cx: 8, cy: 8, r: 6, fill: 'currentColor' }),
-      ]))
-  )
 }
 </script>
 
 <style scoped>
 .server-card {
-  background: var(--secondary-main);
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-md);
-  /* margin-bottom: var(--spacing-md); */
-}
-
-.server-card-content {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  background: #121416;
+  border: 1px solid #262829;
+  border-radius: 8px;
 }
 
-.status-badge {
-  display: inline-flex;
+.server-card__left {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  overflow: hidden;
 }
 
-.status-badge img {
+.server-card__status {
+  width: 32px;
+  height: 32px;
+  margin: 4px 4px 4px 6px;
+  flex-shrink: 0;
+}
+
+.server-card__status-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.server-name {
+.server-card__name {
   color: var(--text-primary);
   font-weight: var(--font-semibold);
   text-decoration: none;
   font-size: 13px;
   text-transform: uppercase;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.server-name:hover {
+.server-card__name:hover {
   color: var(--primary-main);
 }
 
-.server-badges {
+.server-card__badges {
   display: flex;
-  gap: var(--spacing-xs);
-  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
 }
 
-.badge-icon {
+.server-card__badge {
   width: 16px;
   height: 16px;
-  color: var(--status-warning);
+  object-fit: contain;
   cursor: help;
-  flex-shrink: 0;
 }
 
-.rate,
-.chronicle {
+.server-card__right {
+  display: flex;
+  align-items: center;
+  padding-right: 6px;
+}
+
+.server-card__rate,
+.server-card__chronicle,
+.server-card__date {
   color: var(--text-secondary);
-  font-size: var(--font-sm);
+  font-size: 13px;
   white-space: nowrap;
-  flex-shrink: 0;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-.server-date {
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
-  min-height: 24px;
-  display: inline-flex;
+.server-card__rate {
+  width: 60px;
+}
+
+.server-card__chronicle {
+  width: 100px;
+}
+
+.server-card__date {
+  width: 70px;
+}
+
+.server-card__date--accent {
+  background: #06080A;
+  border-radius: 64px;
+  height: 20px;
+  padding: 0 8px;
+  font-size: 12px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-left: auto;
 }
 
-.server-date.is-accent {
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  font-weight: var(--font-semibold);
+.server-card__date--today {
+  background: #FE3600;
+  border-radius: 64px;
+  height: 20px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Status variants */
+.server-card--top {
+  background: #1B1D1F;
+}
+
+.server-card--vip {
+  background: linear-gradient(90deg, #5E0000 0%, #1B1D1F 100%);
+}
+
+.server-card--premium {
+  position: relative;
+  background: linear-gradient(90deg, #53005E 0%, #1B1D1F 100%);
+  overflow: hidden;
+}
+
+.server-card--premium .server-card__left,
+.server-card--premium .server-card__right {
+  position: relative;
+  z-index: 2;
 }
 </style>

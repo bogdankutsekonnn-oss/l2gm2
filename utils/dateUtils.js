@@ -26,20 +26,19 @@ export const formatServerDate = (dateString) => {
   const diffTime = serverDate - today
   const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
 
-  // Форматируем дату
+  // Форматируем дату (без года)
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
-  const year = date.getFullYear()
-  const formattedDate = `${day}.${month}.${year}`
+  const formattedDate = `${day}.${month}`
 
   if (diffDays === 0) {
-    return { text: 'Сегодня', isAccent: true }
+    return { text: 'Сегодня', isAccent: true, dateClass: 'server-card__date--today' }
   } else if (diffDays === 1) {
-    return { text: 'Завтра', isAccent: true }
+    return { text: 'Завтра', isAccent: true, dateClass: 'server-card__date--accent' }
   } else if (diffDays === -1) {
-    return { text: 'Вчера', isAccent: true }
+    return { text: 'Вчера', isAccent: true, dateClass: 'server-card__date--accent' }
   } else {
-    return { text: formattedDate, isAccent: false }
+    return { text: formattedDate, isAccent: false, dateClass: '' }
   }
 }
 

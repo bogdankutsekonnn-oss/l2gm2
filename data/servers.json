@@ -103,5 +103,50 @@
     "description": null,
     "createdAt": "2026-01-10",
     "expiresAt": null
+  },
+  {
+    "id": 8,
+    "name": "L2Storm",
+    "url": "https://l2storm.com",
+    "chronicle": "Interlude",
+    "rate": 50,
+    "startDate": "2026-02-04",
+    "cardType": "top",
+    "icons": ["hot-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-25",
+    "expiresAt": null
+  },
+  {
+    "id": 9,
+    "name": "L2Glory",
+    "url": "https://l2glory.com",
+    "chronicle": "High Five",
+    "rate": 15,
+    "startDate": "2026-02-05",
+    "cardType": "top",
+    "icons": ["recommended", "bonus-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-26",
+    "expiresAt": null
+  },
+  {
+    "id": 10,
+    "name": "L2Legend",
+    "url": "https://l2legend.com",
+    "chronicle": "C4",
+    "rate": 7,
+    "startDate": "2026-02-06",
+    "cardType": "top",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-01-27",
+    "expiresAt": null
   }
 ]
