@@ -100,8 +100,8 @@ export default defineNuxtConfig({
   // Генерация статических страниц
   nitro: {
     prerender: {
-      crawlLinks: true,
-      routes: ['/'],
+      crawlLinks: false,
+      routes: [],
     },
   },
 
