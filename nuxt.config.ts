@@ -97,8 +97,9 @@ export default defineNuxtConfig({
     },
   },
 
-  // Генерация статических страниц
+  // Cloudflare Pages
   nitro: {
+    preset: 'cloudflare-pages',
     prerender: {
       crawlLinks: false,
       routes: [],
