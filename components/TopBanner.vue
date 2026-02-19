@@ -39,6 +39,12 @@ const handleImageError = () => {
   pointer-events: auto;
 }
 
+@media (max-width: 1024px) {
+  .top-banner {
+    top: 57px;
+  }
+}
+
 .banner-gradient {
   position: absolute;
   bottom: 0;
