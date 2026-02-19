@@ -1,7 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots', '@nuxt/image'],
+
+  image: {
+    quality: 80,
+    format: ['webp'],
+    screens: {
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
 
   css: ['~/assets/css/main.css'],
 

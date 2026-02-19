@@ -1,10 +1,13 @@
 <template>
   <NuxtLink to="/" class="top-banner">
-    <img
+    <NuxtImg
       v-if="bannerImage"
       :src="bannerImage"
       alt="Рекламный баннер"
       class="banner-image"
+      format="webp"
+      quality="80"
+      loading="lazy"
       @error="handleImageError"
     />
     <div v-else class="banner-placeholder">

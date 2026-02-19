@@ -10,7 +10,12 @@
     <!-- Десктопный layout -->
     <div class="server-card__left">
       <div class="server-card__status">
+        <svg v-if="cardStatus === 'regular'" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path opacity="0.3" d="M11.5 9C11.5 7.93333 9.16667 7.22222 8 7C11.7333 7 14.2222 8.77778 15 9.66667V25C15 26.0667 10.3333 26.7778 8 27C10.8 26.4667 11.5 25.4444 11.5 25V9Z" fill="white"/>
+          <path opacity="0.3" d="M20.5 6.02941C20.5 4.94706 22.8333 4.22549 24 4C20.2667 4 17.7778 5.80392 17 6.70588V24.9706C17 26.0529 21.6667 26.7745 24 27C21.2 26.4588 20.5 25.4216 20.5 24.9706V6.02941Z" fill="white"/>
+        </svg>
         <img
+          v-else
           :src="`/images/status/${cardStatus}.png`"
           :alt="statusText"
           class="server-card__status-img"
@@ -44,7 +49,12 @@
       <!-- Левая колонка: иконка + рейт -->
       <div class="server-card__mobile-left">
         <div class="server-card__status">
+          <svg v-if="cardStatus === 'regular'" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.3" d="M11.5 9C11.5 7.93333 9.16667 7.22222 8 7C11.7333 7 14.2222 8.77778 15 9.66667V25C15 26.0667 10.3333 26.7778 8 27C10.8 26.4667 11.5 25.4444 11.5 25V9Z" fill="white"/>
+            <path opacity="0.3" d="M20.5 6.02941C20.5 4.94706 22.8333 4.22549 24 4C20.2667 4 17.7778 5.80392 17 6.70588V24.9706C17 26.0529 21.6667 26.7745 24 27C21.2 26.4588 20.5 25.4216 20.5 24.9706V6.02941Z" fill="white"/>
+          </svg>
           <img
+            v-else
             :src="`/images/status/${cardStatus}.png`"
             :alt="statusText"
             class="server-card__status-img"

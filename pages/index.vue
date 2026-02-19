@@ -93,6 +93,8 @@
 </template>
 
 <script setup>
+import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES } from '~/utils/dateUtils.js'
+
 const { getServers } = useFilters()
 const {
   generateSeoText,
@@ -104,7 +106,6 @@ const {
   generateOrganizationJsonLd,
   generateServerEventsJsonLd,
 } = useSeo()
-import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES } from '~/utils/dateUtils.js'
 
 const filtersOpen = ref(false)
 

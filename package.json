@@ -10,6 +10,7 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
+    "@nuxt/image": "^2.0.0",
     "@nuxtjs/robots": "^5.7.0",
     "@nuxtjs/sitemap": "^7.6.0",
     "@nuxtjs/tailwindcss": "^6.12.0",
