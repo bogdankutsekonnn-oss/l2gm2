@@ -10,10 +10,10 @@
       <div class="servers-column">
         <ClientOnly>
           <div class="categories-grid">
-            <!-- Левая колонка (будущее) -->
+            <!-- Левая колонка — будущие разделы -->
             <div class="category-col">
               <div
-                v-for="category in categories?.leftColumn"
+                v-for="category in leftCategories"
                 :key="category.name"
                 class="server-category"
               >
@@ -28,10 +28,10 @@
               </div>
             </div>
 
-            <!-- Правая колонка (прошлое) -->
+            <!-- Правая колонка — прошлые разделы -->
             <div class="category-col">
               <div
-                v-for="category in categories?.rightColumn"
+                v-for="category in rightCategories"
                 :key="category.name"
                 class="server-category"
               >
@@ -74,10 +74,22 @@ const {
   generateOrganizationJsonLd,
   generateServerEventsJsonLd,
 } = useSeo()
-import { getOrderedCategories } from '~/utils/dateUtils.js'
+import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES } from '~/utils/dateUtils.js'
 
 const servers = getServers()
-const categories = computed(() => getOrderedCategories(servers))
+const categorized = computed(() => categorizeServers(servers))
+
+const leftCategories = computed(() =>
+  FUTURE_CATEGORIES
+    .filter(name => categorized.value[name]?.length)
+    .map(name => ({ name, servers: categorized.value[name] }))
+)
+
+const rightCategories = computed(() =>
+  PAST_CATEGORIES
+    .filter(name => categorized.value[name]?.length)
+    .map(name => ({ name, servers: categorized.value[name] }))
+)
 
 const seoText = generateSeoText()
 const description = generateDescription()
@@ -128,5 +140,10 @@ useHead({
 <style scoped>
 .home-page {
   padding: var(--spacing-lg) 0;
+}
+
+.categories-rows {
+  display: flex;
+  flex-direction: column;
 }
 </style>

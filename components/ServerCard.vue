@@ -1,5 +1,10 @@
 <template>
-  <div :class="['server-card', `server-card--${cardStatus}`]">
+  <a
+    :href="server.url"
+    :class="['server-card', `server-card--${cardStatus}`]"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     <SparksEffect v-if="cardStatus === 'premium'" />
     <div class="server-card__left">
       <div class="server-card__status">
@@ -10,14 +15,7 @@
         />
       </div>
 
-      <a
-        :href="server.url"
-        class="server-card__name"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ server.name }}
-      </a>
+      <span class="server-card__name">{{ server.name }}</span>
 
       <div v-if="server.icons?.length" class="server-card__badges">
         <img
@@ -38,7 +36,7 @@
         {{ dateInfo.text }}
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script setup>
@@ -95,6 +93,8 @@ const badgeText = (badge) => {
   background: #121416;
   border: 1px solid #262829;
   border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .server-card__left {
@@ -124,9 +124,6 @@ const badgeText = (badge) => {
   white-space: nowrap;
 }
 
-.server-card__name:hover {
-  color: var(--primary-main);
-}
 
 .server-card__badges {
   display: flex;

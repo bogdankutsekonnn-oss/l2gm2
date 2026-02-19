@@ -44,27 +44,34 @@ export const formatServerDate = (dateString) => {
 
 // Категории для будущих серверов (левая колонка)
 export const FUTURE_CATEGORIES = [
-  'Скоро откроются',      // Сегодня
-  'Завтра',               // Завтра
-  'Ближайшие 7 дней',     // 2-7 дней вперёд
-  'Через неделю и более'  // >7 дней вперёд
+  'Скоро откроются',      // платные, дата >= сегодня
+  'Завтра',               // все, завтра
+  'Ближайшие 7 дней',     // все, 2-7 дней вперёд
+  'Через неделю и более'  // все, >7 дней вперёд
 ]
 
 // Категории для прошлых серверов (правая колонка)
 export const PAST_CATEGORIES = [
-  'Уже открылись',        // Вчера
-  'Предыдущие 7 дней',    // 2-7 дней назад
-  'Неделю назад и более'  // >7 дней назад
+  'Уже открылись',        // платные, дата < сегодня
+  'Предыдущие 7 дней',    // все, 2-7 дней назад
+  'Неделю назад и более'  // все, >7 дней назад
 ]
 
-// Ряды категорий для двухколоночного отображения
-// [левая колонка (будущее), правая колонка (прошлое)]
-export const CATEGORY_ROWS = [
-  ['Скоро откроются', 'Уже открылись'],
-  ['Завтра', 'Предыдущие 7 дней'],
-  ['Ближайшие 7 дней', 'Неделю назад и более'],
-  ['Через неделю и более', null]
-]
+// Платные типы карточек
+const PAID_TYPES = new Set(['premium', 'vip', 'top'])
+
+// Применить лимиты: 1 premium + до 10 остальных
+const applyColumnLimits = (servers) => {
+  const premium = servers.filter(s => s.cardType === 'premium').slice(0, 1)
+  const others = servers.filter(s => s.cardType !== 'premium').slice(0, 10)
+  return [...premium, ...others]
+}
+
+const sortByDate = (a, b) => {
+  const dateA = new Date(a.startDate || '1970-01-01')
+  const dateB = new Date(b.startDate || '1970-01-01')
+  return dateB - dateA // новые сначала
+}
 
 export const categorizeServers = (servers) => {
   const categories = {
@@ -80,84 +87,65 @@ export const categorizeServers = (servers) => {
   const today = getMoscowToday()
 
   servers.forEach(server => {
+    // Если подписка истекла — считаем как basic
+    const effectiveType = (server.expiresAt && parseServerDate(server.expiresAt) < today)
+      ? 'basic'
+      : server.cardType
+    const isPaid = PAID_TYPES.has(effectiveType)
+    // Передаём эффективный тип в объект для рендера карточки
+    const s = effectiveType !== server.cardType ? { ...server, cardType: effectiveType } : server
+
     if (!server.startDate) {
-      categories['Скоро откроются'].push(server)
+      if (isPaid) categories['Скоро откроются'].push(s)
       return
     }
 
     const serverDate = parseServerDate(server.startDate)
-
     const diffTime = serverDate - today
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
 
-    if (diffDays === 0) {
-      // Сегодня - "Скоро откроются"
-      categories['Скоро откроются'].push(server)
-    } else if (diffDays === 1) {
-      // Завтра
-      categories['Завтра'].push(server)
-    } else if (diffDays >= 2 && diffDays <= 7) {
-      // 2-7 дней вперёд
-      categories['Ближайшие 7 дней'].push(server)
-    } else if (diffDays > 7) {
-      // Более 7 дней вперёд
-      categories['Через неделю и более'].push(server)
-    } else if (diffDays === -1) {
-      // Вчера - "Уже открылись"
-      categories['Уже открылись'].push(server)
-    } else if (diffDays >= -7 && diffDays <= -2) {
-      // 2-7 дней назад
-      categories['Предыдущие 7 дней'].push(server)
-    } else if (diffDays < -7) {
-      // Более 7 дней назад
-      categories['Неделю назад и более'].push(server)
+    if (diffDays >= 0) {
+      // Платные → «Скоро откроются»
+      if (isPaid) categories['Скоро откроются'].push(s)
+
+      // Все → по временным разделам (сегодня только в «Скоро»)
+      if (diffDays === 1) {
+        categories['Завтра'].push(s)
+      } else if (diffDays >= 2 && diffDays <= 7) {
+        categories['Ближайшие 7 дней'].push(s)
+      } else if (diffDays > 7) {
+        categories['Через неделю и более'].push(s)
+      }
+    } else {
+      // Платные → «Уже открылись»
+      if (isPaid) categories['Уже открылись'].push(s)
+
+      // Все → по временным разделам
+      if (diffDays >= -7) {
+        categories['Предыдущие 7 дней'].push(s)
+      } else {
+        categories['Неделю назад и более'].push(s)
+      }
     }
   })
 
-  // Приоритет типов карточек: premium > vip > top > basic
-  const cardTypePriority = {
-    premium: 1,
-    vip: 2,
-    top: 3,
-    basic: 4
-  }
+  // «Скоро откроются» и «Уже открылись»: лимит 1 premium + 10 остальных, сортировка по дате
+  const premiumsOpen = categories['Скоро откроются'].filter(s => s.cardType === 'premium')
+  const othersOpen = categories['Скоро откроются'].filter(s => s.cardType !== 'premium').sort(sortByDate)
+  categories['Скоро откроются'] = applyColumnLimits([...premiumsOpen, ...othersOpen])
 
-  // Сортировка внутри каждой категории
-  // Сначала по типу карточки, потом по дате
+  const premiumsDone = categories['Уже открылись'].filter(s => s.cardType === 'premium')
+  const othersDone = categories['Уже открылись'].filter(s => s.cardType !== 'premium').sort(sortByDate)
+  categories['Уже открылись'] = applyColumnLimits([...premiumsDone, ...othersDone])
 
-  FUTURE_CATEGORIES.forEach(category => {
-    if (categories[category]) {
-      categories[category].sort((a, b) => {
-        const priorityA = cardTypePriority[a.cardType] || 99
-        const priorityB = cardTypePriority[b.cardType] || 99
-        if (priorityA !== priorityB) return priorityA - priorityB
-
-        const dateA = new Date(a.startDate || '9999-12-31')
-        const dateB = new Date(b.startDate || '9999-12-31')
-        return dateA - dateB // По возрастанию (ближайшие сначала)
-      })
-    }
+  // Остальные разделы — по дате
+  ;['Завтра', 'Ближайшие 7 дней', 'Через неделю и более', 'Предыдущие 7 дней', 'Неделю назад и более'].forEach(cat => {
+    categories[cat] = categories[cat].sort(sortByDate)
   })
 
-  PAST_CATEGORIES.forEach(category => {
-    if (categories[category]) {
-      categories[category].sort((a, b) => {
-        const priorityA = cardTypePriority[a.cardType] || 99
-        const priorityB = cardTypePriority[b.cardType] || 99
-        if (priorityA !== priorityB) return priorityA - priorityB
-
-        const dateA = new Date(a.startDate || '1970-01-01')
-        const dateB = new Date(b.startDate || '1970-01-01')
-        return dateB - dateA // По убыванию (недавние сначала)
-      })
-    }
-  })
-
-  // Убираем пустые категории
+  // Убираем пустые
   Object.keys(categories).forEach(key => {
-    if (categories[key].length === 0) {
-      delete categories[key]
-    }
+    if (categories[key].length === 0) delete categories[key]
   })
 
   return categories
