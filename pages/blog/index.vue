@@ -134,6 +134,7 @@ useHead({
       content: 'Блог L2GM: новости Lineage 2, гайды по прокачке, обзоры серверов, стратегии PvP и PvE. Полезные статьи для игроков л2.'
     },
     { name: 'keywords', content: 'блог lineage 2, новости л2, гайды lineage 2, обзоры серверов, стратегии l2' },
+    { name: 'robots', content: 'noindex, nofollow' },
     // Open Graph
     { property: 'og:title', content: 'Блог Lineage 2 | L2GM' },
     { property: 'og:description', content: 'Новости, гайды и обзоры серверов Lineage 2.' },

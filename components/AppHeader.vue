@@ -10,11 +10,8 @@
         <div>
           <nav class="nav-links">
             <NuxtLink to="/">Анонсы</NuxtLink>
-            <NuxtLink to="/rating">Рейтинг</NuxtLink>
             <NuxtLink to="/advertisement">Размещение</NuxtLink>
-            <NuxtLink to="/blog">Блог</NuxtLink>
             <NuxtLink to="/about">О нас</NuxtLink>
-            <NuxtLink to="/faq">FAQ</NuxtLink>
           </nav>
         </div>
         <div class="header-right">
@@ -50,11 +47,8 @@
           </div>
           <nav class="mobile-menu__nav">
             <NuxtLink to="/" @click="menuOpen = false">Анонсы</NuxtLink>
-            <NuxtLink to="/rating" @click="menuOpen = false">Рейтинг</NuxtLink>
             <NuxtLink to="/advertisement" @click="menuOpen = false">Размещение</NuxtLink>
-            <NuxtLink to="/blog" @click="menuOpen = false">Блог</NuxtLink>
             <NuxtLink to="/about" @click="menuOpen = false">О нас</NuxtLink>
-            <NuxtLink to="/faq" @click="menuOpen = false">FAQ</NuxtLink>
           </nav>
           <div class="mobile-menu__footer">
             <NuxtLink to="/add-server" class="btn-primary" @click="menuOpen = false">

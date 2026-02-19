@@ -97,6 +97,10 @@ useHead({
     {
       name: 'description',
       content: 'Рейтинг лучших серверов Lineage 2. Топ серверов по популярности, онлайну и качеству.'
+    },
+    {
+      name: 'robots',
+      content: 'noindex, nofollow'
     }
   ]
 })

@@ -82,7 +82,6 @@ const formatDateForBreadcrumb = (dateString) => {
 const staticPages = {
   '/about': 'О нас',
   '/advertisement': 'Размещение',
-  '/faq': 'FAQ',
   '/rating': 'Рейтинг',
   '/add-server': 'Добавить сервер',
   '/thanks': 'Спасибо',

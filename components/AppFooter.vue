@@ -27,11 +27,8 @@
             <div class="footer-column">
               <h4 class="footer-column-title">ИНФОРМАЦИЯ</h4>
               <nav class="footer-column-links">
-                <NuxtLink to="/rating">Рейтинг серверов</NuxtLink>
                 <NuxtLink to="/">Анонс серверов</NuxtLink>
-                <NuxtLink to="/blog">Блог</NuxtLink>
                 <NuxtLink to="/about">О нас</NuxtLink>
-                <NuxtLink to="/faq">Faq</NuxtLink>
               </nav>
             </div>
 
