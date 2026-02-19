@@ -82,12 +82,6 @@ body {
   pointer-events: none;
 }
 
-@media (max-width: 1024px) {
-  .banner-wrapper {
-    top: 57px;
-  }
-}
-
 .main-content {
   flex: 1;
   width: 100%;
@@ -102,5 +96,15 @@ body {
 
 .main-content > * {
   pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+  .banner-wrapper {
+    top: 57px;
+  }
+
+  .main-content {
+    padding: 0;
+  }
 }
 </style>
