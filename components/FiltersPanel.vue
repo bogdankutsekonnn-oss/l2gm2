@@ -161,8 +161,15 @@ const isRateActive = (slug) => {
 <style scoped>
 .filters-panel {
   width: 270px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .filters-panel {
+    width: 100%;
+  }
 }
 
 .filter-divider {

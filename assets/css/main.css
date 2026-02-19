@@ -185,12 +185,18 @@
 }
 
 @media (max-width: 1024px) {
+  .page-header h1 {
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: -0.04em;
+  }
+
   .page-layout {
     grid-template-columns: 1fr;
   }
 
   .filters-column {
-    position: static;
+    display: none;
   }
 
   .categories-grid {
