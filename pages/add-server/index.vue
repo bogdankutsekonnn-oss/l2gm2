@@ -412,6 +412,8 @@
 </template>
 
 <script setup>
+import { calculateExpiresAt } from '~/utils/dateUtils'
+
 const { getChronicles } = useFilters()
 
 const chronicles = getChronicles()
@@ -529,6 +531,32 @@ const previewServer = computed(() => ({
 }))
 
 const handleSubmit = () => {
+  const today = new Date().toISOString().slice(0, 10)
+  const cardType = tariffToCardType[form.tariff] || 'basic'
+
+  const serverData = {
+    name: form.serverName,
+    url: form.serverUrl,
+    chronicle: form.serverChronicle,
+    rate: form.serverRate,
+    startDate: form.serverDate,
+    cardType,
+    icons: previewIcons.value,
+    avatarUrl: null,
+    ownerId: null,
+    description: null,
+    createdAt: today,
+    expiresAt: calculateExpiresAt(today, cardType),
+    email: form.serverEmail,
+    contacts: form.contacts,
+    serverTypes: form.serverTypes,
+  }
+
+  // TODO: отправить serverData на API когда подключим Supabase
+  if (import.meta.client) {
+    sessionStorage.setItem('pendingServer', JSON.stringify(serverData))
+  }
+
   navigateTo('/thanks')
 }
 

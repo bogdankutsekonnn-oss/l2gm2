@@ -1,6 +1,7 @@
 import serversData from '~/data/servers.json'
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
+import { isPlacementExpired } from '~/utils/dateUtils'
 
 export const useFilters = () => {
   const getServers = (filters = {}) => {
@@ -43,9 +44,12 @@ export const useFilters = () => {
       filtered = filtered.filter(s => s.startDate === today)
     }
 
-    // Фильтр по типу карточки (топ/vip/premium)
+    // Фильтр по типу карточки (топ/vip/premium) — исключаем истёкшие
     if (filters.top) {
-      filtered = filtered.filter(s => s.cardType === 'premium' || s.cardType === 'vip-plus' || s.cardType === 'vip')
+      filtered = filtered.filter(s => {
+        if (isPlacementExpired(s)) return false
+        return s.cardType === 'premium' || s.cardType === 'vip-plus' || s.cardType === 'vip' || s.cardType === 'top'
+      })
     }
 
     // Фильтр по типу сервера

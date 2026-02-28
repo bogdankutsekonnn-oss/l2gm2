@@ -58,7 +58,37 @@ export const PAST_CATEGORIES = [
 ]
 
 // Платные типы карточек
-const PAID_TYPES = new Set(['premium', 'vip', 'top'])
+export const PAID_CARD_TYPES = new Set(['premium', 'vip', 'top'])
+
+// Срок платного размещения (дней)
+export const PLACEMENT_DURATION_DAYS = 30
+
+/**
+ * Рассчитать дату истечения размещения
+ * @param {string} createdAt - дата создания (YYYY-MM-DD)
+ * @param {string} cardType - тип карточки
+ * @returns {string|null} - дата истечения или null для бесплатных
+ */
+export const calculateExpiresAt = (createdAt, cardType) => {
+  if (!PAID_CARD_TYPES.has(cardType)) return null
+  const date = parseServerDate(createdAt)
+  date.setDate(date.getDate() + PLACEMENT_DURATION_DAYS)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Проверить, истекло ли размещение сервера
+ * @param {Object} server - объект сервера с полем expiresAt
+ * @returns {boolean}
+ */
+export const isPlacementExpired = (server) => {
+  if (!server.expiresAt) return false
+  const today = getMoscowToday()
+  return parseServerDate(server.expiresAt) < today
+}
 
 // Применить лимиты: 1 premium + до 10 остальных
 const applyColumnLimits = (servers) => {
@@ -88,10 +118,8 @@ export const categorizeServers = (servers) => {
 
   servers.forEach(server => {
     // Если подписка истекла — считаем как basic
-    const effectiveType = (server.expiresAt && parseServerDate(server.expiresAt) < today)
-      ? 'basic'
-      : server.cardType
-    const isPaid = PAID_TYPES.has(effectiveType)
+    const effectiveType = isPlacementExpired(server) ? 'basic' : server.cardType
+    const isPaid = PAID_CARD_TYPES.has(effectiveType)
     // Передаём эффективный тип в объект для рендера карточки
     const s = effectiveType !== server.cardType ? { ...server, cardType: effectiveType } : server
 

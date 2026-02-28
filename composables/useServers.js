@@ -80,7 +80,8 @@ export const useServers = () => {
    * premium - Премиум (розовый градиент фон)
    */
   const CARD_TYPES = {
-    basic: { priority: 4, name: 'Обычная' },
+    basic: { priority: 5, name: 'Обычная' },
+    top: { priority: 4, name: 'Стандартный VIP' },
     vip: { priority: 3, name: 'VIP' },
     'vip-plus': { priority: 2, name: 'VIP+' },
     premium: { priority: 1, name: 'Премиум' },
@@ -182,12 +183,22 @@ export const useServers = () => {
       premium: 1,
       'vip-plus': 2,
       vip: 3,
-      basic: 4,
+      top: 4,
+      basic: 5,
     }
 
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
     return servers.sort((a, b) => {
-      const priorityA = cardTypePriority[a.cardType] ?? 99
-      const priorityB = cardTypePriority[b.cardType] ?? 99
+      // Истёкшие платные серверы сортируются как basic
+      const aExpired = a.expiresAt && new Date(a.expiresAt) < today
+      const bExpired = b.expiresAt && new Date(b.expiresAt) < today
+      const aType = aExpired ? 'basic' : a.cardType
+      const bType = bExpired ? 'basic' : b.cardType
+
+      const priorityA = cardTypePriority[aType] ?? 99
+      const priorityB = cardTypePriority[bType] ?? 99
 
       if (priorityA !== priorityB) {
         return priorityA - priorityB
