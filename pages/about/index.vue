@@ -31,7 +31,7 @@
               <h2>Для админов серверов:</h2>
               <p>
                 Можно <NuxtLink to="/add-server">добавить проект через форму</NuxtLink> и при необходимости
-                <NuxtLink to="/advertisement">выбрать VIP/Премиум размещение</NuxtLink>. А для
+                <NuxtLink to="/placement">выбрать VIP/Премиум размещение</NuxtLink>. А для
                 игроков: меньше поиска по чатам — больше времени на старт.
               </p>
             </section>

@@ -42,7 +42,7 @@
                 </li>
                 <li>
                   Для платного размещения кнопка не обязательна —
-                  <NuxtLink to="/advertisement" class="info-block__link"
+                  <NuxtLink to="/placement" class="info-block__link"
                     >подробнее о тарифах</NuxtLink
                   >.
                 </li>

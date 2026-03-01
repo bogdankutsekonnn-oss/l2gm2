@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L2GM — Логика размещения серверов</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1a1a1a;
+      line-height: 1.6;
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 14px;
+    }
+    .header {
+      border-bottom: 3px solid #1a1a1a;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .header .subtitle {
+      font-size: 14px;
+      color: #666;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    p { margin-bottom: 10px; }
+    ul, ol { margin-bottom: 12px; padding-left: 24px; }
+    li { margin-bottom: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background: #f5f5f5;
+      font-weight: 600;
+    }
+    tr:nth-child(even) { background: #fafafa; }
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: 'Consolas', 'Monaco', monospace;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge--premium { background: #f3e5f5; color: #7b1fa2; }
+    .badge--vip { background: #ffebee; color: #c62828; }
+    .badge--top { background: #fff3e0; color: #e65100; }
+    .badge--basic { background: #f5f5f5; color: #616161; }
+    .note {
+      background: #e3f2fd;
+      border-left: 4px solid #1976d2;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .warning {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .schema-box {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px;
+      margin: 12px 0;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 12px;
+      white-space: pre-line;
+    }
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .flow-num {
+      width: 28px;
+      height: 28px;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-text { flex: 1; padding-top: 3px; }
+    .divider {
+      border: none;
+      border-top: 1px dashed #ccc;
+      margin: 24px 0;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; }
+      h2 { page-break-after: avoid; }
+      table { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>L2GM — Логика размещения серверов</h1>
+  <div class="subtitle">Техническая документация | Версия 1.0 | Февраль 2026</div>
+</div>
+
+<h2>1. Структура данных сервера</h2>
+
+<div class="schema-box">{
+  "id": 1,
+  "name": "SERVER NAME",
+  "url": "https://example.com",
+  "chronicle": "High Five",
+  "rate": 100,
+  "startDate": "2026-02-27",       // дата открытия сервера
+  "cardType": "vip",               // тип размещения
+  "icons": ["hot-start"],          // платные иконки
+  "avatarUrl": null,
+  "ownerId": null,
+  "description": null,
+  "createdAt": "2026-02-01",       // дата создания заявки
+  "expiresAt": "2026-03-03"        // дата истечения (createdAt + 30 дней)
+}</div>
+
+<h2>2. Типы размещения (тарифы)</h2>
+
+<table>
+  <tr>
+    <th>Тип</th>
+    <th>Приоритет</th>
+    <th>Стоимость / 30 дней</th>
+    <th>Описание</th>
+  </tr>
+  <tr>
+    <td><span class="badge badge--premium">Premium</span></td>
+    <td>1 (высший)</td>
+    <td>$40 за колонку</td>
+    <td>Яркий дизайн, самый верх списка, дублирование в блоках</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge--vip">VIP</span></td>
+    <td>3</td>
+    <td>$20 за колонку</td>
+    <td>Оригинальный дизайн, отдельный блок, выше обычных</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge--top">TOP</span></td>
+    <td>4</td>
+    <td>$9 ($5 эконом)</td>
+    <td>Стандартный VIP, выше basic, заметное оформление</td>
+  </tr>
+  <tr>
+    <td><span class="badge badge--basic">Basic</span></td>
+    <td>5 (низший)</td>
+    <td>Бесплатно</td>
+    <td>Обычная карточка, требуется кнопка на сайте сервера</td>
+  </tr>
+</table>
+
+<h2>3. Срок размещения и экспирация</h2>
+
+<h3>Правила расчёта</h3>
+<ul>
+  <li><strong>Платные серверы</strong> (premium, vip, top): <code>expiresAt = createdAt + 30 дней</code></li>
+  <li><strong>Бесплатные серверы</strong> (basic): <code>expiresAt = null</code> — бессрочно</li>
+  <li>Отсчёт 30 дней идёт от <code>createdAt</code> (дата одобрения заявки), а НЕ от <code>startDate</code></li>
+</ul>
+
+<h3>Что происходит после истечения 30 дней</h3>
+<div class="flow-step">
+  <div class="flow-num">1</div>
+  <div class="flow-text"><code>expiresAt &lt; сегодня</code> — система определяет, что размещение истекло</div>
+</div>
+<div class="flow-step">
+  <div class="flow-num">2</div>
+  <div class="flow-text">Сервер получает <code>effectiveType = "basic"</code> (в JSON <code>cardType</code> не меняется)</div>
+</div>
+<div class="flow-step">
+  <div class="flow-num">3</div>
+  <div class="flow-text">Сервер теряет: приоритетную сортировку, попадание в платные секции, визуальное оформление</div>
+</div>
+<div class="flow-step">
+  <div class="flow-num">4</div>
+  <div class="flow-text">Сервер продолжает отображаться как обычная (basic) карточка в общих категориях</div>
+</div>
+
+<div class="note">
+  <strong>Важно:</strong> экспирация проверяется в реальном времени при каждом рендере. Нет cron-задач или фоновых процессов — логика полностью клиентская.
+</div>
+
+<h2>4. Отображение на главной странице</h2>
+
+<p>Серверы распределяются по двум колонкам на основе <code>startDate</code> относительно текущей даты (МСК, UTC+3):</p>
+
+<h3>Левая колонка — будущие серверы</h3>
+<table>
+  <tr>
+    <th>Категория</th>
+    <th>Условие</th>
+    <th>Кто попадает</th>
+  </tr>
+  <tr>
+    <td><strong>Скоро откроются</strong></td>
+    <td>startDate &ge; сегодня</td>
+    <td>Только платные (premium / vip / top)</td>
+  </tr>
+  <tr>
+    <td>Завтра</td>
+    <td>startDate = завтра</td>
+    <td>Все серверы</td>
+  </tr>
+  <tr>
+    <td>Ближайшие 7 дней</td>
+    <td>startDate через 2–7 дней</td>
+    <td>Все серверы</td>
+  </tr>
+  <tr>
+    <td>Через неделю и более</td>
+    <td>startDate &gt; 7 дней</td>
+    <td>Все серверы</td>
+  </tr>
+</table>
+
+<h3>Правая колонка — прошлые серверы</h3>
+<table>
+  <tr>
+    <th>Категория</th>
+    <th>Условие</th>
+    <th>Кто попадает</th>
+  </tr>
+  <tr>
+    <td><strong>Уже открылись</strong></td>
+    <td>startDate &lt; сегодня</td>
+    <td>Только платные (premium / vip / top)</td>
+  </tr>
+  <tr>
+    <td>Предыдущие 7 дней</td>
+    <td>startDate 1–7 дней назад</td>
+    <td>Все серверы</td>
+  </tr>
+  <tr>
+    <td>Неделю назад и более</td>
+    <td>startDate &gt; 7 дней назад</td>
+    <td>Все серверы</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Лимиты платных секций:</strong> максимум 1 Premium + 10 остальных в секциях «Скоро откроются» и «Уже открылись».
+</div>
+
+<h2>5. Миграция сервера по колонкам</h2>
+
+<p>Пример: сервер добавлен 1 февраля, <code>startDate = 27 февраля</code>, <code>cardType = vip</code>, <code>expiresAt = 3 марта</code></p>
+
+<table>
+  <tr>
+    <th>Период</th>
+    <th>Где отображается</th>
+    <th>Статус</th>
+  </tr>
+  <tr>
+    <td>1–19 фев</td>
+    <td>Левая: «Скоро откроются» + «Через неделю и более»</td>
+    <td><span class="badge badge--vip">VIP</span></td>
+  </tr>
+  <tr>
+    <td>20–25 фев</td>
+    <td>Левая: «Скоро откроются» + «Ближайшие 7 дней»</td>
+    <td><span class="badge badge--vip">VIP</span></td>
+  </tr>
+  <tr>
+    <td>26 фев</td>
+    <td>Левая: «Скоро откроются» + «Завтра»</td>
+    <td><span class="badge badge--vip">VIP</span></td>
+  </tr>
+  <tr>
+    <td>27 фев</td>
+    <td>Левая: «Скоро откроются»</td>
+    <td><span class="badge badge--vip">VIP</span> (день открытия)</td>
+  </tr>
+  <tr>
+    <td>28 фев – 2 мар</td>
+    <td>Правая: «Уже открылись» + «Предыдущие 7 дней»</td>
+    <td><span class="badge badge--vip">VIP</span></td>
+  </tr>
+  <tr style="background: #fff8e1;">
+    <td><strong>3 марта</strong></td>
+    <td>Правая: только «Предыдущие 7 дней»</td>
+    <td><span class="badge badge--basic">Basic</span> (истёк!)</td>
+  </tr>
+  <tr>
+    <td>7+ марта</td>
+    <td>Правая: «Неделю назад и более»</td>
+    <td><span class="badge badge--basic">Basic</span></td>
+  </tr>
+</table>
+
+<h2>6. Сортировка серверов</h2>
+
+<p>Внутри каждой категории серверы сортируются в два этапа:</p>
+<ol>
+  <li><strong>По типу карточки</strong> (с учётом экспирации): Premium → VIP → Top → Basic</li>
+  <li><strong>По дате старта</strong> (при одинаковом типе): ближайшие сначала</li>
+</ol>
+
+<div class="warning">
+  <strong>Экспирация в сортировке:</strong> если <code>expiresAt</code> прошёл, сервер сортируется с приоритетом Basic (5), даже если в JSON стоит <code>cardType: "vip"</code>.
+</div>
+
+<h2>7. Форма добавления сервера</h2>
+
+<p>При отправке формы (<code>/add-server</code>) формируется объект:</p>
+
+<div class="schema-box">{
+  name, url, chronicle, rate, startDate,
+  cardType: "vip",                        // из выбранного тарифа
+  icons: ["hot-start"],                   // из выбранных допов
+  createdAt: "2026-02-28",               // текущая дата (автоматически)
+  expiresAt: "2026-03-30",               // createdAt + 30 (автоматически)
+  email, contacts, serverTypes            // для модерации
+}</div>
+
+<p>Маппинг тарифов из формы:</p>
+<table>
+  <tr><th>Выбор в форме</th><th>cardType</th><th>expiresAt</th></tr>
+  <tr><td>Бесплатный</td><td><code>basic</code></td><td><code>null</code></td></tr>
+  <tr><td>Premium</td><td><code>premium</code></td><td>+30 дней</td></tr>
+  <tr><td>VIP</td><td><code>vip</code></td><td>+30 дней</td></tr>
+  <tr><td>VIP Стандартный</td><td><code>top</code></td><td>+30 дней</td></tr>
+</table>
+
+<h2>8. Ключевые файлы</h2>
+
+<table>
+  <tr>
+    <th>Файл</th>
+    <th>Назначение</th>
+  </tr>
+  <tr>
+    <td><code>data/servers.json</code></td>
+    <td>Хранилище серверов (будет заменено на Supabase)</td>
+  </tr>
+  <tr>
+    <td><code>utils/dateUtils.js</code></td>
+    <td>Категоризация, экспирация, расчёт дат</td>
+  </tr>
+  <tr>
+    <td><code>composables/useServers.js</code></td>
+    <td>API серверов: получение, сортировка, типы</td>
+  </tr>
+  <tr>
+    <td><code>composables/useFilters.js</code></td>
+    <td>Фильтрация серверов по параметрам</td>
+  </tr>
+  <tr>
+    <td><code>pages/add-server/index.vue</code></td>
+    <td>Форма добавления сервера</td>
+  </tr>
+  <tr>
+    <td><code>pages/index.vue</code></td>
+    <td>Главная — отображение двух колонок</td>
+  </tr>
+  <tr>
+    <td><code>components/ServerCard.vue</code></td>
+    <td>Визуал карточки (premium/vip/top/basic стили)</td>
+  </tr>
+</table>
+
+<h2>9. Особенности и ограничения</h2>
+
+<ul>
+  <li>Все даты сравниваются в часовом поясе <strong>Москва (UTC+3)</strong></li>
+  <li>Серверы с <code>startDate = сегодня</code> и <code>cardType = basic</code> не попадают ни в одну категорию (known gap)</li>
+  <li>Один платный сервер может отображаться в двух категориях одновременно (например, «Скоро откроются» + «Ближайшие 7 дней»)</li>
+  <li><code>cardType</code> в JSON не меняется при экспирации — меняется только <code>effectiveType</code> при рендере</li>
+  <li>Данные пока хранятся в JSON, подготовлено к миграции на Supabase</li>
+</ul>
+
+<div class="footer">
+  L2GM — Техническая документация &bull; Сгенерировано: Февраль 2026
+</div>
+
+</body>
+</html>

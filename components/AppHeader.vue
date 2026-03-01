@@ -10,7 +10,7 @@
         <div>
           <nav class="nav-links">
             <NuxtLink to="/">Анонсы</NuxtLink>
-            <NuxtLink to="/advertisement">Размещение</NuxtLink>
+            <NuxtLink to="/placement">Размещение</NuxtLink>
             <NuxtLink to="/about">О нас</NuxtLink>
           </nav>
         </div>
@@ -47,7 +47,7 @@
           </div>
           <nav class="mobile-menu__nav">
             <NuxtLink to="/" @click="menuOpen = false">Анонсы</NuxtLink>
-            <NuxtLink to="/advertisement" @click="menuOpen = false">Размещение</NuxtLink>
+            <NuxtLink to="/placement" @click="menuOpen = false">Размещение</NuxtLink>
             <NuxtLink to="/about" @click="menuOpen = false">О нас</NuxtLink>
           </nav>
           <div class="mobile-menu__footer">

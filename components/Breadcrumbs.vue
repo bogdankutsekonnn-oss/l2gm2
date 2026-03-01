@@ -81,7 +81,7 @@ const formatDateForBreadcrumb = (dateString) => {
 
 const staticPages = {
   '/about': 'О нас',
-  '/advertisement': 'Размещение',
+  '/placement': 'Размещение',
   '/rating': 'Рейтинг',
   '/add-server': 'Добавить сервер',
   '/thanks': 'Спасибо',
@@ -90,7 +90,7 @@ const staticPages = {
 const crumbs = computed(() => {
   const result = [
     { path: '/', title: 'Главная', isHome: true },
-    { path: '/', title: 'Анонсы серверов Lineage 2' },
+    { path: '/', title: 'Анонсы серверов Lineage\u00a02' },
   ]
 
   const currentPath = route.path
@@ -126,7 +126,7 @@ const crumbs = computed(() => {
     const dateTitle = formatDateForBreadcrumb(dateSlug)
     result.push({
       path: `/date/${dateSlug}`,
-      title: `Сервера Lineage 2 | ${dateTitle}`,
+      title: `Сервера Lineage\u00a02 | ${dateTitle}`,
     })
     return result
   }
@@ -137,7 +137,7 @@ const crumbs = computed(() => {
     const chronicleName = chronicle?.name || chronicleSlug
     result.push({
       path: `/chronicle/${chronicleSlug}`,
-      title: `Сервера Lineage 2 ${chronicleName}`,
+      title: `Сервера Lineage\u00a02 ${chronicleName}`,
     })
   }
 

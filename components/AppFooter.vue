@@ -18,7 +18,7 @@
             <div class="footer-column">
               <h4 class="footer-column-title">РЕКЛАМОДАТЕЛЯМ</h4>
               <nav class="footer-column-links">
-                <NuxtLink to="/advertisement">Размещение</NuxtLink>
+                <NuxtLink to="/placement">Размещение</NuxtLink>
                 <NuxtLink to="/add-server">Добавить сервер</NuxtLink>
               </nav>
             </div>

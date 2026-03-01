@@ -47,10 +47,10 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <NuxtLink to="/" class="ad-banner">
-        <div class="ad-placeholder">
+      <NuxtLink to="/" class="promo-banner">
+        <div class="promo-placeholder">
           <span>Реклама</span>
-          <span class="ad-size">282x470px</span>
+          <span class="promo-size">282x470px</span>
         </div>
       </NuxtLink>
     </div>
@@ -220,7 +220,7 @@ const isRateActive = (slug) => {
   cursor: pointer;
 }
 
-.ad-banner {
+.promo-banner {
   width: 100%;
   aspect-ratio: 282 / 470;
   background: var(--bg-main);
@@ -231,7 +231,7 @@ const isRateActive = (slug) => {
   border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
-.ad-placeholder {
+.promo-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -240,7 +240,7 @@ const isRateActive = (slug) => {
   font-size: var(--font-sm);
 }
 
-.ad-size {
+.promo-size {
   font-size: var(--font-xs);
 }
 

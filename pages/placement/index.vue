@@ -1,5 +1,5 @@
 <template>
-  <div class="advertisement-page">
+  <div class="placement-page">
     <div class="page-wrapper">
       <Breadcrumbs />
       <div class="page-header">
@@ -7,33 +7,33 @@
       </div>
 
       <div class="page-layout">
-        <div class="servers-column ad-blocks">
+        <div class="servers-column placement-blocks">
 
           <!-- Брендирование сайта -->
-          <div class="ad-block">
-            <h2 class="ad-block__title">Брендирование сайта (фон/обложка)</h2>
-            <span class="ad-block__badge ad-block__badge--available">ДОСТУПНО</span>
+          <div class="placement-block">
+            <h2 class="placement-block__title">Брендирование сайта (фон/обложка)</h2>
+            <span class="placement-block__badge placement-block__badge--available">ДОСТУПНО</span>
 
-            <div class="ad-block__specs">
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Размер баннера (px)</span>
-                <span class="ad-block__spec-value">1920×1080 px</span>
+            <div class="placement-block__specs">
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Размер баннера (px)</span>
+                <span class="placement-block__spec-value">1920×1080 px</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Возможные расширения</span>
-                <span class="ad-block__spec-value">PNG,JPG</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Возможные расширения</span>
+                <span class="placement-block__spec-value">PNG,JPG</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Максимальный вес</span>
-                <span class="ad-block__spec-value">500 kb</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Максимальный вес</span>
+                <span class="placement-block__spec-value">500 kb</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость размещения (30 дней)</span>
-                <span class="ad-block__spec-value">$100</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость размещения (30 дней)</span>
+                <span class="placement-block__spec-value">$100</span>
               </div>
             </div>
 
-            <div class="ad-block__actions">
+            <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
                 Разместить баннер
               </a>
@@ -49,7 +49,7 @@
               </a>
             </div>
 
-            <div class="ad-block__warnings">
+            <div class="placement-block__warnings">
               <p>АНИМАЦИЯ В БРЕНДИРОВАНИИ НЕ ДОПУСКАЕТСЯ.</p>
               <p>СТАРАЙТЕСЬ ИЗБЕГАТЬ СЛИШКОМ РЕЗКИХ, ВЫРВИГЛАЗНЫХ И КОНТРАСТНЫХ СОЧЕТАНИЙ.</p>
               <p>МЫ МОЖЕМ ОТКАЗАТЬ В РАЗМЕЩЕНИИ ПОЗИЦИИ ПРИ НЕКАЧЕСТВЕННЫХ ИЛИ НЕПОДХОДЯЩИХ ПРОМО-МАТЕРИАЛАХ.</p>
@@ -57,44 +57,44 @@
           </div>
 
           <!-- Баннерная реклама -->
-          <div class="ad-block">
-            <h2 class="ad-block__title">Баннерная реклама</h2>
-            <span class="ad-block__badge ad-block__badge--available">ДОСТУПНО</span>
+          <div class="placement-block">
+            <h2 class="placement-block__title">Баннерная реклама</h2>
+            <span class="placement-block__badge placement-block__badge--available">ДОСТУПНО</span>
 
-            <div class="ad-block__specs">
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Размер баннера (px)</span>
-                <span class="ad-block__spec-value">240x400</span>
+            <div class="placement-block__specs">
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Размер баннера (px)</span>
+                <span class="placement-block__spec-value">240x400</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Возможные расширения</span>
-                <span class="ad-block__spec-value">GIF, PNG, JPG</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Возможные расширения</span>
+                <span class="placement-block__spec-value">GIF, PNG, JPG</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Максимальный вес</span>
-                <span class="ad-block__spec-value">200 кб</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Максимальный вес</span>
+                <span class="placement-block__spec-value">200 кб</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Баннеров в ротации</span>
-                <span class="ad-block__spec-value">До 5</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Баннеров в ротации</span>
+                <span class="placement-block__spec-value">До 5</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Тип ротации</span>
-                <span class="ad-block__spec-value">Случайный показ</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Тип ротации</span>
+                <span class="placement-block__spec-value">Случайный показ</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость размещения (30 дней)</span>
-                <span class="ad-block__spec-value">$14</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость размещения (30 дней)</span>
+                <span class="placement-block__spec-value">$14</span>
               </div>
             </div>
 
-            <div class="ad-block__actions">
+            <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
                 Разместить баннер
               </a>
             </div>
 
-            <div class="ad-block__warnings">
+            <div class="placement-block__warnings">
               <p>НЕ ПРИНИМАЕМ БАННЕРЫ С ЧРЕЗМЕРНО КИСЛОТНЫМИ ЦВЕТАМИ И «МИГАЮЩЕЙ» АНИМАЦИЕЙ.</p>
               <p>ЗАПРЕЩЕНЫ: НЕЦЕНЗУРНАЯ ЛЕКСИКА (ВКЛЮЧАЯ ЗАВУАЛИРОВАННУЮ), ЭРОТИКА/ПОРНОГРАФИЯ, ПРИЗЫВЫ К НАСИЛИЮ.</p>
               <p>НЕЛЬЗЯ ВВОДИТЬ ПОЛЬЗОВАТЕЛЕЙ В ЗАБЛУЖДЕНИЕ И ИСПОЛЬЗОВАТЬ «ЧЁРНЫЕ» МАРКЕТИНГОВЫЕ ПРИЁМЫ.</p>
@@ -102,30 +102,30 @@
           </div>
 
           <!-- Стандартное VIP размещение -->
-          <div class="ad-block">
-            <h2 class="ad-block__title">Стандартное VIP размещение</h2>
+          <div class="placement-block">
+            <h2 class="placement-block__title">Стандартное VIP размещение</h2>
 
-            <div class="ad-block__card-preview">
+            <div class="placement-block__card-preview">
               <ServerCard :server="topPreviewServer" />
             </div>
 
-            <div class="ad-block__specs">
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость (30 дней)</span>
-                <span class="ad-block__spec-value">$9</span>
+            <div class="placement-block__specs">
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость (30 дней)</span>
+                <span class="placement-block__spec-value">$9</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Эконом размещение* с нашей кнопкой (30 дней)</span>
-                <span class="ad-block__spec-value">$5</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Эконом размещение* с нашей кнопкой (30 дней)</span>
+                <span class="placement-block__spec-value">$5</span>
               </div>
             </div>
 
-            <ul class="ad-block__features">
+            <ul class="placement-block__features">
               <li><strong>VIP размещение:</strong> сервер получает метку VIP, поднимается выше обычных серверов в списке и выделяется более заметным оформлением.</li>
               <li><strong>Эконом размещение*:</strong> при выборе "эконом" нужно установить нашу кнопку на главной странице сайта сервера. Удалять кнопку и/или менять её код до окончания срока размещения запрещено.</li>
             </ul>
 
-            <div class="ad-block__actions">
+            <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
@@ -133,27 +133,27 @@
           </div>
 
           <!-- VIP размещение -->
-          <div class="ad-block">
-            <h2 class="ad-block__title">VIP размещение</h2>
+          <div class="placement-block">
+            <h2 class="placement-block__title">VIP размещение</h2>
 
-            <div class="ad-block__card-preview">
+            <div class="placement-block__card-preview">
               <ServerCard :server="vipPreviewServer" />
             </div>
 
-            <div class="ad-block__specs">
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость в левой колонке (30 дней)</span>
-                <span class="ad-block__spec-value">$20</span>
+            <div class="placement-block__specs">
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$20</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость в правой колонке (30 дней)</span>
-                <span class="ad-block__spec-value">$20</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$20</span>
               </div>
             </div>
 
-            <p class="ad-block__description">VIP серверы получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
+            <p class="placement-block__description">VIP серверы получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
 
-            <div class="ad-block__actions">
+            <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
@@ -161,27 +161,27 @@
           </div>
 
           <!-- Премиум размещение -->
-          <div class="ad-block">
-            <h2 class="ad-block__title">Премиум размещение</h2>
+          <div class="placement-block">
+            <h2 class="placement-block__title">Премиум размещение</h2>
 
-            <div class="ad-block__card-preview">
+            <div class="placement-block__card-preview">
               <ServerCard :server="premiumPreviewServer" />
             </div>
 
-            <div class="ad-block__specs">
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость в левой колонке (30 дней)</span>
-                <span class="ad-block__spec-value">$40</span>
+            <div class="placement-block__specs">
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$40</span>
               </div>
-              <div class="ad-block__spec">
-                <span class="ad-block__spec-label">Стоимость в правой колонке (30 дней)</span>
-                <span class="ad-block__spec-value">$40</span>
+              <div class="placement-block__spec">
+                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$40</span>
               </div>
             </div>
 
-            <p class="ad-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
+            <p class="placement-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
 
-            <div class="ad-block__actions">
+            <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
@@ -243,7 +243,7 @@ VIP и Премиум статусы меняют позицию сервера 
 Все тарифы рассчитаны на 30-дневный цикл размещения. Для серверов с ограниченным бюджетом доступен эконом-вариант: установите кнопку L2GM на сайт проекта и получите VIP-статус по сниженной цене. Подробности и оформление — через Telegram.`
 
 const { getCanonicalUrl } = useSeo()
-const canonicalUrl = getCanonicalUrl('/advertisement')
+const canonicalUrl = getCanonicalUrl('/placement')
 
 useHead({
   title: 'Реклама сервера Lineage 2 | Размещение в топе L2GM',
@@ -267,27 +267,27 @@ useHead({
 </script>
 
 <style scoped>
-.ad-blocks {
+.placement-blocks {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
 }
 
-/* Ad block */
-.ad-block {
+/* Placement block */
+.placement-block {
   background: #1B1D1F;
   border-radius: 8px;
   padding: var(--spacing-xl);
 }
 
-.ad-block__title {
+.placement-block__title {
   font-size: var(--font-lg);
   font-weight: var(--font-bold);
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
 }
 
-.ad-block__badge {
+.placement-block__badge {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 4px;
@@ -297,26 +297,26 @@ useHead({
   letter-spacing: 0.5px;
 }
 
-.ad-block__badge--available {
+.placement-block__badge--available {
   background: #4BD28514;
   color: #4BD285;
 }
 
 /* Card preview */
-.ad-block__card-preview {
+.placement-block__card-preview {
   margin-top: var(--spacing-md);
   max-width: 50%;
   pointer-events: none;
 }
 
 @media (max-width: 640px) {
-  .ad-block__card-preview {
+  .placement-block__card-preview {
     max-width: 100%;
   }
 }
 
 /* Features list */
-.ad-block__features {
+.placement-block__features {
   list-style: none;
   padding: 0;
   margin: var(--spacing-md) 0 0;
@@ -325,7 +325,7 @@ useHead({
   gap: var(--spacing-md);
 }
 
-.ad-block__features li {
+.placement-block__features li {
   color: var(--text-secondary);
   font-size: var(--font-sm);
   line-height: 1.6;
@@ -333,26 +333,26 @@ useHead({
   position: relative;
 }
 
-.ad-block__features li::before {
+.placement-block__features li::before {
   content: '•';
   position: absolute;
   left: 0;
   color: var(--text-secondary);
 }
 
-.ad-block__features li strong {
+.placement-block__features li strong {
   color: var(--text-primary);
   font-weight: var(--font-semibold);
 }
 
 /* Specs table */
-.ad-block__specs {
+.placement-block__specs {
   margin-top: var(--spacing-md);
   display: flex;
   flex-direction: column;
 }
 
-.ad-block__spec {
+.placement-block__spec {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -360,19 +360,19 @@ useHead({
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.ad-block__spec-label {
+.placement-block__spec-label {
   color: var(--text-secondary);
   font-size: var(--font-sm);
 }
 
-.ad-block__spec-value {
+.placement-block__spec-value {
   color: var(--text-primary);
   font-size: var(--font-sm);
   font-weight: var(--font-medium);
 }
 
 /* Description */
-.ad-block__description {
+.placement-block__description {
   color: var(--text-secondary);
   font-size: var(--font-sm);
   line-height: 1.6;
@@ -380,7 +380,7 @@ useHead({
 }
 
 /* Actions */
-.ad-block__actions {
+.placement-block__actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -389,7 +389,7 @@ useHead({
 }
 
 @media (max-width: 640px) {
-  .ad-block__actions {
+  .placement-block__actions {
     flex-direction: column;
     align-items: stretch;
   }
@@ -433,14 +433,14 @@ useHead({
 }
 
 /* Warnings */
-.ad-block__warnings {
+.placement-block__warnings {
   margin-top: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.ad-block__warnings p {
+.placement-block__warnings p {
   color: #AE6E00;
   font-size: var(--font-xs);
   font-weight: var(--font-medium);
