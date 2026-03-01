@@ -262,7 +262,7 @@
                     'chip',
                     { 'chip--active': form.extras.includes(extra.id) },
                   ]"
-                  @click="toggleChip(form.extras, extra.id)"
+                  @click="form.extras = form.extras.includes(extra.id) ? [] : [extra.id]"
                 >
                   <img :src="extra.icon" :alt="extra.name" class="chip__icon" />
                   {{ extra.name }}

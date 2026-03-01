@@ -197,13 +197,14 @@ const isRateActive = (slug) => {
 }
 
 .filter-chip {
-  display: inline-block;
+  flex: 1 1 auto;
   padding: 8px 16px;
   background: var(--secondary-main);
   color: var(--secondary-contrast);
   border-radius: var(--radius-full);
   text-decoration: none;
   font-size: var(--font-sm);
+  text-align: center;
   transition: all 0.2s;
 }
 

@@ -26,7 +26,7 @@
 
       <div v-if="server.icons?.length" class="server-card__badges">
         <img
-          v-for="badge in server.icons"
+          v-for="badge in server.icons?.slice(0, 1)"
           :key="badge"
           :src="`/images/badges/${badge}.png`"
           :alt="badgeText(badge)"
@@ -76,7 +76,7 @@
         </div>
         <div v-if="server.icons?.length" class="server-card__badges">
           <img
-            v-for="badge in server.icons"
+            v-for="badge in server.icons?.slice(0, 1)"
             :key="badge"
             :src="`/images/badges/${badge}.png`"
             :alt="badgeText(badge)"
