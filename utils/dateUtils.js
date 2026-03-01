@@ -58,7 +58,7 @@ export const PAST_CATEGORIES = [
 ]
 
 // Платные типы карточек
-export const PAID_CARD_TYPES = new Set(['premium', 'vip', 'top'])
+export const PAID_CARD_TYPES = new Set(['premium', 'vip'])
 
 // Срок платного размещения (дней)
 export const PLACEMENT_DURATION_DAYS = 30
@@ -90,17 +90,18 @@ export const isPlacementExpired = (server) => {
   return parseServerDate(server.expiresAt) < today
 }
 
-// Применить лимиты: 1 premium + до 10 остальных
-const applyColumnLimits = (servers) => {
-  const premium = servers.filter(s => s.cardType === 'premium').slice(0, 1)
-  const others = servers.filter(s => s.cardType !== 'premium').slice(0, 10)
-  return [...premium, ...others]
+// Сортировка по дате: ближайшие сначала (для будущих серверов)
+const sortByDateAsc = (a, b) => {
+  const dateA = new Date(a.startDate || '9999-12-31')
+  const dateB = new Date(b.startDate || '9999-12-31')
+  return dateA - dateB
 }
 
-const sortByDate = (a, b) => {
+// Сортировка по дате: недавние сначала (для прошлых серверов)
+const sortByDateDesc = (a, b) => {
   const dateA = new Date(a.startDate || '1970-01-01')
   const dateB = new Date(b.startDate || '1970-01-01')
-  return dateB - dateA // новые сначала
+  return dateB - dateA
 }
 
 export const categorizeServers = (servers) => {
@@ -157,18 +158,30 @@ export const categorizeServers = (servers) => {
     }
   })
 
-  // «Скоро откроются» и «Уже открылись»: лимит 1 premium + 10 остальных, сортировка по дате
-  const premiumsOpen = categories['Скоро откроются'].filter(s => s.cardType === 'premium')
-  const othersOpen = categories['Скоро откроются'].filter(s => s.cardType !== 'premium').sort(sortByDate)
-  categories['Скоро откроются'] = applyColumnLimits([...premiumsOpen, ...othersOpen])
+  // «Скоро откроются»: premium вверху, vip по дате (ближайшие сначала)
+  {
+    const cat = 'Скоро откроются'
+    const premium = categories[cat].filter(s => s.cardType === 'premium').sort(sortByDateAsc)
+    const vip = categories[cat].filter(s => s.cardType === 'vip').sort(sortByDateAsc)
+    categories[cat] = [...premium, ...vip]
+  }
 
-  const premiumsDone = categories['Уже открылись'].filter(s => s.cardType === 'premium')
-  const othersDone = categories['Уже открылись'].filter(s => s.cardType !== 'premium').sort(sortByDate)
-  categories['Уже открылись'] = applyColumnLimits([...premiumsDone, ...othersDone])
+  // «Уже открылись»: premium вверху, vip по дате (недавние сначала)
+  {
+    const cat = 'Уже открылись'
+    const premium = categories[cat].filter(s => s.cardType === 'premium').sort(sortByDateDesc)
+    const vip = categories[cat].filter(s => s.cardType === 'vip').sort(sortByDateDesc)
+    categories[cat] = [...premium, ...vip]
+  }
 
-  // Остальные разделы — по дате
-  ;['Завтра', 'Ближайшие 7 дней', 'Через неделю и более', 'Предыдущие 7 дней', 'Неделю назад и более'].forEach(cat => {
-    categories[cat] = categories[cat].sort(sortByDate)
+  // Будущие разделы — ближайшие даты сначала
+  ;['Завтра', 'Ближайшие 7 дней', 'Через неделю и более'].forEach(cat => {
+    categories[cat] = categories[cat].sort(sortByDateAsc)
+  })
+
+  // Прошлые разделы — недавние даты сначала
+  ;['Предыдущие 7 дней', 'Неделю назад и более'].forEach(cat => {
+    categories[cat] = categories[cat].sort(sortByDateDesc)
   })
 
   // Убираем пустые
