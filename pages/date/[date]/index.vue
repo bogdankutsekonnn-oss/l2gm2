@@ -6,6 +6,8 @@
         <h1>{{ h1 }}</h1>
       </div>
 
+      <MobileFilters />
+
       <div class="page-layout">
       <div class="servers-column">
         <div v-if="filteredServers.length > 0" class="categories-grid">

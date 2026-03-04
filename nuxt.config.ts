@@ -108,12 +108,58 @@ export default defineNuxtConfig({
     },
   },
 
-  // Cloudflare Pages
+  // Static generation for Timeweb hosting
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'static',
     prerender: {
-      crawlLinks: false,
-      routes: [],
+      failOnError: false,
+      crawlLinks: true,
+      routes: [
+        '/',
+        '/rating',
+        '/blog',
+        '/placement',
+        '/about',
+        '/add-server',
+        '/thanks',
+        // Tags
+        '/today',
+        '/l2top',
+        '/pvp',
+        '/gve',
+        '/foreign',
+        '/low-rate',
+        '/mid-rate',
+        '/multicraft',
+        '/multiprof',
+        // Chronicles
+        '/chronicle/c4',
+        '/chronicle/interlude',
+        '/chronicle/interlude-plus',
+        '/chronicle/classic',
+        '/chronicle/high-five-plus',
+        '/chronicle/high-five',
+        '/chronicle/epilogue',
+        '/chronicle/essence',
+        '/chronicle/crusade',
+        // Rates
+        '/rate/x1',
+        '/rate/x3',
+        '/rate/x7',
+        '/rate/x10',
+        '/rate/x20',
+        '/rate/x50',
+        '/rate/x100',
+        '/rate/x500',
+        '/rate/x1200',
+        '/rate/x10000',
+        '/rate/x50000',
+        '/rate/x100000',
+        // Chronicle + Rate combinations
+        ...['c4', 'interlude', 'interlude-plus', 'classic', 'high-five-plus', 'high-five', 'epilogue', 'essence', 'crusade']
+          .flatMap(c => ['x1', 'x3', 'x7', 'x10', 'x20', 'x50', 'x100', 'x500', 'x1200', 'x10000', 'x50000', 'x100000']
+            .map(r => `/chronicle/${c}/rate/${r}`)),
+      ],
     },
   },
 

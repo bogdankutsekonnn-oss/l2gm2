@@ -170,6 +170,7 @@ const crumbs = computed(() => {
 .breadcrumbs-list {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--spacing-sm);
   list-style: none;
   padding: 0;
@@ -180,6 +181,7 @@ const crumbs = computed(() => {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  white-space: nowrap;
 }
 
 .breadcrumbs-link {
