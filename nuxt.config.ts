@@ -32,10 +32,11 @@ export default defineNuxtConfig({
     groups: [
       {
         userAgent: ['*'],
-        disallow: ['/'],
+        allow: ['/'],
+        disallow: ['/thanks', '/add-server'],
       },
     ],
-    sitemap: [],
+    sitemap: ['https://l2gm.com/sitemap.xml'],
   },
 
   app: {
@@ -59,7 +60,7 @@ export default defineNuxtConfig({
             'lineage 2, л2, сервера lineage 2, анонсы серверов л2, новые серверы l2, interlude, high five, открытие сервера',
         },
         { name: 'author', content: 'L2GM' },
-        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'robots', content: 'index, follow' },
 
         // Open Graph (Facebook, VK, Telegram)
         { property: 'og:type', content: 'website' },
