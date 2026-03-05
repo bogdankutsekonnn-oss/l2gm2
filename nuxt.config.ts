@@ -52,12 +52,12 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'L2GM - актуальные анонсы серверов Lineage 2. Новые серверы л2 всех хроник и рейтов с датами открытия.',
+            'Анонсы серверов Lineage 2 с датами открытия. Найдите новый сервер по хроникам и рейтам на L2GM.',
         },
         {
           name: 'keywords',
           content:
-            'lineage 2, л2, сервера lineage 2, анонсы серверов л2, новые серверы l2, interlude, high five, открытие сервера',
+            'lineage 2, серверы lineage 2, анонсы серверов, новые серверы l2, interlude, high five, essence',
         },
         { name: 'author', content: 'L2GM' },
         { name: 'robots', content: 'index, follow' },

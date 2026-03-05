@@ -86,7 +86,7 @@
     </div>
 
     <SeoSection
-      title="Новые сервера л2 с большим онлайном"
+      title="Серверы Lineage 2 с актуальным онлайном"
       :text="seoText"
     />
   </div>
@@ -105,6 +105,8 @@ const {
   generateHomeJsonLd,
   generateOrganizationJsonLd,
   generateServerEventsJsonLd,
+  generateBreadcrumbJsonLd,
+  generateCollectionPageJsonLd,
 } = useSeo()
 
 const filtersOpen = ref(false)
@@ -133,9 +135,18 @@ const canonicalUrl = getCanonicalUrl('/')
 const homeJsonLd = generateHomeJsonLd()
 const orgJsonLd = generateOrganizationJsonLd()
 const eventsJsonLd = generateServerEventsJsonLd(servers)
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' }
+])
+const collectionJsonLd = generateCollectionPageJsonLd(
+  'Анонсы серверов Lineage 2',
+  description,
+  '/',
+  servers
+)
 
 useHead({
-  title: 'Анонсы серверов Lineage 2 | L2GM - новые серверы л2',
+  title: 'Анонсы серверов Lineage 2 | L2GM',
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },
@@ -165,6 +176,14 @@ useHead({
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(eventsJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(breadcrumbJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(collectionJsonLd),
     },
   ],
 })

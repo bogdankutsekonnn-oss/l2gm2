@@ -120,7 +120,7 @@ const rateRanges = computed(() => {
 
 const tags = [
   { name: 'Сегодня', url: '/today' },
-  { name: 'Топ сервера л2', url: '/l2top' },
+  { name: 'Топ серверов', url: '/l2top' },
   { name: 'PvP сервера', url: '/pvp' },
   { name: 'GVE', url: '/gve' },
   { name: 'Зарубежный', url: '/foreign' },

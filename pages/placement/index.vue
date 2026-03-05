@@ -252,7 +252,7 @@ useHead({
       name: 'description',
       content: 'Разместите сервер Lineage 2 в топе L2GM. Тарифы: Premium, VIP статусы, баннеры. Бесплатное размещение при установке кнопки.'
     },
-    { name: 'keywords', content: 'реклама сервера lineage 2, размещение л2, топ серверов, vip статус, premium, баннер lineage 2, продвижение сервера л2, анонс сервера lineage' },
+    { name: 'keywords', content: 'реклама сервера lineage 2, размещение сервера, топ серверов, vip статус, premium, баннер lineage 2, продвижение сервера, анонс сервера lineage' },
     { property: 'og:title', content: 'Реклама сервера Lineage 2 | L2GM' },
     { property: 'og:description', content: 'Разместите сервер Lineage 2 в топе L2GM. Premium, VIP статусы и рекламные баннеры.' },
     { property: 'og:url', content: canonicalUrl },

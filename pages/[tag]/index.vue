@@ -75,6 +75,10 @@ const {
   getTagFilter,
   getTagEmptyMessage,
   generateTagFullMeta,
+  generateBreadcrumbJsonLd,
+  generateCollectionPageJsonLd,
+  generateTagDescription,
+  generateTagTitle,
 } = useSeo()
 
 const tagSlug = route.params.tag
@@ -104,8 +108,21 @@ if (filterKey) {
 const filteredServers = getServers(filters)
 const categories = getOrderedCategories(filteredServers)
 
+// JSON-LD
+const tagTitle = generateTagTitle(tagSlug)
+const tagDescription = generateTagDescription(tagSlug)
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: tagData.name, url: `/${tagSlug}` }
+])
+const collectionJsonLd = generateCollectionPageJsonLd(tagTitle, tagDescription, `/${tagSlug}`, filteredServers)
+
 // Мета-теги
 const meta = generateTagFullMeta(tagSlug)
+meta.script = [
+  { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
+  { type: 'application/ld+json', innerHTML: JSON.stringify(collectionJsonLd) },
+]
 useHead(meta)
 </script>
 

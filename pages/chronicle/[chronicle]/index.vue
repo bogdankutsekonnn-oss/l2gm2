@@ -56,7 +56,7 @@
     </div>
 
     <SeoSection
-      :title="`Новые сервера л2 ${chronicleName} с большим онлайном`"
+      :title="`Серверы Lineage 2 ${chronicleName}`"
       :text="seoText"
     />
   </div>
@@ -73,7 +73,8 @@ const {
   generateSeoText,
   getCanonicalUrl,
   getOgImageMeta,
-  generateServerListJsonLd,
+  generateBreadcrumbJsonLd,
+  generateCollectionPageJsonLd,
 } = useSeo()
 import { getOrderedCategories } from '~/utils/dateUtils.js'
 
@@ -92,30 +93,30 @@ const description = generateDescription(filters)
 const keywords = generateKeywords(filters)
 const seoText = generateSeoText(filters)
 const canonicalUrl = getCanonicalUrl(route.path)
-const jsonLd = generateServerListJsonLd(filters, filteredServers)
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: chronicleName, url: `/chronicle/${chronicleSlug}` }
+])
+const collectionJsonLd = generateCollectionPageJsonLd(title, description, route.path, filteredServers)
 
 useHead({
   title,
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },
-    // Open Graph
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'L2GM' },
     ...getOgImageMeta(),
-    // Twitter
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
   ],
   link: [{ rel: 'canonical', href: canonicalUrl }],
   script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify(jsonLd),
-    },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(collectionJsonLd) },
   ],
 })
 </script>
