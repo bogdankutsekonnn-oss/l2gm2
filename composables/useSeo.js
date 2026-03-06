@@ -313,7 +313,7 @@ export const useSeo = () => {
       logo: `${siteUrl}/logo.png`,
       description: 'Портал анонсов серверов Lineage 2',
       sameAs: [
-        'https://t.me/l2gm'
+        'https://t.me/DamonLaptev'
       ]
     }
   }

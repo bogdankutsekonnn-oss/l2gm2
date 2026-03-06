@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "node",
+      "runtimeExecutable": "C:\\nvm4w\\nodejs\\node.exe",
       "runtimeArgs": ["C:\\nvm4w\\nodejs\\node_modules\\npm\\bin\\npm-cli.js", "run", "dev", "--", "--port", "3001"],
       "port": 3001
     }

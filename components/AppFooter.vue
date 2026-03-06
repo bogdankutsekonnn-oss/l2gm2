@@ -46,7 +46,7 @@
 
           <!-- Социальные иконки -->
           <div class="footer-social">
-            <a href="https://t.me/l2gm" target="_blank" class="social-link" aria-label="Telegram">
+            <a href="https://t.me/DamonLaptev" target="_blank" class="social-link" aria-label="Telegram">
               <img src="/images/social/telegram.svg" alt="Telegram" width="40" height="40" />
             </a>
             <a href="mailto:info@l2gm.com" class="social-link" aria-label="Email">

@@ -39,7 +39,7 @@
             <section class="about-section">
               <h2>Обратная связь</h2>
               <div class="contact-cards">
-                <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="contact-card">
+                <a href="https://t.me/DamonLaptev" target="_blank" rel="noopener" class="contact-card">
                   <span class="contact-card__icon">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="20" cy="20" r="20" fill="#2F89CE"/>
