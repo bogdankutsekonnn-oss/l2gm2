@@ -28,7 +28,7 @@
         <img
           v-for="badge in server.icons?.slice(0, 1)"
           :key="badge"
-          :src="`/images/badges/${badge}.png`"
+          :src="`/images/badges/${badge}.webp`"
           :alt="badgeText(badge)"
           :title="badgeText(badge)"
           class="server-card__badge"
@@ -78,7 +78,7 @@
           <img
             v-for="badge in server.icons?.slice(0, 1)"
             :key="badge"
-            :src="`/images/badges/${badge}.png`"
+            :src="`/images/badges/${badge}.webp`"
             :alt="badgeText(badge)"
             :title="badgeText(badge)"
             class="server-card__badge"

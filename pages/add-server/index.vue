@@ -471,21 +471,21 @@ const serverTypes = [
 ]
 
 const extras = [
-  { id: 'obt', name: 'ОБТ', icon: '/images/badges/obt.png' },
+  { id: 'obt', name: 'ОБТ', icon: '/images/badges/obt.webp' },
   {
     id: 'bonus-start',
     name: 'Бонус-старт',
-    icon: '/images/badges/bonus-start.png',
+    icon: '/images/badges/bonus-start.webp',
   },
   {
     id: 'hot-start',
     name: 'Горячий старт',
-    icon: '/images/badges/hot-start.png',
+    icon: '/images/badges/hot-start.webp',
   },
   {
     id: 'recommended',
     name: 'Рекомендуем',
-    icon: '/images/badges/recommended.png',
+    icon: '/images/badges/recommended.webp',
   },
 ]
 
