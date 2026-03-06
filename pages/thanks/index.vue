@@ -1,6 +1,8 @@
 <template>
   <div class="thanks-page">
-    <Breadcrumbs />
+    <div class="thanks-breadcrumbs">
+      <Breadcrumbs />
+    </div>
     <div class="thanks-content">
       <div class="thanks-icon">✓</div>
       <h1>Спасибо!</h1>
@@ -8,12 +10,11 @@
         Ваш сервер успешно добавлен и отправлен на модерацию.
       </p>
       <p class="thanks-info">
-        После проверки модератором ваш сервер появится на сайте. Обычно это занимает не более 24 часов.
+        После проверки модератором ваш сервер появится на сайте. Обычно это
+        занимает не более 24 часов.
       </p>
       <div class="thanks-actions">
-        <NuxtLink to="/" class="btn-primary">
-          Вернуться на главную
-        </NuxtLink>
+        <NuxtLink to="/" class="btn-primary"> Вернуться на главную </NuxtLink>
         <NuxtLink to="/add-server" class="btn-secondary">
           Добавить ещё сервер
         </NuxtLink>
@@ -38,14 +39,22 @@ useHead({
 .thanks-page {
   min-height: 60vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xxl) 0;
+  padding: var(--spacing-xxl) var(--spacing-md);
+}
+
+.thanks-breadcrumbs {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: var(--spacing-md);
 }
 
 .thanks-content {
   text-align: center;
   max-width: 600px;
+  width: 100%;
   padding: var(--spacing-xxl);
   background: var(--bg-surface);
   border-radius: var(--radius-xl);
