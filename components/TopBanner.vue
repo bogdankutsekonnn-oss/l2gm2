@@ -7,7 +7,8 @@
       class="banner-image"
       format="webp"
       quality="80"
-      loading="lazy"
+      loading="eager"
+      fetchpriority="high"
       @error="handleImageError"
     />
     <div v-else class="banner-placeholder">

@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="header-left">
           <NuxtLink to="/" class="logo">
-            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" />
+            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" width="120" height="24" />
           </NuxtLink>
         </div>
         <div>
@@ -37,7 +37,7 @@
         <div class="mobile-menu">
           <div class="mobile-menu__header">
             <NuxtLink to="/" class="logo" @click="menuOpen = false">
-              <img src="/logo.svg" alt="L2GM" />
+              <img src="/logo.svg" alt="L2GM" width="120" height="24" />
             </NuxtLink>
             <button class="mobile-menu__close" @click="menuOpen = false" aria-label="Закрыть меню">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

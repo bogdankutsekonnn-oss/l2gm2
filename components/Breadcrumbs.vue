@@ -19,7 +19,7 @@
           class="breadcrumbs-link breadcrumbs-home"
           itemprop="item"
         >
-          <img src="/images/home.svg" alt="Главная" class="breadcrumbs-icon" />
+          <img src="/images/home.svg" alt="" class="breadcrumbs-icon" />
           <span class="sr-only" itemprop="name">Главная</span>
         </NuxtLink>
         <template v-else>

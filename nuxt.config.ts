@@ -87,8 +87,16 @@ export default defineNuxtConfig({
           crossorigin: '',
         },
         {
+          rel: 'preload',
+          as: 'style',
+          href: 'https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap',
+          onload: "this.onload=null;this.rel='stylesheet'",
+        },
+        {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap',
+          media: 'print',
+          onload: "this.media='all'",
         },
         // Favicon
         { rel: 'icon', type: 'image/x-icon', href: '/favicon/favicon.ico' },

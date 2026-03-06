@@ -309,8 +309,12 @@
               </div>
             </div>
 
-            <button type="submit" class="btn-primary btn-submit">
-              Добавить сервер
+            <button
+              type="submit"
+              class="btn-primary btn-submit"
+              :disabled="isSubmitting"
+            >
+              {{ isSubmitting ? 'Отправка...' : 'Добавить сервер' }}
             </button>
           </form>
 
@@ -571,7 +575,11 @@ const sendTelegramNotification = async (serverData) => {
   }
 }
 
+const isSubmitting = ref(false)
+
 const handleSubmit = async () => {
+  if (isSubmitting.value) return
+  isSubmitting.value = true
   const today = new Date().toISOString().slice(0, 10)
   const cardType = tariffToCardType[form.tariff] || 'basic'
 

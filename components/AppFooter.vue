@@ -5,7 +5,7 @@
         <!-- Левая часть: логотип и копирайт -->
         <div class="footer-brand">
           <NuxtLink to="/" class="footer-logo">
-            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" />
+            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" width="120" height="24" />
           </NuxtLink>
           <div class="footer-copyright">© 2025. L2GM.COM</div>
         </div>
@@ -16,7 +16,7 @@
           <div class="footer-columns">
             <!-- Рекламодателям -->
             <div class="footer-column">
-              <h4 class="footer-column-title">РЕКЛАМОДАТЕЛЯМ</h4>
+              <div class="footer-column-title">РЕКЛАМОДАТЕЛЯМ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/placement">Размещение</NuxtLink>
                 <NuxtLink to="/add-server">Добавить сервер</NuxtLink>
@@ -25,7 +25,7 @@
 
             <!-- Информация -->
             <div class="footer-column">
-              <h4 class="footer-column-title">ИНФОРМАЦИЯ</h4>
+              <div class="footer-column-title">ИНФОРМАЦИЯ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/">Анонс серверов</NuxtLink>
                 <NuxtLink to="/about">О нас</NuxtLink>
@@ -34,7 +34,7 @@
 
             <!-- Информация (правая) -->
             <div class="footer-column">
-              <h4 class="footer-column-title">ИНФОРМАЦИЯ</h4>
+              <div class="footer-column-title">ИНФОРМАЦИЯ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/cookies">Файлы Cookie</NuxtLink>
                 <NuxtLink to="/privacy">Политика конфиденциальности</NuxtLink>
@@ -98,7 +98,7 @@
 }
 
 .footer-copyright {
-  color: var(--text-disabled);
+  color: var(--text-secondary);
   font-size: var(--font-sm);
   margin-top: auto;
 }
@@ -115,7 +115,7 @@
 }
 
 .footer-column-title {
-  color: var(--text-disabled);
+  color: var(--text-secondary);
   font-size: var(--font-xs);
   font-weight: var(--font-semibold);
   text-transform: uppercase;
