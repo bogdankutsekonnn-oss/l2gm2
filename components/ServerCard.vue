@@ -37,7 +37,7 @@
     </div>
 
     <div class="server-card__right">
-      <span class="server-card__rate">x{{ server.rate }}</span>
+      <span class="server-card__rate">{{ rateDisplay }}</span>
       <span class="server-card__chronicle">{{ server.chronicle }}</span>
       <div :class="['server-card__date', dateInfo.dateClass]">
         {{ dateInfo.text }}
@@ -60,7 +60,7 @@
             class="server-card__status-img"
           />
         </div>
-        <span class="server-card__mobile-rate">x{{ server.rate }}</span>
+        <span class="server-card__mobile-rate">{{ rateDisplay }}</span>
       </div>
 
       <!-- Центр: название + хроника -->
@@ -100,6 +100,16 @@ const props = defineProps({
 })
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
+
+const rateDisplay = computed(() => {
+  if (props.server.rate != null) {
+    return `x${props.server.rate}`
+  }
+  if (props.server.category) {
+    return props.server.category.toUpperCase()
+  }
+  return ''
+})
 
 // Маппинг cardType из JSON в status для отображения
 const cardStatus = computed(() => {

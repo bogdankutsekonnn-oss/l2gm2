@@ -22,14 +22,16 @@ export const useFilters = () => {
         const min = parseInt(parts[0].replace('x', ''))
         const max = parseInt(parts[1].replace('x', ''))
         filtered = filtered.filter(s => {
-          const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+          if (s.rate == null) return false
+          const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
           return rateNum >= min && rateNum <= max
         })
       } else {
         // Handle exact rate match (e.g. "x1" or 1)
         const rateNum = parseInt(filters.rate.replace('x', ''))
         const exactMatch = filtered.filter(s => {
-          const serverRate = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+          if (s.rate == null) return false
+          const serverRate = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
           return serverRate === rateNum
         })
         if (exactMatch.length > 0) {
@@ -65,7 +67,8 @@ export const useFilters = () => {
     // Фильтр low rate (x1-x10)
     if (filters.lowRate) {
       filtered = filtered.filter(s => {
-        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+        if (s.rate == null) return false
+        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
         return rateNum >= 1 && rateNum <= 10
       })
     }
@@ -73,7 +76,8 @@ export const useFilters = () => {
     // Фильтр mid rate (x10-x100)
     if (filters.midRate) {
       filtered = filtered.filter(s => {
-        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+        if (s.rate == null) return false
+        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
         return rateNum > 10 && rateNum <= 100
       })
     }
@@ -81,9 +85,15 @@ export const useFilters = () => {
     // Фильтр pvp rate (x100+)
     if (filters.pvpRate) {
       filtered = filtered.filter(s => {
-        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(s.rate.replace('x', ''))
+        if (s.rate == null) return false
+        const rateNum = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
         return rateNum >= 100
       })
+    }
+
+    // Фильтр GvE (по категории сервера)
+    if (filters.gve) {
+      filtered = filtered.filter(s => s.category === 'gve')
     }
 
     // Фильтр multicraft
