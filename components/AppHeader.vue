@@ -10,12 +10,12 @@
         <div>
           <nav class="nav-links">
             <NuxtLink to="/">Анонсы</NuxtLink>
-            <NuxtLink to="/placement">Размещение</NuxtLink>
-            <NuxtLink to="/about">О нас</NuxtLink>
+            <NuxtLink to="/placement/">Размещение</NuxtLink>
+            <NuxtLink to="/about/">О нас</NuxtLink>
           </nav>
         </div>
         <div class="header-right">
-          <NuxtLink to="/add-server" class="btn-primary">
+          <NuxtLink to="/add-server/" class="btn-primary">
             Добавить сервер
           </NuxtLink>
         </div>
@@ -47,11 +47,11 @@
           </div>
           <nav class="mobile-menu__nav">
             <NuxtLink to="/" @click="menuOpen = false">Анонсы</NuxtLink>
-            <NuxtLink to="/placement" @click="menuOpen = false">Размещение</NuxtLink>
-            <NuxtLink to="/about" @click="menuOpen = false">О нас</NuxtLink>
+            <NuxtLink to="/placement/" @click="menuOpen = false">Размещение</NuxtLink>
+            <NuxtLink to="/about/" @click="menuOpen = false">О нас</NuxtLink>
           </nav>
           <div class="mobile-menu__footer">
-            <NuxtLink to="/add-server" class="btn-primary" @click="menuOpen = false">
+            <NuxtLink to="/add-server/" class="btn-primary" @click="menuOpen = false">
               Добавить сервер
             </NuxtLink>
           </div>

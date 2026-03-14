@@ -243,7 +243,9 @@ export const useSeo = () => {
   }
 
   const getCanonicalUrl = (path) => {
-    return `${siteUrl}${path}`
+    // Ensure trailing slash for canonical URLs
+    const normalizedPath = path.endsWith('/') || path === '/' ? path : path + '/'
+    return `${siteUrl}${normalizedPath}`
   }
 
   // JSON-LD разметка для главной страницы
@@ -512,7 +514,7 @@ export const useSeo = () => {
     const title = generateTagTitle(tagSlug)
     const description = generateTagDescription(tagSlug)
     const keywords = generateTagKeywords(tagSlug)
-    const canonicalUrl = getCanonicalUrl(`/${tagSlug}`)
+    const canonicalUrl = getCanonicalUrl(`/${tagSlug}/`)
 
     return {
       title,

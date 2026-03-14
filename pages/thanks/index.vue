@@ -15,7 +15,7 @@
       </p>
       <div class="thanks-actions">
         <NuxtLink to="/" class="btn-primary"> Вернуться на главную </NuxtLink>
-        <NuxtLink to="/add-server" class="btn-secondary">
+        <NuxtLink to="/add-server/" class="btn-secondary">
           Добавить ещё сервер
         </NuxtLink>
       </div>

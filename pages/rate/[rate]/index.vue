@@ -58,6 +58,7 @@
     <SeoSection
       :title="`Серверы Lineage 2 ${rateText}`"
       :text="seoText"
+      :links="relatedRateLinks"
     />
   </div>
 </template>
@@ -83,6 +84,12 @@ const rates = getRates()
 const rate = rates.find((r) => r.slug === rateSlug)
 // Если это ренж (содержит "-"), показываем как есть, иначе ищем в рейтах
 const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
+
+const relatedRateLinks = computed(() =>
+  rates
+    .filter((r) => r.slug !== rateSlug)
+    .map((r) => ({ to: `/rate/${r.slug}/`, text: `Серверы ${r.name}` }))
+)
 
 const filters = { rate: rateSlug }
 const filteredServers = getServers(filters)

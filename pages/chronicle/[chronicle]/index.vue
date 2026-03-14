@@ -58,6 +58,7 @@
     <SeoSection
       :title="`Серверы Lineage 2 ${chronicleName}`"
       :text="seoText"
+      :links="relatedChronicleLinks"
     />
   </div>
 </template>
@@ -86,6 +87,12 @@ const chronicleName = chronicle?.name || ''
 const filters = { chronicle: chronicleSlug }
 const filteredServers = getServers(filters)
 const categories = getOrderedCategories(filteredServers)
+
+const relatedChronicleLinks = computed(() =>
+  chronicles
+    .filter((c) => c.slug !== chronicleSlug)
+    .map((c) => ({ to: `/chronicle/${c.slug}/`, text: `Серверы ${c.name}` }))
+)
 
 const title = generateTitle(filters)
 const h1 = generateH1(filters)

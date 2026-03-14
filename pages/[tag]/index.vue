@@ -58,12 +58,14 @@
     <SeoSection
       :title="seoTitle"
       :text="seoText"
+      :links="relatedTagLinks"
     />
   </div>
 </template>
 
 <script setup>
 import { getOrderedCategories } from '~/utils/dateUtils.js'
+import tagsData from '~/data/tags.json'
 
 const route = useRoute()
 const { getServers } = useFilters()
@@ -107,6 +109,12 @@ if (filterKey) {
 
 const filteredServers = getServers(filters)
 const categories = getOrderedCategories(filteredServers)
+
+const relatedTagLinks = computed(() =>
+  tagsData
+    .filter((t) => t.slug !== tagSlug)
+    .map((t) => ({ to: `/${t.slug}/`, text: t.name }))
+)
 
 // JSON-LD
 const tagTitle = generateTagTitle(tagSlug)

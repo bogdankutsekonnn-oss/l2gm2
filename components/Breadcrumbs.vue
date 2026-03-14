@@ -80,11 +80,11 @@ const formatDateForBreadcrumb = (dateString) => {
 }
 
 const staticPages = {
-  '/about': 'О нас',
-  '/placement': 'Размещение',
-  '/rating': 'Рейтинг',
-  '/add-server': 'Добавить сервер',
-  '/thanks': 'Спасибо',
+  '/about/': 'О нас',
+  '/placement/': 'Размещение',
+  '/rating/': 'Рейтинг',
+  '/add-server/': 'Добавить сервер',
+  '/thanks/': 'Спасибо',
 }
 
 const crumbs = computed(() => {
@@ -95,11 +95,12 @@ const crumbs = computed(() => {
 
   const currentPath = route.path
 
-  // Проверяем статические страницы
-  if (staticPages[currentPath]) {
+  // Проверяем статические страницы (нормализуем путь с trailing slash)
+  const normalizedPath = currentPath.endsWith('/') ? currentPath : currentPath + '/'
+  if (staticPages[normalizedPath]) {
     result.push({
-      path: currentPath,
-      title: staticPages[currentPath],
+      path: normalizedPath,
+      title: staticPages[normalizedPath],
     })
     return result
   }
@@ -114,7 +115,7 @@ const crumbs = computed(() => {
     const tagData = getTagData(tagSlug)
     if (tagData) {
       result.push({
-        path: `/${tagSlug}`,
+        path: `/${tagSlug}/`,
         title: tagData.name,
       })
       return result
@@ -125,7 +126,7 @@ const crumbs = computed(() => {
   if (dateSlug) {
     const dateTitle = formatDateForBreadcrumb(dateSlug)
     result.push({
-      path: `/date/${dateSlug}`,
+      path: `/date/${dateSlug}/`,
       title: `Сервера Lineage\u00a02 | ${dateTitle}`,
     })
     return result
@@ -136,7 +137,7 @@ const crumbs = computed(() => {
     const chronicle = chronicles.find((c) => c.slug === chronicleSlug)
     const chronicleName = chronicle?.name || chronicleSlug
     result.push({
-      path: `/chronicle/${chronicleSlug}`,
+      path: `/chronicle/${chronicleSlug}/`,
       title: `Сервера Lineage\u00a02 ${chronicleName}`,
     })
   }
@@ -147,12 +148,12 @@ const crumbs = computed(() => {
 
     if (chronicleSlug) {
       result.push({
-        path: `/chronicle/${chronicleSlug}/rate/${rateSlug}`,
+        path: `/chronicle/${chronicleSlug}/rate/${rateSlug}/`,
         title: rate?.name || rateSlug,
       })
     } else {
       result.push({
-        path: `/rate/${rateSlug}`,
+        path: `/rate/${rateSlug}/`,
         title: rate?.name || rateSlug,
       })
     }

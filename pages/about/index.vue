@@ -30,8 +30,8 @@
             <section class="about-section">
               <h2>Для админов серверов:</h2>
               <p>
-                Можно <NuxtLink to="/add-server">добавить проект через форму</NuxtLink> и при необходимости
-                <NuxtLink to="/placement">выбрать VIP/Премиум размещение</NuxtLink>. А для
+                Можно <NuxtLink to="/add-server/">добавить проект через форму</NuxtLink> и при необходимости
+                <NuxtLink to="/placement/">выбрать VIP/Премиум размещение</NuxtLink>. А для
                 игроков: меньше поиска по чатам — больше времени на старт.
               </p>
             </section>
@@ -59,7 +59,7 @@
                   <span class="contact-card__label">Почта</span>
                 </a>
 
-                <NuxtLink to="/feedback" class="contact-card">
+                <NuxtLink to="/feedback/" class="contact-card">
                   <span class="contact-card__icon">
                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3.33301 6.66671V30L11.333 24C11.9094 23.5661 12.6116 23.332 13.333 23.3334H26.6663C28.5073 23.3334 29.9997 21.841 29.9997 20V6.66671C29.9997 4.82576 28.5073 3.33337 26.6663 3.33337H6.66634C4.82539 3.33337 3.33301 4.82576 3.33301 6.66671ZM6.66634 23.3334V6.66671H26.6663V20H12.223C11.5015 19.9981 10.7991 20.2322 10.223 20.6667L6.66634 23.3334Z" fill="#5062F4"/>
@@ -88,7 +88,7 @@
 
 <script setup>
 const { getCanonicalUrl } = useSeo()
-const canonicalUrl = getCanonicalUrl('/about')
+const canonicalUrl = getCanonicalUrl('/about/')
 
 const seoText = `Каждый день десятки серверов Lineage 2 открывают свои двери, и разобраться в этом потоке бывает непросто. L2GM берёт на себя задачу структурировать информацию: мы проверяем данные, группируем проекты по датам и характеристикам и показываем только то, что действительно актуально.
 

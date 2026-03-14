@@ -18,8 +18,8 @@
             <div class="footer-column">
               <div class="footer-column-title">РЕКЛАМОДАТЕЛЯМ</div>
               <nav class="footer-column-links">
-                <NuxtLink to="/placement">Размещение</NuxtLink>
-                <NuxtLink to="/add-server">Добавить сервер</NuxtLink>
+                <NuxtLink to="/placement/">Размещение</NuxtLink>
+                <NuxtLink to="/add-server/">Добавить сервер</NuxtLink>
               </nav>
             </div>
 
@@ -28,18 +28,35 @@
               <div class="footer-column-title">ИНФОРМАЦИЯ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/">Анонс серверов</NuxtLink>
-                <NuxtLink to="/about">О нас</NuxtLink>
+                <NuxtLink to="/about/">О нас</NuxtLink>
+                <NuxtLink to="/cookies/">Файлы Cookie</NuxtLink>
+                <NuxtLink to="/privacy/">Политика конфиденциальности</NuxtLink>
+                <NuxtLink to="/terms/">Пользовательское соглашение</NuxtLink>
               </nav>
             </div>
 
-            <!-- Информация (правая) -->
+            <!-- Хроники -->
             <div class="footer-column">
-              <div class="footer-column-title">ИНФОРМАЦИЯ</div>
+              <div class="footer-column-title">ХРОНИКИ</div>
               <nav class="footer-column-links">
-                <NuxtLink to="/cookies">Файлы Cookie</NuxtLink>
-                <NuxtLink to="/privacy">Политика конфиденциальности</NuxtLink>
-                <NuxtLink to="/terms">Пользовательское соглашение</NuxtLink>
-                <NuxtLink to="/sitemap">Карта сайта</NuxtLink>
+                <NuxtLink to="/chronicle/interlude/">Interlude</NuxtLink>
+                <NuxtLink to="/chronicle/high-five/">High Five</NuxtLink>
+                <NuxtLink to="/chronicle/essence/">Essence</NuxtLink>
+                <NuxtLink to="/chronicle/classic/">Classic</NuxtLink>
+                <NuxtLink to="/chronicle/c4/">C4</NuxtLink>
+              </nav>
+            </div>
+
+            <!-- Серверы -->
+            <div class="footer-column">
+              <div class="footer-column-title">СЕРВЕРЫ</div>
+              <nav class="footer-column-links">
+                <NuxtLink to="/pvp/">PvP серверы</NuxtLink>
+                <NuxtLink to="/gve/">GVE серверы</NuxtLink>
+                <NuxtLink to="/multicraft/">Мультикрафт</NuxtLink>
+                <NuxtLink to="/foreign/">Зарубежные</NuxtLink>
+                <NuxtLink to="/low-rate/">Low рейты</NuxtLink>
+                <NuxtLink to="/mid-rate/">Mid рейты</NuxtLink>
               </nav>
             </div>
           </div>

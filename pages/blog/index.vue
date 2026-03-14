@@ -10,9 +10,9 @@
         <div class="sidebar-section">
           <h3>Категории</h3>
           <nav class="category-nav">
-            <NuxtLink to="/blog?category=news" class="category-link">Новости</NuxtLink>
-            <NuxtLink to="/blog?category=articles" class="category-link">Статьи</NuxtLink>
-            <NuxtLink to="/blog?category=reviews" class="category-link">Обзоры</NuxtLink>
+            <NuxtLink to="/blog/?category=news" class="category-link">Новости</NuxtLink>
+            <NuxtLink to="/blog/?category=articles" class="category-link">Статьи</NuxtLink>
+            <NuxtLink to="/blog/?category=reviews" class="category-link">Обзоры</NuxtLink>
           </nav>
         </div>
 
@@ -50,7 +50,7 @@
               {{ getCategoryName(post.category) }}
             </div>
             <h3 class="post-title">
-              <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
+              <NuxtLink :to="`/blog/${post.slug}/`">{{ post.title }}</NuxtLink>
             </h3>
             <p class="post-excerpt">{{ post.excerpt }}</p>
             <div class="post-date">{{ formatDate(post.date) }}</div>
@@ -124,7 +124,7 @@ const loadMore = () => {
 }
 
 const { getCanonicalUrl } = useSeo()
-const canonicalUrl = getCanonicalUrl('/blog')
+const canonicalUrl = getCanonicalUrl('/blog/')
 
 useHead({
   title: 'Блог Lineage 2 | Новости, гайды и обзоры серверов - L2GM',

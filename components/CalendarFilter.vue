@@ -17,7 +17,7 @@
       <NuxtLink
         v-for="(day, index) in calendarDays"
         :key="index"
-        :to="day.hasServers ? `/date/${day.fullDate}` : undefined"
+        :to="day.hasServers ? `/date/${day.fullDate}/` : undefined"
         :class="[
           'day-cell',
           {

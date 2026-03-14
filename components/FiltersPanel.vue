@@ -119,32 +119,32 @@ const rateRanges = computed(() => {
 })
 
 const tags = [
-  { name: 'Сегодня', url: '/today' },
-  { name: 'Топ серверов', url: '/l2top' },
-  { name: 'PvP сервера', url: '/pvp' },
-  { name: 'GVE', url: '/gve' },
-  { name: 'Зарубежный', url: '/foreign' },
-  { name: 'Low рейты', url: '/low-rate' },
-  { name: 'Mid рейты', url: '/mid-rate' },
-  { name: 'Мультикрафт', url: '/multicraft' },
-  { name: 'Мультипрофа', url: '/multiprof' },
+  { name: 'Сегодня', url: '/today/' },
+  { name: 'Топ серверов', url: '/l2top/' },
+  { name: 'PvP сервера', url: '/pvp/' },
+  { name: 'GVE', url: '/gve/' },
+  { name: 'Зарубежный', url: '/foreign/' },
+  { name: 'Low рейты', url: '/low-rate/' },
+  { name: 'Mid рейты', url: '/mid-rate/' },
+  { name: 'Мультикрафт', url: '/multicraft/' },
+  { name: 'Мультипрофа', url: '/multiprof/' },
 ]
 
 const getChronicleUrl = (slug) => {
-  return `/chronicle/${slug}`
+  return `/chronicle/${slug}/`
 }
 
 const getRateUrl = (slug) => {
-  return `/rate/${slug}`
+  return `/rate/${slug}/`
 }
 
 const getFinderUrl = () => {
   if (selectedChronicle.value && selectedRate.value) {
-    return `/chronicle/${selectedChronicle.value}/rate/${selectedRate.value}`
+    return `/chronicle/${selectedChronicle.value}/rate/${selectedRate.value}/`
   } else if (selectedChronicle.value) {
-    return `/chronicle/${selectedChronicle.value}`
+    return `/chronicle/${selectedChronicle.value}/`
   } else if (selectedRate.value) {
-    return `/rate/${selectedRate.value}`
+    return `/rate/${selectedRate.value}/`
   }
   return '/'
 }
