@@ -128,7 +128,7 @@
 .categories-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-sm);
   align-items: start;
 }
 
