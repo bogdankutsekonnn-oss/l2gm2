@@ -101,29 +101,26 @@
             </div>
           </div>
 
-          <!-- Стандартное VIP размещение -->
+          <!-- Премиум размещение -->
           <div class="placement-block">
-            <h2 class="placement-block__title">Стандартное VIP размещение</h2>
+            <h2 class="placement-block__title">Премиум размещение</h2>
 
             <div class="placement-block__card-preview">
-              <ServerCard :server="topPreviewServer" />
+              <ServerCard :server="premiumPreviewServer" />
             </div>
 
             <div class="placement-block__specs">
               <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость (30 дней)</span>
-                <span class="placement-block__spec-value">$9</span>
+                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$40</span>
               </div>
               <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Эконом размещение* с нашей кнопкой (30 дней)</span>
-                <span class="placement-block__spec-value">$5</span>
+                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
+                <span class="placement-block__spec-value">$40</span>
               </div>
             </div>
 
-            <ul class="placement-block__features">
-              <li><strong>VIP размещение:</strong> сервер получает метку VIP, поднимается выше обычных серверов в списке и выделяется более заметным оформлением.</li>
-              <li><strong>Эконом размещение*:</strong> при выборе "эконом" нужно установить нашу кнопку на главной странице сайта сервера. Удалять кнопку и/или менять её код до окончания срока размещения запрещено.</li>
-            </ul>
+            <p class="placement-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
 
             <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
@@ -160,26 +157,29 @@
             </div>
           </div>
 
-          <!-- Премиум размещение -->
+          <!-- Стандартное VIP размещение -->
           <div class="placement-block">
-            <h2 class="placement-block__title">Премиум размещение</h2>
+            <h2 class="placement-block__title">Стандартное VIP размещение</h2>
 
             <div class="placement-block__card-preview">
-              <ServerCard :server="premiumPreviewServer" />
+              <ServerCard :server="topPreviewServer" />
             </div>
 
             <div class="placement-block__specs">
               <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$40</span>
+                <span class="placement-block__spec-label">Стоимость (30 дней)</span>
+                <span class="placement-block__spec-value">$9</span>
               </div>
               <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$40</span>
+                <span class="placement-block__spec-label">Эконом размещение* с нашей кнопкой (30 дней)</span>
+                <span class="placement-block__spec-value">$5</span>
               </div>
             </div>
 
-            <p class="placement-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
+            <ul class="placement-block__features">
+              <li><strong>VIP размещение:</strong> сервер получает метку VIP, поднимается выше обычных серверов в списке и выделяется более заметным оформлением.</li>
+              <li><strong>Эконом размещение*:</strong> при выборе "эконом" нужно установить нашу кнопку на главной странице сайта сервера. Удалять кнопку и/или менять её код до окончания срока размещения запрещено.</li>
+            </ul>
 
             <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
@@ -206,7 +206,7 @@
 <script setup>
 const topPreviewServer = {
   name: 'SERVER NAME',
-  rate: 'x100K',
+  rate: 100000,
   chronicle: 'Interlude+',
   startDate: '2025-08-22',
   cardType: 'top',
@@ -216,7 +216,7 @@ const topPreviewServer = {
 
 const vipPreviewServer = {
   name: 'SERVER NAME',
-  rate: 'x100K',
+  rate: 100000,
   chronicle: 'Interlude+',
   startDate: new Date(Date.now() - 86400000).toISOString().split('T')[0],
   cardType: 'vip',
@@ -226,7 +226,7 @@ const vipPreviewServer = {
 
 const premiumPreviewServer = {
   name: 'SERVER NAME',
-  rate: 'x100K',
+  rate: 100000,
   chronicle: 'Interlude+',
   startDate: new Date().toISOString().split('T')[0],
   cardType: 'premium',

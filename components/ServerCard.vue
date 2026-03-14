@@ -101,9 +101,17 @@ const props = defineProps({
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
 
+const formatRate = (rate) => {
+  const num = Number(rate)
+  if (!isNaN(num) && num >= 10000 && num % 1000 === 0) {
+    return `x${num / 1000}k`
+  }
+  return `x${rate}`
+}
+
 const rateDisplay = computed(() => {
   if (props.server.rate != null) {
-    return `x${props.server.rate}`
+    return formatRate(props.server.rate)
   }
   if (props.server.category) {
     return props.server.category.toUpperCase()

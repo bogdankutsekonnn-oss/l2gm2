@@ -137,6 +137,7 @@
                   type="text"
                   class="input"
                   placeholder="Например: MyServer"
+                  required
                 />
               </div>
             </div>
@@ -152,6 +153,7 @@
                   type="url"
                   class="input"
                   placeholder="Например: https://my.server.com/"
+                  required
                 />
               </div>
             </div>
@@ -162,7 +164,7 @@
                 <label class="form-row__label">Дата открытия</label>
               </div>
               <div class="form-row__input">
-                <input v-model="form.serverDate" type="date" class="input" />
+                <input v-model="form.serverDate" type="date" class="input" required />
               </div>
             </div>
 
@@ -172,8 +174,8 @@
                 <label class="form-row__label">Хроники</label>
               </div>
               <div class="form-row__input">
-                <select v-model="form.serverChronicle" class="select">
-                  <option value="">Выбрать хроники</option>
+                <select v-model="form.serverChronicle" class="select" required>
+                  <option value="" disabled>Выбрать хроники</option>
                   <option
                     v-for="chronicle in chronicles"
                     :key="chronicle.id"
@@ -196,6 +198,7 @@
                   type="text"
                   class="input"
                   placeholder="Числом или RVR / GVE"
+                  required
                 />
               </div>
             </div>
@@ -297,6 +300,7 @@
                   type="text"
                   class="input"
                   placeholder="Telegram / VK / Whats'app"
+                  required
                 />
               </div>
             </div>
@@ -462,6 +466,7 @@ const tariffs = [
 ]
 
 const serverTypes = [
+  { id: 'pvp', name: 'PVP' },
   { id: 'rvr', name: 'RVR' },
   { id: 'gve', name: 'GVE' },
   { id: 'low-rate', name: 'Лоу рейты' },
