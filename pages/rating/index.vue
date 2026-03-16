@@ -72,9 +72,9 @@ const ratingFilters = [
 ]
 
 // Mock data - в реальном проекте это будет из API
-const allServers = getServers()
+const allServers = computed(() => getServers())
 const ratedServers = computed(() => {
-  let filtered = [...allServers]
+  let filtered = [...allServers.value]
   
   if (activeFilter.value !== 'all') {
     filtered = filtered.filter(s => s.status === activeFilter.value)

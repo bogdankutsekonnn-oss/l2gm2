@@ -95,7 +95,7 @@
 <script setup>
 import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES } from '~/utils/dateUtils.js'
 
-const { getServers } = useFilters()
+const { getServers, apiServers } = useFilters()
 const {
   generateSeoText,
   generateDescription,
@@ -111,8 +111,8 @@ const {
 
 const filtersOpen = ref(false)
 
-const servers = getServers()
-const categorized = computed(() => categorizeServers(servers))
+const servers = computed(() => getServers())
+const categorized = computed(() => categorizeServers(servers.value))
 
 const leftCategories = computed(() =>
   FUTURE_CATEGORIES
@@ -134,7 +134,7 @@ const canonicalUrl = getCanonicalUrl('/')
 // JSON-LD разметка
 const homeJsonLd = generateHomeJsonLd()
 const orgJsonLd = generateOrganizationJsonLd()
-const eventsJsonLd = generateServerEventsJsonLd(servers)
+const eventsJsonLd = generateServerEventsJsonLd(servers.value)
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' }
 ])
@@ -142,7 +142,7 @@ const collectionJsonLd = generateCollectionPageJsonLd(
   'Анонсы серверов Lineage 2',
   description,
   '/',
-  servers
+  servers.value
 )
 
 useHead({

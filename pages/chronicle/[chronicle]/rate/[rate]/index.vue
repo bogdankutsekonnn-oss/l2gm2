@@ -94,8 +94,8 @@ const filters = {
   chronicle: chronicleSlug,
   rate: rateSlug,
 }
-const filteredServers = getServers(filters)
-const categories = getOrderedCategories(filteredServers)
+const filteredServers = computed(() => getServers(filters))
+const categories = computed(() => getOrderedCategories(filteredServers.value))
 
 const title = generateTitle(filters)
 const h1 = generateH1(filters)
@@ -108,7 +108,7 @@ const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: chronicleName, url: `/chronicle/${chronicleSlug}` },
   { name: rateText, url: `/chronicle/${chronicleSlug}/rate/${rateSlug}` }
 ])
-const collectionJsonLd = generateCollectionPageJsonLd(title, description, route.path, filteredServers)
+const collectionJsonLd = generateCollectionPageJsonLd(title, description, route.path, filteredServers.value)
 
 useHead({
   title,

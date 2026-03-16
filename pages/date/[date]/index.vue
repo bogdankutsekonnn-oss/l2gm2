@@ -71,11 +71,11 @@ import { getOrderedCategories } from '~/utils/dateUtils.js'
 const dateSlug = route.params.date
 
 // Фильтруем сервера по дате
-const allServers = getServers()
-const filteredServers = allServers.filter(server => server.startDate === dateSlug)
+const allServers = computed(() => getServers())
+const filteredServers = computed(() => allServers.value.filter(server => server.startDate === dateSlug))
 
 // Категоризация серверов
-const categories = getOrderedCategories(filteredServers)
+const categories = computed(() => getOrderedCategories(filteredServers.value))
 
 // Форматирование даты для заголовка
 const formatDateTitle = (dateString) => {

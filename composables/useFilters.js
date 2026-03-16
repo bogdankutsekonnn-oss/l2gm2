@@ -1,11 +1,36 @@
-import serversData from '~/data/servers.json'
+import serversJson from '~/data/servers.json'
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
 import { isPlacementExpired } from '~/utils/dateUtils'
 
+// Глобальный кэш серверов из API
+const apiServers = ref(null)
+const apiLoaded = ref(false)
+
+// Загрузка серверов из API (один раз)
+async function fetchApiServers() {
+  if (apiLoaded.value) return
+  apiLoaded.value = true
+  try {
+    const data = await $fetch('/api/servers.php', { timeout: 3000 })
+    if (Array.isArray(data) && data.length > 0) {
+      apiServers.value = data
+    }
+  } catch {
+    // API недоступен — используем JSON fallback
+  }
+}
+
 export const useFilters = () => {
+  // Запускаем загрузку из API на клиенте
+  if (import.meta.client && !apiLoaded.value) {
+    fetchApiServers()
+  }
+
   const getServers = (filters = {}) => {
-    let filtered = [...serversData]
+    // Берём серверы из API если загружены, иначе из JSON
+    const source = apiServers.value || serversJson
+    let filtered = [...source]
 
     if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
@@ -108,15 +133,15 @@ export const useFilters = () => {
 
     return filtered
   }
-  
+
   const getChronicles = () => {
     return chroniclesData
   }
-  
+
   const getRates = () => {
     return ratesData
   }
-  
+
   const getRateRanges = () => {
     const ranges = new Set()
     ratesData.forEach(rate => {
@@ -126,11 +151,12 @@ export const useFilters = () => {
     })
     return Array.from(ranges)
   }
-  
+
   return {
     getServers,
     getChronicles,
     getRates,
-    getRateRanges
+    getRateRanges,
+    apiServers,
   }
 }

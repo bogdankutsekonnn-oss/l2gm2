@@ -85,8 +85,8 @@ const chronicle = chronicles.find((c) => c.slug === chronicleSlug)
 const chronicleName = chronicle?.name || ''
 
 const filters = { chronicle: chronicleSlug }
-const filteredServers = getServers(filters)
-const categories = getOrderedCategories(filteredServers)
+const filteredServers = computed(() => getServers(filters))
+const categories = computed(() => getOrderedCategories(filteredServers.value))
 
 const relatedChronicleLinks = computed(() =>
   chronicles
@@ -104,7 +104,7 @@ const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' },
   { name: chronicleName, url: `/chronicle/${chronicleSlug}` }
 ])
-const collectionJsonLd = generateCollectionPageJsonLd(title, description, route.path, filteredServers)
+const collectionJsonLd = generateCollectionPageJsonLd(title, description, route.path, filteredServers.value)
 
 useHead({
   title,

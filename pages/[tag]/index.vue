@@ -107,8 +107,8 @@ if (filterKey) {
   filters[filterKey] = true
 }
 
-const filteredServers = getServers(filters)
-const categories = getOrderedCategories(filteredServers)
+const filteredServers = computed(() => getServers(filters))
+const categories = computed(() => getOrderedCategories(filteredServers.value))
 
 const relatedTagLinks = computed(() =>
   tagsData
@@ -123,7 +123,7 @@ const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' },
   { name: tagData.name, url: `/${tagSlug}` }
 ])
-const collectionJsonLd = generateCollectionPageJsonLd(tagTitle, tagDescription, `/${tagSlug}`, filteredServers)
+const collectionJsonLd = generateCollectionPageJsonLd(tagTitle, tagDescription, `/${tagSlug}`, filteredServers.value)
 
 // Мета-теги
 const meta = generateTagFullMeta(tagSlug)
