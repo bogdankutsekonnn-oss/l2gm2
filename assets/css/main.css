@@ -137,8 +137,7 @@
   flex-direction: column;
   gap: var(--spacing-lg);
 }
-
-.server-category {
+й .server-category {
   margin-bottom: 0;
 }
 

@@ -188,6 +188,30 @@
             </div>
           </div>
 
+          <!-- Обычное размещение -->
+          <div class="placement-block">
+            <h2 class="placement-block__title">Обычное размещение</h2>
+            <span class="placement-block__badge placement-block__badge--free">БЕСПЛАТНО</span>
+
+            <div class="placement-block__card-preview">
+              <ServerCard :server="freePreviewServer" />
+            </div>
+
+            <p class="placement-block__description">Бесплатное размещение сервера в общем каталоге L2GM. Сервер отображается в стандартном списке без выделения и дополнительного оформления.</p>
+
+            <ul class="placement-block__features">
+              <li><strong>Условие:</strong> для бесплатного размещения необходимо установить наш баннер на главной странице сайта вашего сервера.</li>
+              <li><strong>Что входит:</strong> карточка сервера в общем каталоге с указанием хроники, рейтов и даты старта.</li>
+              <li><strong>Удаление баннера:</strong> если баннер будет удалён или изменён до окончания срока размещения, сервер будет снят с публикации.</li>
+            </ul>
+
+            <div class="placement-block__actions">
+              <NuxtLink to="/add-server/" class="btn-primary">
+                Добавить сервер
+              </NuxtLink>
+            </div>
+          </div>
+
         </div>
 
         <div class="filters-column">
@@ -231,6 +255,16 @@ const premiumPreviewServer = {
   chronicle: 'Interlude+',
   startDate: new Date().toISOString().split('T')[0],
   cardType: 'premium',
+  icons: [],
+  url: '#',
+}
+
+const freePreviewServer = {
+  name: 'SERVER NAME',
+  rate: 100000,
+  chronicle: 'Interlude+',
+  startDate: '2025-08-22',
+  cardType: 'default',
   icons: [],
   url: '#',
 }
@@ -312,6 +346,11 @@ useHead({
 .placement-block__badge--available {
   background: #4BD28514;
   color: #4BD285;
+}
+
+.placement-block__badge--free {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
 }
 
 /* Card preview */
