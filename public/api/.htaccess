@@ -1,0 +1,5 @@
+# Запрещаем прямой доступ к config.php и schema.sql
+<FilesMatch "(config\.php|schema\.sql)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

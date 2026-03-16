@@ -606,12 +606,30 @@ const handleSubmit = async () => {
     serverTypes: form.serverTypes,
   }
 
-  // TODO: отправить serverData на API когда подключим Supabase
-  if (import.meta.client) {
-    sessionStorage.setItem('pendingServer', JSON.stringify(serverData))
+  // Отправка на API и в Telegram параллельно
+  const apiPayload = {
+    name: serverData.name,
+    url: serverData.url,
+    chronicle: serverData.chronicle,
+    rate: isNaN(Number(serverData.rate)) ? null : Number(serverData.rate),
+    category: isNaN(Number(serverData.rate)) ? serverData.rate.toLowerCase() : null,
+    startDate: serverData.startDate,
+    cardType: serverData.cardType,
+    icons: serverData.icons,
+    serverTypes: serverData.serverTypes,
+    email: serverData.email,
+    contacts: serverData.contacts,
+    expiresAt: serverData.expiresAt,
   }
 
-  await sendTelegramNotification(serverData)
+  await Promise.allSettled([
+    fetch('/api/servers.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(apiPayload),
+    }).catch(() => {}),
+    sendTelegramNotification(serverData),
+  ])
 
   navigateTo('/thanks')
 }
