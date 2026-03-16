@@ -1,3 +1,8 @@
+# Пробрасываем Authorization заголовок в PHP (Timeweb/Apache)
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} .+
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Запрещаем прямой доступ к config.php и schema.sql
 <FilesMatch "(config\.php|schema\.sql)">
     Order Allow,Deny

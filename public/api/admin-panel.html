@@ -186,7 +186,7 @@ function login() {
 
 async function tryLogin(t) {
   try {
-    const res = await fetch(`${API_BASE}/servers.php?all=1`, {
+    const res = await fetch(`${API_BASE}/servers.php?all=1&token=${encodeURIComponent(t)}`, {
       headers: { 'Authorization': `Bearer ${t}` }
     });
     if (res.ok) {
@@ -270,7 +270,7 @@ async function apiAction(action, id, method = 'POST', body = null) {
   };
   if (body) opts.body = JSON.stringify(body);
 
-  const res = await fetch(`${API_BASE}/admin.php?action=${action}&id=${id}`, opts);
+  const res = await fetch(`${API_BASE}/admin.php?action=${action}&id=${id}&token=${encodeURIComponent(token)}`, opts);
   return res.json();
 }
 

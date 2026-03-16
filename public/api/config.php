@@ -47,8 +47,29 @@ function getDB() {
 
 // Проверка админ-токена
 function requireAdmin() {
-    $headers = getallheaders();
-    $auth = $headers['Authorization'] ?? '';
+    $auth = '';
+
+    // Способ 1: getallheaders
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+        $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
+    }
+
+    // Способ 2: $_SERVER (Apache RewriteRule)
+    if (!$auth && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
+        $auth = $_SERVER['HTTP_AUTHORIZATION'];
+    }
+
+    // Способ 3: REDIRECT_ prefix (CGI/FastCGI)
+    if (!$auth && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    }
+
+    // Способ 4: через GET параметр (fallback)
+    if (!$auth && !empty($_GET['token'])) {
+        $auth = 'Bearer ' . $_GET['token'];
+    }
+
     $token = str_replace('Bearer ', '', $auth);
 
     if ($token !== ADMIN_TOKEN) {
