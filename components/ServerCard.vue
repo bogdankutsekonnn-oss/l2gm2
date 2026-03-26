@@ -103,7 +103,7 @@ const dateInfo = computed(() => formatServerDate(props.server.startDate))
 
 // Ссылка через трекинг кликов
 const serverHref = computed(() => {
-  return `/api/out?url=${encodeURIComponent(props.server.url)}`
+  return `/api/out.php?url=${encodeURIComponent(props.server.url)}`
 })
 
 const formatRate = (rate) => {
