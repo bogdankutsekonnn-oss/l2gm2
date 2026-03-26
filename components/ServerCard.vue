@@ -101,12 +101,9 @@ const props = defineProps({
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
 
-// Ссылка через трекинг кликов (API) или напрямую (JSON fallback)
+// Ссылка через трекинг кликов
 const serverHref = computed(() => {
-  if (props.server.id) {
-    return `/api/out?id=${props.server.id}`
-  }
-  return props.server.url
+  return `/api/out?url=${encodeURIComponent(props.server.url)}`
 })
 
 const formatRate = (rate) => {
