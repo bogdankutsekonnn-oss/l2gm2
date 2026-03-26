@@ -30,7 +30,13 @@ export const useFilters = () => {
   const getServers = (filters = {}) => {
     // Берём серверы из API если загружены, иначе из JSON
     const source = apiServers.value || serversJson
-    let filtered = [...source]
+
+    // Не показываем серверы, которые открылись больше 30 дней назад
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const thirtyDaysAgo = new Date(today)
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    let filtered = source.filter(s => new Date(s.startDate) >= thirtyDaysAgo)
 
     if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)

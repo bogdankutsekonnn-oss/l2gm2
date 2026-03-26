@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="server.url"
+    :href="serverHref"
     :class="['server-card', `server-card--${cardStatus}`]"
     target="_blank"
     rel="noopener noreferrer"
@@ -100,6 +100,14 @@ const props = defineProps({
 })
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
+
+// Ссылка через трекинг кликов (API) или напрямую (JSON fallback)
+const serverHref = computed(() => {
+  if (props.server.id) {
+    return `/api/out?id=${props.server.id}`
+  }
+  return props.server.url
+})
 
 const formatRate = (rate) => {
   const num = Number(rate)

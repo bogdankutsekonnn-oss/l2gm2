@@ -27,6 +27,20 @@ CREATE TABLE IF NOT EXISTS `servers` (
   INDEX `idx_chronicle` (`chronicle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Таблица кликов (трекинг переходов)
+CREATE TABLE IF NOT EXISTS `clicks` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `server_id` INT UNSIGNED NOT NULL,
+  `ip` VARCHAR(45) DEFAULT NULL,
+  `user_agent` VARCHAR(512) DEFAULT NULL,
+  `referer` VARCHAR(512) DEFAULT NULL,
+  `clicked_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_server_id` (`server_id`),
+  INDEX `idx_clicked_at` (`clicked_at`),
+  CONSTRAINT `fk_clicks_server` FOREIGN KEY (`server_id`) REFERENCES `servers`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Таблица для админа
 CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
