@@ -1,3 +1,13 @@
+// Склонение слова "сервер"
+export const pluralServers = (n) => {
+  const mod10 = n % 10
+  const mod100 = n % 100
+  if (mod100 >= 11 && mod100 <= 19) return 'серверов'
+  if (mod10 === 1) return 'сервер'
+  if (mod10 >= 2 && mod10 <= 4) return 'сервера'
+  return 'серверов'
+}
+
 // Получить текущую дату в московском времени (UTC+3)
 const getMoscowToday = () => {
   const now = new Date()

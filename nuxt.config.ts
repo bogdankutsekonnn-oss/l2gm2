@@ -130,6 +130,7 @@ export default defineNuxtConfig({
         '/placement/',
         '/about/',
         '/add-server/',
+        '/faq/',
         '/thanks/',
         // Tags
         '/today/',

@@ -4,6 +4,9 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>Анонсы серверов Lineage 2</h1>
+        <ClientOnly>
+          <span v-if="servers.length" class="servers-count">{{ servers.length }} {{ pluralServers(servers.length) }}</span>
+        </ClientOnly>
       </div>
 
       <!-- Кнопка фильтров (только мобильный) -->
@@ -93,7 +96,7 @@
 </template>
 
 <script setup>
-import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES } from '~/utils/dateUtils.js'
+import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers } from '~/utils/dateUtils.js'
 
 const { getServers, apiServers } = useFilters()
 const {

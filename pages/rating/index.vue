@@ -91,6 +91,13 @@ const ratedServers = computed(() => {
   return filtered
 })
 
+const { generateBreadcrumbJsonLd } = useSeo()
+
+const ratingBreadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Рейтинг', url: '/rating/' },
+])
+
 useHead({
   title: 'Рейтинг серверов Lineage 2 - L2GM',
   meta: [
@@ -102,7 +109,10 @@ useHead({
       name: 'robots',
       content: 'noindex, nofollow'
     }
-  ]
+  ],
+  script: [
+    { type: 'application/ld+json', innerHTML: JSON.stringify(ratingBreadcrumbJsonLd) },
+  ],
 })
 </script>
 

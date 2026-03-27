@@ -288,8 +288,45 @@ const placementLinks = [
   { to: '/chronicle/essence/', text: 'Серверы Essence' },
 ]
 
-const { getCanonicalUrl, getOgImageMeta } = useSeo()
+const { getCanonicalUrl, getOgImageMeta, generateBreadcrumbJsonLd } = useSeo()
 const canonicalUrl = getCanonicalUrl('/placement/')
+
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Размещение', url: '/placement/' },
+])
+const serviceJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Размещение серверов Lineage 2 на L2GM',
+  description: 'Рекламное размещение серверов Lineage 2: Premium, VIP статусы и баннерная реклама.',
+  url: canonicalUrl,
+  provider: {
+    '@type': 'Organization',
+    name: 'L2GM',
+    url: 'https://l2gm.com',
+  },
+  offers: [
+    {
+      '@type': 'Offer',
+      name: 'Premium размещение',
+      price: '15',
+      priceCurrency: 'USD',
+    },
+    {
+      '@type': 'Offer',
+      name: 'VIP размещение',
+      price: '9',
+      priceCurrency: 'USD',
+    },
+    {
+      '@type': 'Offer',
+      name: 'Бесплатное размещение',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+  ],
+}
 
 useHead({
   title: 'Реклама сервера Lineage 2 | Размещение в топе L2GM',
@@ -309,6 +346,10 @@ useHead({
     { name: 'twitter:description', content: 'Тарифы размещения серверов в топе L2GM.' },
   ],
   link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: [
+    { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(serviceJsonLd) },
+  ],
 })
 </script>
 

@@ -4,6 +4,9 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>{{ h1 }}</h1>
+        <ClientOnly>
+          <span v-if="filteredServers.length" class="servers-count">Найдено {{ filteredServers.length }} {{ pluralServers(filteredServers.length) }}</span>
+        </ClientOnly>
       </div>
 
       <MobileFilters />
@@ -75,7 +78,7 @@ const {
   generateBreadcrumbJsonLd,
   generateCollectionPageJsonLd,
 } = useSeo()
-import { getOrderedCategories } from '~/utils/dateUtils.js'
+import { getOrderedCategories, pluralServers } from '~/utils/dateUtils.js'
 
 const chronicleSlug = route.params.chronicle
 const rateSlug = route.params.rate

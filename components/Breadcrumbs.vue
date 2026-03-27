@@ -84,6 +84,7 @@ const staticPages = {
   '/placement/': 'Размещение',
   '/rating/': 'Рейтинг',
   '/add-server/': 'Добавить сервер',
+  '/faq/': 'Частые вопросы',
   '/thanks/': 'Спасибо',
 }
 

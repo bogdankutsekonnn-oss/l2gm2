@@ -4,6 +4,9 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>{{ h1 }}</h1>
+        <ClientOnly>
+          <span v-if="filteredServers.length" class="servers-count">Найдено {{ filteredServers.length }} {{ pluralServers(filteredServers.length) }}</span>
+        </ClientOnly>
       </div>
 
       <MobileFilters />
@@ -64,7 +67,7 @@
 </template>
 
 <script setup>
-import { getOrderedCategories } from '~/utils/dateUtils.js'
+import { getOrderedCategories, pluralServers } from '~/utils/dateUtils.js'
 import tagsData from '~/data/tags.json'
 
 const route = useRoute()

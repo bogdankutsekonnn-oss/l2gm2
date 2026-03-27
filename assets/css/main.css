@@ -111,6 +111,14 @@
   color: var(--text-secondary);
 }
 
+.servers-count {
+  display: inline-block;
+  margin: 4px 0 0 16px;
+  font-size: var(--font-sm);
+  color: var(--text-disabled);
+  font-weight: var(--font-medium);
+}
+
 .page-layout {
   display: grid;
   grid-template-columns: 1fr 270px;

@@ -4,6 +4,9 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>{{ h1 }}</h1>
+        <ClientOnly>
+          <span v-if="filteredServers.length" class="servers-count">Найдено {{ filteredServers.length }} {{ pluralServers(filteredServers.length) }}</span>
+        </ClientOnly>
       </div>
 
       <MobileFilters />
@@ -66,7 +69,7 @@
 const route = useRoute()
 const { getServers } = useFilters()
 const { generateDateSeoText, getCanonicalUrl, getOgImageMeta, generateBreadcrumbJsonLd } = useSeo()
-import { getOrderedCategories } from '~/utils/dateUtils.js'
+import { getOrderedCategories, pluralServers } from '~/utils/dateUtils.js'
 
 const dateSlug = route.params.date
 

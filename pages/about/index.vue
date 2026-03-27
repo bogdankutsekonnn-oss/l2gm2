@@ -87,8 +87,26 @@
 </template>
 
 <script setup>
-const { getCanonicalUrl } = useSeo()
+const { getCanonicalUrl, generateBreadcrumbJsonLd, generateOrganizationJsonLd } = useSeo()
 const canonicalUrl = getCanonicalUrl('/about/')
+
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: 'О нас', url: '/about/' },
+])
+const orgJsonLd = generateOrganizationJsonLd()
+const aboutJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'О нас | L2GM',
+  description: 'L2GM - платформа для поиска серверов Lineage 2.',
+  url: canonicalUrl,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'L2GM',
+    url: 'https://l2gm.com',
+  },
+}
 
 const seoText = `Каждый день десятки серверов Lineage 2 открывают свои двери, и разобраться в этом потоке бывает непросто. L2GM берёт на себя задачу структурировать информацию: мы проверяем данные, группируем проекты по датам и характеристикам и показываем только то, что действительно актуально.
 
@@ -116,6 +134,11 @@ useHead({
     { name: 'twitter:description', content: 'L2GM - платформа для поиска серверов Lineage 2.' },
   ],
   link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: [
+    { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(orgJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(aboutJsonLd) },
+  ],
 })
 </script>
 
