@@ -2,7 +2,7 @@
 
 /* Контейнер */
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
 }
@@ -122,7 +122,7 @@
 .page-layout {
   display: grid;
   grid-template-columns: 1fr 270px;
-  gap: 24px;
+  gap: 32px;
   padding: 16px;
 }
 
@@ -135,8 +135,8 @@
 
 .categories-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-sm);
+  grid-template-columns: minmax(0, 420px) minmax(0, 420px);
+  gap: var(--spacing-md);
   align-items: start;
 }
 
@@ -150,10 +150,19 @@
 }
 
 .category-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   font-size: var(--font-xl);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
+}
+
+.category-date {
+  font-size: var(--font-sm);
+  font-weight: var(--font-regular);
+  color: var(--text-disabled);
 }
 
 .servers-grid {

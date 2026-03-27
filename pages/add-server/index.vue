@@ -689,6 +689,24 @@ const addServerBreadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Добавить сервер', url: '/add-server/' },
 ])
 
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Добавить сервер Lineage 2',
+  description: 'Добавьте свой сервер Lineage 2 на наш сайт. Размещение серверов всех хроник и рейтов.',
+  url: addServerCanonical,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'L2GM',
+    url: 'https://l2gm.com',
+  },
+  potentialAction: {
+    '@type': 'CreateAction',
+    name: 'Добавить сервер',
+    target: addServerCanonical,
+  },
+}
+
 useHead({
   title: 'Добавить сервер Lineage 2 - L2GM',
   meta: [
@@ -701,6 +719,7 @@ useHead({
   link: [{ rel: 'canonical', href: addServerCanonical }],
   script: [
     { type: 'application/ld+json', innerHTML: JSON.stringify(addServerBreadcrumbJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(webPageJsonLd) },
   ],
 })
 </script>

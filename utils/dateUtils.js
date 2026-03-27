@@ -24,6 +24,30 @@ const parseServerDate = (dateString) => {
   return new Date(year, month - 1, day, 0, 0, 0, 0)
 }
 
+// Дата + день недели для категорий "Сегодня" и "Завтра"
+const WEEKDAYS = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+
+export const getCategoryDate = (categoryName) => {
+  const today = getMoscowToday()
+  let date = null
+
+  if (categoryName === 'Сегодня') {
+    date = today
+  } else if (categoryName === 'Завтра') {
+    date = new Date(today)
+    date.setDate(date.getDate() + 1)
+  } else {
+    return null
+  }
+
+  const dd = String(date.getDate()).padStart(2, '0')
+  const mm = String(date.getMonth() + 1).padStart(2, '0')
+  const yyyy = date.getFullYear()
+  const weekday = WEEKDAYS[date.getDay()]
+
+  return `${dd}.${mm}.${yyyy} / ${weekday}`
+}
+
 export const formatServerDate = (dateString) => {
   if (!dateString) return ''
 
@@ -55,6 +79,7 @@ export const formatServerDate = (dateString) => {
 // Категории для будущих серверов (левая колонка)
 export const FUTURE_CATEGORIES = [
   'Скоро откроются',      // платные, дата >= сегодня
+  'Сегодня',              // все, дата === сегодня
   'Завтра',               // все, завтра
   'Ближайшие 7 дней',     // все, 2-7 дней вперёд
   'Через неделю и более'  // все, >7 дней вперёд
@@ -117,6 +142,7 @@ const sortByDateDesc = (a, b) => {
 export const categorizeServers = (servers) => {
   const categories = {
     'Скоро откроются': [],
+    'Сегодня': [],
     'Завтра': [],
     'Ближайшие 7 дней': [],
     'Через неделю и более': [],
@@ -147,8 +173,10 @@ export const categorizeServers = (servers) => {
       // Платные → «Скоро откроются»
       if (isPaid) categories['Скоро откроются'].push(s)
 
-      // Все → по временным разделам (сегодня только в «Скоро»)
-      if (diffDays === 1) {
+      // Все → по временным разделам
+      if (diffDays === 0) {
+        categories['Сегодня'].push(s)
+      } else if (diffDays === 1) {
         categories['Завтра'].push(s)
       } else if (diffDays >= 2 && diffDays <= 7) {
         categories['Ближайшие 7 дней'].push(s)
@@ -185,7 +213,7 @@ export const categorizeServers = (servers) => {
   }
 
   // Будущие разделы — ближайшие даты сначала
-  ;['Завтра', 'Ближайшие 7 дней', 'Через неделю и более'].forEach(cat => {
+  ;['Сегодня', 'Завтра', 'Ближайшие 7 дней', 'Через неделю и более'].forEach(cat => {
     categories[cat] = categories[cat].sort(sortByDateAsc)
   })
 

@@ -4,9 +4,6 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>Анонсы серверов Lineage 2</h1>
-        <ClientOnly>
-          <span v-if="servers.length" class="servers-count">{{ servers.length }} {{ pluralServers(servers.length) }}</span>
-        </ClientOnly>
       </div>
 
       <!-- Кнопка фильтров (только мобильный) -->
@@ -28,7 +25,10 @@
                 :key="category.name"
                 class="server-category"
               >
-                <h2 class="category-title">{{ category.name }}</h2>
+                <h2 class="category-title">
+                  {{ category.name }}
+                  <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
+                </h2>
                 <div class="servers-grid">
                   <ServerCard
                     v-for="server in category.servers"
@@ -46,7 +46,10 @@
                 :key="category.name"
                 class="server-category"
               >
-                <h2 class="category-title">{{ category.name }}</h2>
+                <h2 class="category-title">
+                  {{ category.name }}
+                  <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
+                </h2>
                 <div class="servers-grid">
                   <ServerCard
                     v-for="server in category.servers"
@@ -96,7 +99,7 @@
 </template>
 
 <script setup>
-import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers } from '~/utils/dateUtils.js'
+import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers, getCategoryDate } from '~/utils/dateUtils.js'
 
 const { getServers, apiServers } = useFilters()
 const {

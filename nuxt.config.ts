@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/sitemap', '@nuxtjs/robots', '@nuxt/image'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxt/image'],
 
   image: {
     quality: 80,
@@ -20,11 +20,6 @@ export default defineNuxtConfig({
   site: {
     url: 'https://l2gm.com',
     name: 'L2GM - Анонсы серверов Lineage 2',
-  },
-
-  // Sitemap конфигурация
-  sitemap: {
-    strictNuxtContentPaths: true,
   },
 
   // Robots.txt конфигурация
