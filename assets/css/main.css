@@ -122,7 +122,7 @@
 .page-layout {
   display: grid;
   grid-template-columns: 1fr 270px;
-  gap: 32px;
+  gap: 40px;
   padding: 16px;
 }
 
@@ -135,7 +135,7 @@
 
 .categories-grid {
   display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 420px);
+  grid-template-columns: 1fr 1fr;
   gap: var(--spacing-md);
   align-items: start;
 }
