@@ -173,6 +173,9 @@ const badgeText = (badge) => {
 .server-card__left {
   display: flex;
   align-items: center;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .server-card__status {
@@ -195,6 +198,10 @@ const badgeText = (badge) => {
   font-size: 13px;
   text-transform: uppercase;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 
@@ -216,6 +223,7 @@ const badgeText = (badge) => {
   display: flex;
   align-items: center;
   padding-right: 6px;
+  flex-shrink: 0;
 }
 
 .server-card__rate,

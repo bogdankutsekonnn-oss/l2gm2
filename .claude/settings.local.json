@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; d=json.load\\(open\\(r'C:\\\\Users\\\\Admin\\\\Desktop\\\\l2gm\\\\data\\\\servers.json',encoding='utf-8'\\)\\); print\\('count:',len\\(d\\)\\); print\\('max id:',max\\(s['id'] for s in d\\)\\); import collections; print\\('cardTypes:',collections.Counter\\(s['cardType'] for s in d\\)\\); print\\('dates:', sorted\\(set\\(s['startDate'] for s in d\\)\\)\\)\")",
+      "Bash(node -e \"const d=require\\('C:/Users/Admin/Desktop/l2gm/data/servers.json'\\); console.log\\('count:',d.length\\); console.log\\('max id:',Math.max\\(...d.map\\(s=>s.id\\)\\)\\); const c={}; d.forEach\\(s=>c[s.cardType]=\\(c[s.cardType]||0\\)+1\\); console.log\\('cardTypes:',c\\); console.log\\('dates:',[...new Set\\(d.map\\(s=>s.startDate\\)\\)].sort\\(\\)\\); console.log\\('chronicles:',[...new Set\\(d.map\\(s=>s.chronicle\\)\\)].sort\\(\\)\\);\")",
+      "WebFetch(domain:www.l2oops.com)",
+      "WebFetch(domain:l2pick.com)",
+      "WebFetch(domain:l2-top.com)",
+      "Bash(node -e \"const d=require\\('C:/Users/Admin/Desktop/l2gm/data/servers.json'\\); console.log\\('count:',d.length\\); const bad=d.filter\\(s=>s.startDate<'2026-03-16'\\); console.log\\('below cutoff:',bad.length\\); const dates=d.slice\\(-9\\).map\\(s=>s.startDate\\).sort\\(\\); console.log\\('new range:',dates[0],'to',dates[dates.length-1]\\); console.log\\('last id:',d[d.length-1].id\\);\")",
+      "Bash(node -e \"const d=require\\('C:/Users/Admin/Desktop/l2gm/data/servers.json'\\); console.log\\('count:',d.length\\); console.log\\('max id:',Math.max\\(...d.map\\(s=>s.id\\)\\)\\); const c={}; d.forEach\\(s=>c[s.cardType]=\\(c[s.cardType]||0\\)+1\\); console.log\\('cardTypes:',c\\); console.log\\('new ids 263+:', d.filter\\(s=>s.id>=263\\).map\\(s=>\\({id:s.id,name:s.name,chronicle:s.chronicle,rate:s.rate,date:s.startDate,url:s.url}\\)\\)\\);\")"
+    ]
+  }
+}

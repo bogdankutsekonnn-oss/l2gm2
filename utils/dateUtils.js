@@ -125,18 +125,26 @@ export const isPlacementExpired = (server) => {
   return parseServerDate(server.expiresAt) < today
 }
 
-// Сортировка по дате: ближайшие сначала (для будущих серверов)
+// Приоритет типов карточек: платные сначала
+const CARD_TYPE_PRIORITY = { premium: 0, vip: 1, top: 2, basic: 3 }
+const getCardPriority = (s) => CARD_TYPE_PRIORITY[s.cardType] ?? 3
+
+// Сортировка по дате: ближайшие сначала, затем по приоритету карточки
 const sortByDateAsc = (a, b) => {
   const dateA = new Date(a.startDate || '9999-12-31')
   const dateB = new Date(b.startDate || '9999-12-31')
-  return dateA - dateB
+  const diff = dateA - dateB
+  if (diff !== 0) return diff
+  return getCardPriority(a) - getCardPriority(b)
 }
 
-// Сортировка по дате: недавние сначала (для прошлых серверов)
+// Сортировка по дате: недавние сначала, затем по приоритету карточки
 const sortByDateDesc = (a, b) => {
   const dateA = new Date(a.startDate || '1970-01-01')
   const dateB = new Date(b.startDate || '1970-01-01')
-  return dateB - dateA
+  const diff = dateB - dateA
+  if (diff !== 0) return diff
+  return getCardPriority(a) - getCardPriority(b)
 }
 
 export const categorizeServers = (servers) => {
