@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-else class="no-servers">
-          <p>Серверы не найдены</p>
+          <p>Сервера не найдены</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <SeoSection
-      :title="`Серверы Lineage 2 ${chronicleName} ${rateText}`"
+      :title="`Сервера Lineage 2 ${chronicleName} ${rateText}`"
       :text="seoText"
     />
   </div>

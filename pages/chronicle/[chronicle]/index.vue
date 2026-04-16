@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-else class="no-servers">
-          <p>Серверы не найдены</p>
+          <p>Сервера не найдены</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <SeoSection
-      :title="`Серверы Lineage 2 ${chronicleName}`"
+      :title="`Сервера Lineage 2 ${chronicleName}`"
       :text="seoText"
       :links="relatedChronicleLinks"
     />
@@ -100,7 +100,7 @@ const categories = computed(() => getOrderedCategories(filteredServers.value))
 const relatedChronicleLinks = computed(() =>
   chronicles
     .filter((c) => c.slug !== chronicleSlug)
-    .map((c) => ({ to: `/chronicle/${c.slug}/`, text: `Серверы ${c.name}` }))
+    .map((c) => ({ to: `/chronicle/${c.slug}/`, text: `Сервера ${c.name}` }))
 )
 
 const title = generateTitle(filters)

@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-else class="no-servers">
-          <p>Серверы не найдены</p>
+          <p>Сервера не найдены</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <SeoSection
-      :title="`Серверы Lineage 2 ${rateText}`"
+      :title="`Сервера Lineage 2 ${rateText}`"
       :text="seoText"
       :links="relatedRateLinks"
     />
@@ -97,7 +97,7 @@ const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
 const relatedRateLinks = computed(() =>
   rates
     .filter((r) => r.slug !== rateSlug)
-    .map((r) => ({ to: `/rate/${r.slug}/`, text: `Серверы ${r.name}` }))
+    .map((r) => ({ to: `/rate/${r.slug}/`, text: `Сервера ${r.name}` }))
 )
 
 const filters = { rate: rateSlug }

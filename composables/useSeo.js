@@ -11,21 +11,48 @@ export const useSeo = () => {
     return chronicle?.seoName || chronicle?.name || ''
   }
 
+  // Получить русское название хроники
+  const getChronicleSeoNameRu = (chronicle) => {
+    return chronicle?.seoNameRu || chronicle?.nameRu || ''
+  }
+
+  // Короткое название для title (до 70 символов)
+  const getChronicleTitleName = (chronicle) => {
+    return chronicle?.titleName || chronicle?.name || ''
+  }
+  const getChronicleTitleNameRu = (chronicle) => {
+    return chronicle?.titleNameRu || chronicle?.nameRu || ''
+  }
+
+  // Склейка "Interlude (Интерлюд)" для description (длинная форма)
+  const getChronicleFullName = (chronicle) => {
+    const en = getChronicleSeoName(chronicle)
+    const ru = getChronicleSeoNameRu(chronicle)
+    return ru ? `${en} (${ru})` : en
+  }
+
+  // Склейка для title (короткая форма)
+  const getChronicleTitleFull = (chronicle) => {
+    const en = getChronicleTitleName(chronicle)
+    const ru = getChronicleTitleNameRu(chronicle)
+    return ru ? `${en} (${ru})` : en
+  }
+
   const generateTitle = (filters = {}) => {
     if (filters.chronicle && filters.rate) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName} | L2GM`
+      return `Сервера Л2 ${getChronicleTitleFull(chronicle)} ${rateName} — анонсы 2026 | L2GM`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} | L2GM`
+      return `Сервера Lineage 2 ${getChronicleTitleFull(chronicle)} — анонсы Л2 | L2GM`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${rateName} | L2GM`
+      return `Сервера Lineage 2 ${rateName} — список серверов Л2 ${rateName} | L2GM`
     }
-    return 'Анонсы серверов Lineage 2 | L2GM'
+    return 'Анонсы серверов Lineage 2 2026 — новые сервера Л2 | L2GM'
   }
 
   const generateH1 = (filters = {}) => {
@@ -33,14 +60,14 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName}`
+      return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName}`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)}`
+      return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)}`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${rateName}`
+      return `Сервера Lineage 2 с рейтами ${rateName}`
     }
     return 'Анонсы серверов Lineage 2'
   }
@@ -50,40 +77,69 @@ export const useSeo = () => {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName} — актуальные анонсы с датами открытия. Выбирайте подходящий проект на L2GM.`
+      const ru = getChronicleSeoNameRu(chronicle)
+      return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName} 2026 — анонсы и даты открытия. Список новых Л2${ru ? ' ' + ru : ''} ${rateName} с описанием и онлайном на L2GM!`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Серверы Lineage 2 ${getChronicleSeoName(chronicle)} — анонсы новых проектов с датами открытия и описанием на L2GM.`
+      const ru = getChronicleSeoNameRu(chronicle)
+      return `Новые сервера Lineage 2 ${getChronicleSeoName(chronicle)} с рейтами x1, x10, x50, x100, x1200. Анонсы Л2${ru ? ' ' + ru : ''} — PvP, Craft, Low Rate. Даты открытия на L2GM!`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      return `Серверы Lineage 2 с рейтами ${rateName} — анонсы проектов всех хроник с датами старта на L2GM.`
+      return `Сервера Lineage 2 с рейтами ${rateName} — анонсы новых Л2 ${rateName} всех хроник: Interlude, High Five, Classic, Essence. Даты старта на L2GM!`
     }
-    return 'Анонсы серверов Lineage 2 с датами открытия. Найдите новый сервер по хроникам и рейтам на L2GM.'
+    return 'Анонсы серверов Lineage 2 2026 с датами старта. Новые сервера Л2 всех хроник и рейтов — Interlude, High Five, Essence. Выбирай лучший проект на L2GM!'
   }
 
   // Генерация ключевых слов
   const generateKeywords = (filters = {}) => {
-    const keywords = ['lineage 2', 'l2', 'серверы lineage 2', 'анонсы серверов', 'новые серверы']
+    const keywords = [
+      'lineage 2', 'l2', 'л2', 'ла2', 'лайнейдж 2',
+      'сервера lineage 2', 'серверы lineage 2', 'сервера л2', 'сервера ла2',
+      'анонсы серверов', 'новые сервера', 'новые сервера лайн 2',
+      'рейтинг серверов lineage 2', 'топ серверов l2'
+    ]
 
     if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
       if (chronicle) {
+        const en = chronicle.name.toLowerCase()
         keywords.push(
-          `lineage 2 ${chronicle.name.toLowerCase()}`,
-          `серверы ${chronicle.name.toLowerCase()}`
+          `lineage 2 ${en}`,
+          `сервера lineage 2 ${en}`,
+          `сервера ${en}`,
+          `l2 ${en}`
         )
+        if (chronicle.nameRu) {
+          const ru = chronicle.nameRu.toLowerCase()
+          keywords.push(
+            `сервера л2 ${ru}`,
+            `сервера ла2 ${ru}`,
+            `л2 ${ru}`,
+            `${ru} сервера`
+          )
+        }
       }
     }
 
     if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
-      keywords.push(`lineage 2 ${rateName}`, `серверы ${rateName}`)
+      keywords.push(
+        `lineage 2 ${rateName}`,
+        `сервера lineage 2 ${rateName}`,
+        `сервера ${rateName}`,
+        `л2 ${rateName}`,
+        `сервера л2 ${rateName}`
+      )
     }
 
     if (!filters.chronicle && !filters.rate) {
-      keywords.push('interlude', 'high five', 'essence', 'открытие сервера')
+      keywords.push(
+        'interlude', 'интерлюд', 'high five', 'хай файв',
+        'essence', 'эссенс', 'classic', 'классик',
+        'открытие сервера', 'анонсы л2', 'приват сервера lineage 2'
+      )
     }
 
     return [...new Set(keywords)].join(', ')
@@ -105,9 +161,9 @@ export const useSeo = () => {
 
   // Описания для разных рейтов
   const rateDescriptions = {
-    'low': 'Лоу рейт серверы (x1-x15) — настоящий хардкор для ценителей. Каждый уровень здесь — маленькая победа, а топовая экипировка — результат месяцев упорного труда. На таких серверах формируются крепкие кланы, где каждый игрок на счету. Экономика стабильна, а PvP имеет реальные последствия. Если вы готовы вложить время и получить незабываемый опыт — лоу рейт ваш выбор.',
-    'mid': 'Мид рейт серверы (x15-x100) — золотая середина мира Lineage 2. Комфортная прокачка без утомительного гринда, но с сохранением ценности достижений. Вы успеете насладиться всеми этапами игры: от первых шагов в Talking Island до эпических осад. Оптимальный выбор для игроков с ограниченным временем, которые не хотят жертвовать глубиной геймплея.',
-    'high': 'PvP серверы (x100+) — чистый экшен без лишних прелюдий. Быстрый старт, топовая экипировка в первые дни и сразу в бой! Идеально для любителей PvP, осад и клановых войн. Если вы цените динамику и хотите сразу окунуться в эндгейм контент — PvP рейты созданы для вас.',
+    'low': 'Лоу рейт сервера (x1-x15) — настоящий хардкор для ценителей. Каждый уровень здесь — маленькая победа, а топовая экипировка — результат месяцев упорного труда. На таких серверах формируются крепкие кланы, где каждый игрок на счету. Экономика стабильна, а PvP имеет реальные последствия. Если вы готовы вложить время и получить незабываемый опыт — лоу рейт ваш выбор.',
+    'mid': 'Мид рейт сервера (x15-x100) — золотая середина мира Lineage 2. Комфортная прокачка без утомительного гринда, но с сохранением ценности достижений. Вы успеете насладиться всеми этапами игры: от первых шагов в Talking Island до эпических осад. Оптимальный выбор для игроков с ограниченным временем, которые не хотят жертвовать глубиной геймплея.',
+    'high': 'PvP сервера (x100+) — чистый экшен без лишних прелюдий. Быстрый старт, топовая экипировка в первые дни и сразу в бой! Идеально для любителей PvP, осад и клановых войн. Если вы цените динамику и хотите сразу окунуться в эндгейм контент — PvP рейты созданы для вас.',
   }
 
   // Определяем тип рейта
@@ -145,13 +201,13 @@ export const useSeo = () => {
 
     // Вступительный абзац
     if (chronicle && rate) {
-      paragraphs.push(`Ищете сервер Lineage 2 ${chronicleSeoName} с рейтами ${rateName}? На этой странице собраны актуальные анонсы проектов с проверенным качеством и стабильным онлайном. L2GM ежедневно обновляет информацию, чтобы вы видели только действующие серверы.`)
+      paragraphs.push(`Ищете сервер Lineage 2 ${chronicleSeoName} с рейтами ${rateName}? На этой странице собраны актуальные анонсы проектов с проверенным качеством и стабильным онлайном. L2GM ежедневно обновляет информацию, чтобы вы видели только действующие сервера.`)
     } else if (chronicle) {
-      paragraphs.push(`На этой странице собраны все актуальные серверы Lineage 2 на хронике ${chronicleSeoName} — от лоу рейтов до хай рейтов, от хардкорных PvP проектов до уютных PvE серверов.`)
+      paragraphs.push(`На этой странице собраны все актуальные сервера Lineage 2 на хронике ${chronicleSeoName} — от лоу рейтов до хай рейтов, от хардкорных PvP проектов до уютных PvE серверов.`)
     } else if (rate) {
-      paragraphs.push(`Серверы Lineage 2 с рейтами ${rateName} — выбор игроков, которые точно знают, какой темп игры им подходит. В этом разделе собраны проекты всех популярных хроник: Interlude, High Five, Essence и другие.`)
+      paragraphs.push(`Сервера Lineage 2 с рейтами ${rateName} — выбор игроков, которые точно знают, какой темп игры им подходит. В этом разделе собраны проекты всех популярных хроник: Interlude, High Five, Essence и другие.`)
     } else {
-      paragraphs.push(`L2GM — портал анонсов серверов Lineage 2. Мы помогаем игрокам найти подходящий сервер среди сотен проектов. Здесь собраны серверы всех хроник — от легендарного Interlude до современного Essence, от хардкорных x1 до динамичных x10000.`)
+      paragraphs.push(`L2GM — портал анонсов серверов Lineage 2. Мы помогаем игрокам найти подходящий сервер среди сотен проектов. Здесь собраны сервера всех хроник — от легендарного Interlude (Интерлюд) до современного Essence (Эссенс), от хардкорных x1 до динамичных x10000.`)
     }
 
     // Описание хроники
@@ -165,29 +221,29 @@ export const useSeo = () => {
     }
 
     // Блок про качество
-    paragraphs.push(`В верхней части списка закреплены Премиум серверы — проекты с подтверждённой репутацией, стабильным онлайном и активным сообществом. Выбирая сервер с Premium-статусом, вы получаете гарантию качественной игры.`)
+    paragraphs.push(`В верхней части списка закреплены Премиум сервера — проекты с подтверждённой репутацией, стабильным онлайном и активным сообществом. Выбирая сервер с Premium-статусом, вы получаете гарантию качественной игры.`)
 
     // Блок о разнообразии серверов (только для главной)
     if (!chronicle && !rate) {
-      paragraphs.push(`На L2GM представлено всё многообразие серверов Lineage 2: классические PvE проекты, PvP серверы, Craft-ориентированные проекты, а также серверы с уникальными концепциями — GvE, RvR, мультипрофа и кастомные.`)
+      paragraphs.push(`На L2GM представлено всё многообразие серверов Lineage 2: классические PvE проекты, PvP сервера, Craft-ориентированные проекты, а также сервера с уникальными концепциями — GvE, RvR, мультипрофа и кастомные.`)
     }
 
     // Блок про удобство поиска
     if (chronicle || rate) {
       paragraphs.push(`Используйте фильтры для точного поиска: выберите хронику, диапазон рейтов или дату открытия. Календарь покажет все ближайшие старты, чтобы вы могли спланировать возвращение в мир Lineage 2.`)
     } else {
-      paragraphs.push(`Фильтруйте серверы по хроникам, рейтам или датам открытия. Каждый анонс содержит подробную информацию: хроника, рейты, особенности и дата старта.`)
+      paragraphs.push(`Фильтруйте сервера по хроникам, рейтам или датам открытия. Каждый анонс содержит подробную информацию: хроника, рейты, особенности и дата старта.`)
     }
 
     // Призыв к действию
     if (chronicle && rate) {
       paragraphs.push(`Раздел ${chronicleSeoName} ${rateName} регулярно пополняется новыми проектами. Добавьте страницу в закладки, чтобы не пропустить старт интересного сервера.`)
     } else if (chronicle) {
-      paragraphs.push(`Серверы ${chronicleSeoName} — это особенная атмосфера и преданное сообщество. Следите за обновлениями, чтобы не пропустить открытие нового проекта на любимой хронике.`)
+      paragraphs.push(`Сервера ${chronicleSeoName} — это особенная атмосфера и преданное сообщество. Следите за обновлениями, чтобы не пропустить открытие нового проекта на любимой хронике.`)
     } else if (rate) {
-      paragraphs.push(`Серверы с рейтами ${rateName} стартуют регулярно. Следите за календарём открытий и выбирайте проекты, которые подходят именно вам.`)
+      paragraphs.push(`Сервера с рейтами ${rateName} стартуют регулярно. Следите за календарём открытий и выбирайте проекты, которые подходят именно вам.`)
     } else {
-      paragraphs.push(`L2GM обновляется ежедневно. Заходите к нам регулярно, следите за анонсами и находите серверы, которые подходят именно вам. Приятной игры!`)
+      paragraphs.push(`L2GM обновляется ежедневно. Заходите к нам регулярно, следите за анонсами и находите сервера, которые подходят именно вам. Приятной игры!`)
     }
 
     return paragraphs.join('\n\n')
@@ -217,16 +273,16 @@ export const useSeo = () => {
     const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24))
 
     if (diffDays === 0) {
-      paragraphs.push(`Сегодня, ${formattedDate}, открываются новые серверы Lineage 2! Это ваш шанс начать игру с первого дня вместе с тысячами других игроков. Старт на новом сервере — уникальная возможность: все на равных, экономика чистая, а клановые войны только начинаются.`)
-      paragraphs.push(`Серверы, стартующие сегодня, собирают максимальный онлайн в первые часы после открытия. Именно сейчас формируются топовые кланы и закладываются основы будущих альянсов. Присоединяйтесь к сообществу и займите своё место в новом мире Lineage 2!`)
+      paragraphs.push(`Сегодня, ${formattedDate}, открываются новые сервера Lineage 2! Это ваш шанс начать игру с первого дня вместе с тысячами других игроков. Старт на новом сервере — уникальная возможность: все на равных, экономика чистая, а клановые войны только начинаются.`)
+      paragraphs.push(`Сервера, стартующие сегодня, собирают максимальный онлайн в первые часы после открытия. Именно сейчас формируются топовые кланы и закладываются основы будущих альянсов. Присоединяйтесь к сообществу и займите своё место в новом мире Lineage 2!`)
       paragraphs.push(`Совет от L2GM: изучите особенности каждого сервера перед выбором. Обратите внимание на хронику, рейты, наличие доната и специальные условия старта. Удачного открытия!`)
     } else if (diffDays === 1) {
-      paragraphs.push(`Завтра, ${formattedDate}, стартуют новые серверы Lineage 2! Самое время подготовиться к открытию: изучите информацию о проектах, выберите класс и соберите пати. Заранее спланированный старт — залог успешной игры.`)
+      paragraphs.push(`Завтра, ${formattedDate}, стартуют новые сервера Lineage 2! Самое время подготовиться к открытию: изучите информацию о проектах, выберите класс и соберите пати. Заранее спланированный старт — залог успешной игры.`)
       paragraphs.push(`Начать играть с первого дня сервера — это возможность оказаться в числе лидеров. Пока другие раскачиваются, вы уже будете строить клан, захватывать споты и готовиться к первым осадам. Не откладывайте подготовку на последний момент!`)
-      paragraphs.push(`На этой странице собраны все серверы Lineage 2, открывающиеся завтра. Информация обновляется регулярно — добавляйте страницу в закладки, чтобы не пропустить важные детали.`)
+      paragraphs.push(`На этой странице собраны все сервера Lineage 2, открывающиеся завтра. Информация обновляется регулярно — добавляйте страницу в закладки, чтобы не пропустить важные детали.`)
     } else if (diffDays > 1 && diffDays <= 7) {
       paragraphs.push(`В ${weekDay}, ${formattedDate}, запланировано открытие серверов Lineage 2. До старта осталось ${diffDays} ${diffDays === 2 || diffDays === 3 || diffDays === 4 ? 'дня' : 'дней'} — достаточно времени, чтобы изучить проекты, найти клан и подготовиться к игре.`)
-      paragraphs.push(`Серверы, открывающиеся в ближайшие дни, уже набирают аудиторию. На форумах обсуждаются планы на старт, формируются группы и альянсы. Присоединяйтесь к обсуждениям, чтобы найти единомышленников!`)
+      paragraphs.push(`Сервера, открывающиеся в ближайшие дни, уже набирают аудиторию. На форумах обсуждаются планы на старт, формируются группы и альянсы. Присоединяйтесь к обсуждениям, чтобы найти единомышленников!`)
       paragraphs.push(`Следите за обновлениями — информация о серверах может дополняться. На L2GM вы всегда найдёте актуальные данные о предстоящих открытиях.`)
     } else if (diffDays > 7) {
       paragraphs.push(`${formattedDate} состоится открытие серверов Lineage 2. Хотя до старта ещё есть время, уже сейчас можно изучить проекты и выбрать подходящий. Чем раньше вы определитесь, тем лучше подготовитесь.`)
@@ -237,7 +293,7 @@ export const useSeo = () => {
       paragraphs.push(`Если вы ищете сервер с более ранним стартом, используйте календарь L2GM для поиска проектов на нужную дату.`)
     }
 
-    paragraphs.push(`L2GM — актуальный рейтинг серверов Lineage 2 с удобным календарём открытий. Выбирайте серверы по хроникам, рейтам или датам старта. Желаем вам найти идеальный проект и получить удовольствие от игры!`)
+    paragraphs.push(`L2GM — актуальный рейтинг серверов Lineage 2 с удобным календарём открытий. Выбирайте сервера по хроникам, рейтам или датам старта. Желаем вам найти идеальный проект и получить удовольствие от игры!`)
 
     return paragraphs.join('\n\n')
   }
@@ -472,12 +528,12 @@ export const useSeo = () => {
 
   const generateTagTitle = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.title || 'Серверы Lineage 2 | L2GM'
+    return tag?.title || 'Сервера Lineage 2 | L2GM'
   }
 
   const generateTagH1 = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.h1 || 'Серверы Lineage 2'
+    return tag?.h1 || 'Сервера Lineage 2'
   }
 
   const generateTagDescription = (tagSlug) => {
@@ -487,7 +543,7 @@ export const useSeo = () => {
 
   const generateTagKeywords = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.keywords || 'серверы lineage 2, lineage 2, l2'
+    return tag?.keywords || 'сервера lineage 2, lineage 2, l2, л2, сервера л2'
   }
 
   const generateTagSeoText = (tagSlug) => {
@@ -497,7 +553,7 @@ export const useSeo = () => {
 
   const generateTagSeoTitle = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.seoTitle || 'Серверы Lineage 2'
+    return tag?.seoTitle || 'Сервера Lineage 2'
   }
 
   const getTagFilter = (tagSlug) => {
@@ -507,7 +563,7 @@ export const useSeo = () => {
 
   const getTagEmptyMessage = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.emptyMessage || 'Серверы не найдены'
+    return tag?.emptyMessage || 'Сервера не найдены'
   }
 
   const generateTagFullMeta = (tagSlug) => {

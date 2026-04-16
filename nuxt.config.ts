@@ -47,12 +47,12 @@ export default defineNuxtConfig({
         {
           name: 'description',
           content:
-            'Анонсы серверов Lineage 2 с датами открытия. Найдите новый сервер по хроникам и рейтам на L2GM.',
+            'Анонсы серверов Lineage 2 2026 с датами старта. Новые сервера Л2 всех хроник и рейтов — Interlude, High Five, Essence. Выбирай лучший проект на L2GM!',
         },
         {
           name: 'keywords',
           content:
-            'lineage 2, серверы lineage 2, анонсы серверов, новые серверы l2, interlude, high five, essence',
+            'lineage 2, л2, ла2, сервера lineage 2, сервера л2, анонсы серверов, новые сервера л2, новые сервера l2, interlude, интерлюд, high five, хай файв, essence, эссенс, classic, классик',
         },
         { name: 'author', content: 'L2GM' },
         { name: 'robots', content: 'index, follow' },

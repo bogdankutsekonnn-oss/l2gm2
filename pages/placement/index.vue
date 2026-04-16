@@ -148,7 +148,7 @@
               </div>
             </div>
 
-            <p class="placement-block__description">VIP серверы получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
+            <p class="placement-block__description">VIP сервера получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
 
             <div class="placement-block__actions">
               <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
@@ -282,10 +282,10 @@ const seoText = `Размещение сервера на L2GM — это спо
 const placementLinks = [
   { to: '/add-server/', text: 'Добавить сервер' },
   { to: '/', text: 'Анонсы серверов' },
-  { to: '/pvp/', text: 'PvP серверы' },
-  { to: '/chronicle/interlude/', text: 'Серверы Interlude' },
-  { to: '/chronicle/high-five/', text: 'Серверы High Five' },
-  { to: '/chronicle/essence/', text: 'Серверы Essence' },
+  { to: '/pvp/', text: 'PvP сервера' },
+  { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
+  { to: '/chronicle/high-five/', text: 'Сервера High Five' },
+  { to: '/chronicle/essence/', text: 'Сервера Essence' },
 ]
 
 const { getCanonicalUrl, getOgImageMeta, generateBreadcrumbJsonLd } = useSeo()

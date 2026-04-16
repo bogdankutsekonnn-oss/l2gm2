@@ -54,7 +54,7 @@
           </div>
         </div>
         <div v-else class="no-servers">
-          <p>Серверы не найдены</p>
+          <p>Сервера не найдены</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <SeoSection
-      :title="`Серверы Lineage 2 на ${formattedDate}`"
+      :title="`Сервера Lineage 2 на ${formattedDate}`"
       :text="seoText"
     />
   </div>
@@ -132,7 +132,7 @@ const formattedDate = formatDateTitle(dateSlug)
 const h1 = `Сервера Lineage 2 | ${dateText}`
 const title = `Сервера Lineage 2 ${formattedDate} | L2GM`
 const description = `Список серверов Lineage 2 открывающихся ${formattedDate}. Не пропустите старт!`
-const keywords = `lineage 2, серверы ${formattedDate}, открытие серверов, новые серверы l2`
+const keywords = `lineage 2, л2, сервера ${formattedDate}, сервера л2 ${formattedDate}, открытие серверов, новые сервера l2, новые сервера л2`
 const seoText = generateDateSeoText(dateSlug)
 const canonicalUrl = getCanonicalUrl(route.path)
 

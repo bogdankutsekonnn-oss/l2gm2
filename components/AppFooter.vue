@@ -49,10 +49,10 @@
 
             <!-- Серверы -->
             <div class="footer-column">
-              <div class="footer-column-title">СЕРВЕРЫ</div>
+              <div class="footer-column-title">СЕРВЕРА</div>
               <nav class="footer-column-links">
-                <NuxtLink to="/pvp/">PvP серверы</NuxtLink>
-                <NuxtLink to="/gve/">GVE серверы</NuxtLink>
+                <NuxtLink to="/pvp/">PvP сервера</NuxtLink>
+                <NuxtLink to="/gve/">GVE сервера</NuxtLink>
                 <NuxtLink to="/multicraft/">Мультикрафт</NuxtLink>
                 <NuxtLink to="/foreign/">Зарубежные</NuxtLink>
                 <NuxtLink to="/low-rate/">Low рейты</NuxtLink>

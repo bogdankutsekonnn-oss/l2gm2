@@ -92,7 +92,7 @@
     </div>
 
     <SeoSection
-      title="Серверы Lineage 2 с актуальным онлайном"
+      title="Сервера Lineage 2 с актуальным онлайном"
       :text="seoText"
     />
   </div>
@@ -152,7 +152,7 @@ const collectionJsonLd = generateCollectionPageJsonLd(
 )
 
 useHead({
-  title: 'Анонсы серверов Lineage 2 | L2GM',
+  title: 'Анонсы серверов Lineage 2 2026 — новые сервера Л2 | L2GM',
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },

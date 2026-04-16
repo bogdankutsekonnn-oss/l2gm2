@@ -2,48 +2,63 @@
   {
     "id": "c4",
     "name": "C4",
+    "nameRu": "Си 4",
     "slug": "c4"
   },
   {
     "id": "interlude",
     "name": "Interlude",
+    "nameRu": "Интерлюд",
     "slug": "interlude"
   },
   {
     "id": "interlude-plus",
     "name": "Interlude+",
+    "nameRu": "Интерлюд+",
     "seoName": "Interlude с дополнениями",
+    "seoNameRu": "Интерлюд с дополнениями",
+    "titleName": "Interlude+",
+    "titleNameRu": "Интерлюд+",
     "slug": "interlude-plus"
   },
   {
     "id": "classic",
     "name": "Classic",
+    "nameRu": "Классик",
     "slug": "classic"
   },
   {
     "id": "high-five-plus",
     "name": "High Five+",
+    "nameRu": "Хай Файв+",
     "seoName": "High Five с дополнениями",
+    "seoNameRu": "Хай Файв с дополнениями",
+    "titleName": "High Five+",
+    "titleNameRu": "Хай Файв+",
     "slug": "high-five-plus"
   },
   {
     "id": "high-five",
     "name": "High Five",
+    "nameRu": "Хай Файв",
     "slug": "high-five"
   },
   {
     "id": "epilogue",
     "name": "Epilogue",
+    "nameRu": "Эпилог",
     "slug": "epilogue"
   },
   {
     "id": "essence",
     "name": "Essence",
+    "nameRu": "Эссенс",
     "slug": "essence"
   },
   {
     "id": "crusade",
     "name": "Crusade",
+    "nameRu": "Крусейд",
     "slug": "crusade"
   }
 ]
