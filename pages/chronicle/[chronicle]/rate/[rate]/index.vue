@@ -67,6 +67,9 @@
     <SeoSection
       :title="`Сервера Lineage 2 ${chronicleName} ${rateText}`"
       :text="seoText"
+      :links="siblingRateLinks"
+      :combo-links="siblingChronicleLinks"
+      :combo-links-title="`${rateText} на других хрониках`"
     />
 
     <FaqBlock :items="faqItems" />
@@ -102,6 +105,25 @@ const rate = rates.find((r) => r.slug === rateSlug)
 const chronicleName = chronicle?.name || ''
 // Если это ренж (содержит "-"), показываем как есть, иначе ищем в рейтах
 const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
+
+// Кросс-ссылки: другие рейты этой хроники + другие хроники с этим рейтом
+const siblingRateLinks = computed(() =>
+  rates
+    .filter((r) => r.slug !== rateSlug)
+    .map((r) => ({
+      to: `/chronicle/${chronicleSlug}/rate/${r.slug}/`,
+      text: `${chronicleName} ${r.name}`
+    }))
+)
+
+const siblingChronicleLinks = computed(() =>
+  chronicles
+    .filter((c) => c.slug !== chronicleSlug)
+    .map((c) => ({
+      to: `/chronicle/${c.slug}/rate/${rateSlug}/`,
+      text: `${c.name} ${rateText}`
+    }))
+)
 
 const filters = {
   chronicle: chronicleSlug,

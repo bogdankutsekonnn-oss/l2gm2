@@ -94,6 +94,9 @@
     <SeoSection
       title="Сервера Lineage 2 с актуальным онлайном"
       :text="seoText"
+      :links="chronicleLinks"
+      :combo-links="popularComboLinks"
+      combo-links-title="Популярные категории"
     />
 
     <FaqBlock :items="faqItems" />
@@ -135,6 +138,32 @@ const rightCategories = computed(() =>
     .filter(name => categorized.value[name]?.length)
     .map(name => ({ name, servers: categorized.value[name] }))
 )
+
+// Ссылки для перелинковки
+const chronicleLinks = [
+  { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
+  { to: '/chronicle/high-five/', text: 'Сервера High Five' },
+  { to: '/chronicle/classic/', text: 'Сервера Classic' },
+  { to: '/chronicle/essence/', text: 'Сервера Essence' },
+  { to: '/chronicle/c4/', text: 'Сервера C4' },
+  { to: '/chronicle/interlude-plus/', text: 'Сервера Interlude+' },
+  { to: '/chronicle/high-five-plus/', text: 'Сервера High Five+' },
+]
+
+const popularComboLinks = [
+  { to: '/chronicle/interlude/rate/x1/', text: 'Interlude x1' },
+  { to: '/chronicle/interlude/rate/x3/', text: 'Interlude x3' },
+  { to: '/chronicle/interlude/rate/x50/', text: 'Interlude x50' },
+  { to: '/chronicle/interlude/rate/x1200/', text: 'Interlude x1200' },
+  { to: '/chronicle/high-five/rate/x1/', text: 'High Five x1' },
+  { to: '/chronicle/high-five/rate/x50/', text: 'High Five x50' },
+  { to: '/chronicle/high-five/rate/x100/', text: 'High Five x100' },
+  { to: '/chronicle/essence/rate/x50/', text: 'Essence x50' },
+  { to: '/chronicle/essence/rate/x1200/', text: 'Essence x1200' },
+  { to: '/chronicle/classic/rate/x1/', text: 'Classic x1' },
+  { to: '/chronicle/classic/rate/x3/', text: 'Classic x3' },
+  { to: '/chronicle/c4/rate/x1/', text: 'C4 x1' },
+]
 
 const seoText = generateSeoText()
 const description = generateDescription()

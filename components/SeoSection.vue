@@ -11,6 +11,14 @@
         {{ link.text }}
       </NuxtLink>
     </div>
+    <div v-if="comboLinks?.length" class="seo-links-section">
+      <h3 v-if="comboLinksTitle" class="seo-links-title">{{ comboLinksTitle }}</h3>
+      <div class="seo-links">
+        <NuxtLink v-for="link in comboLinks" :key="link.to" :to="link.to" class="seo-links__item">
+          {{ link.text }}
+        </NuxtLink>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,6 +35,14 @@ const props = defineProps({
   links: {
     type: Array,
     default: () => [],
+  },
+  comboLinks: {
+    type: Array,
+    default: () => [],
+  },
+  comboLinksTitle: {
+    type: String,
+    default: '',
   },
 })
 
@@ -56,5 +72,16 @@ const paragraphs = computed(() =>
 .seo-links__item:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
+}
+
+.seo-links-section {
+  margin-top: var(--spacing-lg);
+}
+
+.seo-links-title {
+  font-size: var(--font-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
 }
 </style>

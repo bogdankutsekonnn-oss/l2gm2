@@ -68,6 +68,8 @@
       :title="`Сервера Lineage 2 ${rateText}`"
       :text="seoText"
       :links="relatedRateLinks"
+      :combo-links="comboChronicleLinks"
+      :combo-links-title="`${rateText} по хроникам`"
     />
 
     <FaqBlock :items="faqItems" />
@@ -76,7 +78,7 @@
 
 <script setup>
 const route = useRoute()
-const { getServers, getRates } = useFilters()
+const { getServers, getRates, getChronicles } = useFilters()
 const {
   generateTitle,
   generateH1,
@@ -98,10 +100,19 @@ const rate = rates.find((r) => r.slug === rateSlug)
 // Если это ренж (содержит "-"), показываем как есть, иначе ищем в рейтах
 const rateText = rateSlug.includes('-') ? rateSlug : (rate?.name || rateSlug)
 
+const chronicles = getChronicles()
+
 const relatedRateLinks = computed(() =>
   rates
     .filter((r) => r.slug !== rateSlug)
     .map((r) => ({ to: `/rate/${r.slug}/`, text: `Сервера ${r.name}` }))
+)
+
+const comboChronicleLinks = computed(() =>
+  chronicles.map((c) => ({
+    to: `/chronicle/${c.slug}/rate/${rateSlug}/`,
+    text: `${c.name} ${rateText}`
+  }))
 )
 
 const filters = { rate: rateSlug }

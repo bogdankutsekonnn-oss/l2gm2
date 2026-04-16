@@ -68,6 +68,8 @@
       :title="`Сервера Lineage 2 ${chronicleName}`"
       :text="seoText"
       :links="relatedChronicleLinks"
+      :combo-links="comboRateLinks"
+      :combo-links-title="`${chronicleName} по рейтам`"
     />
 
     <FaqBlock :items="faqItems" />
@@ -76,7 +78,7 @@
 
 <script setup>
 const route = useRoute()
-const { getServers, getChronicles } = useFilters()
+const { getServers, getChronicles, getRates } = useFilters()
 const {
   generateTitle,
   generateH1,
@@ -101,10 +103,19 @@ const filters = { chronicle: chronicleSlug }
 const filteredServers = computed(() => getServers(filters))
 const categories = computed(() => getOrderedCategories(filteredServers.value))
 
+const rates = getRates()
+
 const relatedChronicleLinks = computed(() =>
   chronicles
     .filter((c) => c.slug !== chronicleSlug)
     .map((c) => ({ to: `/chronicle/${c.slug}/`, text: `Сервера ${c.name}` }))
+)
+
+const comboRateLinks = computed(() =>
+  rates.map((r) => ({
+    to: `/chronicle/${chronicleSlug}/rate/${r.slug}/`,
+    text: `${chronicleName} ${r.name}`
+  }))
 )
 
 const title = generateTitle(filters)
