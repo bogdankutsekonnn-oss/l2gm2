@@ -592,6 +592,142 @@ export const useSeo = () => {
     }
   }
 
+  // =====================
+  // FAQ генерация
+  // =====================
+
+  const chronicleFaqDescriptions = {
+    'interlude': 'Interlude — золотая эпоха Lineage 2 с идеальным балансом классов, атмосферным PvP и легендарными осадами замков.',
+    'interlude-plus': 'Interlude с дополнениями — расширенная версия Interlude с дополнительным контентом, новыми зонами и улучшенным балансом.',
+    'high-five': 'High Five — вершина классической Lineage 2 с максимальным контентом, подклассами, территориальными войнами и огромным выбором экипировки.',
+    'high-five-plus': 'High Five с дополнениями — расширенная версия High Five с дополнительным контентом и улучшениями.',
+    'c4': 'C4 (Scions of Destiny) — хардкорная хроника с олдскульной механикой, сложной прокачкой и ценностью каждого уровня.',
+    'classic': 'Classic — возвращение к истокам Lineage 2 с хардкорной прокачкой и ностальгической атмосферой ранних хроник.',
+    'essence': 'Essence — современная версия Lineage 2 с быстрой прокачкой, авто-охотой и фокусом на PvP контенте.',
+    'epilogue': 'Epilogue — завершение классической эпохи с максимумом контента, всеми классами и полной системой подклассов.',
+    'crusade': 'Crusade — одна из ранних хроник Lineage 2 с уникальной атмосферой и классическим геймплеем.',
+  }
+
+  const rateRangeDescriptions = {
+    'low': { range: 'x1–x15', desc: 'хардкорная прокачка, стабильная экономика и крепкие кланы' },
+    'mid': { range: 'x15–x100', desc: 'комфортный темп без гринда с сохранением глубины геймплея' },
+    'high': { range: 'x100+', desc: 'быстрый старт, мгновенный доступ к эндгейму и чистый PvP' },
+  }
+
+  const generateFaqItems = (filters = {}) => {
+    const items = []
+    const chronicle = filters.chronicle ? chroniclesData.find(c => c.slug === filters.chronicle) : null
+    const chronicleName = getChronicleSeoName(chronicle)
+    const chronicleNameRu = getChronicleSeoNameRu(chronicle)
+    const rate = filters.rate ? ratesData.find(r => r.slug === filters.rate) : null
+    const rateName = rate?.name || filters.rate || ''
+    const rateType = getRateType(filters.rate)
+    const rateInfo = rateType ? rateRangeDescriptions[rateType] : null
+    const chronicleDesc = chronicle ? (chronicleFaqDescriptions[chronicle.slug] || '') : ''
+
+    if (chronicle && rate) {
+      // Combo: chronicle + rate
+      items.push({
+        question: `Какие сервера Lineage 2 ${chronicleName} ${rateName} открываются в 2026 году?`,
+        answer: `На L2GM собраны все актуальные анонсы серверов ${chronicleName} с рейтами ${rateName}. Список обновляется ежедневно — вы видите только серверы, которые откроются в ближайшие 30 дней или уже недавно стартовали.`
+      })
+      items.push({
+        question: `Чем отличается ${chronicleName} ${rateName} от других комбинаций?`,
+        answer: `${chronicleDesc} Рейт ${rateName} определяет скорость прокачки: ${rateInfo ? rateInfo.desc : 'баланс между скоростью и хардкором'}. Именно эта комбинация хроники и рейта подходит игрокам, которые ценят ${rateType === 'low' ? 'хардкорный геймплей на классической хронике' : rateType === 'high' ? 'динамичный PvP на проверенной хронике' : 'комфортный темп на любимой хронике'}.`
+      })
+      items.push({
+        question: `Как выбрать лучший сервер ${chronicleName} ${rateName}?`,
+        answer: `Обратите внимание на серверы со статусом Premium и VIP — это проекты с подтверждённой репутацией. Также смотрите на дату старта: серверы, открывающиеся в ближайшие дни, обычно собирают максимальный онлайн.`
+      })
+      items.push({
+        question: `Что означает рейт ${rateName} на сервере ${chronicleName}?`,
+        answer: `Рейт ${rateName} означает, что опыт, адена и дроп увеличены в ${rateName.replace('x', '')} раз по сравнению с официальным сервером. ${rateInfo ? `Серверы с рейтами ${rateInfo.range} — это ${rateInfo.desc}.` : ''}`
+      })
+    } else if (chronicle) {
+      // Only chronicle
+      items.push({
+        question: `Какие сервера Lineage 2 ${chronicleName} открываются в 2026 году?`,
+        answer: `На L2GM представлены все серверы ${chronicleName} с актуальными датами открытия. ${chronicleDesc} Используйте фильтры по рейтам для точного подбора.`
+      })
+      items.push({
+        question: `Чем ${chronicleName} отличается от других хроник Lineage 2?`,
+        answer: chronicleDesc || `${chronicleName} — одна из популярных хроник Lineage 2, каждая из которых предлагает уникальный игровой опыт с собственным балансом и контентом.`
+      })
+      items.push({
+        question: `Какие рейты популярны на серверах ${chronicleName}?`,
+        answer: `На серверах ${chronicleName} встречаются все типы рейтов: от хардкорных x1–x3 до PvP-серверов x1000+. Наиболее популярны x1–x10 (лоу рейт) и x50–x100 (мид рейт). Используйте фильтр «Подобрать сервер» на этой странице для выбора нужного рейта.`
+      })
+      items.push({
+        question: `Как добавить свой сервер ${chronicleName} на L2GM?`,
+        answer: `Перейдите на страницу «Добавить сервер» и заполните форму. Базовое размещение бесплатное. Для выделения в списке доступны статусы Premium и VIP — подробности на странице «Реклама».`
+      })
+      if (chronicleNameRu) {
+        items.push({
+          question: `${chronicleNameRu} — это то же самое, что ${chronicleName}?`,
+          answer: `Да, ${chronicleNameRu} — это русское название хроники ${chronicleName} в Lineage 2. На L2GM вы найдёте серверы по обоим названиям.`
+        })
+      }
+    } else if (rate) {
+      // Only rate
+      items.push({
+        question: `Что означает рейт ${rateName} на серверах Lineage 2?`,
+        answer: `Рейт ${rateName} означает, что скорость получения опыта, адены и дропа увеличена в ${rateName.replace('x', '')} раз. ${rateInfo ? `Серверы ${rateInfo.range} — это ${rateInfo.desc}.` : ''}`
+      })
+      items.push({
+        question: `Какие хроники доступны с рейтами ${rateName}?`,
+        answer: `Серверы ${rateName} доступны на всех популярных хрониках: Interlude, High Five, Classic, Essence и других. Используйте фильтр хроник на этой странице, чтобы выбрать нужную.`
+      })
+      items.push({
+        question: `Для кого подходят серверы с рейтами ${rateName}?`,
+        answer: rateInfo ? `Серверы ${rateInfo.range} подходят игрокам, которые ценят ${rateInfo.desc}. ${rateType === 'low' ? 'Здесь каждый уровень — маленькая победа, а топовая экипировка — результат месяцев игры.' : rateType === 'high' ? 'Это идеальный выбор для PvP-ориентированных игроков.' : 'Это золотая середина между хардкором и казуальным геймплеем.'}` : `Серверы ${rateName} подойдут игрокам, которые ищут определённый темп прокачки в Lineage 2.`
+      })
+      items.push({
+        question: `Как часто появляются новые серверы Lineage 2 ${rateName}?`,
+        answer: `Новые серверы с рейтами ${rateName} появляются регулярно. L2GM обновляется ежедневно — добавьте страницу в закладки, чтобы не пропустить интересный проект.`
+      })
+    } else {
+      // Home page
+      items.push({
+        question: 'Что такое L2GM и как выбрать сервер Lineage 2?',
+        answer: 'L2GM — это портал анонсов серверов Lineage 2 с ежедневным обновлением. Здесь собраны серверы всех хроник и рейтов с датами открытия. Используйте фильтры по хроникам и рейтам или календарь для поиска подходящего проекта.'
+      })
+      items.push({
+        question: 'Какие хроники Lineage 2 самые популярные в 2026 году?',
+        answer: 'Наиболее популярные хроники: Interlude (Интерлюд) — золотой стандарт PvP, High Five (Хай Файв) — максимум PvE контента, Essence (Эссенс) — современный ускоренный геймплей, Classic (Классик) — хардкорная ностальгия. Каждая хроника представлена на L2GM с актуальными серверами.'
+      })
+      items.push({
+        question: 'Что означают рейты x1, x50, x1200 на серверах?',
+        answer: 'Рейт — это множитель скорости прокачки. x1 — официальный темп (хардкор), x50 — комфортная середина, x1200+ — мгновенный доступ к эндгейму и PvP. Чем выше рейт, тем быстрее вы достигнете максимального уровня.'
+      })
+      items.push({
+        question: 'Что такое Premium и VIP статус серверов на L2GM?',
+        answer: 'Premium и VIP — это статусы платного размещения. Серверы с этими статусами закреплены в верхней части списка и выделены визуально. Это проекты с подтверждённой репутацией и стабильным онлайном.'
+      })
+      items.push({
+        question: 'Как добавить свой сервер Lineage 2 на L2GM?',
+        answer: 'Перейдите на страницу «Добавить сервер», заполните форму с данными о проекте. Базовое размещение бесплатное. Для выделения в списке доступны статусы Premium ($19/мес) и VIP ($9/мес) — подробности на странице «Реклама».'
+      })
+    }
+
+    return items
+  }
+
+  // JSON-LD FAQPage schema
+  const generateFaqJsonLd = (faqItems) => {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map(item => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer
+        }
+      }))
+    }
+  }
+
   return {
     generateTitle,
     generateH1,
@@ -609,6 +745,8 @@ export const useSeo = () => {
     generateBreadcrumbJsonLd,
     generateCollectionPageJsonLd,
     generateFullMeta,
+    generateFaqItems,
+    generateFaqJsonLd,
     // Tag SEO functions
     getTagData,
     generateTagTitle,

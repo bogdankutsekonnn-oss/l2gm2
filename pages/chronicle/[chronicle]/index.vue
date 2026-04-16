@@ -69,6 +69,8 @@
       :text="seoText"
       :links="relatedChronicleLinks"
     />
+
+    <FaqBlock :items="faqItems" />
   </div>
 </template>
 
@@ -85,6 +87,8 @@ const {
   getOgImageMeta,
   generateBreadcrumbJsonLd,
   generateCollectionPageJsonLd,
+  generateFaqItems,
+  generateFaqJsonLd,
 } = useSeo()
 import { getOrderedCategories, pluralServers, getCategoryDate } from '~/utils/dateUtils.js'
 
@@ -108,6 +112,8 @@ const h1 = generateH1(filters)
 const description = generateDescription(filters)
 const keywords = generateKeywords(filters)
 const seoText = generateSeoText(filters)
+const faqItems = generateFaqItems(filters)
+const faqJsonLd = generateFaqJsonLd(faqItems)
 const canonicalUrl = getCanonicalUrl(route.path)
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' },
@@ -133,6 +139,7 @@ useHead({
   script: [
     { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
     { type: 'application/ld+json', innerHTML: JSON.stringify(collectionJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) },
   ],
 })
 </script>

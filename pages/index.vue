@@ -95,6 +95,8 @@
       title="Сервера Lineage 2 с актуальным онлайном"
       :text="seoText"
     />
+
+    <FaqBlock :items="faqItems" />
   </div>
 </template>
 
@@ -113,6 +115,8 @@ const {
   generateServerEventsJsonLd,
   generateBreadcrumbJsonLd,
   generateCollectionPageJsonLd,
+  generateFaqItems,
+  generateFaqJsonLd,
 } = useSeo()
 
 const filtersOpen = ref(false)
@@ -136,6 +140,8 @@ const seoText = generateSeoText()
 const description = generateDescription()
 const keywords = generateKeywords()
 const canonicalUrl = getCanonicalUrl('/')
+const faqItems = generateFaqItems()
+const faqJsonLd = generateFaqJsonLd(faqItems)
 
 // JSON-LD разметка
 const homeJsonLd = generateHomeJsonLd()
@@ -190,6 +196,10 @@ useHead({
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(collectionJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(faqJsonLd),
     },
   ],
 })
