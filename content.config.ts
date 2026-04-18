@@ -12,6 +12,14 @@ export default defineContentConfig({
         image: z.string(),
         date: z.string(),
         slug: z.string(),
+        faq: z
+          .array(
+            z.object({
+              q: z.string(),
+              a: z.string(),
+            })
+          )
+          .optional(),
       }),
     }),
   },

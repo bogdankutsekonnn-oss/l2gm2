@@ -101,6 +101,10 @@
         <ContentRenderer :value="article" />
       </div>
 
+      <div v-if="faqItems.length" class="article-faq-wrapper">
+        <FaqBlock :items="faqItems" />
+      </div>
+
       <div class="article-share" aria-label="Поделиться статьёй">
         <span class="article-share__label">Поделиться:</span>
         <button
@@ -482,6 +486,29 @@ const articleJsonLd = computed(() => ({
   },
 }))
 
+const faqItems = computed(() =>
+  (article.value.faq || []).map((item) => ({
+    question: item.q,
+    answer: item.a,
+  }))
+)
+
+const faqJsonLd = computed(() => {
+  if (!faqItems.value.length) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.value.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  }
+})
+
 const articleKeywords = computed(() => {
   const base = 'lineage 2, l2, лайнейдж 2, л2, блог l2gm'
   return `${article.value.title.toLowerCase()}, ${article.value.category.toLowerCase()} lineage 2, ${base}`
@@ -529,6 +556,9 @@ useHead({
   script: [
     { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
     { type: 'application/ld+json', innerHTML: JSON.stringify(articleJsonLd.value) },
+    ...(faqJsonLd.value
+      ? [{ type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd.value) }]
+      : []),
   ],
 })
 </script>
@@ -896,6 +926,18 @@ useHead({
 
 .article__back {
   min-width: 220px;
+}
+
+.article-faq-wrapper {
+  max-width: 800px;
+  margin: var(--spacing-xxl) auto 0;
+  padding: 0 4px;
+}
+
+.article-faq-wrapper :deep(.faq-block) {
+  background: transparent;
+  padding: 0;
+  margin-top: 0;
 }
 
 .related-block {
