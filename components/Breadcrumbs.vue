@@ -86,19 +86,47 @@ const staticPages = {
   '/add-server/': 'Добавить сервер',
   '/faq/': 'Частые вопросы',
   '/thanks/': 'Спасибо',
+  '/blog/': 'Блог',
 }
 
-const crumbs = computed(() => {
-  const result = [
-    { path: '/', title: 'Главная', isHome: true },
-    { path: '/', title: 'Анонсы серверов Lineage\u00a02' },
-  ]
+const { data: blogArticles } = useAsyncData('breadcrumbs-blog-articles', () =>
+  queryCollection('blog').select('slug', 'title').all(),
+  { default: () => [] }
+)
 
+const crumbs = computed(() => {
   const currentPath = route.path
+  const normalizedPath = currentPath.endsWith('/') ? currentPath : currentPath + '/'
+  const isBlogSection = normalizedPath.startsWith('/blog/')
+
+  // На страницах блога корень — Блог, а не Анонсы
+  const result = isBlogSection
+    ? [
+        { path: '/', title: 'Главная', isHome: true },
+        { path: '/blog/', title: 'Блог' },
+      ]
+    : [
+        { path: '/', title: 'Главная', isHome: true },
+        { path: '/', title: 'Анонсы серверов Lineage\u00a02' },
+      ]
+
+  // Страница статьи блога /blog/<slug>/
+  if (isBlogSection && normalizedPath !== '/blog/') {
+    const slug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '')
+    const article = (blogArticles.value || []).find((a) => a.slug === slug)
+    if (article) {
+      result.push({
+        path: normalizedPath,
+        title: article.title,
+      })
+    }
+    return result
+  }
 
   // Проверяем статические страницы (нормализуем путь с trailing slash)
-  const normalizedPath = currentPath.endsWith('/') ? currentPath : currentPath + '/'
   if (staticPages[normalizedPath]) {
+    // /blog/ — корневая страница раздела, заголовок уже добавлен выше
+    if (normalizedPath === '/blog/') return result
     result.push({
       path: normalizedPath,
       title: staticPages[normalizedPath],

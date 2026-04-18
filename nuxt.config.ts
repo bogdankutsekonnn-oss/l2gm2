@@ -1,16 +1,50 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxt/image'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxtjs/sitemap', '@nuxt/image', '@nuxt/content'],
+
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
+    xsl: false,
+    autoLastmod: true,
+    strictNuxtContentPaths: true,
+    defaults: {
+      changefreq: 'weekly',
+      priority: 0.7,
+    },
+  },
 
   image: {
     quality: 80,
     format: ['webp'],
     screens: {
+      xs: 320,
       sm: 640,
       md: 768,
       lg: 1024,
       xl: 1280,
+      xxl: 1536,
+    },
+    densities: [1, 2],
+    presets: {
+      blogCard: {
+        modifiers: {
+          format: 'webp',
+          quality: 80,
+          fit: 'cover',
+          width: 400,
+          height: 225,
+        },
+      },
+      blogHero: {
+        modifiers: {
+          format: 'webp',
+          quality: 85,
+          fit: 'cover',
+          width: 1200,
+          height: 630,
+        },
+      },
     },
   },
 
@@ -121,7 +155,15 @@ export default defineNuxtConfig({
       routes: [
         '/',
         '/rating/',
+        '/sitemap.xml',
+        '/robots.txt',
         '/blog/',
+        '/blog/rss.xml',
+        '/blog/top-serverov-lineage-2-2026/',
+        '/blog/interlude-vs-high-five/',
+        '/blog/kak-vybrat-rejt-servera/',
+        '/blog/chto-takoe-pvp-server-lineage-2/',
+        '/blog/novye-servera-lineage-2-aprel-2026/',
         '/placement/',
         '/about/',
         '/add-server/',

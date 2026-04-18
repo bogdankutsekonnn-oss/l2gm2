@@ -1,363 +1,257 @@
 <template>
-  <div class="blog-page">
+  <div class="blog-page page-wrapper">
+    <Breadcrumbs />
     <div class="page-header">
-      <h1>Новости Lineage 2</h1>
-      <h2>Актуальные новости, статьи и обзоры о Lineage 2</h2>
+      <h1>Блог Lineage 2 — новости, гайды и обзоры серверов</h1>
     </div>
 
-    <div class="blog-layout">
-      <aside class="blog-sidebar">
-        <div class="sidebar-section">
-          <h3>Категории</h3>
-          <nav class="category-nav">
-            <NuxtLink to="/blog/?category=news" class="category-link">Новости</NuxtLink>
-            <NuxtLink to="/blog/?category=articles" class="category-link">Статьи</NuxtLink>
-            <NuxtLink to="/blog/?category=reviews" class="category-link">Обзоры</NuxtLink>
-          </nav>
-        </div>
-
-        <!-- TODO: Добавить страницы топиков позже
-        <div class="sidebar-section">
-          <h3>Топик</h3>
-          <nav class="topic-nav">
-            <NuxtLink to="/blog/topic/evolution" class="topic-link">Эволюция серий Lineage 2</NuxtLink>
-            <NuxtLink to="/blog/topic/new-servers" class="topic-link">Новые сервера Lineage 2</NuxtLink>
-            <NuxtLink to="/blog/topic/decline" class="topic-link">Как погибала lineage 2</NuxtLink>
-            <NuxtLink to="/blog/topic/guides" class="topic-link">Гайды Lineage 2</NuxtLink>
-            <button class="btn-show-more" @click="showMoreTopics = !showMoreTopics">
-              Показать ещё
-            </button>
-            <div v-if="showMoreTopics" class="more-topics">
-              <NuxtLink to="/blog/topic/strategy" class="topic-link">Стратегии</NuxtLink>
-              <NuxtLink to="/blog/topic/pvp" class="topic-link">PvP гайды</NuxtLink>
-            </div>
-          </nav>
-        </div>
-        -->
-      </aside>
-
-      <main class="blog-content">
-        <div class="posts-grid">
-          <article
-            v-for="post in posts"
-            :key="post.id"
-            class="post-card"
-          >
-            <div class="post-image">
-              <img :src="post.image" :alt="post.title" />
-            </div>
-            <div class="post-tag" :class="`tag-${post.category}`">
-              {{ getCategoryName(post.category) }}
-            </div>
-            <h3 class="post-title">
-              <NuxtLink :to="`/blog/${post.slug}/`">{{ post.title }}</NuxtLink>
-            </h3>
-            <p class="post-excerpt">{{ post.excerpt }}</p>
-            <div class="post-date">{{ formatDate(post.date) }}</div>
-          </article>
-        </div>
-
-        <button class="btn-load-more" @click="loadMore">
-          Загрузить ещё
-        </button>
-      </main>
+    <div class="blog-filters">
+      <button
+        v-for="filter in filters"
+        :key="filter.id"
+        class="blog-filter"
+        :class="{ 'blog-filter--active': activeFilter === filter.id }"
+        @click="activeFilter = filter.id"
+      >
+        {{ filter.name }}
+      </button>
     </div>
+
+    <div class="blog-grid">
+      <BlogCard
+        v-for="article in filteredArticles"
+        :key="article.slug"
+        :article="article"
+      />
+    </div>
+
+    <div v-if="filteredArticles.length === 0" class="blog-empty">
+      Статьи в этой категории скоро появятся
+    </div>
+
+    <SeoSection
+      :title="seoTitle"
+      :text="seoText"
+      :links="seoLinks"
+      :combo-links="seoComboLinks"
+      combo-links-title="Популярные разделы"
+    />
   </div>
 </template>
 
 <script setup>
-const route = useRoute()
-const showMoreTopics = ref(false)
+const activeFilter = ref('all')
 
-// TODO: Добавить статьи позже
-const posts = ref([
-  // {
-  //   id: 1,
-  //   title: 'Новые сервера Lineage 2 в январе 2026',
-  //   excerpt: 'Обзор самых интересных серверов, открывшихся в этом месяце',
-  //   category: 'news',
-  //   slug: 'new-servers-january-2026',
-  //   date: '2026-01-25',
-  //   image: '/images/blog/placeholder.jpg'
-  // },
-  // {
-  //   id: 2,
-  //   title: 'Гайд по прокачке персонажа на low rate серверах',
-  //   excerpt: 'Подробное руководство по эффективной прокачке на серверах с низким рейтом',
-  //   category: 'articles',
-  //   slug: 'leveling-guide-low-rate',
-  //   date: '2026-01-20',
-  //   image: '/images/blog/placeholder.jpg'
-  // },
-  // {
-  //   id: 3,
-  //   title: 'Обзор сервера L2Reborn',
-  //   excerpt: 'Детальный разбор одного из самых популярных серверов',
-  //   category: 'reviews',
-  //   slug: 'l2reborn-review',
-  //   date: '2026-01-15',
-  //   image: '/images/blog/placeholder.jpg'
-  // }
+const filters = [
+  { id: 'all', name: 'Все' },
+  { id: 'Новости', name: 'Новости' },
+  { id: 'Гайды', name: 'Гайды' },
+  { id: 'Обзоры', name: 'Обзоры' },
+  { id: 'Статьи', name: 'Статьи' },
+]
+
+const { data: articles } = await useAsyncData('blog-articles', () =>
+  queryCollection('blog')
+    .order('date', 'DESC')
+    .all()
+)
+
+const filteredArticles = computed(() => {
+  if (!articles.value) return []
+  if (activeFilter.value === 'all') return articles.value
+  return articles.value.filter(a => a.category === activeFilter.value)
+})
+
+// SEO-блок
+const seoTitle = 'О блоге L2GM — всё о серверах Lineage 2'
+const seoText = `Блог L2GM — это центр полезной информации для всех, кто играет в Lineage 2. Здесь собраны актуальные новости о выходе новых серверов, подробные гайды по прокачке персонажей, обзоры популярных проектов и статьи о лоре вселенной Л2. Мы следим за анонсами на всех популярных хрониках — Interlude, High Five, Essence, Classic — и помогаем игрокам не пропустить интересные старты.
+
+В разделе «Новости» публикуем свежие анонсы открытия серверов Lineage 2, обновления на крупных проектах и важные события в комьюнити. «Гайды» помогут разобраться с выбором класса, рейта и стратегией прокачки как новичкам, так и опытным игрокам. В «Обзорах» разбираем топ-серверы по хроникам, сравниваем проекты по онлайну, донату и балансу. А в «Статьях» — аналитика, сравнения хроник и глубокие материалы о механиках Lineage 2.
+
+Если вы ищете где почитать про Lineage 2 на русском — наш блог для вас. Новые материалы выходят регулярно, все статьи написаны с учётом реального опыта игроков на Interlude, High Five и других хрониках. Следите за обновлениями, выбирайте сервер по душе и играйте на лучших проектах Л2 2026 года.`
+
+const seoLinks = [
+  { to: '/', text: 'Анонсы серверов' },
+  { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
+  { to: '/chronicle/high-five/', text: 'Сервера High Five' },
+  { to: '/chronicle/essence/', text: 'Сервера Essence' },
+  { to: '/chronicle/classic/', text: 'Сервера Classic' },
+]
+
+const seoComboLinks = [
+  { to: '/rate/x1/', text: 'Low rate x1' },
+  { to: '/rate/x50/', text: 'Mid rate x50' },
+  { to: '/rate/x100/', text: 'Rate x100' },
+  { to: '/rate/x1200/', text: 'High rate x1200' },
+  { to: '/pvp/', text: 'PvP сервера' },
+  { to: '/gve/', text: 'GvE сервера' },
+  { to: '/low-rate/', text: 'Low-rate сервера' },
+  { to: '/mid-rate/', text: 'Mid-rate сервера' },
+  { to: '/placement/', text: 'Разместить сервер' },
+]
+
+const { generateBreadcrumbJsonLd } = useSeo()
+
+const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+  { name: 'Главная', url: '/' },
+  { name: 'Блог', url: '/blog/' },
 ])
 
-const getCategoryName = (category) => {
-  const names = {
-    news: 'Новость',
-    articles: 'Статья',
-    reviews: 'Обзор'
-  }
-  return names[category] || category
-}
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('ru-RU', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-const loadMore = () => {
-  // TODO: Implement load more functionality
-  console.log('Load more posts')
-}
-
-const { getCanonicalUrl } = useSeo()
-const canonicalUrl = getCanonicalUrl('/blog/')
+const itemListJsonLd = computed(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': 'https://l2gm.com/blog/#blog',
+  name: 'Блог L2GM',
+  description: 'Новости, гайды и обзоры серверов Lineage 2',
+  url: 'https://l2gm.com/blog/',
+  inLanguage: 'ru-RU',
+  publisher: {
+    '@type': 'Organization',
+    name: 'L2GM',
+    url: 'https://l2gm.com',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://l2gm.com/logo.svg',
+    },
+  },
+  blogPost: (articles.value || []).map((a) => ({
+    '@type': 'BlogPosting',
+    headline: a.title,
+    description: a.description,
+    datePublished: a.date,
+    dateModified: a.date,
+    url: `https://l2gm.com/blog/${a.slug}/`,
+    articleSection: a.category,
+    image: `https://l2gm.com${a.image}`,
+    inLanguage: 'ru-RU',
+    author: {
+      '@type': 'Organization',
+      name: 'L2GM',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'L2GM',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://l2gm.com/logo.svg',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://l2gm.com/blog/${a.slug}/`,
+    },
+  })),
+}))
 
 useHead({
-  title: 'Блог Lineage 2 | Новости, гайды и обзоры серверов - L2GM',
+  title: 'Блог Lineage 2 — новости, гайды и обзоры серверов Л2 | L2GM',
+  link: [
+    { rel: 'canonical', href: 'https://l2gm.com/blog/' },
+    {
+      rel: 'alternate',
+      type: 'application/rss+xml',
+      title: 'Блог L2GM — RSS',
+      href: 'https://l2gm.com/blog/rss.xml',
+    },
+  ],
   meta: [
     {
       name: 'description',
-      content: 'Блог L2GM: новости Lineage 2, гайды по прокачке, обзоры серверов, стратегии PvP и PvE. Полезные статьи для игроков.'
+      content: 'Блог L2GM о Lineage 2: свежие анонсы серверов, гайды по прокачке, обзоры проектов Interlude, High Five и Essence, статьи о хрониках и PvP.',
     },
-    { name: 'keywords', content: 'блог lineage 2, новости lineage 2, гайды lineage 2, обзоры серверов, стратегии l2' },
-    { name: 'robots', content: 'noindex, nofollow' },
-    // Open Graph
-    { property: 'og:title', content: 'Блог Lineage 2 | L2GM' },
-    { property: 'og:description', content: 'Новости, гайды и обзоры серверов Lineage 2.' },
-    { property: 'og:url', content: canonicalUrl },
+    {
+      name: 'keywords',
+      content: 'блог lineage 2, блог l2, статьи о lineage 2, гайды lineage 2, новости l2, обзоры серверов lineage 2, лайнейдж 2 блог, л2 статьи, интерлюд гайды, хай файв новости',
+    },
+    { name: 'robots', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' },
+    { name: 'author', content: 'L2GM' },
+    { property: 'og:title', content: 'Блог Lineage 2 — новости, гайды и обзоры серверов Л2' },
+    { property: 'og:description', content: 'Свежие анонсы серверов Lineage 2, гайды, обзоры и статьи о хрониках Interlude, High Five, Essence, Classic.' },
     { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://l2gm.com/blog/' },
+    { property: 'og:image', content: 'https://l2gm.com/logo.svg' },
     { property: 'og:site_name', content: 'L2GM' },
-    // Twitter
-    { name: 'twitter:card', content: 'summary' },
-    { name: 'twitter:title', content: 'Блог Lineage 2 | L2GM' },
-    { name: 'twitter:description', content: 'Новости, гайды и обзоры серверов Lineage 2.' },
+    { property: 'og:locale', content: 'ru_RU' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Блог Lineage 2 — новости и гайды | L2GM' },
+    { name: 'twitter:description', content: 'Свежие анонсы серверов Lineage 2, гайды, обзоры и статьи о хрониках.' },
+    { name: 'twitter:image', content: 'https://l2gm.com/logo.svg' },
   ],
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: [
+    { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(itemListJsonLd.value) },
+  ],
 })
 </script>
 
 <style scoped>
 .blog-page {
-  padding: var(--spacing-lg) 0;
-}
-
-.page-header {
-  margin-bottom: var(--spacing-xxl);
-  text-align: center;
-}
-
-.page-header h1 {
-  font-size: var(--font-h1);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-md);
-}
-
-.page-header h2 {
-  font-size: var(--font-h2);
-  font-weight: var(--font-medium);
-  color: var(--text-secondary);
-}
-
-.blog-layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: var(--spacing-xl);
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.blog-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.sidebar-section {
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
   padding: var(--spacing-lg);
 }
 
-.sidebar-section h3 {
-  font-size: var(--font-lg);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-md);
-}
-
-.category-nav,
-.topic-nav {
+.blog-filters {
   display: flex;
-  flex-direction: column;
   gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 4px var(--spacing-xl);
+  flex-wrap: wrap;
 }
 
-.category-link,
-.topic-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: var(--font-base);
-  transition: color 0.2s;
-  padding: var(--spacing-xs) 0;
-}
-
-.category-link:hover,
-.topic-link:hover,
-.category-link.router-link-active,
-.topic-link.router-link-active {
-  color: var(--primary-main);
-}
-
-.btn-show-more {
-  background: none;
+.blog-filter {
+  background: var(--secondary-main);
+  color: var(--secondary-contrast);
+  padding: 10px 20px;
+  border-radius: 26px;
   border: none;
-  color: var(--primary-main);
-  cursor: pointer;
-  font-size: var(--font-sm);
-  padding: var(--spacing-xs) 0;
-  text-align: left;
-  margin-top: var(--spacing-sm);
-}
-
-.more-topics {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
-}
-
-.blog-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-xl);
-}
-
-.post-card {
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  transition: transform 0.2s;
-}
-
-.post-card:hover {
-  transform: translateY(-4px);
-}
-
-.post-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: var(--bg-main);
-  overflow: hidden;
-}
-
-.post-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.post-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-xs);
   font-weight: var(--font-semibold);
-  margin: var(--spacing-md);
-  margin-bottom: 0;
+  font-size: var(--font-sm);
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.tag-news {
+.blog-filter:hover {
+  background: var(--secondary-hover);
+}
+
+.blog-filter--active {
   background: var(--primary-main);
   color: var(--primary-contrast);
 }
 
-.tag-articles {
-  background: var(--status-success);
-  color: var(--text-primary);
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+  padding: 4px;
 }
 
-.tag-reviews {
-  background: var(--status-warning);
-  color: var(--text-primary);
-}
-
-.post-title {
-  padding: 0 var(--spacing-md);
-  margin: var(--spacing-md) 0;
-}
-
-.post-title a {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: var(--font-lg);
-  font-weight: var(--font-semibold);
-  transition: color 0.2s;
-}
-
-.post-title a:hover {
-  color: var(--primary-main);
-}
-
-.post-excerpt {
-  padding: 0 var(--spacing-md);
+.blog-empty {
+  text-align: center;
   color: var(--text-secondary);
-  font-size: var(--font-sm);
-  line-height: 1.6;
-  margin-bottom: var(--spacing-md);
-}
-
-.post-date {
-  padding: 0 var(--spacing-md) var(--spacing-md);
-  color: var(--text-disabled);
-  font-size: var(--font-xs);
-}
-
-.btn-load-more {
-  background: var(--secondary-main);
-  color: var(--secondary-contrast);
-  padding: 15px 24px;
-  border-radius: 26px;
-  border: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-base);
-  cursor: pointer;
-  transition: background 0.2s;
-  align-self: center;
-  margin-top: var(--spacing-lg);
-}
-
-.btn-load-more:hover {
-  background: var(--secondary-hover);
+  padding: var(--spacing-xxl) 0;
+  font-size: var(--font-lg);
 }
 
 @media (max-width: 1024px) {
-  .blog-layout {
-    grid-template-columns: 1fr;
+  .blog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  
-  .posts-grid {
-    grid-template-columns: 1fr;
+}
+
+@media (max-width: 768px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (max-width: 480px) {
+  .blog-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.blog-page :deep(.seo-section) {
+  padding: 0;
+  background: transparent;
+  margin-top: var(--spacing-xl);
 }
 </style>

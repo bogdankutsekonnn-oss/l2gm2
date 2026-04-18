@@ -28,6 +28,7 @@
               <div class="footer-column-title">ИНФОРМАЦИЯ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/">Анонс серверов</NuxtLink>
+                <NuxtLink to="/blog/">Блог</NuxtLink>
                 <NuxtLink to="/about/">О нас</NuxtLink>
                 <NuxtLink to="/cookies/">Файлы Cookie</NuxtLink>
                 <NuxtLink to="/privacy/">Политика конфиденциальности</NuxtLink>
