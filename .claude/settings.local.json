@@ -58,7 +58,10 @@
       "Bash(curl -sIL --max-redirs 5 http://l2gm.com/blog)",
       "Bash(curl -sI https://l2gm.com/date/2026-04-20/)",
       "Bash(grep -v \"/$\")",
-      "Bash(grep -v \"\\\\.xml$\")"
+      "Bash(grep -v \"\\\\.xml$\")",
+      "Bash(git rm *)",
+      "Bash(curl -s https://l2gm.com/chronicle/interlude/rate/x1/)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

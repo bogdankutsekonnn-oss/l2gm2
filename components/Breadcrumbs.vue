@@ -1,5 +1,5 @@
 <template>
-  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <nav v-if="crumbs.length" class="breadcrumbs" aria-label="Хлебные крошки">
     <ol
       class="breadcrumbs-list"
       itemscope
@@ -20,7 +20,7 @@
           itemprop="item"
         >
           <img src="/images/home.svg" alt="" class="breadcrumbs-icon" />
-          <span class="sr-only" itemprop="name">Главная</span>
+          <span itemprop="name">{{ crumb.title }}</span>
         </NuxtLink>
         <template v-else>
           <span class="breadcrumbs-separator">/</span>
@@ -97,36 +97,35 @@ const { data: blogArticles } = useAsyncData('breadcrumbs-blog-articles', () =>
 const crumbs = computed(() => {
   const currentPath = route.path
   const normalizedPath = currentPath.endsWith('/') ? currentPath : currentPath + '/'
+
+  // Единый корневой элемент с иконкой и осмысленным текстом —
+  // "Анонсы серверов Lineage 2" попадает в rich snippet Google/Яндекс.
+  // На главной это единственный элемент.
+  const result = [
+    { path: '/', title: 'Анонсы серверов Lineage\u00a02', isHome: true },
+  ]
+
   const isBlogSection = normalizedPath.startsWith('/blog/')
 
-  // На страницах блога корень — Блог, а не Анонсы
-  const result = isBlogSection
-    ? [
-        { path: '/', title: 'Главная', isHome: true },
-        { path: '/blog/', title: 'Блог' },
-      ]
-    : [
-        { path: '/', title: 'Главная', isHome: true },
-        { path: '/', title: 'Анонсы серверов Lineage\u00a02' },
-      ]
+  // Секция блога: /blog/ — просто "Блог", /blog/<slug>/ — Блог → статья
+  if (isBlogSection) {
+    result.push({ path: '/blog/', title: 'Блог' })
 
-  // Страница статьи блога /blog/<slug>/
-  if (isBlogSection && normalizedPath !== '/blog/') {
-    const slug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '')
-    const article = (blogArticles.value || []).find((a) => a.slug === slug)
-    if (article) {
-      result.push({
-        path: normalizedPath,
-        title: article.title,
-      })
+    if (normalizedPath !== '/blog/') {
+      const slug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '')
+      const article = (blogArticles.value || []).find((a) => a.slug === slug)
+      if (article) {
+        result.push({
+          path: normalizedPath,
+          title: article.title,
+        })
+      }
     }
     return result
   }
 
-  // Проверяем статические страницы (нормализуем путь с trailing slash)
+  // Статические страницы: About, Rating, FAQ и т.д.
   if (staticPages[normalizedPath]) {
-    // /blog/ — корневая страница раздела, заголовок уже добавлен выше
-    if (normalizedPath === '/blog/') return result
     result.push({
       path: normalizedPath,
       title: staticPages[normalizedPath],
@@ -226,8 +225,9 @@ const crumbs = computed(() => {
 }
 
 .breadcrumbs-home {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  gap: 6px;
 }
 
 .breadcrumbs-icon {
