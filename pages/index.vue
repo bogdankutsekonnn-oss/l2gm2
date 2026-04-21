@@ -3,7 +3,7 @@
     <div class="page-wrapper">
       <Breadcrumbs />
       <div class="page-header">
-        <h1>Анонсы серверов Lineage 2</h1>
+        <h1>Новые сервера Lineage 2 — анонсы, даты старта, рейты</h1>
       </div>
 
       <!-- Кнопка фильтров (только мобильный) -->
@@ -187,7 +187,7 @@ const collectionJsonLd = generateCollectionPageJsonLd(
 )
 
 useHead({
-  title: 'Анонсы серверов Lineage 2 2026 — новые сервера Л2 | L2GM',
+  title: 'Сервера Lineage 2 2026 — анонсы, даты старта, список новых Л2 | L2GM',
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },

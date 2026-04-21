@@ -52,7 +52,7 @@ export const useSeo = () => {
       const rateName = rate?.name || filters.rate
       return `Сервера Lineage 2 ${rateName} — список серверов Л2 ${rateName} | L2GM`
     }
-    return 'Анонсы серверов Lineage 2 2026 — новые сервера Л2 | L2GM'
+    return 'Сервера Lineage 2 2026 — анонсы, даты старта, список новых Л2 | L2GM'
   }
 
   const generateH1 = (filters = {}) => {
@@ -69,7 +69,7 @@ export const useSeo = () => {
       const rateName = rate?.name || filters.rate
       return `Сервера Lineage 2 с рейтами ${rateName}`
     }
-    return 'Анонсы серверов Lineage 2'
+    return 'Новые сервера Lineage 2 — анонсы, даты старта, рейты'
   }
 
   const generateDescription = (filters = {}) => {
@@ -94,10 +94,13 @@ export const useSeo = () => {
   // Генерация ключевых слов
   const generateKeywords = (filters = {}) => {
     const keywords = [
-      'lineage 2', 'l2', 'л2', 'ла2', 'лайнейдж 2',
+      'lineage 2', 'l2', 'л2', 'ла2', 'линейдж 2', 'лайнейдж 2',
       'сервера lineage 2', 'серверы lineage 2', 'сервера л2', 'сервера ла2',
-      'анонсы серверов', 'новые сервера', 'новые сервера лайн 2',
-      'рейтинг серверов lineage 2', 'топ серверов l2'
+      'анонсы серверов lineage 2', 'анонсы л2', 'новые сервера',
+      'даты открытия серверов', 'даты старта серверов l2', 'открытие сервера lineage 2',
+      'старт серверов lineage 2', 'когда открывается сервер l2',
+      'рейтинг серверов lineage 2', 'топ серверов l2', 'топ серверов lineage 2',
+      'бесплатные сервера l2', 'приват сервера lineage 2'
     ]
 
     if (filters.chronicle) {
