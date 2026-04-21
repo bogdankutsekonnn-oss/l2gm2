@@ -151,7 +151,7 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       failOnError: false,
-      crawlLinks: true,
+      crawlLinks: false,
       routes: [
         '/',
         '/rating/',
