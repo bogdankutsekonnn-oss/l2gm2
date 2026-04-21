@@ -16,3 +16,6 @@ logs
 .DS_Store
 .fleet
 .idea
+
+# Nuxt Content cache
+.data
