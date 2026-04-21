@@ -139,7 +139,9 @@ const seoText = generateSeoText(filters)
 const faqItems = generateFaqItems(filters)
 const faqJsonLd = generateFaqJsonLd(faqItems)
 
-const canonicalUrl = getCanonicalUrl(route.path)
+// Canonical → родительская хроника. Рейты-подстраницы (9×12=108 комбинаций)
+// Яндекс/Google считают малоценными, объединяем их в /chronicle/<chronicle>/
+const canonicalUrl = getCanonicalUrl(`/chronicle/${chronicleSlug}/`)
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' },
   { name: chronicleName, url: `/chronicle/${chronicleSlug}` },

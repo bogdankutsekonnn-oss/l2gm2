@@ -8,12 +8,14 @@ export default defineNuxtConfig({
     xsl: false,
     autoLastmod: true,
     strictNuxtContentPaths: true,
+    // Исключаем chronicle/<x>/rate/<y>/ — это фильтры хроники, canonical ведёт на /chronicle/<x>/
+    // trailing slash в URL берётся из site.trailingSlash: true
+    exclude: ['/chronicle/*/rate/**'],
     defaults: {
       changefreq: 'weekly',
       priority: 0.7,
     },
   },
-
   image: {
     quality: 80,
     format: ['webp'],
@@ -54,6 +56,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://l2gm.com',
     name: 'L2GM - Анонсы серверов Lineage 2',
+    trailingSlash: true,
   },
 
   // Robots.txt конфигурация
