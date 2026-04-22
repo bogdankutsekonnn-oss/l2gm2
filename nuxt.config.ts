@@ -168,6 +168,7 @@ export default defineNuxtConfig({
         '/blog/chto-takoe-pvp-server-lineage-2/',
         '/blog/novye-servera-lineage-2-aprel-2026/',
         '/blog/gajd-dlya-novichka-lineage-2-2026/',
+        '/blog/multiprofa-i-multicraft-v-lineage-2/',
         '/placement/',
         '/about/',
         '/add-server/',
