@@ -98,6 +98,11 @@ export default defineNuxtConfig({
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'L2GM' },
         { property: 'og:locale', content: 'ru_RU' },
+        // Сайт для всей русскоязычной аудитории СНГ, не только РФ
+        { property: 'og:locale:alternate', content: 'ru_UA' },
+        { property: 'og:locale:alternate', content: 'ru_BY' },
+        { property: 'og:locale:alternate', content: 'ru_KZ' },
+        { property: 'og:locale:alternate', content: 'ru_MD' },
         { property: 'og:image', content: 'https://l2gm.com/og-image.jpg' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },

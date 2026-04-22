@@ -315,6 +315,7 @@ export const useSeo = () => {
       name: 'L2GM',
       description: 'Анонсы серверов Lineage 2 всех хроник и рейтов',
       url: siteUrl,
+      inLanguage: 'ru',
       potentialAction: {
         '@type': 'SearchAction',
         target: {
@@ -346,6 +347,7 @@ export const useSeo = () => {
       name: title,
       description: description,
       url: getCanonicalUrl(path),
+      inLanguage: 'ru',
       mainEntity: {
         '@type': 'ItemList',
         numberOfItems: servers.length,
@@ -402,6 +404,7 @@ export const useSeo = () => {
       name: title,
       description: description,
       url: getCanonicalUrl(path),
+      inLanguage: 'ru',
       isPartOf: {
         '@type': 'WebSite',
         name: 'L2GM',
