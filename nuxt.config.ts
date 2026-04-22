@@ -10,6 +10,16 @@ export default defineNuxtConfig({
     inlineStyles: true,
   },
 
+  // Отключаем CSS code-splitting: иначе Nuxt 3.21 создаёт отдельные файлы
+  // (FiltersPanel.css, ServerCard.css ...) и inlineStyles их не инлайнит.
+  // С cssCodeSplit:false весь scoped CSS собирается в один entry.css,
+  // который уже корректно инлайнится в <head>.
+  vite: {
+    build: {
+      cssCodeSplit: false,
+    },
+  },
+
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
     xsl: false,
