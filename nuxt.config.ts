@@ -167,6 +167,7 @@ export default defineNuxtConfig({
         '/blog/kak-vybrat-rejt-servera/',
         '/blog/chto-takoe-pvp-server-lineage-2/',
         '/blog/novye-servera-lineage-2-aprel-2026/',
+        '/blog/gajd-dlya-novichka-lineage-2-2026/',
         '/placement/',
         '/about/',
         '/add-server/',
