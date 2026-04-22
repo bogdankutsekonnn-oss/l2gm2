@@ -33,7 +33,8 @@
             <span itemprop="name">{{ crumb.title }}</span>
           </NuxtLink>
           <span v-else class="breadcrumbs-current" itemprop="name">
-            {{ crumb.title }}
+            <LazyBreadcrumbsBlogTitle v-if="crumb.blogSlug" :slug="crumb.blogSlug" />
+            <template v-else>{{ crumb.title }}</template>
           </span>
         </template>
         <meta itemprop="position" :content="index + 1" />
@@ -89,10 +90,9 @@ const staticPages = {
   '/blog/': 'Блог',
 }
 
-const { data: blogArticles } = useAsyncData('breadcrumbs-blog-articles', () =>
-  queryCollection('blog').select('slug', 'title').all(),
-  { default: () => [] }
-)
+// Важно: queryCollection('blog') тащит ~200KB sqlite3-worker на каждую
+// страницу. Вынесли получение заголовка в LazyBreadcrumbsBlogTitle —
+// компонент грузится отдельным chunk только на /blog/<slug>/.
 
 const crumbs = computed(() => {
   const currentPath = route.path
@@ -113,13 +113,12 @@ const crumbs = computed(() => {
 
     if (normalizedPath !== '/blog/') {
       const slug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '')
-      const article = (blogArticles.value || []).find((a) => a.slug === slug)
-      if (article) {
-        result.push({
-          path: normalizedPath,
-          title: article.title,
-        })
-      }
+      // title загрузится в LazyBreadcrumbsBlogTitle (отдельный async chunk)
+      result.push({
+        path: normalizedPath,
+        title: '',
+        blogSlug: slug,
+      })
     }
     return result
   }

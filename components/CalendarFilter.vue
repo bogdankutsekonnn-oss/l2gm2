@@ -14,7 +14,8 @@
 
     <!-- Сетка дней -->
     <div class="calendar-days">
-      <NuxtLink
+      <component
+        :is="day.hasServers ? resolveComponent('NuxtLink') : 'span'"
         v-for="(day, index) in calendarDays"
         :key="index"
         :to="day.hasServers ? `/date/${day.fullDate}/` : undefined"
@@ -30,7 +31,7 @@
         :tabindex="day.hasServers ? 0 : -1"
       >
         {{ day.date }}
-      </NuxtLink>
+      </component>
     </div>
   </div>
 </template>

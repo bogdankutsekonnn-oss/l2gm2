@@ -81,9 +81,10 @@ const acceptCookies = () => {
   flex-shrink: 0;
   padding: 8px 24px;
   background: var(--primary-main);
-  color: #fff;
+  /* #000 на ярком оранжевом ~6:1 (WCAG AA), белый давал 3.4 — Lighthouse ругался */
+  color: #000;
   font-size: var(--font-sm);
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold, 600);
   border: none;
   border-radius: 8px;
   cursor: pointer;

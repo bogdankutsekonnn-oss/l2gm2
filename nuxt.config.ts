@@ -3,6 +3,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxtjs/sitemap', '@nuxt/image', '@nuxt/content'],
 
+  // Инлайн CSS компонентов в HTML — устраняет render-blocking CSS-запросы
+  // (Lighthouse показывал ~150мс задержки LCP из-за внешних FiltersPanel.css,
+  // ServerCard.css, Breadcrumbs.css и т.д.)
+  features: {
+    inlineStyles: true,
+  },
+
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
     xsl: false,
