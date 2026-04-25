@@ -14,6 +14,17 @@
   {"slug":"soul-ore","name":"Soul Ore","icon":"soul-ore.png","category":"consumable","sort_order":190},
 
   {"slug":"soulshot-d","name":"Soulshot (D-Grade)","icon":"soulshot-d.png","category":"shots","sort_order":1100,"yield_qty":200,"recipe":[{"slug":"soul-ore","qty":3},{"slug":"crystal-d","qty":1}]},
+  {"slug":"soulshot-c","name":"Soulshot (C-Grade)","icon":"soulshot-c.png","category":"shots","sort_order":1110,"yield_qty":600,"recipe":[{"slug":"soul-ore","qty":15},{"slug":"crystal-c","qty":1}]},
+  {"slug":"soulshot-b","name":"Soulshot (B-Grade)","icon":"soulshot-b.png","category":"shots","sort_order":1120,"yield_qty":450,"recipe":[{"slug":"soul-ore","qty":54},{"slug":"crystal-b","qty":1}]},
+  {"slug":"soulshot-a","name":"Soulshot (A-Grade)","icon":"soulshot-a.png","category":"shots","sort_order":1130,"yield_qty":300,"recipe":[{"slug":"soul-ore","qty":36},{"slug":"crystal-a","qty":1}]},
+  {"slug":"spiritshot-d","name":"Spiritshot (D-Grade)","icon":"spiritshot-d.png","category":"shots","sort_order":1200,"yield_qty":140,"recipe":[{"slug":"spirit-ore","qty":3},{"slug":"crystal-d","qty":1}]},
+  {"slug":"spiritshot-c","name":"Spiritshot (C-Grade)","icon":"spiritshot-c.png","category":"shots","sort_order":1210,"yield_qty":270,"recipe":[{"slug":"spirit-ore","qty":10},{"slug":"crystal-c","qty":1}]},
+  {"slug":"spiritshot-b","name":"Spiritshot (B-Grade)","icon":"spiritshot-b.png","category":"shots","sort_order":1220,"yield_qty":150,"recipe":[{"slug":"spirit-ore","qty":15},{"slug":"crystal-b","qty":1}]},
+  {"slug":"spiritshot-a","name":"Spiritshot (A-Grade)","icon":"spiritshot-a.png","category":"shots","sort_order":1230,"yield_qty":200,"recipe":[{"slug":"spirit-ore","qty":22},{"slug":"crystal-a","qty":1}]},
+  {"slug":"blessed-spiritshot-d","name":"Blessed Spiritshot (D-Grade)","icon":"blessed-spiritshot-d.png","category":"shots","sort_order":1300,"yield_qty":120,"recipe":[{"slug":"spirit-ore","qty":8},{"slug":"crystal-d","qty":2}]},
+  {"slug":"blessed-spiritshot-c","name":"Blessed Spiritshot (C-Grade)","icon":"blessed-spiritshot-c.png","category":"shots","sort_order":1310,"yield_qty":240,"recipe":[{"slug":"spirit-ore","qty":30},{"slug":"crystal-c","qty":2}]},
+  {"slug":"blessed-spiritshot-b","name":"Blessed Spiritshot (B-Grade)","icon":"blessed-spiritshot-b.png","category":"shots","sort_order":1320,"yield_qty":100,"recipe":[{"slug":"spirit-ore","qty":16},{"slug":"crystal-b","qty":2}]},
+  {"slug":"blessed-spiritshot-a","name":"Blessed Spiritshot (A-Grade)","icon":"blessed-spiritshot-a.png","category":"shots","sort_order":1330,"yield_qty":200,"recipe":[{"slug":"spirit-ore","qty":70},{"slug":"crystal-a","qty":2}]},
 
   {"slug":"animal-bone","name":"Animal Bone","icon":"animal-bone.png","category":"drop","sort_order":200},
   {"slug":"animal-skin","name":"Animal Skin","icon":"animal-skin.png","category":"drop","sort_order":210},
@@ -62,7 +73,6 @@
   {"slug":"maestro-mold","name":"Maestro Mold","icon":"maestro-mold.png","category":"craft_only","sort_order":690,"yield_qty":1,"recipe":[{"slug":"blacksmiths-frame","qty":1},{"slug":"mold-glue","qty":10},{"slug":"asofe","qty":5}]},
   {"slug":"maestro-holder","name":"Maestro Holder","icon":"maestro-holder.png","category":"craft_only","sort_order":700,"yield_qty":1,"recipe":[{"slug":"varnish-of-purity","qty":10},{"slug":"mold-hardener","qty":10},{"slug":"mold-lubricant","qty":10}]},
   {"slug":"craftsman-mold","name":"Craftsman Mold","icon":"craftsman-mold.png","category":"craft_only","sort_order":710,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":2},{"slug":"mold-hardener","qty":20},{"slug":"enria","qty":5}]},
-
-  {"slug":"warsmiths-holder","name":"Warsmith's Holder","icon":"warsmiths-holder.png","category":"s_grade","sort_order":800,"yield_qty":1,"recipe":[{"slug":"maestro-holder","qty":2},{"slug":"mold-glue","qty":10},{"slug":"thread","qty":20}]},
-  {"slug":"warsmiths-mold","name":"Warsmith's Mold","icon":"warsmiths-mold.png","category":"s_grade","sort_order":810,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":1},{"slug":"mold-hardener","qty":10},{"slug":"enria","qty":5}]}
+  {"slug":"warsmiths-holder","name":"Warsmith's Holder","icon":"warsmiths-holder.png","category":"craft_only","sort_order":720,"yield_qty":1,"recipe":[{"slug":"maestro-holder","qty":2},{"slug":"mold-glue","qty":10},{"slug":"thread","qty":20}]},
+  {"slug":"warsmiths-mold","name":"Warsmith's Mold","icon":"warsmiths-mold.png","category":"craft_only","sort_order":730,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":1},{"slug":"mold-hardener","qty":10},{"slug":"enria","qty":5}]}
 ]
