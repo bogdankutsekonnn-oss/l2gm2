@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `resources` (
   `slug` VARCHAR(64) NOT NULL UNIQUE,
   `name` VARCHAR(128) NOT NULL,
   `icon` VARCHAR(64) NOT NULL COMMENT 'имя файла в /img/resources/',
-  `category` ENUM('currency','drop','craft_or_drop','craft_or_manor','craft_only','s_grade') NOT NULL,
+  `category` ENUM('currency','consumable','drop','craft_or_drop','craft_or_manor','craft_only','s_grade','shots') NOT NULL,
   `recipe` JSON DEFAULT NULL COMMENT '[{"slug":"...","qty":N}, ...]',
   `yield_qty` INT NOT NULL DEFAULT 1 COMMENT 'сколько штук на выходе крафта',
   `sort_order` INT NOT NULL DEFAULT 0,

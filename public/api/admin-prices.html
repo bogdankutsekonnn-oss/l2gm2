@@ -38,9 +38,9 @@
     .toolbar-info { margin-left: auto; font-size: 11px; color: rgba(245,245,247,0.4); }
 
     /* Table */
-    .prices-table-wrap { background: #0a0c0e; border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; overflow: auto; }
+    .prices-table-wrap { background: #0a0c0e; border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; overflow-x: auto; }
     .prices-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-    .prices-table th { text-align: left; padding: 10px 10px; font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #0a0c0e; z-index: 5; white-space: nowrap; }
+    .prices-table thead th { text-align: left; padding: 10px 10px; font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #0a0c0e; z-index: 10; white-space: nowrap; box-shadow: 0 1px 0 rgba(255,255,255,0.06); }
     .prices-table td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; color: rgba(245,245,247,0.85); white-space: nowrap; }
     .prices-table tr:hover td { background: rgba(255,255,255,0.015); }
     .prices-table tr.cat-divider td { background: rgba(254,54,0,0.04); padding: 8px 10px; font-size: 11px; color: rgb(254, 130, 80); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
@@ -54,6 +54,7 @@
 
     .cat-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
     .cat-currency { background: rgba(255,193,7,0.15); color: #ffd54f; }
+    .cat-consumable { background: rgba(120,180,255,0.12); color: #80b3ff; }
     .cat-drop { background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.55); }
     .cat-craft_or_drop { background: rgba(75,210,133,0.1); color: #4BD285; }
     .cat-craft_or_manor { background: rgba(255,193,7,0.1); color: #ffc107; }
@@ -139,6 +140,7 @@
     <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск ресурса..." oninput="render()">
     <button class="filter-chip active" data-cat="all" onclick="setFilter(this)">Все</button>
     <button class="filter-chip" data-cat="currency" onclick="setFilter(this)">Валюта</button>
+    <button class="filter-chip" data-cat="consumable" onclick="setFilter(this)">Расходники</button>
     <button class="filter-chip" data-cat="drop" onclick="setFilter(this)">Дроп / Спойл</button>
     <button class="filter-chip" data-cat="craft_or_drop" onclick="setFilter(this)">Дроп / Спойл / Крафт</button>
     <button class="filter-chip" data-cat="craft_only" onclick="setFilter(this)">Только крафт</button>
@@ -156,8 +158,9 @@
           <th class="col-buy">Покупка макс.</th>
           <th class="col-sell">Продажа ср.</th>
           <th class="col-sell">Продажа мин.</th>
-          <th>Себест. (ср.)</th>
-          <th>Профит крафта</th>
+          <th title="Sell ср. − Buy ср.">Маржа торг.</th>
+          <th title="Себестоимость крафта по средним ценам ингредиентов">Себест. крафт</th>
+          <th title="Sell ср. − Себест. крафт">Профит крафта</th>
           <th>Обновлено</th>
         </tr>
       </thead>
@@ -166,11 +169,11 @@
   </div>
 
   <div class="footer-note">
-    💡 <strong>Себестоимость</strong> считается рекурсивно по средней цене покупки ингредиентов с учётом yield (Cord, Metallic Fiber выходят пачками по 20).
-    <strong>Профит крафта</strong> = Продажа ср. − Себестоимость. Зелёным — выгодно крафтить, красным — нет. Прочерк, если для какого-то ингредиента нет средней цены покупки.<br>
-    💡 Если <em>макс. покупки</em> или <em>мин. продажи</em> не заполнены — используется значение средней цены (показывается курсивом).
-    Клик в любую ячейку цены → можно редактировать. Enter — сохранить, Esc — отменить.
-    Клик в «Обновлено» — история изменений.
+    💡 <strong>Маржа торговли</strong> = Продажа ср. − Покупка ср. — простой флип на рынке.<br>
+    💡 <strong>Себест. крафт</strong> — рекурсивная себестоимость по средним ценам ингредиентов с учётом yield (Cord, Metallic Fiber — пачки по 20, соски по 200).
+    <strong>Профит крафта</strong> = Продажа ср. − Себест. крафт. Сравни обе колонки — иногда крафтить выгоднее, чем покупать на рынке.<br>
+    💡 Если <em>макс. покупки</em> или <em>мин. продажи</em> пусто — подставляется среднее (курсивом).
+    Клик в ячейку цены → редактирование. Enter — сохранить, Esc — отменить. Клик в «Обновлено» — история.
   </div>
 </div>
 
@@ -181,11 +184,13 @@ const API_BASE = '/api';
 const ICON_BASE = '/img/resources';
 const CATEGORY_LABELS = {
   currency: 'Валюта сервера',
+  consumable: 'Расходники крафта',
   drop: 'Дроп / Спойл',
   craft_or_drop: 'Дроп / Спойл / Крафт',
   craft_or_manor: 'Только крафт',
   craft_only: 'Только крафт',
   s_grade: 'S-grade (кузница)',
+  shots: 'Соски (соулшоты / спиритшоты)',
 };
 
 let state = {
@@ -293,23 +298,27 @@ function render() {
   let lastCat = null;
   for (const r of items) {
     if (r.category !== lastCat) {
-      html += `<tr class="cat-divider"><td colspan="9">${CATEGORY_LABELS[r.category] || r.category}</td></tr>`;
+      html += `<tr class="cat-divider"><td colspan="10">${CATEGORY_LABELS[r.category] || r.category}</td></tr>`;
       lastCat = r.category;
     }
     html += renderRow(r);
   }
-  tbody.innerHTML = html || `<tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(245,245,247,0.3);">Ничего не найдено</td></tr>`;
+  tbody.innerHTML = html || `<tr><td colspan="10" style="text-align:center;padding:30px;color:rgba(245,245,247,0.3);">Ничего не найдено</td></tr>`;
 }
 
 function renderRow(r) {
   const buyAvg  = r.buy_avg;
-  const buyMaxEff  = r.buy_max  ?? r.buy_avg;
   const sellAvg = r.sell_avg;
-  const sellMinEff = r.sell_min ?? r.sell_avg;
 
-  const cost = computeCost(r);
-  const profit = (cost !== null && sellAvg !== null) ? (sellAvg - cost) : null;
-  const profitPct = (profit !== null && cost) ? (profit / cost * 100) : null;
+  // Маржа торговли — для всех (sell_avg − buy_avg)
+  const tradeMargin = (sellAvg !== null && buyAvg !== null) ? (sellAvg - buyAvg) : null;
+  const tradeMarginPct = (tradeMargin !== null && buyAvg) ? (tradeMargin / buyAvg * 100) : null;
+
+  // Себестоимость крафта — только для крафтовых ресурсов
+  const isCraftable = r.recipe && r.recipe.length > 0;
+  const craftCost = isCraftable ? computeCost(r) : null;
+  const craftProfit = (craftCost !== null && sellAvg !== null) ? (sellAvg - craftCost) : null;
+  const craftProfitPct = (craftProfit !== null && craftCost) ? (craftProfit / craftCost * 100) : null;
 
   const recipeText = r.recipe ? recipeToText(r) : '';
 
@@ -325,14 +334,17 @@ function renderRow(r) {
         </div>
       </td>
       <td><span class="cat-badge cat-${r.category}">${shortCat(r.category)}</span></td>
-      ${priceCell(r, 'buy_avg',  buyAvg,  null,        'col-buy')}
-      ${priceCell(r, 'buy_max',  r.buy_max, buyAvg,    'col-buy')}
-      ${priceCell(r, 'sell_avg', sellAvg, null,        'col-sell')}
-      ${priceCell(r, 'sell_min', r.sell_min, sellAvg,  'col-sell')}
-      <td class="${cost === null ? 'cost-cell unknown' : 'cost-cell'}"
-          onmouseenter="showCostTooltip(event, '${r.slug}')"
-          onmouseleave="hideTooltip()">${cost === null ? '—' : fmt(cost)}</td>
-      ${marginCell(profit, profitPct)}
+      ${priceCell(r, 'buy_avg',  buyAvg,    null,    'col-buy')}
+      ${priceCell(r, 'buy_max',  r.buy_max, buyAvg,  'col-buy')}
+      ${priceCell(r, 'sell_avg', sellAvg,   null,    'col-sell')}
+      ${priceCell(r, 'sell_min', r.sell_min, sellAvg, 'col-sell')}
+      ${marginCell(tradeMargin, tradeMarginPct)}
+      ${isCraftable
+        ? `<td class="${craftCost === null ? 'cost-cell unknown' : 'cost-cell'}"
+              onmouseenter="showCostTooltip(event, '${r.slug}')"
+              onmouseleave="hideTooltip()">${craftCost === null ? '—' : fmt(craftCost)}</td>`
+        : `<td class="cost-cell unknown">—</td>`}
+      ${isCraftable ? marginCell(craftProfit, craftProfitPct) : `<td class="margin-cell unknown">—</td>`}
       <td class="updated-cell ${updatedClass(r)}" onclick="showHistory(event, '${r.slug}')" title="${updatedTitle(r)}">${updatedText(r)}</td>
     </tr>`;
 }
@@ -360,7 +372,7 @@ function marginCell(profit, pct) {
 }
 
 function shortCat(c) {
-  return ({currency:'Валюта',drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S'})[c] || c;
+  return ({currency:'Валюта',consumable:'Расх.',drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S'})[c] || c;
 }
 
 function recipeToText(r) {
@@ -372,7 +384,7 @@ function recipeToText(r) {
 
 function fmt(n) {
   if (n === null || n === undefined) return '—';
-  return Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ');
+  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 function escapeHtml(s) {
