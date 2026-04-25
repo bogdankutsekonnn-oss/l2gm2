@@ -85,3 +85,58 @@ function jsonResponse($data, $code = 200) {
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+// Извлечь Bearer-токен из заголовка / GET
+function getBearerToken() {
+    $auth = '';
+    if (function_exists('getallheaders')) {
+        $h = getallheaders();
+        $auth = $h['Authorization'] ?? $h['authorization'] ?? '';
+    }
+    if (!$auth && !empty($_SERVER['HTTP_AUTHORIZATION'])) $auth = $_SERVER['HTTP_AUTHORIZATION'];
+    if (!$auth && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    if (!$auth && !empty($_GET['token'])) $auth = 'Bearer ' . $_GET['token'];
+    return trim(str_replace('Bearer ', '', $auth));
+}
+
+/**
+ * Проверка пользовательской сессии (логин/пароль → токен).
+ * Возвращает массив ['user_id'=>..,'username'=>..] или 401.
+ * Также принимает мастер-токен ADMIN_TOKEN (user_id=null).
+ */
+function requireUser() {
+    $token = getBearerToken();
+    if ($token === '') {
+        http_response_code(401);
+        echo json_encode(['error' => 'Unauthorized']);
+        exit;
+    }
+
+    // Мастер-токен — без user_id
+    if ($token === ADMIN_TOKEN) {
+        return ['user_id' => null, 'username' => 'master'];
+    }
+
+    $db = getDB();
+    $stmt = $db->prepare(
+        'SELECT s.user_id, u.username
+         FROM admin_sessions s
+         JOIN admin_users u ON u.id = s.user_id
+         WHERE s.token = :t AND s.expires_at > NOW()
+         LIMIT 1'
+    );
+    $stmt->execute([':t' => $token]);
+    $row = $stmt->fetch();
+
+    if (!$row) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Unauthorized']);
+        exit;
+    }
+
+    // Обновляем last_used_at (без блокировки)
+    $db->prepare('UPDATE admin_sessions SET last_used_at = NOW() WHERE token = :t')
+       ->execute([':t' => $token]);
+
+    return ['user_id' => (int)$row['user_id'], 'username' => $row['username']];
+}

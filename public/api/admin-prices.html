@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>L2GM — Цены ресурсов</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #06080a; color: #f5f5f7; min-height: 100vh; font-size: 13px; }
+
+    /* Login */
+    .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: #0f1113; padding: 32px; border-radius: 12px; width: 360px; border: 1px solid rgba(255,255,255,0.06); }
+    .login-box h1 { font-size: 20px; margin-bottom: 20px; text-align: center; }
+    .login-box input { width: 100%; padding: 10px 14px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #f5f5f7; font-size: 14px; margin-bottom: 12px; outline: none; }
+    .login-box input:focus { border-color: rgb(254, 54, 0); }
+    .login-box button { width: 100%; padding: 10px; background: rgb(254, 54, 0); color: #f5f5f7; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .login-box button:hover { background: rgb(179, 30, 0); }
+    .login-error { color: #ff6b6b; font-size: 12px; margin-bottom: 12px; min-height: 16px; }
+
+    /* Dashboard */
+    .dashboard { display: none; max-width: 1500px; margin: 0 auto; padding: 24px; }
+    .dashboard.active { display: block; }
+    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .dash-header h1 { font-size: 22px; }
+    .user-info { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(245,245,247,0.5); }
+    .btn-logout { padding: 6px 12px; background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.6); border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .search-input { padding: 8px 12px; background: #0f1113; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; min-width: 220px; }
+    .search-input:focus { border-color: rgb(254, 54, 0); }
+    .filter-chip { padding: 6px 12px; background: rgba(255,255,255,0.05); border: none; border-radius: 6px; color: rgba(245,245,247,0.6); cursor: pointer; font-size: 12px; }
+    .filter-chip.active { background: rgb(254, 54, 0); color: #f5f5f7; }
+    .filter-chip:hover:not(.active) { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+    .toolbar-info { margin-left: auto; font-size: 11px; color: rgba(245,245,247,0.4); }
+
+    /* Table */
+    .prices-table-wrap { background: #0a0c0e; border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; overflow: auto; }
+    .prices-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+    .prices-table th { text-align: left; padding: 10px 10px; font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; background: #0a0c0e; z-index: 5; white-space: nowrap; }
+    .prices-table td { padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; color: rgba(245,245,247,0.85); white-space: nowrap; }
+    .prices-table tr:hover td { background: rgba(255,255,255,0.015); }
+    .prices-table tr.cat-divider td { background: rgba(254,54,0,0.04); padding: 8px 10px; font-size: 11px; color: rgb(254, 130, 80); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .prices-table tr.cat-divider:hover td { background: rgba(254,54,0,0.06); }
+
+    .res-cell { display: flex; align-items: center; gap: 8px; min-width: 200px; }
+    .res-icon { width: 28px; height: 28px; flex-shrink: 0; image-rendering: pixelated; background: #1a1c1e; border-radius: 4px; }
+    .res-name { font-weight: 500; }
+    .res-recipe { font-size: 11px; color: rgba(245,245,247,0.4); margin-top: 1px; }
+    .res-recipe .yield { color: #4BD285; }
+
+    .cat-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+    .cat-drop { background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.55); }
+    .cat-craft_or_drop { background: rgba(75,210,133,0.1); color: #4BD285; }
+    .cat-craft_or_manor { background: rgba(255,193,7,0.1); color: #ffc107; }
+    .cat-craft_only { background: rgba(254,54,0,0.12); color: rgb(254, 100, 50); }
+    .cat-s_grade { background: rgba(224,64,251,0.12); color: #e040fb; }
+
+    /* Price cells */
+    .price-cell { cursor: text; padding: 4px 6px; border-radius: 4px; min-width: 90px; text-align: right; font-variant-numeric: tabular-nums; transition: background 0.15s; }
+    .price-cell:hover { background: rgba(255,255,255,0.04); }
+    .price-cell.empty { color: rgba(245,245,247,0.25); }
+    .price-cell.fallback { color: rgba(245,245,247,0.4); font-style: italic; }
+    .price-cell.editing { background: rgba(254,54,0,0.1); }
+    .price-cell input { width: 100%; background: transparent; border: none; outline: none; color: #f5f5f7; font: inherit; text-align: right; font-variant-numeric: tabular-nums; }
+    .price-cell.saved { animation: flashGreen 0.6s ease; }
+    .price-cell.error { animation: flashRed 0.6s ease; }
+    @keyframes flashGreen { 0% { background: rgba(75,210,133,0.4); } 100% { background: transparent; } }
+    @keyframes flashRed { 0% { background: rgba(220,53,69,0.4); } 100% { background: transparent; } }
+
+    .col-buy { background: rgba(75,210,133,0.025); }
+    .col-sell { background: rgba(254,54,0,0.025); }
+
+    .cost-cell { text-align: right; font-variant-numeric: tabular-nums; color: rgba(245,245,247,0.7); cursor: help; }
+    .cost-cell.unknown { color: rgba(245,245,247,0.25); }
+
+    .margin-cell { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .margin-cell.positive { color: #4BD285; }
+    .margin-cell.negative { color: #ff6b6b; }
+    .margin-cell.unknown { color: rgba(245,245,247,0.25); font-weight: normal; }
+
+    .updated-cell { font-size: 11px; color: rgba(245,245,247,0.5); cursor: pointer; }
+    .updated-cell.stale { color: rgba(245,245,247,0.25); }
+    .updated-cell.fresh { color: #4BD285; }
+
+    /* Footer note */
+    .footer-note { margin-top: 12px; font-size: 11px; color: rgba(245,245,247,0.35); padding: 8px 4px; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #0f1113; border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .toast.error { border-color: #dc3545; color: #ff6b6b; }
+    .toast.success { border-color: #4BD285; color: #4BD285; }
+
+    /* History popover */
+    .popover { position: fixed; background: #0f1113; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; min-width: 300px; max-width: 400px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 200; font-size: 12px; }
+    .popover h4 { font-size: 12px; color: rgba(245,245,247,0.5); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .popover .hist-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .popover .hist-row:last-child { border-bottom: none; }
+    .popover .hist-field { color: rgba(245,245,247,0.5); font-size: 11px; }
+    .popover .hist-val { font-variant-numeric: tabular-nums; }
+    .popover .hist-when { color: rgba(245,245,247,0.4); font-size: 11px; }
+    .popover .hist-empty { color: rgba(245,245,247,0.4); font-style: italic; }
+
+    /* Tooltip */
+    .tooltip { position: fixed; background: #1a1c1e; border: 1px solid rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 6px; font-size: 12px; pointer-events: none; z-index: 300; max-width: 320px; line-height: 1.5; }
+    .tooltip strong { color: #4BD285; }
+    .tooltip .miss { color: #ffc107; }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen" class="login-screen">
+  <form class="login-box" onsubmit="doLogin(event)">
+    <h1>💰 L2GM — Цены ресурсов</h1>
+    <input type="text" id="loginUser" placeholder="Логин" autocomplete="username" autofocus>
+    <input type="password" id="loginPass" placeholder="Пароль" autocomplete="current-password">
+    <div class="login-error" id="loginError"></div>
+    <button type="submit">Войти</button>
+  </form>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" class="dashboard">
+  <div class="dash-header">
+    <h1>💰 Цены ресурсов</h1>
+    <div class="user-info">
+      <span id="whoami"></span>
+      <button class="btn-logout" onclick="doLogout()">Выйти</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск ресурса..." oninput="render()">
+    <button class="filter-chip active" data-cat="all" onclick="setFilter(this)">Все</button>
+    <button class="filter-chip" data-cat="drop" onclick="setFilter(this)">Дроп</button>
+    <button class="filter-chip" data-cat="craft_or_drop" onclick="setFilter(this)">Дроп/Крафт</button>
+    <button class="filter-chip" data-cat="craft_or_manor" onclick="setFilter(this)">Крафт/Манор</button>
+    <button class="filter-chip" data-cat="craft_only" onclick="setFilter(this)">Только крафт</button>
+    <button class="filter-chip" data-cat="s_grade" onclick="setFilter(this)">S-grade</button>
+    <span class="toolbar-info" id="toolbarInfo"></span>
+  </div>
+
+  <div class="prices-table-wrap">
+    <table class="prices-table">
+      <thead>
+        <tr>
+          <th style="width: 240px;">Ресурс</th>
+          <th>Категория</th>
+          <th class="col-buy">Покупка ср.</th>
+          <th class="col-buy">Покупка макс.</th>
+          <th class="col-sell">Продажа ср.</th>
+          <th class="col-sell">Продажа мин.</th>
+          <th>Себест. (ср.)</th>
+          <th>Профит крафта</th>
+          <th>Обновлено</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    💡 <strong>Себестоимость</strong> считается рекурсивно по средней цене покупки ингредиентов с учётом yield (Cord, Metallic Fiber выходят пачками по 20).
+    <strong>Профит крафта</strong> = Продажа ср. − Себестоимость. Зелёным — выгодно крафтить, красным — нет. Прочерк, если для какого-то ингредиента нет средней цены покупки.<br>
+    💡 Если <em>макс. покупки</em> или <em>мин. продажи</em> не заполнены — используется значение средней цены (показывается курсивом).
+    Клик в любую ячейку цены → можно редактировать. Enter — сохранить, Esc — отменить.
+    Клик в «Обновлено» — история изменений.
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = '/api';
+const ICON_BASE = '/img/resources';
+const CATEGORY_LABELS = {
+  drop: 'Дроп / Манор',
+  craft_or_drop: 'Дроп или крафт',
+  craft_or_manor: 'Крафт или манор',
+  craft_only: 'Только крафт',
+  s_grade: 'S-grade (кузница)',
+};
+
+let state = {
+  resources: [],
+  bySlug: {},
+  filter: 'all',
+  token: localStorage.getItem('l2gm_token') || '',
+  user: null,
+};
+
+// ---- Auth ----
+async function doLogin(e) {
+  e.preventDefault();
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  try {
+    const res = await fetch(`${API_BASE}/auth.php?action=login`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: u, password: p}),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Ошибка входа'; return; }
+    state.token = data.token;
+    state.user = data.user;
+    localStorage.setItem('l2gm_token', state.token);
+    localStorage.setItem('l2gm_user', JSON.stringify(data.user));
+    showDashboard();
+  } catch (err) {
+    errEl.textContent = 'Сеть недоступна';
+  }
+}
+
+async function doLogout() {
+  try {
+    await fetch(`${API_BASE}/auth.php?action=logout`, {
+      method: 'POST',
+      headers: authHeaders(),
+    });
+  } catch (e) {}
+  state.token = '';
+  state.user = null;
+  localStorage.removeItem('l2gm_token');
+  localStorage.removeItem('l2gm_user');
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function authHeaders() {
+  return state.token ? {'Authorization': 'Bearer ' + state.token, 'Content-Type': 'application/json'} : {};
+}
+
+async function checkAuth() {
+  if (!state.token) return false;
+  try {
+    const res = await fetch(`${API_BASE}/auth.php?action=me`, {headers: authHeaders()});
+    if (!res.ok) return false;
+    const data = await res.json();
+    state.user = data.user;
+    return true;
+  } catch (e) { return false; }
+}
+
+async function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').classList.add('active');
+  document.getElementById('whoami').textContent = state.user ? `👤 ${state.user.username}` : '';
+  await loadPrices();
+}
+
+// ---- Data ----
+async function loadPrices() {
+  try {
+    const res = await fetch(`${API_BASE}/prices.php`);
+    const data = await res.json();
+    state.resources = data.resources || [];
+    state.bySlug = {};
+    for (const r of state.resources) state.bySlug[r.slug] = r;
+    render();
+  } catch (e) {
+    toast('Не удалось загрузить цены', 'error');
+  }
+}
+
+// ---- Render ----
+function setFilter(btn) {
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.filter = btn.dataset.cat;
+  render();
+}
+
+function render() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const tbody = document.getElementById('tbody');
+  let items = state.resources;
+  if (state.filter !== 'all') items = items.filter(r => r.category === state.filter);
+  if (q) items = items.filter(r => r.name.toLowerCase().includes(q) || r.slug.includes(q));
+
+  document.getElementById('toolbarInfo').textContent = `${items.length} из ${state.resources.length}`;
+
+  let html = '';
+  let lastCat = null;
+  for (const r of items) {
+    if (r.category !== lastCat) {
+      html += `<tr class="cat-divider"><td colspan="9">${CATEGORY_LABELS[r.category] || r.category}</td></tr>`;
+      lastCat = r.category;
+    }
+    html += renderRow(r);
+  }
+  tbody.innerHTML = html || `<tr><td colspan="9" style="text-align:center;padding:30px;color:rgba(245,245,247,0.3);">Ничего не найдено</td></tr>`;
+}
+
+function renderRow(r) {
+  const buyAvg  = r.buy_avg;
+  const buyMaxEff  = r.buy_max  ?? r.buy_avg;
+  const sellAvg = r.sell_avg;
+  const sellMinEff = r.sell_min ?? r.sell_avg;
+
+  const cost = computeCost(r);
+  const profit = (cost !== null && sellAvg !== null) ? (sellAvg - cost) : null;
+  const profitPct = (profit !== null && cost) ? (profit / cost * 100) : null;
+
+  const recipeText = r.recipe ? recipeToText(r) : '';
+
+  return `
+    <tr data-slug="${r.slug}">
+      <td>
+        <div class="res-cell">
+          <img class="res-icon" src="${ICON_BASE}/${r.icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
+          <div>
+            <div class="res-name">${r.name}</div>
+            ${recipeText ? `<div class="res-recipe" title="${escapeHtml(recipeText)}">${recipeText}${r.yield_qty > 1 ? ` <span class="yield">→ ${r.yield_qty}шт</span>` : ''}</div>` : ''}
+          </div>
+        </div>
+      </td>
+      <td><span class="cat-badge cat-${r.category}">${shortCat(r.category)}</span></td>
+      ${priceCell(r, 'buy_avg',  buyAvg,  null,        'col-buy')}
+      ${priceCell(r, 'buy_max',  r.buy_max, buyAvg,    'col-buy')}
+      ${priceCell(r, 'sell_avg', sellAvg, null,        'col-sell')}
+      ${priceCell(r, 'sell_min', r.sell_min, sellAvg,  'col-sell')}
+      <td class="${cost === null ? 'cost-cell unknown' : 'cost-cell'}"
+          onmouseenter="showCostTooltip(event, '${r.slug}')"
+          onmouseleave="hideTooltip()">${cost === null ? '—' : fmt(cost)}</td>
+      ${marginCell(profit, profitPct)}
+      <td class="updated-cell ${updatedClass(r)}" onclick="showHistory(event, '${r.slug}')" title="${updatedTitle(r)}">${updatedText(r)}</td>
+    </tr>`;
+}
+
+function priceCell(r, field, value, fallback, extraCls) {
+  let display, cls = `price-cell ${extraCls}`;
+  if (value !== null && value !== undefined) {
+    display = fmt(value);
+  } else if (fallback !== null && fallback !== undefined) {
+    display = fmt(fallback);
+    cls += ' fallback';
+  } else {
+    display = '—';
+    cls += ' empty';
+  }
+  return `<td><div class="${cls}" data-field="${field}" data-slug="${r.slug}" onclick="startEdit(this)">${display}</div></td>`;
+}
+
+function marginCell(profit, pct) {
+  if (profit === null) return `<td class="margin-cell unknown">—</td>`;
+  const cls = profit >= 0 ? 'positive' : 'negative';
+  const sign = profit >= 0 ? '+' : '';
+  const pctStr = pct !== null ? ` (${sign}${pct.toFixed(1)}%)` : '';
+  return `<td class="margin-cell ${cls}">${sign}${fmt(profit)}${pctStr}</td>`;
+}
+
+function shortCat(c) {
+  return ({drop:'Дроп',craft_or_drop:'Д/К',craft_or_manor:'К/М',craft_only:'Крафт',s_grade:'S'})[c] || c;
+}
+
+function recipeToText(r) {
+  return r.recipe.map(i => {
+    const name = state.bySlug[i.slug]?.name || i.slug;
+    return `${name}×${i.qty}`;
+  }).join(' + ');
+}
+
+function fmt(n) {
+  if (n === null || n === undefined) return '—';
+  return Math.round(n).toLocaleString('ru-RU').replace(/,/g, ' ');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---- Cost calc ----
+function computeCost(resource, visited) {
+  visited = visited || new Set();
+  if (!resource.recipe || !resource.recipe.length) {
+    return resource.buy_avg !== null ? resource.buy_avg : null;
+  }
+  if (visited.has(resource.slug)) return null;
+  visited.add(resource.slug);
+
+  let total = 0;
+  for (const ing of resource.recipe) {
+    const ingRes = state.bySlug[ing.slug];
+    if (!ingRes) return null;
+    // Берём минимум из buy_avg и себестоимости крафта (если рецепт у ингредиента дешевле)
+    let unitCost = ingRes.buy_avg;
+    if (ingRes.recipe && ingRes.recipe.length) {
+      const craftCost = computeCost(ingRes, new Set(visited));
+      if (craftCost !== null) {
+        unitCost = (unitCost === null) ? craftCost : Math.min(unitCost, craftCost);
+      }
+    }
+    if (unitCost === null) return null;
+    total += unitCost * ing.qty;
+  }
+  return Math.round(total / (resource.yield_qty || 1));
+}
+
+function findMissingIngredients(resource, missing, visited) {
+  missing = missing || [];
+  visited = visited || new Set();
+  if (visited.has(resource.slug)) return missing;
+  visited.add(resource.slug);
+  if (!resource.recipe) return missing;
+  for (const ing of resource.recipe) {
+    const ingRes = state.bySlug[ing.slug];
+    if (!ingRes) { missing.push(ing.slug); continue; }
+    if (ingRes.buy_avg !== null) continue; // есть цена — норм
+    if (ingRes.recipe && ingRes.recipe.length) {
+      findMissingIngredients(ingRes, missing, visited);
+    } else {
+      if (!missing.includes(ingRes.name)) missing.push(ingRes.name);
+    }
+  }
+  return missing;
+}
+
+// ---- Inline edit ----
+function startEdit(el) {
+  if (el.classList.contains('editing')) return;
+  const slug = el.dataset.slug;
+  const field = el.dataset.field;
+  const r = state.bySlug[slug];
+  const current = r[field];
+
+  el.classList.add('editing');
+  const original = el.innerHTML;
+  el.innerHTML = `<input type="text" inputmode="numeric" value="${current ?? ''}" placeholder="">`;
+  const input = el.querySelector('input');
+  input.focus();
+  input.select();
+
+  const cleanup = () => { el.classList.remove('editing'); };
+  const cancel = () => { el.innerHTML = original; cleanup(); };
+
+  const save = async () => {
+    const raw = input.value.trim().replace(/\s/g, '').replace(/,/g, '');
+    let val;
+    if (raw === '') { val = null; }
+    else if (!/^\d+$/.test(raw)) { toast('Только число', 'error'); cancel(); return; }
+    else { val = parseInt(raw, 10); }
+
+    if (val === (current ?? null)) { cancel(); return; }
+
+    try {
+      const res = await fetch(`${API_BASE}/prices.php?action=update&slug=${encodeURIComponent(slug)}`, {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({[field]: val}),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast(data.error || 'Ошибка', 'error'); cancel(); return; }
+      // Обновим локально
+      Object.assign(state.bySlug[slug], data.resource);
+      const idx = state.resources.findIndex(x => x.slug === slug);
+      if (idx >= 0) state.resources[idx] = state.bySlug[slug];
+      render();
+      // Подсветка
+      requestAnimationFrame(() => {
+        const newCell = document.querySelector(`.price-cell[data-slug="${slug}"][data-field="${field}"]`);
+        if (newCell) newCell.classList.add('saved');
+      });
+    } catch (e) {
+      toast('Сеть недоступна', 'error');
+      cancel();
+    }
+  };
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); save(); }
+    else if (e.key === 'Escape') { cancel(); }
+    else if (e.key === 'Tab') { e.preventDefault(); save(); /* TODO: jump to next */ }
+  });
+  input.addEventListener('blur', save);
+}
+
+// ---- Updated cell ----
+function updatedText(r) {
+  const buy = r.buy_updated_at ? new Date(r.buy_updated_at) : null;
+  const sell = r.sell_updated_at ? new Date(r.sell_updated_at) : null;
+  const latest = [buy, sell].filter(Boolean).sort((a,b) => b - a)[0];
+  if (!latest) return '—';
+  return relativeTime(latest);
+}
+function updatedClass(r) {
+  const buy = r.buy_updated_at ? new Date(r.buy_updated_at) : null;
+  const sell = r.sell_updated_at ? new Date(r.sell_updated_at) : null;
+  const latest = [buy, sell].filter(Boolean).sort((a,b) => b - a)[0];
+  if (!latest) return 'stale';
+  const days = (Date.now() - latest) / 86400000;
+  if (days < 2) return 'fresh';
+  if (days > 14) return 'stale';
+  return '';
+}
+function updatedTitle(r) {
+  const lines = [];
+  if (r.buy_updated_at) lines.push('Покупка: ' + new Date(r.buy_updated_at).toLocaleString('ru-RU'));
+  if (r.sell_updated_at) lines.push('Продажа: ' + new Date(r.sell_updated_at).toLocaleString('ru-RU'));
+  if (!lines.length) lines.push('Не обновлялось');
+  return lines.join('\n') + '\n\nКлик — история';
+}
+function relativeTime(d) {
+  const sec = Math.round((Date.now() - d) / 1000);
+  if (sec < 60) return 'только что';
+  if (sec < 3600) return Math.floor(sec/60) + 'м';
+  if (sec < 86400) return Math.floor(sec/3600) + 'ч';
+  if (sec < 86400*30) return Math.floor(sec/86400) + 'д';
+  return Math.floor(sec/86400/30) + 'мес';
+}
+
+// ---- Tooltips ----
+let tooltipEl = null;
+function showCostTooltip(ev, slug) {
+  const r = state.bySlug[slug];
+  if (!r || !r.recipe) return;
+  const cost = computeCost(r);
+  let html = `<strong>${escapeHtml(r.name)}</strong><br>`;
+  html += r.recipe.map(i => {
+    const ing = state.bySlug[i.slug];
+    const name = ing?.name || i.slug;
+    const price = ing?.buy_avg;
+    return `${escapeHtml(name)} × ${i.qty} ${price !== null && price !== undefined ? `<span style="color:#aaa">@ ${fmt(price)}</span>` : '<span class="miss">(нет цены)</span>'}`;
+  }).join('<br>');
+  if (r.yield_qty > 1) html += `<br>Выход: ${r.yield_qty}шт`;
+  if (cost !== null) html += `<hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:6px 0"><strong>Себест.: ${fmt(cost)}</strong>`;
+  else {
+    const missing = findMissingIngredients(r);
+    if (missing.length) html += `<hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:6px 0"><span class="miss">Нет цен на: ${missing.slice(0, 5).map(escapeHtml).join(', ')}</span>`;
+  }
+  showTooltip(ev, html);
+}
+function showTooltip(ev, html) {
+  hideTooltip();
+  tooltipEl = document.createElement('div');
+  tooltipEl.className = 'tooltip';
+  tooltipEl.innerHTML = html;
+  document.body.appendChild(tooltipEl);
+  const rect = tooltipEl.getBoundingClientRect();
+  let x = ev.clientX + 12, y = ev.clientY + 12;
+  if (x + rect.width > window.innerWidth) x = window.innerWidth - rect.width - 12;
+  if (y + rect.height > window.innerHeight) y = ev.clientY - rect.height - 12;
+  tooltipEl.style.left = x + 'px';
+  tooltipEl.style.top = y + 'px';
+}
+function hideTooltip() {
+  if (tooltipEl) { tooltipEl.remove(); tooltipEl = null; }
+}
+
+// ---- History popover ----
+let popoverEl = null;
+async function showHistory(ev, slug) {
+  ev.stopPropagation();
+  closePopover();
+  popoverEl = document.createElement('div');
+  popoverEl.className = 'popover';
+  popoverEl.innerHTML = '<h4>История изменений</h4><div class="hist-empty">Загрузка…</div>';
+  document.body.appendChild(popoverEl);
+  positionPopover(ev);
+
+  try {
+    const res = await fetch(`${API_BASE}/prices.php?action=history&slug=${encodeURIComponent(slug)}&limit=20`);
+    const data = await res.json();
+    const r = state.bySlug[slug];
+    let html = `<h4>История — ${escapeHtml(r.name)}</h4>`;
+    if (!data.history || !data.history.length) {
+      html += '<div class="hist-empty">Изменений пока нет</div>';
+    } else {
+      html += data.history.map(h => `
+        <div class="hist-row">
+          <span class="hist-field">${fieldLabel(h.field)}</span>
+          <span class="hist-val">${h.old_value !== null ? fmt(h.old_value) : '—'} → <strong>${h.new_value !== null ? fmt(h.new_value) : '—'}</strong></span>
+          <span class="hist-when">${new Date(h.changed_at).toLocaleString('ru-RU')}${h.username ? ` · ${escapeHtml(h.username)}` : ''}</span>
+        </div>
+      `).join('');
+    }
+    popoverEl.innerHTML = html;
+  } catch (e) {
+    popoverEl.innerHTML = '<h4>История изменений</h4><div class="hist-empty">Ошибка загрузки</div>';
+  }
+}
+function fieldLabel(f) {
+  return ({buy_avg:'Покупка ср.',buy_max:'Покупка макс.',sell_avg:'Продажа ср.',sell_min:'Продажа мин.'})[f] || f;
+}
+function positionPopover(ev) {
+  if (!popoverEl) return;
+  const rect = popoverEl.getBoundingClientRect();
+  let x = ev.clientX - rect.width;
+  let y = ev.clientY + 12;
+  if (x < 8) x = 8;
+  if (y + rect.height > window.innerHeight) y = ev.clientY - rect.height - 12;
+  popoverEl.style.left = x + 'px';
+  popoverEl.style.top = y + 'px';
+}
+function closePopover() {
+  if (popoverEl) { popoverEl.remove(); popoverEl = null; }
+}
+document.addEventListener('click', (e) => {
+  if (popoverEl && !popoverEl.contains(e.target) && !e.target.classList.contains('updated-cell')) closePopover();
+});
+
+// ---- Toast ----
+let toastTimer = null;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + (type || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ---- Init ----
+(async () => {
+  if (state.token) {
+    const u = localStorage.getItem('l2gm_user');
+    if (u) state.user = JSON.parse(u);
+    const ok = await checkAuth();
+    if (ok) { showDashboard(); return; }
+    localStorage.removeItem('l2gm_token');
+    state.token = '';
+  }
+  document.getElementById('loginScreen').style.display = 'flex';
+})();
+</script>
+
+</body>
+</html>

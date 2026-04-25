@@ -49,3 +49,62 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Сессии админов (логин/пароль → токен)
+CREATE TABLE IF NOT EXISTS `admin_sessions` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `token` CHAR(64) NOT NULL UNIQUE,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` DATETIME NOT NULL,
+  `last_used_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_token` (`token`),
+  INDEX `idx_expires_at` (`expires_at`),
+  CONSTRAINT `fk_sessions_user` FOREIGN KEY (`user_id`) REFERENCES `admin_users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===========================================================
+-- Цены ресурсов (Lineage 2 Interlude)
+-- ===========================================================
+
+CREATE TABLE IF NOT EXISTS `resources` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `slug` VARCHAR(64) NOT NULL UNIQUE,
+  `name` VARCHAR(128) NOT NULL,
+  `icon` VARCHAR(64) NOT NULL COMMENT 'имя файла в /img/resources/',
+  `category` ENUM('drop','craft_or_drop','craft_or_manor','craft_only','s_grade') NOT NULL,
+  `recipe` JSON DEFAULT NULL COMMENT '[{"slug":"...","qty":N}, ...]',
+  `yield_qty` INT NOT NULL DEFAULT 1 COMMENT 'сколько штук на выходе крафта',
+  `sort_order` INT NOT NULL DEFAULT 0,
+
+  `buy_avg`  BIGINT DEFAULT NULL COMMENT 'средняя цена покупки',
+  `buy_max`  BIGINT DEFAULT NULL COMMENT 'максимальная цена покупки (NULL → buy_avg)',
+  `sell_avg` BIGINT DEFAULT NULL COMMENT 'средняя цена продажи',
+  `sell_min` BIGINT DEFAULT NULL COMMENT 'минимальная цена продажи (NULL → sell_avg)',
+
+  `buy_updated_at`  DATETIME DEFAULT NULL,
+  `sell_updated_at` DATETIME DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (`id`),
+  INDEX `idx_category` (`category`),
+  INDEX `idx_sort_order` (`sort_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- История изменений цен
+CREATE TABLE IF NOT EXISTS `price_history` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `resource_id` INT UNSIGNED NOT NULL,
+  `field` ENUM('buy_avg','buy_max','sell_avg','sell_min') NOT NULL,
+  `old_value` BIGINT DEFAULT NULL,
+  `new_value` BIGINT DEFAULT NULL,
+  `user_id` INT UNSIGNED DEFAULT NULL,
+  `changed_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_resource_changed` (`resource_id`, `changed_at`),
+  INDEX `idx_resource_field` (`resource_id`, `field`, `changed_at`),
+  CONSTRAINT `fk_history_resource` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_history_user` FOREIGN KEY (`user_id`) REFERENCES `admin_users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
