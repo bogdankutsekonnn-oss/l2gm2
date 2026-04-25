@@ -137,9 +137,8 @@
   <div class="toolbar">
     <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск ресурса..." oninput="render()">
     <button class="filter-chip active" data-cat="all" onclick="setFilter(this)">Все</button>
-    <button class="filter-chip" data-cat="drop" onclick="setFilter(this)">Дроп</button>
-    <button class="filter-chip" data-cat="craft_or_drop" onclick="setFilter(this)">Дроп/Крафт</button>
-    <button class="filter-chip" data-cat="craft_or_manor" onclick="setFilter(this)">Крафт/Манор</button>
+    <button class="filter-chip" data-cat="drop" onclick="setFilter(this)">Дроп / Спойл</button>
+    <button class="filter-chip" data-cat="craft_or_drop" onclick="setFilter(this)">Дроп / Спойл / Крафт</button>
     <button class="filter-chip" data-cat="craft_only" onclick="setFilter(this)">Только крафт</button>
     <button class="filter-chip" data-cat="s_grade" onclick="setFilter(this)">S-grade</button>
     <span class="toolbar-info" id="toolbarInfo"></span>
@@ -179,9 +178,9 @@
 const API_BASE = '/api';
 const ICON_BASE = '/img/resources';
 const CATEGORY_LABELS = {
-  drop: 'Дроп / Манор',
-  craft_or_drop: 'Дроп или крафт',
-  craft_or_manor: 'Крафт или манор',
+  drop: 'Дроп / Спойл',
+  craft_or_drop: 'Дроп / Спойл / Крафт',
+  craft_or_manor: 'Только крафт',
   craft_only: 'Только крафт',
   s_grade: 'S-grade (кузница)',
 };
@@ -358,7 +357,7 @@ function marginCell(profit, pct) {
 }
 
 function shortCat(c) {
-  return ({drop:'Дроп',craft_or_drop:'Д/К',craft_or_manor:'К/М',craft_only:'Крафт',s_grade:'S'})[c] || c;
+  return ({drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S'})[c] || c;
 }
 
 function recipeToText(r) {

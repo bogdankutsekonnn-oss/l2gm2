@@ -218,7 +218,9 @@ function seedAction($user) {
               sort_order = VALUES(sort_order)';
     $stmt = $db->prepare($sql);
 
+    $slugs = [];
     foreach ($data as $r) {
+        $slugs[] = $r['slug'];
         $stmt->execute([
             ':slug'       => $r['slug'],
             ':name'       => $r['name'],
@@ -234,10 +236,20 @@ function seedAction($user) {
         elseif ($rc === 2) $updated++;
     }
 
+    // Удаляем ресурсы, которых нет в JSON (синхронизация). История по ним удалится по CASCADE.
+    $deleted = 0;
+    if ($slugs) {
+        $placeholders = implode(',', array_fill(0, count($slugs), '?'));
+        $del = $db->prepare("DELETE FROM resources WHERE slug NOT IN ($placeholders)");
+        $del->execute($slugs);
+        $deleted = $del->rowCount();
+    }
+
     jsonResponse([
         'success'  => true,
         'total'    => count($data),
         'inserted' => $inserted,
         'updated'  => $updated,
+        'deleted'  => $deleted,
     ]);
 }

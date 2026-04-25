@@ -34,10 +34,10 @@
   {"slug":"crafted-leather","name":"Crafted Leather","icon":"crafted-leather.png","category":"craft_or_drop","sort_order":410,"yield_qty":1,"recipe":[{"slug":"leather","qty":4},{"slug":"coal","qty":4},{"slug":"cord","qty":4}]},
   {"slug":"durable-metal-plate","name":"Durable Metal Plate","icon":"durable-metal-plate.png","category":"craft_or_drop","sort_order":420,"yield_qty":1,"recipe":[{"slug":"mithril-ore","qty":5},{"slug":"metallic-thread","qty":5}]},
 
-  {"slug":"varnish-of-purity","name":"Varnish of Purity","icon":"varnish-of-purity.png","category":"craft_or_manor","sort_order":500,"yield_qty":1,"recipe":[{"slug":"stone-of-purity","qty":1},{"slug":"varnish","qty":3},{"slug":"coarse-bone-powder","qty":3}]},
-  {"slug":"mithril-alloy","name":"Mithril Alloy","icon":"ma.png","category":"craft_or_manor","sort_order":510,"yield_qty":1,"recipe":[{"slug":"varnish-of-purity","qty":1},{"slug":"steel","qty":2},{"slug":"mithril-ore","qty":1}]},
-  {"slug":"synthetic-cokes","name":"Synthetic Cokes","icon":"synthetic-cokes.png","category":"craft_or_manor","sort_order":520,"yield_qty":1,"recipe":[{"slug":"oriharukon-ore","qty":1},{"slug":"cokes","qty":3}]},
-  {"slug":"oriharukon","name":"Oriharukon","icon":"oriharukon.png","category":"craft_or_manor","sort_order":530,"yield_qty":1,"recipe":[{"slug":"synthetic-cokes","qty":1},{"slug":"oriharukon-ore","qty":4},{"slug":"silver-nugget","qty":12}]},
+  {"slug":"varnish-of-purity","name":"Varnish of Purity","icon":"varnish-of-purity.png","category":"craft_only","sort_order":500,"yield_qty":1,"recipe":[{"slug":"stone-of-purity","qty":1},{"slug":"varnish","qty":3},{"slug":"coarse-bone-powder","qty":3}]},
+  {"slug":"mithril-alloy","name":"Mithril Alloy","icon":"ma.png","category":"craft_only","sort_order":510,"yield_qty":1,"recipe":[{"slug":"varnish-of-purity","qty":1},{"slug":"steel","qty":2},{"slug":"mithril-ore","qty":1}]},
+  {"slug":"synthetic-cokes","name":"Synthetic Cokes","icon":"synthetic-cokes.png","category":"craft_only","sort_order":520,"yield_qty":1,"recipe":[{"slug":"oriharukon-ore","qty":1},{"slug":"cokes","qty":3}]},
+  {"slug":"oriharukon","name":"Oriharukon","icon":"oriharukon.png","category":"craft_only","sort_order":530,"yield_qty":1,"recipe":[{"slug":"synthetic-cokes","qty":1},{"slug":"oriharukon-ore","qty":4},{"slug":"silver-nugget","qty":12}]},
 
   {"slug":"steel-mold","name":"Steel Mold","icon":"steel-mold.png","category":"craft_only","sort_order":600,"yield_qty":1,"recipe":[{"slug":"iron-ore","qty":5},{"slug":"coal","qty":5},{"slug":"braided-hemp","qty":5}]},
   {"slug":"silver-mold","name":"Silver Mold","icon":"silver-mold.png","category":"craft_only","sort_order":610,"yield_qty":1,"recipe":[{"slug":"silver-nugget","qty":10},{"slug":"braided-hemp","qty":5},{"slug":"cokes","qty":5}]},
@@ -48,8 +48,6 @@
   {"slug":"maestro-holder","name":"Maestro Holder","icon":"maestro-holder.png","category":"craft_only","sort_order":660,"yield_qty":1,"recipe":[{"slug":"varnish-of-purity","qty":10},{"slug":"mold-hardener","qty":10},{"slug":"mold-lubricant","qty":10}]},
   {"slug":"craftsman-mold","name":"Craftsman Mold","icon":"craftsman-mold.png","category":"craft_only","sort_order":670,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":2},{"slug":"mold-hardener","qty":20},{"slug":"enria","qty":5}]},
 
-  {"slug":"arcsmiths-anvil","name":"Arcsmith's Anvil","icon":"arcsmiths-anvil.png","category":"s_grade","sort_order":700,"yield_qty":1,"recipe":[{"slug":"maestro-anvil-lock","qty":3},{"slug":"mold-lubricant","qty":20},{"slug":"thons","qty":10}]},
-  {"slug":"leolins-mold","name":"Leolin's Mold","icon":"leolins-mold.png","category":"s_grade","sort_order":710,"yield_qty":1,"recipe":[{"slug":"durable-metal-plate","qty":10},{"slug":"adamantite-nugget","qty":15},{"slug":"cord","qty":40}]},
   {"slug":"warsmiths-holder","name":"Warsmith's Holder","icon":"warsmiths-holder.png","category":"s_grade","sort_order":720,"yield_qty":1,"recipe":[{"slug":"maestro-holder","qty":2},{"slug":"mold-glue","qty":10},{"slug":"thread","qty":20}]},
   {"slug":"warsmiths-mold","name":"Warsmith's Mold","icon":"warsmiths-mold.png","category":"s_grade","sort_order":730,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":1},{"slug":"mold-hardener","qty":10},{"slug":"enria","qty":5}]}
 ]
