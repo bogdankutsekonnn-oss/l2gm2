@@ -53,6 +53,7 @@
     .res-recipe .yield { color: #4BD285; }
 
     .cat-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+    .cat-currency { background: rgba(255,193,7,0.15); color: #ffd54f; }
     .cat-drop { background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.55); }
     .cat-craft_or_drop { background: rgba(75,210,133,0.1); color: #4BD285; }
     .cat-craft_or_manor { background: rgba(255,193,7,0.1); color: #ffc107; }
@@ -137,6 +138,7 @@
   <div class="toolbar">
     <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск ресурса..." oninput="render()">
     <button class="filter-chip active" data-cat="all" onclick="setFilter(this)">Все</button>
+    <button class="filter-chip" data-cat="currency" onclick="setFilter(this)">Валюта</button>
     <button class="filter-chip" data-cat="drop" onclick="setFilter(this)">Дроп / Спойл</button>
     <button class="filter-chip" data-cat="craft_or_drop" onclick="setFilter(this)">Дроп / Спойл / Крафт</button>
     <button class="filter-chip" data-cat="craft_only" onclick="setFilter(this)">Только крафт</button>
@@ -178,6 +180,7 @@
 const API_BASE = '/api';
 const ICON_BASE = '/img/resources';
 const CATEGORY_LABELS = {
+  currency: 'Валюта сервера',
   drop: 'Дроп / Спойл',
   craft_or_drop: 'Дроп / Спойл / Крафт',
   craft_or_manor: 'Только крафт',
@@ -357,7 +360,7 @@ function marginCell(profit, pct) {
 }
 
 function shortCat(c) {
-  return ({drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S'})[c] || c;
+  return ({currency:'Валюта',drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S'})[c] || c;
 }
 
 function recipeToText(r) {

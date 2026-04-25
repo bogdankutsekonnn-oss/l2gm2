@@ -1,4 +1,6 @@
 [
+  {"slug":"master-coin","name":"Master Coin","icon":"master-coin.png","category":"currency","sort_order":1},
+
   {"slug":"animal-bone","name":"Animal Bone","icon":"animal-bone.png","category":"drop","sort_order":10},
   {"slug":"animal-skin","name":"Animal Skin","icon":"animal-skin.png","category":"drop","sort_order":20},
   {"slug":"varnish","name":"Varnish","icon":"varnish.png","category":"drop","sort_order":30},
