@@ -99,10 +99,10 @@ function addMerchant($user) {
     try {
         $db->prepare(
             'INSERT INTO merchants (name, city, role, notes, created_by_user_id, updated_by_user_id)
-             VALUES (:n, :c, :r, :nt, :u, :u)'
+             VALUES (:n, :c, :r, :nt, :cu, :uu)'
         )->execute([
             ':n' => $name, ':c' => $city, ':r' => $role,
-            ':nt' => $notes, ':u' => $user['user_id'],
+            ':nt' => $notes, ':cu' => $user['user_id'], ':uu' => $user['user_id'],
         ]);
         $id = (int)$db->lastInsertId();
         jsonResponse(['success' => true, 'id' => $id]);
@@ -110,7 +110,7 @@ function addMerchant($user) {
         if ($e->getCode() === '23000') {
             jsonResponse(['error' => 'Торговец с таким ником уже существует'], 409);
         }
-        jsonResponse(['error' => 'DB error'], 500);
+        jsonResponse(['error' => 'DB error: ' . $e->getMessage()], 500);
     }
 }
 
@@ -149,7 +149,7 @@ function updateMerchant($user) {
         if ($e->getCode() === '23000') {
             jsonResponse(['error' => 'Торговец с таким ником уже существует'], 409);
         }
-        jsonResponse(['error' => 'DB error'], 500);
+        jsonResponse(['error' => 'DB error: ' . $e->getMessage()], 500);
     }
     jsonResponse(['success' => true]);
 }
