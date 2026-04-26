@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>L2GM — Торговцы</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #06080a; color: #f5f5f7; min-height: 100vh; font-size: 13px; }
+
+    /* Login */
+    .login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: #0f1113; padding: 32px; border-radius: 12px; width: 360px; border: 1px solid rgba(255,255,255,0.06); }
+    .login-box h1 { font-size: 20px; margin-bottom: 20px; text-align: center; }
+    .login-box input { width: 100%; padding: 10px 14px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #f5f5f7; font-size: 14px; margin-bottom: 12px; outline: none; }
+    .login-box input:focus { border-color: rgb(254, 54, 0); }
+    .login-box button { width: 100%; padding: 10px; background: rgb(254, 54, 0); color: #f5f5f7; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .login-box button:hover { background: rgb(179, 30, 0); }
+    .login-error { color: #ff6b6b; font-size: 12px; margin-bottom: 12px; min-height: 16px; }
+
+    /* Dashboard */
+    .dashboard { display: none; max-width: 1500px; margin: 0 auto; padding: 24px; }
+    .dashboard.active { display: block; }
+    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+    .dash-header h1 { font-size: 22px; display: flex; align-items: center; gap: 12px; }
+    .nav-link { font-size: 12px; color: rgba(245,245,247,0.5); text-decoration: none; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; }
+    .nav-link:hover { color: #f5f5f7; border-color: rgb(254,54,0); }
+    .user-info { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(245,245,247,0.5); }
+    .btn-logout { padding: 6px 12px; background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.6); border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .search-input { padding: 8px 12px; background: #0f1113; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; min-width: 220px; }
+    .search-input:focus { border-color: rgb(254, 54, 0); }
+    .filter-chip { padding: 6px 12px; background: rgba(255,255,255,0.05); border: none; border-radius: 6px; color: rgba(245,245,247,0.6); cursor: pointer; font-size: 12px; }
+    .filter-chip.active { background: rgb(254, 54, 0); color: #f5f5f7; }
+    .filter-chip:hover:not(.active) { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+    .city-filters { display: flex; gap: 4px; flex-wrap: wrap; }
+    .city-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-size: 11px; color: rgba(245,245,247,0.6); }
+    .city-chip img { width: 16px; height: 16px; }
+    .city-chip:hover { background: rgba(255,255,255,0.1); }
+    .city-chip.active { background: rgba(254,54,0,0.15); color: #fe5722; border-color: rgba(254,54,0,0.5); }
+    .toolbar-info { margin-left: auto; font-size: 11px; color: rgba(245,245,247,0.4); }
+    .btn-add { padding: 8px 14px; background: rgb(254, 54, 0); color: #f5f5f7; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .btn-add:hover { background: rgb(179, 30, 0); }
+
+    /* Grid of cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+
+    .card {
+      background: #0a0c0e;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+    .card.role-sell { border-left: 3px solid #4BD285; }
+    .card.role-buy  { border-left: 3px solid #fe3600; }
+    .card.status-paused { opacity: 0.65; }
+    .card.status-archived { display: none; }
+
+    .card-header { display: flex; align-items: center; gap: 8px; }
+    .card-name { flex: 1; font-size: 15px; font-weight: 600; }
+    .card-name input { background: transparent; border: none; color: #f5f5f7; font: inherit; outline: none; width: 100%; }
+    .card-status { font-size: 10px; padding: 2px 6px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 600; }
+    .status-active   { background: rgba(75,210,133,0.15); color: #4BD285; }
+    .status-paused   { background: rgba(255,193,7,0.15); color: #ffc107; }
+    .status-archived { background: rgba(150,150,150,0.15); color: #aaa; }
+
+    .card-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(245,245,247,0.6); flex-wrap: wrap; }
+    .city-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; background: rgba(255,255,255,0.04); border-radius: 6px; cursor: pointer; }
+    .city-badge:hover { background: rgba(255,255,255,0.08); }
+    .city-badge img { width: 18px; height: 18px; }
+    .role-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .role-sell-badge { background: rgba(75,210,133,0.15); color: #4BD285; }
+    .role-buy-badge  { background: rgba(254,54,0,0.15); color: #fe5722; }
+
+    .slots-section-label { font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+    .slot-row { display: grid; grid-template-columns: 28px 1fr 80px 90px 18px; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+    .slot-row:hover { background: rgba(255,255,255,0.03); }
+    .slot-row img { width: 24px; height: 24px; image-rendering: pixelated; background: #1a1c1e; border-radius: 4px; }
+    .slot-name { font-size: 12px; }
+    .slot-name .conflict { color: #ffc107; font-size: 10px; margin-left: 4px; cursor: help; }
+    .slot-qty, .slot-price { font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; padding: 2px 6px; border-radius: 4px; }
+    .slot-qty { color: rgba(245,245,247,0.6); }
+    .slot-price { color: #f5f5f7; font-weight: 500; }
+    .slot-row .market-hint { font-size: 10px; color: rgba(245,245,247,0.35); margin-left: 4px; }
+    .slot-clear { color: rgba(245,245,247,0.3); font-size: 14px; cursor: pointer; text-align: center; }
+    .slot-clear:hover { color: #ff6b6b; }
+
+    .slot-empty { color: rgba(245,245,247,0.25); font-style: italic; padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; }
+    .slot-empty:hover { background: rgba(255,255,255,0.04); color: rgba(245,245,247,0.6); }
+
+    .card-footer { display: flex; align-items: center; gap: 8px; font-size: 11px; color: rgba(245,245,247,0.4); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 8px; }
+    .card-footer .btns { margin-left: auto; display: flex; gap: 4px; }
+    .btn-mini { background: rgba(255,255,255,0.05); border: none; color: rgba(245,245,247,0.6); padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+    .btn-mini:hover { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+    .btn-mini.danger:hover { background: rgba(220,53,69,0.2); color: #dc3545; }
+
+    .card-notes { font-size: 11px; color: rgba(245,245,247,0.5); padding: 4px 6px; background: rgba(255,255,255,0.02); border-radius: 4px; cursor: pointer; min-height: 22px; }
+    .card-notes:hover { background: rgba(255,255,255,0.04); }
+    .card-notes input { width: 100%; background: transparent; border: none; outline: none; color: inherit; font: inherit; }
+    .card-notes.empty { color: rgba(245,245,247,0.25); font-style: italic; }
+
+    /* Edit popover for slot */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #0f1113; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; width: 460px; max-height: 90vh; overflow-y: auto; }
+    .modal h2 { font-size: 16px; margin-bottom: 16px; }
+    .modal label { display: block; font-size: 11px; color: rgba(245,245,247,0.5); margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .modal input, .modal select { width: 100%; padding: 8px 10px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; }
+    .modal select { color-scheme: dark; }
+    .modal input:focus, .modal select:focus { border-color: rgb(254, 54, 0); }
+    .modal .conflict-warn { background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.3); color: #ffc107; padding: 8px 10px; border-radius: 6px; font-size: 12px; margin-top: 10px; display: none; }
+    .modal .conflict-warn.show { display: block; }
+    .modal-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+    .modal-actions button { padding: 8px 14px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; }
+    .btn-save { background: rgb(254, 54, 0); color: white; font-weight: 600; }
+    .btn-save:hover { background: rgb(179, 30, 0); }
+    .btn-cancel { background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.7); }
+
+    /* Resource picker */
+    .resource-picker { max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; background: #06080a; }
+    .resource-option { display: flex; align-items: center; gap: 8px; padding: 6px 10px; cursor: pointer; }
+    .resource-option:hover { background: rgba(255,255,255,0.05); }
+    .resource-option.selected { background: rgba(254,54,0,0.15); }
+    .resource-option img { width: 22px; height: 22px; image-rendering: pixelated; background: #1a1c1e; border-radius: 3px; }
+    .resource-option .ro-cat { font-size: 10px; color: rgba(245,245,247,0.4); margin-left: auto; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #0f1113; border: 1px solid rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 8px; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .toast.error { border-color: #dc3545; color: #ff6b6b; }
+    .toast.success { border-color: #4BD285; color: #4BD285; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: rgba(245,245,247,0.4); }
+
+    /* Custom scroll */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #06080a; }
+    ::-webkit-scrollbar-thumb { background: rgba(254,54,0,0.35); border-radius: 8px; border: 2px solid #06080a; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(254,54,0,0.6); }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen" class="login-screen">
+  <form class="login-box" onsubmit="doLogin(event)">
+    <h1>👥 L2GM — Торговцы</h1>
+    <input type="text" id="loginUser" placeholder="Логин" autocomplete="username" autofocus>
+    <input type="password" id="loginPass" placeholder="Пароль" autocomplete="current-password">
+    <div class="login-error" id="loginError"></div>
+    <button type="submit">Войти</button>
+  </form>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard" class="dashboard">
+  <div class="dash-header">
+    <h1>👥 Торговцы <a class="nav-link" href="admin-prices.html">→ Цены ресурсов</a></h1>
+    <div class="user-info">
+      <span id="whoami"></span>
+      <button class="btn-logout" onclick="doLogout()">Выйти</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск по нику или ресурсу..." oninput="render()">
+    <button class="filter-chip active" data-status="active" onclick="setStatusFilter(this)">Активные</button>
+    <button class="filter-chip" data-status="paused" onclick="setStatusFilter(this)">На паузе</button>
+    <button class="filter-chip" data-status="archived" onclick="setStatusFilter(this)">Архив</button>
+    <button class="filter-chip" data-status="all" onclick="setStatusFilter(this)">Все</button>
+    <button class="btn-add" onclick="addMerchantPrompt()">+ Торговец</button>
+    <span class="toolbar-info" id="toolbarInfo"></span>
+  </div>
+
+  <div class="city-filters" id="cityFilters"></div>
+  <div style="height: 12px;"></div>
+
+  <div class="cards" id="cards"></div>
+</div>
+
+<!-- Slot edit modal -->
+<div class="modal-overlay" id="slotModal" onclick="if(event.target===this)closeSlotModal()">
+  <div class="modal">
+    <h2 id="slotModalTitle">Слот</h2>
+    <label>Ресурс</label>
+    <input type="search" id="slotResourceSearch" placeholder="Начни вводить название..." oninput="filterResourcePicker()">
+    <div class="resource-picker" id="resourcePicker"></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+      <div>
+        <label>Цена за 1 шт</label>
+        <input type="text" inputmode="numeric" id="slotPrice" placeholder="опционально">
+      </div>
+      <div>
+        <label>Кол-во</label>
+        <input type="text" inputmode="numeric" id="slotQty" placeholder="опционально">
+      </div>
+    </div>
+    <div class="conflict-warn" id="conflictWarn"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSlotModal()">Отмена</button>
+      <button class="btn-save" onclick="saveSlot()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = '/api';
+const ICON_BASE = '/img/resources';
+const CITY_ICON_BASE = '/img/cities';
+
+const CITIES = [
+  {slug:'talking-island',     name:'Talking Island'},
+  {slug:'elven-village',      name:'Светлые эльфы'},
+  {slug:'dark-elf-village',   name:'Тёмные эльфы'},
+  {slug:'orc-village',        name:'Орки'},
+  {slug:'dwarven-village',    name:'Гномы'},
+  {slug:'gludin',             name:'Глудин'},
+  {slug:'gludio',             name:'Глудио'},
+  {slug:'dion',               name:'Дион'},
+  {slug:'giran',              name:'Гиран'},
+  {slug:'oren',               name:'Орен'},
+  {slug:'heine',              name:'Хеин'},
+  {slug:'aden',               name:'Аден'},
+];
+const CITY_BY_SLUG = Object.fromEntries(CITIES.map(c => [c.slug, c]));
+
+let state = {
+  merchants: [],
+  resources: [],
+  resourcesBySlug: {},
+  filterStatus: 'active',
+  filterCities: new Set(),
+  token: localStorage.getItem('l2gm_token') || '',
+  user: null,
+  // Slot edit modal state
+  editing: null, // {merchantId, slotIndex, currentSlug, role}
+};
+
+// ---- Auth ----
+async function doLogin(e) {
+  e.preventDefault();
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  try {
+    const res = await fetch(`${API_BASE}/auth.php?action=login`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: u, password: p}),
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Ошибка входа'; return; }
+    state.token = data.token; state.user = data.user;
+    localStorage.setItem('l2gm_token', state.token);
+    localStorage.setItem('l2gm_user', JSON.stringify(data.user));
+    showDashboard();
+  } catch (err) { errEl.textContent = 'Сеть недоступна'; }
+}
+
+async function doLogout() {
+  try { await fetch(`${API_BASE}/auth.php?action=logout`, {method:'POST', headers: authHeaders()}); } catch (e) {}
+  state.token = ''; state.user = null;
+  localStorage.removeItem('l2gm_token');
+  localStorage.removeItem('l2gm_user');
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function authHeaders() {
+  return state.token ? {'Authorization': 'Bearer ' + state.token, 'Content-Type': 'application/json'} : {};
+}
+
+async function checkAuth() {
+  if (!state.token) return false;
+  try {
+    const res = await fetch(`${API_BASE}/auth.php?action=me`, {headers: authHeaders()});
+    if (!res.ok) return false;
+    const data = await res.json();
+    state.user = data.user;
+    return true;
+  } catch (e) { return false; }
+}
+
+async function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').classList.add('active');
+  document.getElementById('whoami').textContent = state.user ? `👤 ${state.user.username}` : '';
+  buildCityFilters();
+  await Promise.all([loadResources(), loadMerchants()]);
+  render();
+}
+
+// ---- Data ----
+async function loadResources() {
+  const res = await fetch(`${API_BASE}/prices.php`);
+  const data = await res.json();
+  state.resources = data.resources || [];
+  state.resourcesBySlug = {};
+  for (const r of state.resources) state.resourcesBySlug[r.slug] = r;
+}
+
+async function loadMerchants() {
+  const res = await fetch(`${API_BASE}/merchants.php`);
+  const data = await res.json();
+  state.merchants = data.merchants || [];
+}
+
+// ---- City filters ----
+function buildCityFilters() {
+  const wrap = document.getElementById('cityFilters');
+  wrap.innerHTML = CITIES.map(c => `
+    <div class="city-chip" data-city="${c.slug}" onclick="toggleCityFilter('${c.slug}')">
+      <img src="${CITY_ICON_BASE}/${c.slug}.svg" alt="">
+      <span>${c.name}</span>
+    </div>
+  `).join('');
+}
+
+function toggleCityFilter(slug) {
+  if (state.filterCities.has(slug)) state.filterCities.delete(slug);
+  else state.filterCities.add(slug);
+  document.querySelectorAll('.city-chip').forEach(chip => {
+    chip.classList.toggle('active', state.filterCities.has(chip.dataset.city));
+  });
+  render();
+}
+
+function setStatusFilter(btn) {
+  document.querySelectorAll('[data-status]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state.filterStatus = btn.dataset.status;
+  render();
+}
+
+// ---- Render ----
+function render() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  let items = state.merchants;
+
+  if (state.filterStatus !== 'all') items = items.filter(m => m.status === state.filterStatus);
+  if (state.filterCities.size) items = items.filter(m => state.filterCities.has(m.city));
+  if (q) items = items.filter(m => {
+    if (m.name.toLowerCase().includes(q)) return true;
+    if ((m.slots || []).some(s => s.resource_name.toLowerCase().includes(q))) return true;
+    return false;
+  });
+
+  document.getElementById('toolbarInfo').textContent = `${items.length} из ${state.merchants.length}`;
+
+  const cont = document.getElementById('cards');
+  if (!items.length) {
+    cont.innerHTML = `<div class="empty-state">Никого не нашлось. Нажми <strong>+ Торговец</strong> чтобы добавить первого.</div>`;
+    return;
+  }
+  cont.innerHTML = items.map(renderCard).join('');
+}
+
+function renderCard(m) {
+  const city = CITY_BY_SLUG[m.city] || {name: m.city, slug: m.city};
+  const slots = m.slots || [];
+  const slotsByIndex = {};
+  for (const s of slots) slotsByIndex[s.slot_index] = s;
+
+  const slotRows = [];
+  for (let i = 1; i <= 5; i++) {
+    const s = slotsByIndex[i];
+    if (s) slotRows.push(renderSlot(m, s));
+    else slotRows.push(`<div class="slot-empty" onclick="editSlot(${m.id}, ${i})">+ слот ${i} пуст — клик чтобы заполнить</div>`);
+  }
+
+  const upd = m.updated_at ? new Date(m.updated_at) : null;
+  const updText = upd ? relTime(upd) : 'только что';
+
+  return `
+    <div class="card role-${m.role} status-${m.status}" data-id="${m.id}">
+      <div class="card-header">
+        <span class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</span>
+        <span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — сменить">${statusLabel(m.status)}</span>
+      </div>
+      <div class="card-meta">
+        <span class="city-badge" onclick="cycleCity(${m.id})" title="Клик — сменить город">
+          <img src="${CITY_ICON_BASE}/${city.slug}.svg" alt="">
+          <span>${city.name}</span>
+        </span>
+        <span class="role-badge role-${m.role}-badge" onclick="toggleRole(${m.id})" title="Клик — переключить роль">
+          ${m.role === 'sell' ? '🟢 Продаёт' : '🔴 Покупает'}
+        </span>
+      </div>
+      <div class="slots-section-label">Слоты (${slots.length}/5)</div>
+      ${slotRows.join('')}
+      <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
+      <div class="card-footer">
+        <span>📅 ${updText}${m.updated_by ? ' · ' + escapeHtml(m.updated_by) : ''}</span>
+        <div class="btns">
+          ${m.status === 'active' ? `<button class="btn-mini" onclick="setStatus(${m.id}, 'paused')">⏸ Pause</button>` : ''}
+          ${m.status === 'paused' ? `<button class="btn-mini" onclick="setStatus(${m.id}, 'active')">▶ Resume</button>` : ''}
+          ${m.status !== 'archived' ? `<button class="btn-mini danger" onclick="archive(${m.id})">🗄 Архив</button>` : `<button class="btn-mini" onclick="setStatus(${m.id}, 'active')">↩ Восстановить</button>`}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSlot(m, s) {
+  const market = m.role === 'sell' ? s.sell_avg : s.buy_avg;
+  let priceCmp = '';
+  if (s.price_per_unit !== null && market !== null && market > 0) {
+    const diff = ((s.price_per_unit - market) / market) * 100;
+    if (Math.abs(diff) >= 5) {
+      const sign = diff > 0 ? '+' : '';
+      const cls = (m.role === 'sell' ? (diff > 0 ? 'positive' : 'negative') : (diff > 0 ? 'negative' : 'positive'));
+      priceCmp = ` <span class="market-hint" title="Среднее по рынку: ${fmt(market)}">(рынок ${sign}${diff.toFixed(0)}%)</span>`;
+    }
+  }
+  const conflictWarn = ''; // Подсказку про конфликты можно делать через отдельный hover-запрос; пока опускаем для простоты в карточке.
+  return `
+    <div class="slot-row" onclick="editSlot(${m.id}, ${s.slot_index})">
+      <img src="${ICON_BASE}/${s.resource_icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
+      <span class="slot-name">${escapeHtml(s.resource_name)}${conflictWarn}</span>
+      <span class="slot-qty">${s.qty !== null ? '× ' + fmt(s.qty) : '—'}</span>
+      <span class="slot-price">${s.price_per_unit !== null ? '@ ' + fmt(s.price_per_unit) : '—'}${priceCmp}</span>
+      <span class="slot-clear" onclick="event.stopPropagation();clearSlot(${m.id}, ${s.slot_index})" title="Очистить слот">✕</span>
+    </div>`;
+}
+
+function statusLabel(s) {
+  return ({active:'Активен',paused:'На паузе',archived:'Архив'})[s] || s;
+}
+
+function fmt(n) {
+  if (n === null || n === undefined) return '—';
+  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function relTime(d) {
+  const sec = Math.round((Date.now() - d) / 1000);
+  if (sec < 60) return 'только что';
+  if (sec < 3600) return Math.floor(sec/60) + 'м';
+  if (sec < 86400) return Math.floor(sec/3600) + 'ч';
+  if (sec < 86400*30) return Math.floor(sec/86400) + 'д';
+  return Math.floor(sec/86400/30) + 'мес';
+}
+
+// ---- Inline edit: name / city / role / status / notes ----
+async function editName(id) {
+  const m = findMerchant(id); if (!m) return;
+  const newName = prompt('Ник торговца:', m.name);
+  if (newName === null || newName.trim() === '' || newName === m.name) return;
+  await updateMerchant(id, {name: newName.trim()});
+}
+
+async function cycleStatus(id) {
+  const m = findMerchant(id); if (!m) return;
+  const next = ({active:'paused', paused:'active', archived:'active'})[m.status] || 'active';
+  await updateMerchant(id, {status: next});
+}
+async function setStatus(id, status) { await updateMerchant(id, {status}); }
+async function archive(id) {
+  if (!confirm('Отправить в архив?')) return;
+  await updateMerchant(id, {status: 'archived'});
+}
+
+async function toggleRole(id) {
+  const m = findMerchant(id); if (!m) return;
+  const next = m.role === 'sell' ? 'buy' : 'sell';
+  await updateMerchant(id, {role: next});
+}
+
+async function cycleCity(id) {
+  const m = findMerchant(id); if (!m) return;
+  const idx = CITIES.findIndex(c => c.slug === m.city);
+  const next = CITIES[(idx + 1) % CITIES.length].slug;
+  await updateMerchant(id, {city: next});
+}
+
+async function editNotes(id) {
+  const m = findMerchant(id); if (!m) return;
+  const txt = prompt('Заметка к торговцу:', m.notes || '');
+  if (txt === null) return;
+  await updateMerchant(id, {notes: txt});
+}
+
+async function updateMerchant(id, body) {
+  try {
+    const res = await fetch(`${API_BASE}/merchants.php?action=update&id=${id}`, {
+      method: 'PUT', headers: authHeaders(), body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }
+    await loadMerchants();
+    render();
+  } catch (e) { toast('Сеть недоступна', 'error'); }
+}
+
+function findMerchant(id) { return state.merchants.find(m => m.id === id); }
+
+// ---- Add merchant ----
+async function addMerchantPrompt() {
+  const name = prompt('Ник нового торговца:');
+  if (!name || !name.trim()) return;
+  const cityList = CITIES.map((c, i) => `${i+1}. ${c.name}`).join('\n');
+  const cityNum = prompt('Город:\n' + cityList, '9');
+  const cityIdx = parseInt(cityNum, 10) - 1;
+  if (isNaN(cityIdx) || !CITIES[cityIdx]) { toast('Неверный город', 'error'); return; }
+  const role = confirm('Что делает?\nOK = ПРОДАЁТ\nОтмена = ПОКУПАЕТ') ? 'sell' : 'buy';
+  try {
+    const res = await fetch(`${API_BASE}/merchants.php?action=add`, {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({name: name.trim(), city: CITIES[cityIdx].slug, role}),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }
+    await loadMerchants();
+    render();
+    toast('Торговец добавлен', 'success');
+  } catch (e) { toast('Сеть недоступна', 'error'); }
+}
+
+// ---- Slot edit modal ----
+function editSlot(merchantId, slotIndex) {
+  const m = findMerchant(merchantId); if (!m) return;
+  const existing = (m.slots || []).find(s => s.slot_index === slotIndex);
+  state.editing = {
+    merchantId, slotIndex,
+    currentSlug: existing ? existing.resource_slug : null,
+    role: m.role, city: m.city,
+    selectedSlug: existing ? existing.resource_slug : null,
+  };
+  document.getElementById('slotModalTitle').textContent =
+    `Слот ${slotIndex} · ${m.name} · ${m.role === 'sell' ? 'Продаёт' : 'Покупает'}`;
+  document.getElementById('slotResourceSearch').value = '';
+  document.getElementById('slotPrice').value = existing && existing.price_per_unit !== null ? existing.price_per_unit : '';
+  document.getElementById('slotQty').value = existing && existing.qty !== null ? existing.qty : '';
+  renderResourcePicker();
+  document.getElementById('slotModal').classList.add('active');
+  setTimeout(() => document.getElementById('slotResourceSearch').focus(), 50);
+  checkConflicts();
+}
+
+function closeSlotModal() {
+  document.getElementById('slotModal').classList.remove('active');
+  state.editing = null;
+}
+
+function filterResourcePicker() {
+  renderResourcePicker();
+}
+
+function renderResourcePicker() {
+  const q = document.getElementById('slotResourceSearch').value.trim().toLowerCase();
+  const cont = document.getElementById('resourcePicker');
+  const items = state.resources.filter(r => !q || r.name.toLowerCase().includes(q));
+  cont.innerHTML = items.slice(0, 60).map(r => `
+    <div class="resource-option ${state.editing && state.editing.selectedSlug === r.slug ? 'selected' : ''}"
+         onclick="pickResource('${r.slug}')">
+      <img src="${ICON_BASE}/${r.icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
+      <span>${escapeHtml(r.name)}</span>
+      <span class="ro-cat">${shortCat(r.category)}</span>
+    </div>
+  `).join('') || '<div style="padding:10px;color:rgba(245,245,247,0.4);">Ничего не найдено</div>';
+}
+
+function pickResource(slug) {
+  if (!state.editing) return;
+  state.editing.selectedSlug = slug;
+  renderResourcePicker();
+  checkConflicts();
+}
+
+function shortCat(c) {
+  return ({currency:'Валюта',consumable:'Расх.',drop:'Дроп',craft_or_drop:'Д/С/К',craft_or_manor:'Крафт',craft_only:'Крафт',s_grade:'S',shots:'Соски'})[c] || c;
+}
+
+async function checkConflicts() {
+  const e = state.editing; if (!e || !e.selectedSlug) {
+    document.getElementById('conflictWarn').classList.remove('show');
+    return;
+  }
+  try {
+    const url = `${API_BASE}/merchants.php?action=conflicts&city=${e.city}&role=${e.role}&resource_slug=${encodeURIComponent(e.selectedSlug)}&exclude_id=${e.merchantId}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const warn = document.getElementById('conflictWarn');
+    if (data.conflicts && data.conflicts.length) {
+      warn.innerHTML = '⚠️ В этом городе с такой же ролью уже работают: <strong>' +
+        data.conflicts.map(c => escapeHtml(c.name) + (c.price_per_unit ? ' (@' + fmt(c.price_per_unit) + ')' : '')).join(', ') +
+        '</strong>. Это нормально, просто к сведению.';
+      warn.classList.add('show');
+    } else {
+      warn.classList.remove('show');
+    }
+  } catch (err) {}
+}
+
+async function saveSlot() {
+  const e = state.editing; if (!e) return;
+  if (!e.selectedSlug) { toast('Выбери ресурс', 'error'); return; }
+  const price = document.getElementById('slotPrice').value.trim().replace(/\s/g, '');
+  const qty   = document.getElementById('slotQty').value.trim().replace(/\s/g, '');
+
+  try {
+    const res = await fetch(`${API_BASE}/merchants.php?action=set-slot&id=${e.merchantId}`, {
+      method: 'PUT', headers: authHeaders(),
+      body: JSON.stringify({
+        slot_index: e.slotIndex,
+        resource_slug: e.selectedSlug,
+        price_per_unit: price === '' ? null : price,
+        qty: qty === '' ? null : qty,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }
+    closeSlotModal();
+    await loadMerchants();
+    render();
+  } catch (err) { toast('Сеть недоступна', 'error'); }
+}
+
+async function clearSlot(merchantId, slotIndex) {
+  if (!confirm('Очистить слот?')) return;
+  try {
+    const res = await fetch(`${API_BASE}/merchants.php?action=clear-slot&id=${merchantId}&slot=${slotIndex}`, {
+      method: 'PUT', headers: authHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }
+    await loadMerchants();
+    render();
+  } catch (err) { toast('Сеть недоступна', 'error'); }
+}
+
+// ---- Toast ----
+let toastTimer = null;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + (type || '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ---- Init ----
+(async () => {
+  if (state.token) {
+    const u = localStorage.getItem('l2gm_user');
+    if (u) state.user = JSON.parse(u);
+    const ok = await checkAuth();
+    if (ok) { showDashboard(); return; }
+    localStorage.removeItem('l2gm_token');
+    state.token = '';
+  }
+  document.getElementById('loginScreen').style.display = 'flex';
+})();
+</script>
+
+</body>
+</html>

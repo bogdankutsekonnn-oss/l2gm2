@@ -93,6 +93,46 @@ CREATE TABLE IF NOT EXISTS `resources` (
   INDEX `idx_sort_order` (`sort_order`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ===========================================================
+-- Торговцы (offline shops в L2)
+-- ===========================================================
+
+CREATE TABLE IF NOT EXISTS `merchants` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(64) NOT NULL UNIQUE,
+  `city` ENUM('talking-island','elven-village','dark-elf-village','orc-village','dwarven-village','gludin','gludio','dion','giran','oren','heine','aden') NOT NULL,
+  `role` ENUM('buy','sell') NOT NULL DEFAULT 'sell',
+  `status` ENUM('active','paused','archived') NOT NULL DEFAULT 'active',
+  `notes` TEXT DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_by_user_id` INT UNSIGNED DEFAULT NULL,
+  `updated_by_user_id` INT UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_city` (`city`),
+  INDEX `idx_status` (`status`),
+  CONSTRAINT `fk_merchants_created_by` FOREIGN KEY (`created_by_user_id`) REFERENCES `admin_users`(`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_merchants_updated_by` FOREIGN KEY (`updated_by_user_id`) REFERENCES `admin_users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `merchant_slots` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `merchant_id` INT UNSIGNED NOT NULL,
+  `slot_index` TINYINT UNSIGNED NOT NULL COMMENT '1..5',
+  `resource_id` INT UNSIGNED NOT NULL,
+  `price_per_unit` BIGINT DEFAULT NULL,
+  `qty` BIGINT DEFAULT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_by_user_id` INT UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_merchant_slot` (`merchant_id`, `slot_index`),
+  INDEX `idx_resource` (`resource_id`),
+  CONSTRAINT `fk_slots_merchant` FOREIGN KEY (`merchant_id`) REFERENCES `merchants`(`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_slots_resource` FOREIGN KEY (`resource_id`) REFERENCES `resources`(`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_slots_user` FOREIGN KEY (`updated_by_user_id`) REFERENCES `admin_users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- История изменений цен
 CREATE TABLE IF NOT EXISTS `price_history` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
