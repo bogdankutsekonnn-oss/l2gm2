@@ -70,8 +70,12 @@
     .card.status-archived { display: none; }
 
     .card-header { display: flex; align-items: center; gap: 8px; }
-    .card-name { flex: 1; font-size: 15px; font-weight: 600; }
+    .card-name { font-size: 15px; font-weight: 600; cursor: text; }
     .card-name input { background: transparent; border: none; color: #f5f5f7; font: inherit; outline: none; width: 100%; }
+    .card-login { font-size: 11px; color: rgba(245,245,247,0.5); cursor: text; margin-top: 1px; }
+    .card-login.empty { font-style: italic; color: rgba(245,245,247,0.25); }
+    .card-login:hover { color: #f5f5f7; }
+    .card-login input { background: transparent; border: none; color: inherit; font: inherit; outline: none; width: 100%; }
     .card-status { font-size: 10px; padding: 2px 6px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 600; }
     .status-active   { background: rgba(75,210,133,0.15); color: #4BD285; }
     .status-paused   { background: rgba(255,193,7,0.15); color: #ffc107; }
@@ -215,6 +219,8 @@
     <h2>+ Новый торговец</h2>
     <label>Ник в игре</label>
     <input type="text" id="newMerchantName" placeholder="например, Bobik" maxlength="64" onkeydown="if(event.key==='Enter'){event.preventDefault();saveNewMerchant();}">
+    <label>Логин аккаунта</label>
+    <input type="text" id="newMerchantLogin" placeholder="опционально" maxlength="64" onkeydown="if(event.key==='Enter'){event.preventDefault();saveNewMerchant();}">
     <label>Город</label>
     <div class="city-picker" id="newMerchantCityPicker"></div>
     <label>Что делает?</label>
@@ -413,6 +419,7 @@ function render() {
   if (state.filterCities.size) items = items.filter(m => state.filterCities.has(m.city));
   if (q) items = items.filter(m => {
     if (m.name.toLowerCase().includes(q)) return true;
+    if (m.account_login && m.account_login.toLowerCase().includes(q)) return true;
     if ((m.slots || []).some(s => s.resource_name.toLowerCase().includes(q))) return true;
     return false;
   });
@@ -446,7 +453,10 @@ function renderCard(m) {
   return `
     <div class="card role-${m.role} status-${m.status}" data-id="${m.id}">
       <div class="card-header">
-        <span class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</span>
+        <div style="flex:1;min-width:0;">
+          <div class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</div>
+          <div class="card-login ${m.account_login ? '' : 'empty'}" onclick="editLogin(${m.id})" title="Клик — изменить логин">${m.account_login ? '🔑 ' + escapeHtml(m.account_login) : '+ логин аккаунта'}</div>
+        </div>
         <span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — сменить">${statusLabel(m.status)}</span>
       </div>
       <div class="card-meta">
@@ -601,6 +611,29 @@ function editNotes(id) {
 
 function escapeAttr(s) { return String(s ?? '').replace(/"/g, '&quot;'); }
 
+function editLogin(id) {
+  const el = document.querySelector(`.card[data-id="${id}"] .card-login`);
+  if (!el || el.querySelector('input')) return;
+  const m = findMerchant(id); if (!m) return;
+  const orig = m.account_login || '';
+  el.classList.remove('empty');
+  el.innerHTML = `<input type="text" value="${escapeAttr(orig)}" placeholder="логин аккаунта..." maxlength="64">`;
+  const inp = el.querySelector('input');
+  inp.focus();
+  if (orig) inp.select();
+  const restore = () => { el.innerHTML = orig ? '🔑 ' + escapeHtml(orig) : '+ логин аккаунта'; if (!orig) el.classList.add('empty'); };
+  const save = async () => {
+    const v = inp.value.trim();
+    if (v === orig) { restore(); return; }
+    await updateMerchant(id, {account_login: v});
+  };
+  inp.addEventListener('blur', save);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+    else if (e.key === 'Escape') { inp.removeEventListener('blur', save); restore(); }
+  });
+}
+
 async function updateMerchant(id, body) {
   try {
     const res = await fetch(`${API_BASE}/merchants.php?action=update&id=${id}`, {
@@ -620,6 +653,7 @@ let addModalSelectedCity = 'giran';
 function openAddModal() {
   addModalSelectedCity = 'giran';
   document.getElementById('newMerchantName').value = '';
+  document.getElementById('newMerchantLogin').value = '';
   document.querySelector('input[name="newMerchantRole"][value="sell"]').checked = true;
   renderAddCityPicker();
   document.getElementById('addMerchantModal').classList.add('active');
@@ -639,12 +673,13 @@ function selectAddCity(slug) { addModalSelectedCity = slug; renderAddCityPicker(
 
 async function saveNewMerchant() {
   const name = document.getElementById('newMerchantName').value.trim();
+  const login = document.getElementById('newMerchantLogin').value.trim();
   if (!name) { toast('Введи ник', 'error'); return; }
   const role = document.querySelector('input[name="newMerchantRole"]:checked').value;
   try {
     const res = await fetch(`${API_BASE}/merchants.php?action=add`, {
       method: 'POST', headers: authHeaders(),
-      body: JSON.stringify({name, city: addModalSelectedCity, role}),
+      body: JSON.stringify({name, account_login: login, city: addModalSelectedCity, role}),
     });
     const data = await res.json();
     if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }

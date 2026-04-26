@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `resources` (
 CREATE TABLE IF NOT EXISTS `merchants` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(64) NOT NULL UNIQUE,
+  `account_login` VARCHAR(64) DEFAULT NULL COMMENT 'логин игрового аккаунта',
   `city` ENUM('talking-island','elven-village','dark-elf-village','orc-village','dwarven-village','gludin','gludio','dion','giran','hunter-village','oren','heine','aden') NOT NULL,
   `role` ENUM('buy','sell') NOT NULL DEFAULT 'sell',
   `status` ENUM('active','paused','archived') NOT NULL DEFAULT 'active',

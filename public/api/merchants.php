@@ -34,7 +34,7 @@ switch ($action) {
 function listMerchants() {
     $db = getDB();
     $merchants = $db->query(
-        'SELECT m.id, m.name, m.city, m.role, m.status, m.notes,
+        'SELECT m.id, m.name, m.account_login, m.city, m.role, m.status, m.notes,
                 m.created_at, m.updated_at,
                 cu.username AS created_by, uu.username AS updated_by
          FROM merchants m
@@ -87,6 +87,7 @@ function listMerchants() {
 function addMerchant($user) {
     $input = jsonInput();
     $name = trim($input['name'] ?? '');
+    $login = trim($input['account_login'] ?? '');
     $city = $input['city'] ?? '';
     $role = $input['role'] ?? 'sell';
     $notes = $input['notes'] ?? null;
@@ -98,11 +99,12 @@ function addMerchant($user) {
     $db = getDB();
     try {
         $db->prepare(
-            'INSERT INTO merchants (name, city, role, notes, created_by_user_id, updated_by_user_id)
-             VALUES (:n, :c, :r, :nt, :cu, :uu)'
+            'INSERT INTO merchants (name, account_login, city, role, notes, created_by_user_id, updated_by_user_id)
+             VALUES (:n, :al, :c, :r, :nt, :cu, :uu)'
         )->execute([
-            ':n' => $name, ':c' => $city, ':r' => $role,
-            ':nt' => $notes, ':cu' => $user['user_id'], ':uu' => $user['user_id'],
+            ':n' => $name, ':al' => ($login !== '' ? $login : null),
+            ':c' => $city, ':r' => $role, ':nt' => $notes,
+            ':cu' => $user['user_id'], ':uu' => $user['user_id'],
         ]);
         $id = (int)$db->lastInsertId();
         jsonResponse(['success' => true, 'id' => $id]);
@@ -120,7 +122,7 @@ function updateMerchant($user) {
     if (!$id) jsonResponse(['error' => 'id required'], 400);
 
     $input = jsonInput();
-    $allowed = ['name','city','role','status','notes'];
+    $allowed = ['name','account_login','city','role','status','notes'];
     $sets = [];
     $params = [':id' => $id, ':u' => $user['user_id']];
 
