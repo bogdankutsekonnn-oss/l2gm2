@@ -27,8 +27,10 @@
     .dashboard.active { display: block; }
     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
     .dash-header h1 { font-size: 22px; display: flex; align-items: center; gap: 12px; }
-    .nav-link { font-size: 12px; color: rgba(245,245,247,0.5); text-decoration: none; padding: 4px 10px; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; }
-    .nav-link:hover { color: #f5f5f7; border-color: rgb(254,54,0); }
+    .tab-nav { display: flex; gap: 4px; }
+    .tab-link { padding: 10px 18px; font-size: 14px; font-weight: 600; color: rgba(245,245,247,0.5); text-decoration: none; border-radius: 8px 8px 0 0; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .tab-link:hover { color: #f5f5f7; background: rgba(255,255,255,0.03); }
+    .tab-link.active { color: #f5f5f7; background: rgba(254,54,0,0.08); border-bottom-color: rgb(254,54,0); }
     .user-info { display: flex; align-items: center; gap: 12px; font-size: 12px; color: rgba(245,245,247,0.5); }
     .btn-logout { padding: 6px 12px; background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.6); border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
     .btn-logout:hover { background: rgba(255,255,255,0.1); color: #f5f5f7; }
@@ -167,7 +169,10 @@
 <!-- Dashboard -->
 <div id="dashboard" class="dashboard">
   <div class="dash-header">
-    <h1>👥 Торговцы <a class="nav-link" href="admin-prices.html">→ Цены ресурсов</a></h1>
+    <nav class="tab-nav">
+      <a href="admin-prices.html" class="tab-link">💰 Цены ресурсов</a>
+      <a href="admin-merchants.html" class="tab-link active">👥 Торговцы</a>
+    </nav>
     <div class="user-info">
       <span id="whoami"></span>
       <button class="btn-logout" onclick="doLogout()">Выйти</button>
