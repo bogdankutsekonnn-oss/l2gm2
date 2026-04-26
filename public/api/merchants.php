@@ -258,7 +258,7 @@ function conflictsAction() {
 function isValidCity($c) {
     return in_array($c, [
         'talking-island','elven-village','dark-elf-village','orc-village','dwarven-village',
-        'gludin','gludio','dion','giran','oren','heine','aden',
+        'gludin','gludio','dion','giran','hunter-village','oren','heine','aden',
     ], true);
 }
 
