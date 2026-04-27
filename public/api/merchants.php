@@ -24,6 +24,7 @@ switch ($action) {
     case 'archive': archiveMerchant($user); break;
     case 'set-slot':    setSlot($user); break;
     case 'clear-slot':  clearSlot($user); break;
+    case 'mark-checked': markChecked($user); break;
     default:
         jsonResponse(['error' => 'Unknown action'], 400);
 }
@@ -156,6 +157,17 @@ function updateMerchant($user) {
     jsonResponse(['success' => true]);
 }
 
+// PUT /api/merchants.php?action=mark-checked&id=X
+// Просто обновляет updated_at — пользователь подтвердил что зашёл в игру и проверил торговца
+function markChecked($user) {
+    $id = (int)($_GET['id'] ?? 0);
+    if (!$id) jsonResponse(['error' => 'id required'], 400);
+    $db = getDB();
+    $db->prepare('UPDATE merchants SET updated_by_user_id = :u, updated_at = NOW() WHERE id = :id')
+       ->execute([':id' => $id, ':u' => $user['user_id']]);
+    jsonResponse(['success' => true]);
+}
+
 // PUT /api/merchants.php?action=archive&id=X
 function archiveMerchant($user) {
     $id = (int)($_GET['id'] ?? 0);
@@ -210,7 +222,7 @@ function setSlot($user) {
     ]);
 
     // Также обновим merchants.updated_by_user_id
-    $db->prepare('UPDATE merchants SET updated_by_user_id = :u WHERE id = :id')
+    $db->prepare('UPDATE merchants SET updated_by_user_id = :u, updated_at = NOW() WHERE id = :id')
        ->execute([':id' => $merchantId, ':u' => $user['user_id']]);
 
     jsonResponse(['success' => true]);
@@ -225,7 +237,7 @@ function clearSlot($user) {
     $db = getDB();
     $db->prepare('DELETE FROM merchant_slots WHERE merchant_id = :m AND slot_index = :i')
        ->execute([':m' => $merchantId, ':i' => $slot]);
-    $db->prepare('UPDATE merchants SET updated_by_user_id = :u WHERE id = :id')
+    $db->prepare('UPDATE merchants SET updated_by_user_id = :u, updated_at = NOW() WHERE id = :id')
        ->execute([':id' => $merchantId, ':u' => $user['user_id']]);
     jsonResponse(['success' => true]);
 }

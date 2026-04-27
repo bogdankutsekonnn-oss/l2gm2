@@ -71,6 +71,8 @@
     .card.stale { box-shadow: 0 0 0 1px rgba(255,193,7,0.35); }
 
     .check-reminder { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(255,193,7,0.15); color: #ffc107; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; animation: stalePulse 2s ease-in-out infinite; white-space: nowrap; }
+    .btn-mark-checked { font-size: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(75,210,133,0.15); color: #4BD285; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border: none; cursor: pointer; white-space: nowrap; }
+    .btn-mark-checked:hover { background: rgba(75,210,133,0.3); }
     @keyframes stalePulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.55; }
@@ -470,7 +472,8 @@ function renderCard(m) {
           <div class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</div>
           <div class="card-login ${m.account_login ? '' : 'empty'}" onclick="editLogin(${m.id})" title="Клик — изменить логин">${m.account_login ? '🔑 ' + escapeHtml(m.account_login) : '+ логин аккаунта'}</div>
         </div>
-        ${stale ? '<span class="check-reminder" title="Прошло больше 12 часов с последнего изменения. Зайди в игру, проверь торговца и нажми любое поле для обновления.">⏰ Проверить</span>' : ''}
+        ${stale ? `<span class="check-reminder" title="Прошло больше 12 часов с последнего изменения">⏰ Проверить</span>
+                   <button class="btn-mark-checked" onclick="markChecked(${m.id})" title="Зашёл в игру, торговец работает как надо — обновить отметку">✓ Проверил</button>` : ''}
         ${m.status !== 'active' ? `<span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — активировать">${statusLabel(m.status)}</span>` : ''}
       </div>
       <div class="card-meta">
@@ -646,6 +649,19 @@ function editLogin(id) {
     if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
     else if (e.key === 'Escape') { inp.removeEventListener('blur', save); restore(); }
   });
+}
+
+async function markChecked(id) {
+  try {
+    const res = await fetch(`${API_BASE}/merchants.php?action=mark-checked&id=${id}`, {
+      method: 'PUT', headers: authHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok) { toast(data.error || 'Ошибка', 'error'); return; }
+    await loadMerchants();
+    render();
+    toast('✓ Отметил как проверенного', 'success');
+  } catch (e) { toast('Сеть недоступна', 'error'); }
 }
 
 async function updateMerchant(id, body) {
