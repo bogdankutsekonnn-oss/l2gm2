@@ -55,8 +55,8 @@
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
 
     .card {
-      background: #0a0c0e;
-      border: 1px solid rgba(255,255,255,0.06);
+      background: #18181a;
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px;
       padding: 14px;
       display: flex;
@@ -469,7 +469,7 @@ function renderCard(m) {
           <div class="card-login ${m.account_login ? '' : 'empty'}" onclick="editLogin(${m.id})" title="Клик — изменить логин">${m.account_login ? '🔑 ' + escapeHtml(m.account_login) : '+ логин аккаунта'}</div>
         </div>
         ${stale ? '<span class="check-reminder" title="Прошло больше 12 часов с последнего изменения. Зайди в игру, проверь торговца и нажми любое поле для обновления.">⏰ Проверить</span>' : ''}
-        <span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — сменить">${statusLabel(m.status)}</span>
+        ${m.status !== 'active' ? `<span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — активировать">${statusLabel(m.status)}</span>` : ''}
       </div>
       <div class="card-meta">
         <span class="city-badge" onclick="openCityPicker(${m.id})" title="Клик — сменить город">
