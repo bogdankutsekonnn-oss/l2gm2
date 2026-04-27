@@ -174,7 +174,7 @@ function setSlot($user) {
 
     $input = jsonInput();
     $slotIndex = (int)($input['slot_index'] ?? 0);
-    if ($slotIndex < 1 || $slotIndex > 5) jsonResponse(['error' => 'slot_index must be 1..5'], 400);
+    if ($slotIndex < 1 || $slotIndex > 4) jsonResponse(['error' => 'slot_index must be 1..4'], 400);
 
     $slug = trim($input['resource_slug'] ?? '');
     if ($slug === '') jsonResponse(['error' => 'resource_slug required'], 400);
@@ -220,7 +220,7 @@ function setSlot($user) {
 function clearSlot($user) {
     $merchantId = (int)($_GET['id'] ?? 0);
     $slot = (int)($_GET['slot'] ?? 0);
-    if (!$merchantId || $slot < 1 || $slot > 5) jsonResponse(['error' => 'invalid params'], 400);
+    if (!$merchantId || $slot < 1 || $slot > 4) jsonResponse(['error' => 'invalid params'], 400);
 
     $db = getDB();
     $db->prepare('DELETE FROM merchant_slots WHERE merchant_id = :m AND slot_index = :i')

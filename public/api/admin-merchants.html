@@ -64,10 +64,15 @@
       gap: 10px;
       position: relative;
     }
-    .card.role-sell { border-left: 3px solid #4BD285; }
-    .card.role-buy  { border-left: 3px solid #fe3600; }
     .card.status-paused { opacity: 0.65; }
     .card.status-archived { display: none; }
+    .card.stale { box-shadow: 0 0 0 1px rgba(255,193,7,0.35); }
+
+    .check-reminder { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(255,193,7,0.15); color: #ffc107; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; animation: stalePulse 2s ease-in-out infinite; white-space: nowrap; }
+    @keyframes stalePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.55; }
+    }
 
     .card-header { display: flex; align-items: center; gap: 8px; }
     .card-name { font-size: 15px; font-weight: 600; cursor: text; }
@@ -200,6 +205,7 @@
   <div class="toolbar">
     <input type="search" class="search-input" id="searchInput" placeholder="🔍 Поиск по нику или ресурсу..." oninput="render()">
     <button class="filter-chip active" data-status="active" onclick="setStatusFilter(this)">Активные</button>
+    <button class="filter-chip" data-status="stale" onclick="setStatusFilter(this)">⏰ Нужно проверить</button>
     <button class="filter-chip" data-status="paused" onclick="setStatusFilter(this)">На паузе</button>
     <button class="filter-chip" data-status="archived" onclick="setStatusFilter(this)">Архив</button>
     <button class="filter-chip" data-status="all" onclick="setStatusFilter(this)">Все</button>
@@ -415,7 +421,11 @@ function render() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   let items = state.merchants;
 
-  if (state.filterStatus !== 'all') items = items.filter(m => m.status === state.filterStatus);
+  if (state.filterStatus === 'stale') {
+    items = items.filter(m => m.status === 'active' && isStale(m));
+  } else if (state.filterStatus !== 'all') {
+    items = items.filter(m => m.status === state.filterStatus);
+  }
   if (state.filterCities.size) items = items.filter(m => state.filterCities.has(m.city));
   if (q) items = items.filter(m => {
     if (m.name.toLowerCase().includes(q)) return true;
@@ -441,7 +451,7 @@ function renderCard(m) {
   for (const s of slots) slotsByIndex[s.slot_index] = s;
 
   const slotRows = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 4; i++) {
     const s = slotsByIndex[i];
     if (s) slotRows.push(renderSlot(m, s));
     else slotRows.push(`<div class="slot-empty" onclick="editSlot(${m.id}, ${i})">+ слот ${i} пуст — клик чтобы заполнить</div>`);
@@ -449,14 +459,16 @@ function renderCard(m) {
 
   const upd = m.updated_at ? new Date(m.updated_at) : null;
   const updText = upd ? relTime(upd) : 'только что';
+  const stale = m.status === 'active' && isStale(m);
 
   return `
-    <div class="card role-${m.role} status-${m.status}" data-id="${m.id}">
+    <div class="card status-${m.status} ${stale ? 'stale' : ''}" data-id="${m.id}">
       <div class="card-header">
         <div style="flex:1;min-width:0;">
           <div class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</div>
           <div class="card-login ${m.account_login ? '' : 'empty'}" onclick="editLogin(${m.id})" title="Клик — изменить логин">${m.account_login ? '🔑 ' + escapeHtml(m.account_login) : '+ логин аккаунта'}</div>
         </div>
+        ${stale ? '<span class="check-reminder" title="Прошло больше 12 часов с последнего изменения. Зайди в игру, проверь торговца и нажми любое поле для обновления.">⏰ Проверить</span>' : ''}
         <span class="card-status status-${m.status}" onclick="cycleStatus(${m.id})" title="Клик — сменить">${statusLabel(m.status)}</span>
       </div>
       <div class="card-meta">
@@ -468,7 +480,7 @@ function renderCard(m) {
           ${m.role === 'sell' ? '🟢 Продаёт' : '🔴 Покупает'}
         </span>
       </div>
-      <div class="slots-section-label">Слоты (${slots.length}/5)</div>
+      <div class="slots-section-label">Слоты (${slots.length}/4)</div>
       ${slotRows.join('')}
       <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
       <div class="card-footer">
@@ -647,6 +659,13 @@ async function updateMerchant(id, body) {
 }
 
 function findMerchant(id) { return state.merchants.find(m => m.id === id); }
+
+const STALE_HOURS = 12;
+function isStale(m) {
+  if (!m.updated_at) return false;
+  const hours = (Date.now() - new Date(m.updated_at)) / 3600000;
+  return hours >= STALE_HOURS;
+}
 
 // ---- Add merchant modal ----
 let addModalSelectedCity = 'giran';
