@@ -64,6 +64,8 @@
       gap: 10px;
       position: relative;
     }
+    .card.role-sell { border-color: rgba(75,210,133,0.35); }
+    .card.role-buy  { border-color: rgba(254,54,0,0.35); }
     .card.status-paused { opacity: 0.65; }
     .card.status-archived { display: none; }
     .card.stale { box-shadow: 0 0 0 1px rgba(255,193,7,0.35); }
@@ -462,7 +464,7 @@ function renderCard(m) {
   const stale = m.status === 'active' && isStale(m);
 
   return `
-    <div class="card status-${m.status} ${stale ? 'stale' : ''}" data-id="${m.id}">
+    <div class="card role-${m.role} status-${m.status} ${stale ? 'stale' : ''}" data-id="${m.id}">
       <div class="card-header">
         <div style="flex:1;min-width:0;">
           <div class="card-name" onclick="editName(${m.id})">${escapeHtml(m.name)}</div>
