@@ -191,6 +191,13 @@ export default defineNuxtConfig({
         '/blog/novye-servera-lineage-2-aprel-2026/',
         '/blog/gajd-dlya-novichka-lineage-2-2026/',
         '/blog/multiprofa-i-multicraft-v-lineage-2/',
+        '/blog/luchshie-klassy-dlya-solo-igry-lineage-2/',
+        '/blog/kak-zarabotat-adenu-v-lineage-2/',
+        // Категории блога
+        '/blog/novosti/',
+        '/blog/gajdy/',
+        '/blog/obzory/',
+        '/blog/stati/',
         '/placement/',
         '/about/',
         '/add-server/',
