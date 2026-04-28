@@ -4,7 +4,7 @@
     itemscope
     itemtype="https://schema.org/BlogPosting"
   >
-    <NuxtLink :to="`/blog/${article.slug}/`" class="blog-card__link">
+    <NuxtLink :to="`/blog/${article.slug}/`" class="blog-card__image-link">
       <div class="blog-card__image">
         <NuxtImg
           v-if="article.image"
@@ -28,25 +28,37 @@
         </div>
         <meta itemprop="image" :content="imageUrl" />
       </div>
-      <div class="blog-card__body">
-        <span
-          class="blog-card__category"
-          :class="`blog-card__category--${getCategoryClass(article.category)}`"
-          itemprop="articleSection"
-        >
-          {{ article.category }}
-        </span>
-        <h3 class="blog-card__title" itemprop="headline">{{ article.title }}</h3>
-        <time
-          class="blog-card__date"
-          :datetime="article.date"
-          itemprop="datePublished"
-        >
-          {{ formatDate(article.date) }}
-        </time>
-      </div>
-      <link itemprop="url" :href="`https://l2gm.com/blog/${article.slug}/`" />
     </NuxtLink>
+    <div class="blog-card__body">
+      <NuxtLink
+        v-if="categorySlug"
+        :to="`/blog/${categorySlug}/`"
+        class="blog-card__category"
+        :class="`blog-card__category--${getCategoryClass(article.category)}`"
+        itemprop="articleSection"
+      >
+        {{ article.category }}
+      </NuxtLink>
+      <span
+        v-else
+        class="blog-card__category"
+        :class="`blog-card__category--${getCategoryClass(article.category)}`"
+        itemprop="articleSection"
+      >
+        {{ article.category }}
+      </span>
+      <NuxtLink :to="`/blog/${article.slug}/`" class="blog-card__title-link">
+        <h3 class="blog-card__title" itemprop="headline">{{ article.title }}</h3>
+      </NuxtLink>
+      <time
+        class="blog-card__date"
+        :datetime="article.date"
+        itemprop="datePublished"
+      >
+        {{ formatDate(article.date) }}
+      </time>
+    </div>
+    <link itemprop="url" :href="`https://l2gm.com/blog/${article.slug}/`" />
   </article>
 </template>
 
@@ -58,9 +70,13 @@ const props = defineProps({
   },
 })
 
+const { getCategorySlug } = useBlogCategories()
+
 const imageUrl = computed(
   () => `https://l2gm.com${props.article.image || '/logo.svg'}`
 )
+
+const categorySlug = computed(() => getCategorySlug(props.article.category))
 
 const getCategoryClass = (category) => {
   const map = {
@@ -111,10 +127,20 @@ const formatDate = (dateString) => {
   transform: translateY(-2px);
 }
 
-.blog-card__link {
+.blog-card__image-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card__title-link {
   text-decoration: none;
   color: inherit;
   display: block;
+}
+
+.blog-card__title-link:hover .blog-card__title {
+  color: var(--primary-main);
 }
 
 .blog-card__image {
@@ -161,6 +187,12 @@ const formatDate = (dateString) => {
   letter-spacing: 0.5px;
   width: fit-content;
   color: rgba(187, 187, 187, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a.blog-card__category:hover {
+  color: var(--text-primary);
 }
 
 .blog-card__title {

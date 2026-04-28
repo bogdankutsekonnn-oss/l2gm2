@@ -24,8 +24,12 @@
         </NuxtLink>
         <template v-else>
           <span class="breadcrumbs-separator">/</span>
+          <LazyBreadcrumbsBlogCategoryLink
+            v-if="crumb.blogArticleCategoryFromSlug"
+            :slug="crumb.blogArticleCategoryFromSlug"
+          />
           <NuxtLink
-            v-if="index < crumbs.length - 1"
+            v-else-if="index < crumbs.length - 1"
             :to="crumb.path"
             class="breadcrumbs-link"
             itemprop="item"
@@ -47,6 +51,7 @@
 const route = useRoute()
 const { getChronicles, getRates } = useFilters()
 const { getTagData } = useSeo()
+const { getCategoryBySlug, isCategorySlug } = useBlogCategories()
 
 // Форматирование даты для хлебных крошек
 const formatDateForBreadcrumb = (dateString) => {
@@ -107,18 +112,36 @@ const crumbs = computed(() => {
 
   const isBlogSection = normalizedPath.startsWith('/blog/')
 
-  // Секция блога: /blog/ — просто "Блог", /blog/<slug>/ — Блог → статья
+  // Секция блога:
+  //  /blog/                     → Блог
+  //  /blog/<categorySlug>/      → Блог → Категория
+  //  /blog/<articleSlug>/       → Блог → Категория → Статья
   if (isBlogSection) {
     result.push({ path: '/blog/', title: 'Блог' })
 
     if (normalizedPath !== '/blog/') {
       const slug = normalizedPath.replace(/^\/blog\//, '').replace(/\/$/, '')
-      // title загрузится в LazyBreadcrumbsBlogTitle (отдельный async chunk)
-      result.push({
-        path: normalizedPath,
-        title: '',
-        blogSlug: slug,
-      })
+
+      if (isCategorySlug(slug)) {
+        const cat = getCategoryBySlug(slug)
+        result.push({
+          path: `/blog/${cat.slug}/`,
+          title: cat.name,
+        })
+      } else {
+        // Промежуточная крошка категории — подгружается лениво из article.category
+        result.push({
+          path: '',
+          title: '',
+          blogArticleCategoryFromSlug: slug,
+        })
+        // Финальная крошка — title статьи (тоже лениво)
+        result.push({
+          path: normalizedPath,
+          title: '',
+          blogSlug: slug,
+        })
+      }
     }
     return result
   }

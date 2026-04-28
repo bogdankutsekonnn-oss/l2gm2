@@ -5,28 +5,30 @@
       <h1>Блог Lineage 2 — новости, гайды и обзоры серверов</h1>
     </div>
 
-    <div class="blog-filters">
-      <button
-        v-for="filter in filters"
-        :key="filter.id"
+    <nav class="blog-filters" aria-label="Категории блога">
+      <NuxtLink to="/blog/" class="blog-filter blog-filter--active">
+        Все
+      </NuxtLink>
+      <NuxtLink
+        v-for="cat in categories"
+        :key="cat.slug"
+        :to="`/blog/${cat.slug}/`"
         class="blog-filter"
-        :class="{ 'blog-filter--active': activeFilter === filter.id }"
-        @click="activeFilter = filter.id"
       >
-        {{ filter.name }}
-      </button>
-    </div>
+        {{ cat.name }}
+      </NuxtLink>
+    </nav>
 
     <div class="blog-grid">
       <BlogCard
-        v-for="article in filteredArticles"
+        v-for="article in articles"
         :key="article.slug"
         :article="article"
       />
     </div>
 
-    <div v-if="filteredArticles.length === 0" class="blog-empty">
-      Статьи в этой категории скоро появятся
+    <div v-if="!articles?.length" class="blog-empty">
+      Статьи скоро появятся
     </div>
 
     <SeoSection
@@ -40,27 +42,14 @@
 </template>
 
 <script setup>
-const activeFilter = ref('all')
-
-const filters = [
-  { id: 'all', name: 'Все' },
-  { id: 'Новости', name: 'Новости' },
-  { id: 'Гайды', name: 'Гайды' },
-  { id: 'Обзоры', name: 'Обзоры' },
-  { id: 'Статьи', name: 'Статьи' },
-]
+const { getCategories } = useBlogCategories()
+const categories = getCategories()
 
 const { data: articles } = await useAsyncData('blog-articles', () =>
   queryCollection('blog')
     .order('date', 'DESC')
     .all()
 )
-
-const filteredArticles = computed(() => {
-  if (!articles.value) return []
-  if (activeFilter.value === 'all') return articles.value
-  return articles.value.filter(a => a.category === activeFilter.value)
-})
 
 // SEO-блок
 const seoTitle = 'О блоге L2GM — всё о серверах Lineage 2'
@@ -93,7 +82,7 @@ const seoComboLinks = [
 const { generateBreadcrumbJsonLd } = useSeo()
 
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
-  { name: 'Главная', url: '/' },
+  { name: 'Анонсы серверов Lineage 2', url: '/' },
   { name: 'Блог', url: '/blog/' },
 ])
 
