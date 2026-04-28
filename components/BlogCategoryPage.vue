@@ -5,6 +5,8 @@
       <h1>{{ category.h1 }}</h1>
     </div>
 
+    <BlogCategoryNav :active-slug="category.slug" />
+
     <div v-if="articles.length" class="blog-grid">
       <BlogCard
         v-for="article in articles"
@@ -18,7 +20,7 @@
     </div>
 
     <SeoSection
-      :title="`О разделе «${category.name}» — блог L2GM`"
+      :title="category.seoTitle || `О разделе «${category.name}» — блог L2GM`"
       :text="seoText"
       :links="seoLinks"
       :combo-links="seoComboLinks"
@@ -50,16 +52,13 @@ const canonicalUrl = computed(
 )
 
 const seoText = computed(() => {
-  const lines = [props.category.intro]
-  lines.push(
-    `Все материалы в категории «${props.category.name}» написаны для актуальной версии серверов Lineage 2: учитываем хроники Interlude, High Five, Essence и Classic, разные рейты и форматы (PvP, GvE, low-rate, mid-rate). Обновляем подборку по мере выхода новых статей.`
-  )
+  const paragraphs = [...(props.category.seoParagraphs || [])]
   if (articles.value.length) {
-    lines.push(
-      `Сейчас в разделе ${articles.value.length} ${pluralize(articles.value.length, ['материал', 'материала', 'материалов'])}. Чтобы быстрее найти то, что нужно — используйте фильтры в общем списке блога или переходите между разделами через крошки сверху.`
+    paragraphs.push(
+      `Сейчас в разделе ${articles.value.length} ${pluralize(articles.value.length, ['материал', 'материала', 'материалов'])} — переключайтесь между категориями через навигацию вверху страницы или возвращайтесь к общему списку блога.`
     )
   }
-  return lines.join('\n\n')
+  return paragraphs.join('\n\n')
 })
 
 function pluralize(n, forms) {

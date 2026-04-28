@@ -1,4 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { readdirSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, resolve } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+// Автоматически собираем роуты всех статей блога из content/blog/*.md
+// чтобы при добавлении новой статьи не нужно было править prerender.routes вручную.
+// Конвенция: имя файла = slug статьи.
+const blogArticleRoutes = readdirSync(resolve(__dirname, 'content/blog'))
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => `/blog/${f.replace(/\.md$/, '')}/`)
+
+// Категории блога (статичный список — соответствует composables/useBlogCategories.js)
+const blogCategoryRoutes = ['novosti', 'gajdy', 'obzory', 'stati'].map(
+  (slug) => `/blog/${slug}/`,
+)
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxtjs/sitemap', '@nuxt/image', '@nuxt/content'],
@@ -184,20 +202,8 @@ export default defineNuxtConfig({
         '/robots.txt',
         '/blog/',
         '/blog/rss.xml',
-        '/blog/top-serverov-lineage-2-2026/',
-        '/blog/interlude-vs-high-five/',
-        '/blog/kak-vybrat-rejt-servera/',
-        '/blog/chto-takoe-pvp-server-lineage-2/',
-        '/blog/novye-servera-lineage-2-aprel-2026/',
-        '/blog/gajd-dlya-novichka-lineage-2-2026/',
-        '/blog/multiprofa-i-multicraft-v-lineage-2/',
-        '/blog/luchshie-klassy-dlya-solo-igry-lineage-2/',
-        '/blog/kak-zarabotat-adenu-v-lineage-2/',
-        // Категории блога
-        '/blog/novosti/',
-        '/blog/gajdy/',
-        '/blog/obzory/',
-        '/blog/stati/',
+        ...blogArticleRoutes,
+        ...blogCategoryRoutes,
         '/placement/',
         '/about/',
         '/add-server/',
