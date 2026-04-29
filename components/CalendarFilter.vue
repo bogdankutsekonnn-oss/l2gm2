@@ -250,7 +250,7 @@ function nextMonth() {
 }
 
 .day-cell.other-month {
-  color: var(--text-muted, rgba(255, 255, 255, 0.3));
+  color: rgba(245, 245, 247, 0.5);
 }
 
 .day-cell.is-today {

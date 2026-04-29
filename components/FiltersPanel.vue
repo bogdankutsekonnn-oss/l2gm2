@@ -21,6 +21,7 @@
       <h3 class="filter-title">Подобрать сервер</h3>
       <div class="server-finder">
         <div class="select-wrap">
+          <label for="chronicle-select" class="sr-only">Хроника</label>
           <select id="chronicle-select" name="chronicle" v-model="selectedChronicle" class="select">
             <option value="">Все хроники</option>
             <option
@@ -31,6 +32,7 @@
               {{ chronicle.name }}
             </option>
           </select>
+          <label for="rate-select" class="sr-only">Рейт</label>
           <select id="rate-select" name="rate" v-model="selectedRate" class="select">
             <option value="">Все рейты</option>
             <option v-for="range in rateRanges" :key="range" :value="range">
@@ -237,7 +239,7 @@ const isRateActive = (slug) => {
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
-  color: var(--text-disabled);
+  color: var(--text-secondary);
   font-size: var(--font-sm);
 }
 

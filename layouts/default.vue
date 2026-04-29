@@ -253,8 +253,8 @@
 :root {
   --bg-main: #06080a;
   --bg-surface: #0f1113;
-  --primary-main: rgb(254, 54, 0);
-  --primary-hover: rgb(179, 30, 0);
+  --primary-main: rgb(200, 40, 0);
+  --primary-hover: rgb(160, 28, 0);
   --primary-contrast: #f5f5f7;
   --secondary-main: rgba(255, 255, 255, 0.05);
   --secondary-hover: rgba(255, 255, 255, 0.1);
@@ -295,6 +295,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 body {
