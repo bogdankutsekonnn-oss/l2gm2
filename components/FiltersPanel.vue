@@ -253,11 +253,11 @@ const isRateActive = (slug) => {
   gap: var(--spacing-sm);
 }
 
-.server-finder .select-wrap .select:first-child {
+.server-finder .select-wrap .select:first-of-type {
   flex: 1.1;
 }
 
-.server-finder .select-wrap .select:last-child {
+.server-finder .select-wrap .select:last-of-type {
   flex: 0.9;
 }
 </style>
