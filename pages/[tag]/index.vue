@@ -74,11 +74,11 @@
 
 <script setup>
 import { getOrderedCategories, pluralServers, getCategoryDate } from '~/utils/dateUtils.js'
-import tagsData from '~/data/tags.json'
 
 const route = useRoute()
 const { getServers } = useFilters()
 const {
+  getAllTags,
   getTagData,
   generateTagH1,
   generateTagSeoText,
@@ -90,7 +90,7 @@ const {
   generateCollectionPageJsonLd,
   generateTagDescription,
   generateTagTitle,
-} = useSeo()
+} = useSeoTag()
 
 const tagSlug = route.params.tag
 const tagData = getTagData(tagSlug)
@@ -120,7 +120,7 @@ const filteredServers = computed(() => getServers(filters))
 const categories = computed(() => getOrderedCategories(filteredServers.value))
 
 const relatedTagLinks = computed(() =>
-  tagsData
+  getAllTags()
     .filter((t) => t.slug !== tagSlug)
     .map((t) => ({ to: `/${t.slug}/`, text: t.name }))
 )

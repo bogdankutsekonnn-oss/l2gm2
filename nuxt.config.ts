@@ -85,7 +85,7 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['~/assets/css/main.css'],
+  css: [],
 
   // Основной URL сайта
   site: {
@@ -157,12 +157,6 @@ export default defineNuxtConfig({
           rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
           crossorigin: '',
-        },
-        {
-          rel: 'preload',
-          as: 'style',
-          href: 'https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap',
-          onload: "this.onload=null;this.rel='stylesheet'",
         },
         {
           rel: 'stylesheet',

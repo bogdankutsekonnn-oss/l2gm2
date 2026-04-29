@@ -38,9 +38,10 @@ onMounted(async () => {
     h = canvas.height = rect.height
   }
 
-  resize()
   resizeHandler = resize
   window.addEventListener('resize', resizeHandler)
+  // Defer initial sizing to after first paint so layout is already committed
+  requestAnimationFrame(resize)
 
   // Initialize sparks
   for (let i = 0; i < COUNT; i++) {
