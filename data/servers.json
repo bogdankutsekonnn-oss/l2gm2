@@ -662,21 +662,6 @@
     "expiresAt": null
   },
   {
-    "id": 228,
-    "name": "EVIL-AGE.WS",
-    "url": "https://evil-age.ws",
-    "chronicle": "Interlude+",
-    "rate": 100000,
-    "startDate": "2026-04-08",
-    "cardType": "top",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-04-03",
-    "expiresAt": null
-  },
-  {
     "id": 229,
     "name": "ENDLESSWAR",
     "url": "https://endlesswar.live",
