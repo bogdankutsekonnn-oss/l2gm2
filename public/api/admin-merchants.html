@@ -455,7 +455,7 @@ function renderCard(m) {
   for (const s of slots) slotsByIndex[s.slot_index] = s;
 
   const slotRows = [];
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const s = slotsByIndex[i];
     if (s) slotRows.push(renderSlot(m, s));
     else slotRows.push(`<div class="slot-empty" onclick="editSlot(${m.id}, ${i})">+ слот ${i} пуст — клик чтобы заполнить</div>`);
@@ -485,7 +485,7 @@ function renderCard(m) {
           ${m.role === 'sell' ? '🟢 Продаёт' : '🔴 Покупает'}
         </span>
       </div>
-      <div class="slots-section-label">Слоты (${slots.length}/4)</div>
+      <div class="slots-section-label">Слоты (${slots.length}/5)</div>
       ${slotRows.join('')}
       <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
       <div class="card-footer">
