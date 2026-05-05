@@ -7,7 +7,7 @@
           <NuxtLink to="/" class="footer-logo">
             <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" width="120" height="24" />
           </NuxtLink>
-          <div class="footer-copyright">© 2025. L2GM.COM</div>
+          <div class="footer-copyright">© {{ currentYear }}. L2GM.COM</div>
         </div>
 
         <!-- Правая часть: колонки + соцсети -->
@@ -64,7 +64,7 @@
 
           <!-- Социальные иконки -->
           <div class="footer-social">
-            <a href="https://t.me/DamonLaptev" target="_blank" class="social-link" aria-label="Telegram">
+            <a href="https://t.me/l2gm_official" target="_blank" class="social-link" aria-label="Telegram канал L2GM">
               <img src="/images/social/telegram.svg" alt="Telegram" width="40" height="40" />
             </a>
             <a href="mailto:info@l2gm.com" class="social-link" aria-label="Email">
@@ -76,6 +76,10 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+const currentYear = new Date().getFullYear()
+</script>
 
 <style scoped>
 .app-footer {
