@@ -50,7 +50,7 @@
 <script setup>
 const route = useRoute()
 const { getChronicles, getRates } = useFilters()
-const { getTagData } = useSeo()
+const { getTagData } = useSeoTag()
 const { getCategoryBySlug, isCategorySlug } = useBlogCategories()
 
 // Форматирование даты для хлебных крошек

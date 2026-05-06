@@ -77,6 +77,34 @@ export const useFilters = () => {
       filtered = filtered.filter(s => s.startDate === today)
     }
 
+    // Фильтр по дате (завтра)
+    if (filters.tomorrow) {
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      const tomorrowStr = tomorrow.toISOString().split('T')[0]
+      filtered = filtered.filter(s => s.startDate === tomorrowStr)
+    }
+
+    // Фильтр по дате (эта неделя — ближайшие 7 дней включая сегодня)
+    if (filters.thisWeek) {
+      const now = new Date()
+      const todayStr = now.toISOString().split('T')[0]
+      const weekEnd = new Date(now)
+      weekEnd.setDate(weekEnd.getDate() + 6)
+      const weekEndStr = weekEnd.toISOString().split('T')[0]
+      filtered = filtered.filter(s => s.startDate >= todayStr && s.startDate <= weekEndStr)
+    }
+
+    // Фильтр: недавно открывшиеся (за последние 7 дней)
+    if (filters.recentlyOpened) {
+      const now = new Date()
+      const todayStr = now.toISOString().split('T')[0]
+      const weekAgo = new Date(now)
+      weekAgo.setDate(weekAgo.getDate() - 7)
+      const weekAgoStr = weekAgo.toISOString().split('T')[0]
+      filtered = filtered.filter(s => s.startDate >= weekAgoStr && s.startDate <= todayStr)
+    }
+
     // Фильтр по типу карточки (топ/vip/premium) — исключаем истёкшие
     if (filters.top) {
       filtered = filtered.filter(s => {

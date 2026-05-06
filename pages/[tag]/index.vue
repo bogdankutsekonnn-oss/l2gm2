@@ -4,6 +4,7 @@
       <Breadcrumbs />
       <div class="page-header">
         <h1>{{ h1 }}</h1>
+        <p v-if="subtitle" class="page-subtitle">{{ subtitle }}</p>
         <ClientOnly>
           <span v-if="filteredServers.length" class="servers-count">Найдено {{ filteredServers.length }} {{ pluralServers(filteredServers.length) }}</span>
         </ClientOnly>
@@ -64,6 +65,12 @@
     </div>
     </div>
 
+    <FaqSection
+      v-if="faqItems?.length"
+      :title="faqTitle"
+      :items="faqItems"
+    />
+
     <SeoSection
       :title="seoTitle"
       :text="seoText"
@@ -105,9 +112,14 @@ if (!tagData) {
 
 // SEO данные
 const h1 = generateTagH1(tagSlug)
+const subtitle = tagData.subtitle || ''
 const seoText = generateTagSeoText(tagSlug)
 const seoTitle = generateTagSeoTitle(tagSlug)
 const emptyMessage = getTagEmptyMessage(tagSlug)
+
+// FAQ данные
+const faqItems = tagData.faq || []
+const faqTitle = `Частые вопросы — ${tagData.name}`
 
 // Формируем фильтр на основе типа тега
 const filterKey = getTagFilter(tagSlug)
@@ -134,11 +146,28 @@ const breadcrumbJsonLd = generateBreadcrumbJsonLd([
 ])
 const collectionJsonLd = generateCollectionPageJsonLd(tagTitle, tagDescription, `/${tagSlug}`, filteredServers.value)
 
+// FAQ JSON-LD (FAQPage schema для Google rich results)
+const faqJsonLd = faqItems.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    }
+  : null
+
 // Мета-теги
 const meta = generateTagFullMeta(tagSlug)
 meta.script = [
   { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
   { type: 'application/ld+json', innerHTML: JSON.stringify(collectionJsonLd) },
+  ...(faqJsonLd ? [{ type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) }] : []),
 ]
 useHead(meta)
 </script>
@@ -146,5 +175,19 @@ useHead(meta)
 <style scoped>
 .tag-page {
   padding: var(--spacing-lg) 0;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-base);
+  line-height: 1.5;
+  margin: 8px 16px 0;
+}
+
+@media (max-width: 1024px) {
+  .page-subtitle {
+    font-size: var(--font-sm);
+    margin: 4px 16px 0;
+  }
 }
 </style>

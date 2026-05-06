@@ -205,6 +205,9 @@ export default defineNuxtConfig({
         '/thanks/',
         // Tags
         '/today/',
+        '/tomorrow/',
+        '/this-week/',
+        '/new/',
         '/l2top/',
         '/pvp/',
         '/gve/',
