@@ -540,39 +540,22 @@ const previewServer = computed(() => ({
 }))
 
 const sendTelegramNotification = async (serverData) => {
-  const BOT_TOKEN = '8604308878:AAE2qkmF2jpKC94b_vsypBf7jc_l8NJh8SE'
-  const CHAT_ID = '649834807'
-
-  const types = serverData.serverTypes.length
-    ? serverData.serverTypes.join(', ')
-    : '—'
-  const icons = serverData.icons.length
-    ? serverData.icons.join(', ')
-    : '—'
-
-  const text = [
-    '🎮 *Новая заявка на добавление сервера*',
-    '',
-    `*Название:* ${serverData.name}`,
-    `*Сайт:* ${serverData.url}`,
-    `*Хроники:* ${serverData.chronicle}`,
-    `*Рейты:* ${serverData.rate}`,
-    `*Дата открытия:* ${serverData.startDate}`,
-    `*Тариф:* ${serverData.cardType}`,
-    `*Тип сервера:* ${types}`,
-    `*Доп. значки:* ${icons}`,
-    `*Email:* ${serverData.email}`,
-    `*Контакты:* ${serverData.contacts || '—'}`,
-  ].join('\n')
-
   try {
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    await fetch('/api/contact.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text,
-        parse_mode: 'Markdown',
+        source: 'add-server',
+        name: serverData.name,
+        url: serverData.url,
+        chronicle: serverData.chronicle,
+        rate: serverData.rate,
+        startDate: serverData.startDate,
+        cardType: serverData.cardType,
+        serverTypes: serverData.serverTypes,
+        icons: serverData.icons,
+        email: serverData.email,
+        contacts: serverData.contacts,
       }),
     })
   } catch {

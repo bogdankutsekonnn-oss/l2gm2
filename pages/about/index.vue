@@ -165,9 +165,6 @@
 </template>
 
 <script setup>
-const BOT_TOKEN = '8604308878:AAE2qkmF2jpKC94b_vsypBf7jc_l8NJh8SE'
-const CHAT_ID = '649834807'
-
 const modalOpen = ref(false)
 const isSubmitting = ref(false)
 const submitStatus = ref('')
@@ -178,23 +175,39 @@ const closeModal = () => {
   submitStatus.value = ''
 }
 
+const onKeydown = (e) => {
+  if (e.key === 'Escape') closeModal()
+}
+
+watch(modalOpen, (open) => {
+  if (open) {
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onKeydown)
+  } else {
+    document.body.style.overflow = ''
+    document.removeEventListener('keydown', onKeydown)
+  }
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+  document.removeEventListener('keydown', onKeydown)
+})
+
 const submitContactForm = async () => {
   isSubmitting.value = true
   submitStatus.value = ''
 
-  const text = [
-    '📩 *Сообщение с сайта (О нас)*',
-    '',
-    `*Имя:* ${contactForm.value.name}`,
-    `*Контакт:* ${contactForm.value.reply || '—'}`,
-    `*Сообщение:* ${contactForm.value.message}`,
-  ].join('\n')
-
   try {
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    const res = await fetch('/api/contact.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'Markdown' }),
+      body: JSON.stringify({
+        source: 'about',
+        name: contactForm.value.name,
+        reply: contactForm.value.reply,
+        message: contactForm.value.message,
+      }),
     })
     if (res.ok) {
       submitStatus.value = 'success'
@@ -327,6 +340,7 @@ useHead({
   border: none;
   cursor: pointer;
   width: 100%;
+  font-size: inherit;
 }
 
 .contact-card:hover {

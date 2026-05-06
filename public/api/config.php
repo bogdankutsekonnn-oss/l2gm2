@@ -9,6 +9,10 @@ define('DB_PASS', 'aqx45e9n3a');
 // Секретный ключ для админки
 define('ADMIN_TOKEN', 'L2gm_Adm1n_2026_xKp9mQ');
 
+// Telegram-бот для уведомлений
+define('TG_BOT_TOKEN', '8604308878:AAE2qkmF2jpKC94b_vsypBf7jc_l8NJh8SE');
+define('TG_CHAT_ID', '649834807');
+
 // CORS — разрешаем запросы с нашего сайта
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: https://l2gm.com');
