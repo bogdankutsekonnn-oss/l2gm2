@@ -223,6 +223,8 @@ const isRateActive = (slug) => {
 }
 
 .filter-chip-tag {
+  flex: 1 1 calc(50% - var(--spacing-sm) / 2);
+  min-width: calc(50% - var(--spacing-sm) / 2);
   cursor: pointer;
 }
 
