@@ -97,6 +97,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://l2gm.com/tomorrow/</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://l2gm.com/this-week/</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://l2gm.com/new/</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://l2gm.com/chronicle/c4/</loc>
     <lastmod>2026-04-16</lastmod>
     <changefreq>daily</changefreq>
