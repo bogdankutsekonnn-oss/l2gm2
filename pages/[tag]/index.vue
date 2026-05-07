@@ -3,8 +3,10 @@
     <div class="page-wrapper">
       <Breadcrumbs />
       <div class="page-header">
-        <h1>{{ h1 }}</h1>
-        <p v-if="subtitle" class="page-subtitle">{{ subtitle }}</p>
+        <div class="page-header-box">
+          <h1>{{ h1 }}</h1>
+          <p v-if="subtitle" class="page-subtitle">{{ subtitle }}</p>
+        </div>
         <ClientOnly>
           <span v-if="filteredServers.length" class="servers-count">Найдено {{ filteredServers.length }} {{ pluralServers(filteredServers.length) }}</span>
         </ClientOnly>
@@ -177,17 +179,31 @@ useHead(meta)
   padding: var(--spacing-lg) 0;
 }
 
+.page-header-box {
+  background: #1b1d1f;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.page-header-box h1 {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
 .page-subtitle {
   color: var(--text-secondary);
   font-size: var(--font-base);
   line-height: 1.5;
-  margin: 8px 16px 0;
+  margin: 8px 0 0;
 }
 
 @media (max-width: 1024px) {
   .page-subtitle {
     font-size: var(--font-sm);
-    margin: 4px 16px 0;
+    margin: 4px 0 0;
   }
 }
 </style>
