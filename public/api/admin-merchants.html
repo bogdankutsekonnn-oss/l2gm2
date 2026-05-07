@@ -503,7 +503,7 @@ function renderCard(m) {
       ${slotRows.join('')}
       ${totalSum > 0 ? `<div class="slot-total ${m.role}">
         <span>${m.role === 'sell' ? 'Выручка:' : 'Расход:'}</span>
-        <span class="total-value"><img class="adena-icon" src="${ICON_BASE}/adena.png"> ${fmt(totalSum)}</span>
+        <span class="total-value">${fmt(totalSum)} <img class="adena-icon" src="${ICON_BASE}/adena.png"></span>
       </div>` : ''}
       <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
       <div class="card-footer">
