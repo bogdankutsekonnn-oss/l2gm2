@@ -77,7 +77,7 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <div class="filter-chips">
+      <div class="filter-chips filter-chips-tags">
         <NuxtLink
           v-for="tag in tags"
           :key="tag.url"
@@ -220,6 +220,11 @@ const isRateActive = (slug) => {
 .filter-chip.is-active {
   background: var(--primary-main);
   color: var(--primary-contrast);
+}
+
+.filter-chips-tags {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }
 
 .filter-chip-tag {
