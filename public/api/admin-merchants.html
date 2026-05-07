@@ -100,7 +100,8 @@
 
     .slots-section-label { font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-    .slot-row { display: grid; grid-template-columns: 28px 1fr 80px 90px 18px; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+    .slot-row { display: grid; grid-template-columns: 28px 1fr 80px 90px 18px; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .slot-row:last-of-type { border-bottom: none; }
     .slot-row:hover { background: rgba(255,255,255,0.03); }
     .slot-row img { width: 24px; height: 24px; image-rendering: pixelated; background: #1a1c1e; border-radius: 4px; }
     .slot-name { font-size: 12px; }
@@ -113,6 +114,7 @@
     .slot-clear:hover { color: #ff6b6b; }
 
     .adena-icon { width: 14px; height: 14px; image-rendering: pixelated; vertical-align: -2px; }
+    .adena-icon-sm { width: 11px; height: 11px; image-rendering: pixelated; vertical-align: -1px; }
     .slot-total { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; margin-top: 2px; border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.06); }
     .slot-total.sell { color: #4BD285; }
     .slot-total.buy  { color: #fe5722; }
@@ -532,7 +534,7 @@ function renderSlot(m, s) {
       <img src="${ICON_BASE}/${s.resource_icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
       <span class="slot-name">${escapeHtml(s.resource_name)}${conflictWarn}</span>
       <span class="slot-qty">${s.qty !== null ? '× ' + fmt(s.qty) : '—'}</span>
-      <span class="slot-price">${s.price_per_unit !== null ? '<img class="adena-icon" src="' + ICON_BASE + '/adena.png"> ' + fmt(s.price_per_unit) : '—'}${priceCmp}</span>
+      <span class="slot-price">${s.price_per_unit !== null ? fmt(s.price_per_unit) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">' : '—'}${priceCmp}</span>
       <span class="slot-clear" onclick="event.stopPropagation();clearSlot(${m.id}, ${s.slot_index})" title="Очистить слот">✕</span>
     </div>`;
 }
@@ -814,7 +816,7 @@ async function checkConflicts() {
     const warn = document.getElementById('conflictWarn');
     if (data.conflicts && data.conflicts.length) {
       warn.innerHTML = '⚠️ В этом городе с такой же ролью уже работают: <strong>' +
-        data.conflicts.map(c => escapeHtml(c.name) + (c.price_per_unit ? ' (<img class="adena-icon" src="' + ICON_BASE + '/adena.png"> ' + fmt(c.price_per_unit) + ')' : '')).join(', ') +
+        data.conflicts.map(c => escapeHtml(c.name) + (c.price_per_unit ? ' (' + fmt(c.price_per_unit) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">)' : '')).join(', ') +
         '</strong>. Это нормально, просто к сведению.';
       warn.classList.add('show');
     } else {
