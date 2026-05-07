@@ -119,7 +119,7 @@ const emptyMessage = getTagEmptyMessage(tagSlug)
 
 // FAQ данные
 const faqItems = tagData.faq || []
-const faqTitle = `Частые вопросы — ${tagData.name}`
+const faqTitle = tagData.faqTitle || `Частые вопросы — ${tagData.name}`
 
 // Формируем фильтр на основе типа тега
 const filterKey = getTagFilter(tagSlug)
