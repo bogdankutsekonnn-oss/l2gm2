@@ -100,16 +100,15 @@
 
     .slots-section-label { font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
-    .slot-row { display: grid; grid-template-columns: 22px 1fr 80px 90px 18px; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .slot-row { display: grid; grid-template-columns: 22px 1fr auto auto 18px; align-items: center; gap: 6px; padding: 5px 6px; border-radius: 6px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .slot-row:last-of-type { border-bottom: none; }
     .slot-row:hover { background: rgba(255,255,255,0.03); }
     .slot-row img { width: 18px; height: 18px; image-rendering: pixelated; background: #1a1c1e; border-radius: 4px; }
     .slot-name { font-size: 12px; }
     .slot-name .conflict { color: #ffc107; font-size: 10px; margin-left: 4px; cursor: help; }
-    .slot-qty, .slot-price { font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; padding: 2px 6px; border-radius: 4px; }
+    .slot-qty, .slot-price { font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; padding: 2px 6px; border-radius: 4px; }
     .slot-qty { color: rgba(245,245,247,0.6); }
     .slot-price { color: #f5f5f7; font-weight: 500; }
-    .slot-row .market-hint { font-size: 10px; color: rgba(245,245,247,0.35); margin-left: 4px; }
     .slot-clear { color: rgba(245,245,247,0.3); font-size: 14px; cursor: pointer; text-align: center; }
     .slot-clear:hover { color: #ff6b6b; }
 
@@ -518,23 +517,12 @@ function renderCard(m) {
 }
 
 function renderSlot(m, s) {
-  const market = m.role === 'sell' ? s.sell_avg : s.buy_avg;
-  let priceCmp = '';
-  if (s.price_per_unit !== null && market !== null && market > 0) {
-    const diff = ((s.price_per_unit - market) / market) * 100;
-    if (Math.abs(diff) >= 5) {
-      const sign = diff > 0 ? '+' : '';
-      const cls = (m.role === 'sell' ? (diff > 0 ? 'positive' : 'negative') : (diff > 0 ? 'negative' : 'positive'));
-      priceCmp = ` <span class="market-hint" title="Среднее по рынку: ${fmt(market)}">(рынок ${sign}${diff.toFixed(0)}%)</span>`;
-    }
-  }
-  const conflictWarn = ''; // Подсказку про конфликты можно делать через отдельный hover-запрос; пока опускаем для простоты в карточке.
   return `
     <div class="slot-row" onclick="editSlot(${m.id}, ${s.slot_index})">
       <img src="${ICON_BASE}/${s.resource_icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
-      <span class="slot-name">${escapeHtml(s.resource_name)}${conflictWarn}</span>
+      <span class="slot-name">${escapeHtml(s.resource_name)}</span>
       <span class="slot-qty">${s.qty !== null ? '× ' + fmt(s.qty) : '—'}</span>
-      <span class="slot-price">${s.price_per_unit !== null ? fmt(s.price_per_unit) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">' : '—'}${priceCmp}</span>
+      <span class="slot-price">${s.price_per_unit !== null ? fmt(s.price_per_unit) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">' : '—'}</span>
       <span class="slot-clear" onclick="event.stopPropagation();clearSlot(${m.id}, ${s.slot_index})" title="Очистить слот">✕</span>
     </div>`;
 }
