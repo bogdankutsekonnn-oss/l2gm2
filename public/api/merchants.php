@@ -186,7 +186,6 @@ function setSlot($user) {
 
     $input = jsonInput();
     $slotIndex = (int)($input['slot_index'] ?? 0);
-    if ($slotIndex < 1 || $slotIndex > 5) jsonResponse(['error' => 'slot_index must be 1..5'], 400);
 
     $slug = trim($input['resource_slug'] ?? '');
     if ($slug === '') jsonResponse(['error' => 'resource_slug required'], 400);
@@ -199,14 +198,19 @@ function setSlot($user) {
     $qty   = ($qty === null || $qty === '') ? null : (int)$qty;
 
     $db = getDB();
+
+    $m = $db->prepare('SELECT id, role FROM merchants WHERE id = :id');
+    $m->execute([':id' => $merchantId]);
+    $merchant = $m->fetch();
+    if (!$merchant) jsonResponse(['error' => 'Merchant not found'], 404);
+
+    $maxSlots = $merchant['role'] === 'sell' ? 4 : 5;
+    if ($slotIndex < 1 || $slotIndex > $maxSlots) jsonResponse(['error' => "slot_index must be 1..{$maxSlots}"], 400);
+
     $r = $db->prepare('SELECT id FROM resources WHERE slug = :s');
     $r->execute([':s' => $slug]);
     $res = $r->fetch();
     if (!$res) jsonResponse(['error' => 'Resource not found'], 404);
-
-    $m = $db->prepare('SELECT id FROM merchants WHERE id = :id');
-    $m->execute([':id' => $merchantId]);
-    if (!$m->fetch()) jsonResponse(['error' => 'Merchant not found'], 404);
 
     $db->prepare(
         'INSERT INTO merchant_slots (merchant_id, slot_index, resource_id, price_per_unit, qty, updated_by_user_id)

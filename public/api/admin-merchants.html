@@ -112,6 +112,12 @@
     .slot-clear { color: rgba(245,245,247,0.3); font-size: 14px; cursor: pointer; text-align: center; }
     .slot-clear:hover { color: #ff6b6b; }
 
+    .adena-icon { width: 14px; height: 14px; image-rendering: pixelated; vertical-align: -2px; }
+    .slot-total { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; margin-top: 2px; border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.06); }
+    .slot-total.sell { color: #4BD285; }
+    .slot-total.buy  { color: #fe5722; }
+    .slot-total .total-value { display: inline-flex; align-items: center; gap: 4px; }
+
     .slot-empty { color: rgba(245,245,247,0.25); font-style: italic; padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; }
     .slot-empty:hover { background: rgba(255,255,255,0.04); color: rgba(245,245,247,0.6); }
 
@@ -454,15 +460,21 @@ function renderCard(m) {
   const slotsByIndex = {};
   for (const s of slots) slotsByIndex[s.slot_index] = s;
 
+  const maxSlots = m.role === 'sell' ? 4 : 5;
   const slotRows = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= maxSlots; i++) {
     const s = slotsByIndex[i];
     if (s) slotRows.push(renderSlot(m, s));
     else slotRows.push(`<div class="slot-empty" onclick="editSlot(${m.id}, ${i})">+ слот ${i} пуст — клик чтобы заполнить</div>`);
   }
 
+  let totalSum = 0;
+  for (const s of slots) {
+    if (s.price_per_unit !== null && s.qty !== null) totalSum += s.price_per_unit * s.qty;
+  }
+
   const upd = m.updated_at ? new Date(m.updated_at) : null;
-  const updText = upd ? relTime(upd) : 'только что';
+  const updText = upd ? relTime(upd) + ' (' + fmtTime(upd) + ')' : 'только что';
   const stale = m.status === 'active' && isStale(m);
 
   return `
@@ -485,8 +497,12 @@ function renderCard(m) {
           ${m.role === 'sell' ? '🟢 Продаёт' : '🔴 Покупает'}
         </span>
       </div>
-      <div class="slots-section-label">Слоты (${slots.length}/5)</div>
+      <div class="slots-section-label">Слоты (${slots.length}/${maxSlots})</div>
       ${slotRows.join('')}
+      ${totalSum > 0 ? `<div class="slot-total ${m.role}">
+        <span>${m.role === 'sell' ? 'Выручка:' : 'Расход:'}</span>
+        <span class="total-value"><img class="adena-icon" src="${ICON_BASE}/adena.png"> ${fmt(totalSum)}</span>
+      </div>` : ''}
       <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
       <div class="card-footer">
         <span>📅 ${updText}${m.updated_by ? ' · ' + escapeHtml(m.updated_by) : ''}</span>
@@ -516,7 +532,7 @@ function renderSlot(m, s) {
       <img src="${ICON_BASE}/${s.resource_icon}" onerror="this.onerror=null;this.src='${ICON_BASE}/placeholder.svg'" alt="">
       <span class="slot-name">${escapeHtml(s.resource_name)}${conflictWarn}</span>
       <span class="slot-qty">${s.qty !== null ? '× ' + fmt(s.qty) : '—'}</span>
-      <span class="slot-price">${s.price_per_unit !== null ? '@ ' + fmt(s.price_per_unit) : '—'}${priceCmp}</span>
+      <span class="slot-price">${s.price_per_unit !== null ? '<img class="adena-icon" src="' + ICON_BASE + '/adena.png"> ' + fmt(s.price_per_unit) : '—'}${priceCmp}</span>
       <span class="slot-clear" onclick="event.stopPropagation();clearSlot(${m.id}, ${s.slot_index})" title="Очистить слот">✕</span>
     </div>`;
 }
@@ -541,6 +557,10 @@ function relTime(d) {
   if (sec < 86400) return Math.floor(sec/3600) + 'ч';
   if (sec < 86400*30) return Math.floor(sec/86400) + 'д';
   return Math.floor(sec/86400/30) + 'мес';
+}
+
+function fmtTime(d) {
+  return d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
 }
 
 // ---- Inline edit: name / city / role / status / notes ----
@@ -794,7 +814,7 @@ async function checkConflicts() {
     const warn = document.getElementById('conflictWarn');
     if (data.conflicts && data.conflicts.length) {
       warn.innerHTML = '⚠️ В этом городе с такой же ролью уже работают: <strong>' +
-        data.conflicts.map(c => escapeHtml(c.name) + (c.price_per_unit ? ' (@' + fmt(c.price_per_unit) + ')' : '')).join(', ') +
+        data.conflicts.map(c => escapeHtml(c.name) + (c.price_per_unit ? ' (<img class="adena-icon" src="' + ICON_BASE + '/adena.png"> ' + fmt(c.price_per_unit) + ')' : '')).join(', ') +
         '</strong>. Это нормально, просто к сведению.';
       warn.classList.add('show');
     } else {

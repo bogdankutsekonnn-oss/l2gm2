@@ -328,13 +328,13 @@ function renderRow(r) {
 
   // Маржа торговли — для всех (sell_avg − buy_avg)
   const tradeMargin = (sellAvg !== null && buyAvg !== null) ? (sellAvg - buyAvg) : null;
-  const tradeMarginPct = (tradeMargin !== null && buyAvg) ? (tradeMargin / buyAvg * 100) : null;
+  const tradeMarginPct = (tradeMargin !== null && sellAvg) ? (tradeMargin / sellAvg * 100) : null;
 
   // Себестоимость крафта — только для крафтовых ресурсов
   const isCraftable = r.recipe && r.recipe.length > 0;
   const craftCost = isCraftable ? computeCost(r) : null;
   const craftProfit = (craftCost !== null && sellAvg !== null) ? (sellAvg - craftCost) : null;
-  const craftProfitPct = (craftProfit !== null && craftCost) ? (craftProfit / craftCost * 100) : null;
+  const craftProfitPct = (craftProfit !== null && sellAvg) ? (craftProfit / sellAvg * 100) : null;
 
   const recipeText = r.recipe ? recipeToText(r) : '';
 
