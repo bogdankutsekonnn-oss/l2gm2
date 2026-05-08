@@ -162,7 +162,11 @@ useHead({
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
   ],
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  link: [
+    { rel: 'canonical', href: canonicalUrl },
+    { rel: 'alternate', hreflang: 'ru', href: canonicalUrl, key: 'hreflang-ru' },
+    { rel: 'alternate', hreflang: 'x-default', href: canonicalUrl, key: 'hreflang-x-default' },
+  ],
   script: [
     { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbJsonLd) },
     { type: 'application/ld+json', innerHTML: JSON.stringify(collectionJsonLd) },

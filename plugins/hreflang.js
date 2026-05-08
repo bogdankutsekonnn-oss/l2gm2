@@ -2,6 +2,10 @@
 // Сайт одноязычный (рус), но hreflang="ru" (без привязки к стране) — сигнал
 // Google/Яндекс, что контент рассчитан на всех русскоговорящих (РФ, Беларусь,
 // Казахстан, Украина, Молдова и т.д.), а не только на российский рынок.
+//
+// Используем key на link-тегах, чтобы страницы с кросс-каноникалом
+// (напр. /chronicle/*/rate/*/ → /chronicle/*/) могли переопределить href
+// через свой useHead с теми же ключами.
 export default defineNuxtPlugin(() => {
   const route = useRoute()
   const config = useRuntimeConfig()
@@ -16,8 +20,8 @@ export default defineNuxtPlugin(() => {
 
   useHead({
     link: [
-      { rel: 'alternate', hreflang: 'ru', href: href },
-      { rel: 'alternate', hreflang: 'x-default', href: href },
+      { rel: 'alternate', hreflang: 'ru', href: href, key: 'hreflang-ru' },
+      { rel: 'alternate', hreflang: 'x-default', href: href, key: 'hreflang-x-default' },
     ],
   })
 })
