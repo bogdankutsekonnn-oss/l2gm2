@@ -180,6 +180,39 @@
 
     .empty-state { text-align: center; padding: 60px 20px; color: rgba(245,245,247,0.4); }
 
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard { padding: 12px; }
+      .dash-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .dash-header h1 { font-size: 18px; }
+      .tab-nav { width: 100%; overflow-x: auto; }
+      .user-info { width: 100%; justify-content: space-between; }
+      .toolbar { gap: 6px; }
+      .search-input { min-width: 0; width: 100%; }
+      .cards { grid-template-columns: 1fr; gap: 10px; }
+      .card { padding: 12px; }
+      .modal { width: calc(100vw - 24px); max-width: 460px; padding: 16px; }
+      .login-box { width: calc(100vw - 32px); max-width: 360px; }
+      .city-picker { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard { padding: 8px; }
+      .dash-header h1 { font-size: 16px; }
+      .tab-link { padding: 8px 12px; font-size: 13px; }
+      .filter-chip { padding: 5px 8px; font-size: 11px; }
+      .btn-add { padding: 7px 10px; font-size: 12px; }
+      .card { padding: 10px; gap: 8px; }
+      .card-name { font-size: 14px; }
+      .slot-row { grid-template-columns: 20px 1fr auto auto 16px; gap: 4px; padding: 4px; }
+      .slot-qty, .slot-price { font-size: 11px; padding: 1px 4px; }
+      .card-footer { flex-wrap: wrap; gap: 6px; }
+      .card-footer .btns { margin-left: 0; width: 100%; justify-content: flex-end; }
+      .modal { padding: 14px; }
+      .modal h2 { font-size: 15px; }
+      .toolbar-info { margin-left: 0; width: 100%; }
+    }
+
     /* Custom scroll */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-track { background: #06080a; }
