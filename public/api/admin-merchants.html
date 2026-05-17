@@ -413,7 +413,6 @@ async function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashboard').classList.add('active');
   document.getElementById('whoami').textContent = state.user ? `👤 ${state.user.username}` : '';
-  buildCityFilters();
   await Promise.all([loadResources(), loadMerchants()]);
   render();
 }
@@ -435,9 +434,10 @@ async function loadMerchants() {
 
 // ---- City filters ----
 function buildCityFilters() {
+  const usedCities = new Set(state.merchants.map(m => m.city).filter(Boolean));
   const wrap = document.getElementById('cityFilters');
-  wrap.innerHTML = CITIES.map(c => `
-    <div class="city-chip" data-city="${c.slug}" onclick="toggleCityFilter('${c.slug}')">
+  wrap.innerHTML = CITIES.filter(c => usedCities.has(c.slug)).map(c => `
+    <div class="city-chip${state.filterCities.has(c.slug) ? ' active' : ''}" data-city="${c.slug}" onclick="toggleCityFilter('${c.slug}')">
       <img src="${CITY_ICON_BASE}/${c.slug}.svg" alt="">
       <span>${c.name}</span>
     </div>
@@ -462,6 +462,7 @@ function setStatusFilter(btn) {
 
 // ---- Render ----
 function render() {
+  buildCityFilters();
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   let items = state.merchants;
 
