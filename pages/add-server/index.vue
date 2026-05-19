@@ -67,7 +67,7 @@
                   class="site-button-link"
                 >
                   <img
-                    src="/logo.svg"
+                    src="/button.png"
                     alt="L2GM — Новые сервера Lineage 2"
                     class="site-button-img"
                   />
@@ -430,7 +430,7 @@ const copied = ref(false)
 
 const codeBlock = ref(null)
 
-const siteButtonCode = `<a href="https://l2gm.com/" target="_blank" rel="noopener" title="L2GM — Новые сервера Lineage 2" style="display:inline-block"><img src="https://l2gm.com/button.png" alt="L2GM — Новые сервера Lineage 2" width="189" height="59" style="border:0" /></a>`
+const siteButtonCode = `<a href="https://l2gm.com/" target="_blank" rel="noopener" title="L2GM — Новые сервера Lineage 2" style="display:inline-block"><img src="https://l2gm.com/button.png" alt="L2GM — Новые сервера Lineage 2" width="189" height="34" style="border:0" /></a>`
 
 const copyButtonCode = async () => {
   try {
