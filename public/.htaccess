@@ -2,6 +2,8 @@ RewriteEngine On
 
 # Trailing slash — redirect explicitly to https://host/path/
 # Using absolute URL prevents Apache from dropping the scheme in Location.
+# Skip files with extensions (images, scripts, styles, fonts, etc.)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteCond %{REQUEST_URI} !\.(png|jpg|jpeg|gif|svg|webp|avif|ico|css|js|woff2?|ttf|eot|mp4|webm|pdf|xml|json|txt|php)$ [NC]
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1/ [R=301,L]
