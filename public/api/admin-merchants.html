@@ -44,6 +44,12 @@
     .filter-chip { padding: 6px 12px; background: rgba(255,255,255,0.05); border: none; border-radius: 6px; color: rgba(245,245,247,0.6); cursor: pointer; font-size: 12px; }
     .filter-chip.active { background: rgb(254, 54, 0); color: #f5f5f7; }
     .filter-chip:hover:not(.active) { background: rgba(255,255,255,0.1); color: #f5f5f7; }
+    .sub-filters { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+    .role-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; color: rgba(245,245,247,0.6); }
+    .role-chip:hover { background: rgba(255,255,255,0.1); }
+    .role-chip.active-buy   { background: rgba(254,54,0,0.15); color: #fe5722; border-color: rgba(254,54,0,0.5); }
+    .role-chip.active-sell  { background: rgba(75,210,133,0.15); color: #4BD285; border-color: rgba(75,210,133,0.5); }
+    .role-chip.active-shots { background: rgba(139,92,246,0.15); color: #a78bfa; border-color: rgba(139,92,246,0.5); }
     .city-filters { display: flex; gap: 4px; flex-wrap: wrap; }
     .city-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; cursor: pointer; font-size: 11px; color: rgba(245,245,247,0.6); }
     .city-chip img { width: 16px; height: 16px; }
@@ -269,6 +275,11 @@
     <span class="toolbar-info" id="toolbarInfo"></span>
   </div>
 
+  <div class="sub-filters" id="roleFilters">
+    <div class="role-chip" data-role="buy" onclick="toggleRoleFilter('buy')">🔴 Покупка</div>
+    <div class="role-chip" data-role="sell" onclick="toggleRoleFilter('sell')">🟢 Продажа</div>
+    <div class="role-chip" data-role="shots" onclick="toggleRoleFilter('shots')">🟣 Соски</div>
+  </div>
   <div class="city-filters" id="cityFilters"></div>
   <div style="height: 12px;"></div>
 
@@ -373,6 +384,7 @@ let state = {
   resourcesBySlug: {},
   filterStatus: 'active',
   filterCities: new Set(),
+  filterRoles: new Set(),
   token: localStorage.getItem('l2gm_token') || '',
   user: null,
   // Slot edit modal state
@@ -460,6 +472,17 @@ function buildCityFilters() {
   `).join('');
 }
 
+function toggleRoleFilter(role) {
+  if (state.filterRoles.has(role)) state.filterRoles.delete(role);
+  else state.filterRoles.add(role);
+  document.querySelectorAll('.role-chip').forEach(chip => {
+    const r = chip.dataset.role;
+    chip.classList.remove('active-buy', 'active-sell', 'active-shots');
+    if (state.filterRoles.has(r)) chip.classList.add('active-' + r);
+  });
+  render();
+}
+
 function toggleCityFilter(slug) {
   if (state.filterCities.has(slug)) state.filterCities.delete(slug);
   else state.filterCities.add(slug);
@@ -487,6 +510,7 @@ function render() {
   } else if (state.filterStatus !== 'all') {
     items = items.filter(m => m.status === state.filterStatus);
   }
+  if (state.filterRoles.size) items = items.filter(m => state.filterRoles.has(m.role));
   if (state.filterCities.size) items = items.filter(m => state.filterCities.has(m.city));
   if (q) items = items.filter(m => {
     if (m.name.toLowerCase().includes(q)) return true;
