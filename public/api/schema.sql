@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `merchants` (
   `name` VARCHAR(64) NOT NULL UNIQUE,
   `account_login` VARCHAR(64) DEFAULT NULL COMMENT 'логин игрового аккаунта',
   `city` ENUM('talking-island','elven-village','dark-elf-village','orc-village','dwarven-village','gludin','gludio','dion','giran','hunter-village','oren','heine','aden') NOT NULL,
-  `role` ENUM('buy','sell') NOT NULL DEFAULT 'sell',
+  `role` ENUM('buy','sell','shots') NOT NULL DEFAULT 'sell',
   `status` ENUM('active','paused','archived') NOT NULL DEFAULT 'active',
   `notes` TEXT DEFAULT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
