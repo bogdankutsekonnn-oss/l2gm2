@@ -95,7 +95,7 @@ function addMerchant($user) {
 
     if ($name === '') jsonResponse(['error' => 'name required'], 400);
     if (!isValidCity($city)) jsonResponse(['error' => 'Invalid city'], 400);
-    if (!in_array($role, ['buy','sell'], true)) jsonResponse(['error' => 'Invalid role'], 400);
+    if (!in_array($role, ['buy','sell','shots'], true)) jsonResponse(['error' => 'Invalid role'], 400);
 
     $db = getDB();
     try {
@@ -130,7 +130,7 @@ function updateMerchant($user) {
     foreach ($input as $k => $v) {
         if (!in_array($k, $allowed, true)) continue;
         if ($k === 'city' && !isValidCity($v)) jsonResponse(['error' => 'Invalid city'], 400);
-        if ($k === 'role' && !in_array($v, ['buy','sell'], true)) jsonResponse(['error' => 'Invalid role'], 400);
+        if ($k === 'role' && !in_array($v, ['buy','sell','shots'], true)) jsonResponse(['error' => 'Invalid role'], 400);
         if ($k === 'status' && !in_array($v, ['active','paused','archived'], true)) jsonResponse(['error' => 'Invalid status'], 400);
         if ($k === 'name') {
             $v = trim($v);
@@ -204,7 +204,7 @@ function setSlot($user) {
     $merchant = $m->fetch();
     if (!$merchant) jsonResponse(['error' => 'Merchant not found'], 404);
 
-    $maxSlots = $merchant['role'] === 'sell' ? 4 : 5;
+    $maxSlots = $merchant['role'] === 'sell' ? 4 : ($merchant['role'] === 'shots' ? 5 : 5);
     if ($slotIndex < 1 || $slotIndex > $maxSlots) jsonResponse(['error' => "slot_index must be 1..{$maxSlots}"], 400);
 
     $r = $db->prepare('SELECT id FROM resources WHERE slug = :s');
@@ -252,7 +252,7 @@ function conflictsAction() {
     $role = $_GET['role'] ?? '';
     $slug = trim($_GET['resource_slug'] ?? '');
     $excludeId = (int)($_GET['exclude_id'] ?? 0);
-    if (!isValidCity($city) || !in_array($role, ['buy','sell'], true) || $slug === '') {
+    if (!isValidCity($city) || !in_array($role, ['buy','sell','shots'], true) || $slug === '') {
         jsonResponse(['conflicts' => []]);
     }
     $db = getDB();

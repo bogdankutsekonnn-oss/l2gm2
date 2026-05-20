@@ -66,8 +66,9 @@
       gap: 10px;
       position: relative;
     }
-    .card.role-sell { border-color: rgba(75,210,133,0.35); }
-    .card.role-buy  { border-color: rgba(254,54,0,0.35); }
+    .card.role-sell  { border-color: rgba(75,210,133,0.35); }
+    .card.role-buy   { border-color: rgba(254,54,0,0.35); }
+    .card.role-shots { border-color: rgba(139,92,246,0.35); }
     .card.status-paused { opacity: 0.65; }
     .card.status-archived { display: none; }
     .card.stale { box-shadow: 0 0 0 1px rgba(255,193,7,0.35); }
@@ -97,8 +98,9 @@
     .city-badge:hover { background: rgba(255,255,255,0.08); }
     .city-badge img { width: 18px; height: 18px; }
     .role-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .role-sell-badge { background: rgba(75,210,133,0.15); color: #4BD285; }
-    .role-buy-badge  { background: rgba(254,54,0,0.15); color: #fe5722; }
+    .role-sell-badge  { background: rgba(75,210,133,0.15); color: #4BD285; }
+    .role-buy-badge   { background: rgba(254,54,0,0.15); color: #fe5722; }
+    .role-shots-badge { background: rgba(139,92,246,0.15); color: #a78bfa; }
 
     .slots-section-label { font-size: 10px; color: rgba(245,245,247,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
 
@@ -117,8 +119,9 @@
     .adena-icon { width: 14px; height: 14px; image-rendering: pixelated; vertical-align: -2px; }
     .adena-icon-sm { width: 11px; height: 11px; image-rendering: pixelated; vertical-align: -1px; }
     .slot-total { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; margin-top: 2px; border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.06); }
-    .slot-total.sell { color: #4BD285; }
-    .slot-total.buy  { color: #fe5722; }
+    .slot-total.sell  { color: #4BD285; }
+    .slot-total.buy   { color: #fe5722; }
+    .slot-total.shots { color: #a78bfa; }
     .slot-total .total-value { display: inline-flex; align-items: center; gap: 4px; }
 
     .slot-empty { color: rgba(245,245,247,0.25); font-style: italic; padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; }
@@ -160,11 +163,12 @@
     .city-picker .pick.selected { background: rgba(254,54,0,0.12); border-color: rgba(254,54,0,0.5); color: #fe5722; }
 
     /* Role picker (in add merchant modal) */
-    .role-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .role-picker { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .role-pick { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; background: rgba(255,255,255,0.04); border: 2px solid transparent; border-radius: 8px; cursor: pointer; font-weight: 600; }
     .role-pick input { display: none; }
-    .role-pick:has(input:checked).role-sell-pick { background: rgba(75,210,133,0.12); border-color: #4BD285; color: #4BD285; }
-    .role-pick:has(input:checked).role-buy-pick  { background: rgba(254,54,0,0.12);  border-color: #fe3600; color: #fe5722; }
+    .role-pick:has(input:checked).role-sell-pick  { background: rgba(75,210,133,0.12); border-color: #4BD285; color: #4BD285; }
+    .role-pick:has(input:checked).role-buy-pick   { background: rgba(254,54,0,0.12);  border-color: #fe3600; color: #fe5722; }
+    .role-pick:has(input:checked).role-shots-pick { background: rgba(139,92,246,0.12); border-color: #8b5cf6; color: #a78bfa; }
 
     /* Resource picker */
     .resource-picker { max-height: 280px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; background: #06080a; }
@@ -179,6 +183,12 @@
     .toast.show { opacity: 1; }
     .toast.error { border-color: #dc3545; color: #ff6b6b; }
     .toast.success { border-color: #4BD285; color: #4BD285; }
+
+    .section-divider { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; margin: 16px 0 4px; }
+    .section-divider span { font-size: 13px; font-weight: 600; color: rgba(245,245,247,0.5); white-space: nowrap; }
+    .section-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+    .btn-add-slot { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 4px 10px; background: rgba(139,92,246,0.1); border: 1px dashed rgba(139,92,246,0.3); border-radius: 6px; color: #a78bfa; cursor: pointer; font-size: 11px; margin-top: 2px; }
+    .btn-add-slot:hover { background: rgba(139,92,246,0.2); border-color: rgba(139,92,246,0.5); }
 
     .empty-state { text-align: center; padding: 60px 20px; color: rgba(245,245,247,0.4); }
 
@@ -284,6 +294,10 @@
       <label class="role-pick role-buy-pick">
         <input type="radio" name="newMerchantRole" value="buy">
         <span>🔴 Покупает</span>
+      </label>
+      <label class="role-pick role-shots-pick">
+        <input type="radio" name="newMerchantRole" value="shots">
+        <span>🟣 Соски</span>
       </label>
     </div>
     <div class="modal-actions">
@@ -488,7 +502,14 @@ function render() {
     cont.innerHTML = `<div class="empty-state">Никого не нашлось. Нажми <strong>+ Торговец</strong> чтобы добавить первого.</div>`;
     return;
   }
-  cont.innerHTML = items.map(renderCard).join('');
+  const regular = items.filter(m => m.role !== 'shots');
+  const shots   = items.filter(m => m.role === 'shots');
+  let html = regular.map(renderCard).join('');
+  if (shots.length) {
+    html += `<div class="section-divider"><span>🟣 Соски (${shots.length})</span></div>`;
+    html += shots.map(renderCard).join('');
+  }
+  cont.innerHTML = html;
 }
 
 function renderCard(m) {
@@ -497,12 +518,17 @@ function renderCard(m) {
   const slotsByIndex = {};
   for (const s of slots) slotsByIndex[s.slot_index] = s;
 
-  const maxSlots = m.role === 'sell' ? 4 : 5;
+  const hardMax = m.role === 'sell' ? 4 : 5;
+  const filledMax = slots.length ? Math.max(...slots.map(s => s.slot_index)) : 0;
+  const maxSlots = m.role === 'shots' ? Math.max(1, filledMax) : hardMax;
   const slotRows = [];
   for (let i = 1; i <= maxSlots; i++) {
     const s = slotsByIndex[i];
     if (s) slotRows.push(renderSlot(m, s));
     else slotRows.push(`<div class="slot-empty" onclick="editSlot(${m.id}, ${i})">+ слот ${i} пуст — клик чтобы заполнить</div>`);
+  }
+  if (m.role === 'shots' && maxSlots < hardMax) {
+    slotRows.push(`<div class="btn-add-slot" onclick="addShotsSlot(${m.id})">+ ещё слот</div>`);
   }
 
   let totalSum = 0;
@@ -531,13 +557,13 @@ function renderCard(m) {
           <span>${city.name}</span>
         </span>
         <span class="role-badge role-${m.role}-badge" onclick="toggleRole(${m.id})" title="Клик — переключить роль">
-          ${m.role === 'sell' ? '🟢 Продаёт' : '🔴 Покупает'}
+          ${m.role === 'sell' ? '🟢 Продаёт' : m.role === 'buy' ? '🔴 Покупает' : '🟣 Соски'}
         </span>
       </div>
       <div class="slots-section-label">Слоты (${slots.length}/${maxSlots})</div>
       ${slotRows.join('')}
       ${totalSum > 0 ? `<div class="slot-total ${m.role}">
-        <span>${m.role === 'sell' ? 'Выручка:' : 'Расход:'}</span>
+        <span>${m.role === 'sell' ? 'Выручка:' : m.role === 'buy' ? 'Расход:' : 'Итого:'}</span>
         <span class="total-value">${fmt(totalSum)} <img class="adena-icon" src="${ICON_BASE}/adena.png"></span>
       </div>` : ''}
       <div class="card-notes ${m.notes ? '' : 'empty'}" onclick="editNotes(${m.id})">${m.notes ? escapeHtml(m.notes) : '+ заметка'}</div>
@@ -624,8 +650,8 @@ async function archive(id) {
 
 async function toggleRole(id) {
   const m = findMerchant(id); if (!m) return;
-  const next = m.role === 'sell' ? 'buy' : 'sell';
-  await updateMerchant(id, {role: next});
+  const cycle = {sell: 'buy', buy: 'shots', shots: 'sell'};
+  await updateMerchant(id, {role: cycle[m.role] || 'sell'});
 }
 
 // Открыть модалку выбора города
@@ -783,8 +809,9 @@ function editSlot(merchantId, slotIndex) {
     role: m.role, city: m.city,
     selectedSlug: existing ? existing.resource_slug : null,
   };
+  const roleLabels = {sell: 'Продаёт', buy: 'Покупает', shots: 'Соски'};
   document.getElementById('slotModalTitle').textContent =
-    `Слот ${slotIndex} · ${m.name} · ${m.role === 'sell' ? 'Продаёт' : 'Покупает'}`;
+    `Слот ${slotIndex} · ${m.name} · ${roleLabels[m.role] || m.role}`;
   document.getElementById('slotResourceSearch').value = '';
   document.getElementById('slotPrice').value = existing && existing.price_per_unit !== null ? existing.price_per_unit : '';
   document.getElementById('slotQty').value = existing && existing.qty !== null ? existing.qty : '';
@@ -871,6 +898,15 @@ async function saveSlot() {
     await loadMerchants();
     render();
   } catch (err) { toast('Сеть недоступна', 'error'); }
+}
+
+function addShotsSlot(merchantId) {
+  const m = findMerchant(merchantId); if (!m) return;
+  const slots = m.slots || [];
+  const filledMax = slots.length ? Math.max(...slots.map(s => s.slot_index)) : 0;
+  const nextSlot = filledMax + 1;
+  if (nextSlot > 5) { toast('Максимум 5 слотов', 'error'); return; }
+  editSlot(merchantId, nextSlot);
 }
 
 async function clearSlot(merchantId, slotIndex) {
