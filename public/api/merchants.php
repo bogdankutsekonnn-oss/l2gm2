@@ -41,7 +41,7 @@ function listMerchants() {
          FROM merchants m
          LEFT JOIN admin_users cu ON cu.id = m.created_by_user_id
          LEFT JOIN admin_users uu ON uu.id = m.updated_by_user_id
-         ORDER BY m.status ASC, m.city ASC, m.name ASC'
+         ORDER BY m.status ASC, FIELD(m.role, "buy", "sell", "shots"), m.city ASC, m.name ASC'
     )->fetchAll();
 
     if (!$merchants) {

@@ -502,12 +502,29 @@ function render() {
     cont.innerHTML = `<div class="empty-state">Никого не нашлось. Нажми <strong>+ Торговец</strong> чтобы добавить первого.</div>`;
     return;
   }
-  const regular = items.filter(m => m.role !== 'shots');
-  const shots   = items.filter(m => m.role === 'shots');
-  let html = regular.map(renderCard).join('');
-  if (shots.length) {
-    html += `<div class="section-divider"><span>🟣 Соски (${shots.length})</span></div>`;
-    html += shots.map(renderCard).join('');
+  items.sort((a, b) => {
+    const ro = {buy: 0, sell: 1, shots: 2};
+    const rd = (ro[a.role] ?? 1) - (ro[b.role] ?? 1);
+    if (rd !== 0) return rd;
+    if (a.city !== b.city) return a.city.localeCompare(b.city);
+    return a.name.localeCompare(b.name);
+  });
+
+  const buyItems  = items.filter(m => m.role === 'buy');
+  const sellItems = items.filter(m => m.role === 'sell');
+  const shotsItems = items.filter(m => m.role === 'shots');
+  let html = '';
+  if (buyItems.length) {
+    html += `<div class="section-divider"><span>🔴 Покупают (${buyItems.length})</span></div>`;
+    html += buyItems.map(renderCard).join('');
+  }
+  if (sellItems.length) {
+    html += `<div class="section-divider"><span>🟢 Продают (${sellItems.length})</span></div>`;
+    html += sellItems.map(renderCard).join('');
+  }
+  if (shotsItems.length) {
+    html += `<div class="section-divider"><span>🟣 Соски (${shotsItems.length})</span></div>`;
+    html += shotsItems.map(renderCard).join('');
   }
   cont.innerHTML = html;
 }
