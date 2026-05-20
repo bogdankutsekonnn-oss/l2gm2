@@ -12,6 +12,10 @@ const blogArticleRoutes = readdirSync(resolve(__dirname, 'content/blog'))
   .filter((f) => f.endsWith('.md'))
   .map((f) => `/blog/${f.replace(/\.md$/, '')}/`)
 
+const newsArticleRoutes = readdirSync(resolve(__dirname, 'content/news'))
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => `/news/${f.replace(/\.md$/, '')}/`)
+
 // Категории блога (статичный список — соответствует composables/useBlogCategories.js)
 const blogCategoryRoutes = ['novosti', 'gajdy', 'obzory', 'stati'].map(
   (slug) => `/blog/${slug}/`,
@@ -194,6 +198,9 @@ export default defineNuxtConfig({
         '/rating/',
         '/sitemap.xml',
         '/robots.txt',
+        '/news/',
+        '/news/rss.xml',
+        ...newsArticleRoutes,
         '/blog/',
         '/blog/rss.xml',
         ...blogArticleRoutes,

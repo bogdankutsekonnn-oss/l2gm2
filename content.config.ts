@@ -22,5 +22,17 @@ export default defineContentConfig({
           .optional(),
       }),
     }),
+    news: defineCollection({
+      type: 'page',
+      source: 'news/**',
+      schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        date: z.string(),
+        slug: z.string(),
+        image: z.string().optional(),
+        videoUrl: z.string().optional(),
+      }),
+    }),
   },
 })

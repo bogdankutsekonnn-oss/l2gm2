@@ -38,6 +38,7 @@
           </NuxtLink>
           <span v-else class="breadcrumbs-current" itemprop="name">
             <LazyBreadcrumbsBlogTitle v-if="crumb.blogSlug" :slug="crumb.blogSlug" />
+            <LazyBreadcrumbsNewsTitle v-else-if="crumb.newsSlug" :slug="crumb.newsSlug" />
             <template v-else>{{ crumb.title }}</template>
           </span>
         </template>
@@ -93,6 +94,7 @@ const staticPages = {
   '/faq/': 'Частые вопросы',
   '/thanks/': 'Спасибо',
   '/blog/': 'Блог',
+  '/news/': 'Новости серверов',
 }
 
 // Важно: queryCollection('blog') тащит ~200KB sqlite3-worker на каждую
@@ -109,6 +111,22 @@ const crumbs = computed(() => {
   const result = [
     { path: '/', title: 'Анонсы серверов Lineage\u00a02', isHome: true },
   ]
+
+  const isNewsSection = normalizedPath.startsWith('/news/')
+
+  if (isNewsSection) {
+    result.push({ path: '/news/', title: 'Новости серверов' })
+
+    if (normalizedPath !== '/news/') {
+      const slug = normalizedPath.replace(/^\/news\//, '').replace(/\/$/, '')
+      result.push({
+        path: normalizedPath,
+        title: '',
+        newsSlug: slug,
+      })
+    }
+    return result
+  }
 
   const isBlogSection = normalizedPath.startsWith('/blog/')
 

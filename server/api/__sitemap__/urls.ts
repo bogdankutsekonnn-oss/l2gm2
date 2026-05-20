@@ -10,12 +10,23 @@ export default defineSitemapEventHandler(async (event) => {
     .order('date', 'DESC')
     .all()
 
+  const newsArticles = await queryCollection(event, 'news')
+    .order('date', 'DESC')
+    .all()
+
   const blogUrls = articles.map((a: any) => ({
     loc: `/blog/${a.slug}/`,
     lastmod: a.date,
     changefreq: 'monthly',
     priority: 0.8,
     _i18nTransform: true,
+  }))
+
+  const newsUrls = newsArticles.map((a: any) => ({
+    loc: `/news/${a.slug}/`,
+    lastmod: a.date,
+    changefreq: 'weekly',
+    priority: 0.8,
   }))
 
   const categoryUrls = BLOG_CATEGORY_SLUGS.map((slug) => ({
@@ -51,6 +62,8 @@ export default defineSitemapEventHandler(async (event) => {
     ...tagUrls,
     ...chronicleUrls,
     ...rateUrls,
+    { loc: '/news/', changefreq: 'daily', priority: 0.9 },
+    ...newsUrls,
     { loc: '/blog/', changefreq: 'daily', priority: 0.9 },
     ...categoryUrls,
     ...blogUrls,
