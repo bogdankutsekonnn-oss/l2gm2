@@ -115,6 +115,7 @@ const {
   getOgImageMeta,
   generateHomeJsonLd,
   generateOrganizationJsonLd,
+  generateSiteNavigationJsonLd,
   generateServerEventsJsonLd,
   generateBreadcrumbJsonLd,
   generateCollectionPageJsonLd,
@@ -175,6 +176,7 @@ const faqJsonLd = generateFaqJsonLd(faqItems)
 // JSON-LD разметка
 const homeJsonLd = generateHomeJsonLd()
 const orgJsonLd = generateOrganizationJsonLd()
+const siteNavJsonLd = generateSiteNavigationJsonLd()
 const eventsJsonLd = generateServerEventsJsonLd(servers.value)
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' }
@@ -213,6 +215,10 @@ useHead({
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(orgJsonLd),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(siteNavJsonLd),
     },
     {
       type: 'application/ld+json',

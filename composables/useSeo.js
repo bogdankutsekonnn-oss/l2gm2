@@ -365,6 +365,28 @@ export const useSeo = () => {
     }
   }
 
+  // JSON-LD SiteNavigationElement — помогает Яндексу/Google формировать быстрые ссылки
+  const generateSiteNavigationJsonLd = () => {
+    const items = [
+      { name: 'Анонсы', url: '/' },
+      { name: 'Новости', url: '/news/' },
+      { name: 'Блог', url: '/blog/' },
+      { name: 'Размещение', url: '/placement/' },
+      { name: 'FAQ', url: '/faq/' },
+      { name: 'О нас', url: '/about/' },
+    ]
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: items.map((item, index) => ({
+        '@type': 'SiteNavigationElement',
+        position: index + 1,
+        name: item.name,
+        url: getCanonicalUrl(item.url),
+      })),
+    }
+  }
+
   // JSON-LD для организации
   const generateOrganizationJsonLd = () => {
     return {
@@ -674,6 +696,7 @@ export const useSeo = () => {
     generateHomeJsonLd,
     generateServerListJsonLd,
     generateOrganizationJsonLd,
+    generateSiteNavigationJsonLd,
     generateServerEventsJsonLd,
     generateImageJsonLd,
     generateBreadcrumbJsonLd,
