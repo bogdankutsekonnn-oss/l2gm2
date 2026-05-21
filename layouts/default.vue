@@ -324,12 +324,9 @@ body {
 }
 
 .banner-wrapper {
-  position: fixed;
-  top: 70px; /* После шапки */
-  left: 0;
+  position: relative;
   width: 100%;
   z-index: 0;
-  pointer-events: none;
 }
 
 .main-content {
@@ -338,21 +335,12 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
-  margin-top: 250px;
+  margin-top: -200px;
   position: relative;
   z-index: 2;
-  pointer-events: none;
-}
-
-.main-content > * {
-  pointer-events: auto;
 }
 
 @media (max-width: 1024px) {
-  .banner-wrapper {
-    top: 57px;
-  }
-
   .main-content {
     padding: 0;
   }

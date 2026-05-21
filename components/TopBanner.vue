@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-const bannerImage = ref('/branding-section.jpg')
+const bannerImage = ref('/images/banner.jpg')
 
 const handleImageError = () => {
   // Если изображение не загрузилось, показываем placeholder
@@ -32,21 +32,12 @@ const handleImageError = () => {
 <style scoped>
 .top-banner {
   display: block;
-  width: 1920px;
-  height: 1080px;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 70px; /* После шапки */
+  width: 100%;
+  height: 600px;
+  position: relative;
   overflow: hidden;
   z-index: 0;
   pointer-events: auto;
-}
-
-@media (max-width: 1024px) {
-  .top-banner {
-    top: 57px;
-  }
 }
 
 .banner-gradient {
