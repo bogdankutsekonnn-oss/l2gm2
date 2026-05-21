@@ -1,0 +1,6 @@
+# Запрещаем прямой доступ к конфигу со секретами и схеме БД.
+# Эндпоинты (auth/list/add/recheck/delete.php) остаются доступны.
+<FilesMatch "(config\.php|schema\.sql)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
