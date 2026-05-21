@@ -26,8 +26,6 @@
           :src="article.image"
           :alt="article.title"
           width="1200"
-          height="630"
-          fit="cover"
           loading="eager"
           format="webp"
           quality="85"
@@ -390,9 +388,10 @@ useHead({
 .article__hero-img {
   width: 100%;
   height: auto;
-  aspect-ratio: 1200 / 630;
-  object-fit: cover;
+  max-height: 70vh;
+  object-fit: contain;
   display: block;
+  margin: 0 auto;
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
