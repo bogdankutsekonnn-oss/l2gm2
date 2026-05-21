@@ -46,6 +46,10 @@
       <div v-if="!user" class="comments__auth">
         <p class="comments__hint">Войдите через Telegram, чтобы оставить комментарий:</p>
         <div ref="widgetContainer" class="comments__tg-widget"></div>
+        <p class="comments__note">
+          Это безопасно: код подтверждения придёт прямо в ваш Telegram. Номер
+          телефона нужен только для входа — мы его не видим и не храним.
+        </p>
         <p v-if="!botName" class="comments__warn">
           Виджет не настроен: укажите имя бота в настройках.
         </p>
@@ -424,6 +428,14 @@ watch(user, (val) => {
   margin: var(--spacing-sm) 0 0;
   color: #ff6b5e;
   font-size: var(--font-sm);
+}
+
+.comments__note {
+  margin: var(--spacing-md) 0 0;
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+  line-height: 1.5;
+  max-width: 460px;
 }
 
 .comments__gate-actions {
