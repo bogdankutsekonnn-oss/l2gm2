@@ -19,3 +19,11 @@ logs
 
 # Nuxt Content cache
 .data
+
+# Секреты бэкендов (токены ботов, доступ к БД) — генерируются при деплое
+public/comments-api/config.php
+public/api/secrets.php
+
+# Локальные файлы Claude Code (личные настройки, рабочие копии)
+.claude/settings.local.json
+.claude/worktrees/

@@ -150,6 +150,8 @@
         <span v-else class="article-nav__placeholder"></span>
       </nav>
 
+      <NewsComments :news-slug="article.slug" />
+
       <div class="article__footer">
         <NuxtLink to="/news/" class="btn-primary article__back">Все новости</NuxtLink>
       </div>

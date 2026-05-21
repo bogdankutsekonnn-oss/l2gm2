@@ -1,16 +1,12 @@
 <?php
-// Конфигурация базы данных
-// Замени значения на свои данные из панели Timeweb
+// Секреты (DB_PASS, ADMIN_TOKEN, TG_BOT_TOKEN) вынесены в secrets.php.
+// Он в .gitignore и генерируется при деплое из GitHub Secrets — в репозиторий не попадает.
+require __DIR__ . '/secrets.php';
+
+// Несекретные параметры
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'damonlaptev_servers');
 define('DB_USER', 'damonlaptev_servers');
-define('DB_PASS', 'aqx45e9n3a');
-
-// Секретный ключ для админки
-define('ADMIN_TOKEN', 'L2gm_Adm1n_2026_xKp9mQ');
-
-// Telegram-бот для уведомлений
-define('TG_BOT_TOKEN', '8604308878:AAG9QTvzAkubijLpneYCmPy2y0wgaKAPGD0');
 define('TG_CHAT_ID', '8847413262');
 
 // CORS — разрешаем запросы с нашего сайта

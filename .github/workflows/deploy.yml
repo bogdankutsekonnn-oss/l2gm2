@@ -17,6 +17,39 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      - name: Generate backend secrets from GitHub Secrets
+        env:
+          DB_PASS: ${{ secrets.DB_PASS }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          ZAYAVKI_BOT_TOKEN: ${{ secrets.ZAYAVKI_BOT_TOKEN }}
+          COMMENTS_BOT_TOKEN: ${{ secrets.COMMENTS_BOT_TOKEN }}
+          COMMENTS_ADMIN_KEY: ${{ secrets.COMMENTS_ADMIN_KEY }}
+        run: |
+          # Секреты для public/api/ (админка + бот заявок)
+          cat > public/api/secrets.php <<PHP
+          <?php
+          define('DB_PASS', '${DB_PASS}');
+          define('ADMIN_TOKEN', '${ADMIN_TOKEN}');
+          define('TG_BOT_TOKEN', '${ZAYAVKI_BOT_TOKEN}');
+          PHP
+
+          # Конфиг для public/comments-api/ (комментарии)
+          cat > public/comments-api/config.php <<PHP
+          <?php
+          return [
+              'db_host' => 'localhost',
+              'db_name' => 'damonlaptev_servers',
+              'db_user' => 'damonlaptev_servers',
+              'db_pass' => '${DB_PASS}',
+              'bot_token' => '${COMMENTS_BOT_TOKEN}',
+              'bot_username' => 'l2gm_comment_bot',
+              'channel' => '@l2gm_official',
+              'admin_key' => '${COMMENTS_ADMIN_KEY}',
+              'allow_origin' => 'https://l2gm.com',
+          ];
+          PHP
+
       - run: npx nuxt generate
 
       - name: Deploy via FTP

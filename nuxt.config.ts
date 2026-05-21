@@ -32,6 +32,14 @@ export default defineNuxtConfig({
     inlineStyles: true,
   },
 
+  // Инлайним payload в HTML вместо отдельных _payload.json.
+  // Иначе префетч NuxtLink в dev пытается грузить /rate/x50/_payload.json и т.п.,
+  // которых в dev-режиме нет — сервер отдаёт HTML и в консоль сыплются
+  // "Cannot load payload ... is not valid JSON". Для статики это безопасно.
+  experimental: {
+    payloadExtraction: false,
+  },
+
   // Отключаем CSS code-splitting: иначе Nuxt 3.21 создаёт отдельные файлы
   // (FiltersPanel.css, ServerCard.css ...) и inlineStyles их не инлайнит.
   // С cssCodeSplit:false весь scoped CSS собирается в один entry.css,
@@ -258,6 +266,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: 'https://l2gm.com',
+      // Комментарии в новостях (Telegram-логин + гейт подписки)
+      commentsApi: '/comments-api',
+      tgChannel: 'l2gm_official',
+      // Имя бота-комментатора без @ (создать через @BotFather,
+      // сделать админом канала). Пока пусто — виджет логина не показывается.
+      tgBotName: 'l2gm_comment_bot',
     },
   },
 })
