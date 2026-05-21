@@ -45,7 +45,7 @@ export const useSeo = () => {
       return `Сервера Л2 ${getChronicleTitleFull(chronicle)} ${rateName} — анонсы 2026 | L2GM`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Сервера Lineage 2 ${getChronicleTitleFull(chronicle)} — анонсы Л2 | L2GM`
+      return chronicle?.title || `Сервера Lineage 2 ${getChronicleTitleFull(chronicle)} — анонсы Л2 | L2GM`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
@@ -62,7 +62,7 @@ export const useSeo = () => {
       return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName}`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
-      return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)}`
+      return chronicle?.h1 || `Сервера Lineage 2 ${getChronicleSeoName(chronicle)}`
     } else if (filters.rate) {
       const rate = ratesData.find(r => r.slug === filters.rate)
       const rateName = rate?.name || filters.rate
@@ -80,6 +80,7 @@ export const useSeo = () => {
       return `Сервера Lineage 2 ${getChronicleSeoName(chronicle)} ${rateName} 2026 — анонсы и даты открытия. Список новых Л2${ru ? ' ' + ru : ''} ${rateName} с описанием и онлайном на L2GM!`
     } else if (filters.chronicle) {
       const chronicle = chroniclesData.find(c => c.slug === filters.chronicle)
+      if (chronicle?.description) return chronicle.description
       const ru = getChronicleSeoNameRu(chronicle)
       return `Новые сервера Lineage 2 ${getChronicleSeoName(chronicle)} с рейтами x1, x10, x50, x100, x1200. Анонсы Л2${ru ? ' ' + ru : ''} — PvP, Craft, Low Rate. Даты открытия на L2GM!`
     } else if (filters.rate) {
@@ -200,6 +201,11 @@ export const useSeo = () => {
     const rate = filters.rate ? ratesData.find(r => r.slug === filters.rate) : null
     const rateName = rate?.name || filters.rate
     const rateType = getRateType(filters.rate)
+
+    // Уникальный лонгрид для лендинга хроники (без рейта)
+    if (chronicle && !filters.rate && chronicle.seoText) {
+      return chronicle.seoText
+    }
 
     // Вступительный абзац
     if (chronicle && rate) {
@@ -580,6 +586,11 @@ export const useSeo = () => {
     const rateType = getRateType(filters.rate)
     const rateInfo = rateType ? rateRangeDescriptions[rateType] : null
     const chronicleDesc = chronicle ? (chronicleFaqDescriptions[chronicle.slug] || '') : ''
+
+    // Уникальные FAQ для лендинга хроники (без рейта)
+    if (chronicle && !filters.rate && Array.isArray(chronicle.faq) && chronicle.faq.length) {
+      return chronicle.faq
+    }
 
     if (chronicle && rate) {
       // Combo: chronicle + rate
