@@ -125,7 +125,7 @@ const tags = [
   { name: 'Завтра', url: '/tomorrow/' },
   { name: 'На неделе', url: '/this-week/' },
   { name: 'Новые', url: '/new/' },
-  { name: 'Топ серверов', url: '/l2top/' },
+  { name: 'Топ серверов', url: '/top/' },
   { name: 'PvP сервера', url: '/pvp/' },
   { name: 'GVE', url: '/gve/' },
   { name: 'Зарубежный', url: '/foreign/' },

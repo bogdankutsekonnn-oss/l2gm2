@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# 301: legacy tag slug /l2top/ → /top/ (renamed for SEO intent match)
+RewriteRule ^l2top/?$ https://%{HTTP_HOST}/top/ [R=301,L]
+
 # Trailing slash — redirect explicitly to https://host/path/
 # Using absolute URL prevents Apache from dropping the scheme in Location.
 # Skip files with extensions (images, scripts, styles, fonts, etc.)

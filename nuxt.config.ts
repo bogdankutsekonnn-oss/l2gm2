@@ -223,7 +223,7 @@ export default defineNuxtConfig({
         '/tomorrow/',
         '/this-week/',
         '/new/',
-        '/l2top/',
+        '/top/',
         '/pvp/',
         '/gve/',
         '/foreign/',
