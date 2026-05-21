@@ -1,6 +1,6 @@
 ---
-title: 'Что произошло со Scryde X — разбор пути проекта и роли Essence'
-description: 'Vanya Balaklava выпустил ролик о судьбе Scryde X. Разбираем основные идеи видео, влияние Essence-механик и то, с какими вызовами сталкиваются современные Lineage 2 серверы.'
+title: 'Что произошло со Scryde X (Скрайд) — разбор сервера и роли Essence в Lineage 2'
+description: 'Vanya Balaklava выпустил ролик о судьбе сервера Scryde X (Скрайд). Разбираем основные идеи видео, влияние Essence-механик и то, с какими вызовами сталкиваются современные серверы Lineage 2 (л2).'
 date: 2026-05-20
 slug: 'pochemu-umer-scryde-x-razbor-essence'
 image: '/images/news/scryde-x.jpg'

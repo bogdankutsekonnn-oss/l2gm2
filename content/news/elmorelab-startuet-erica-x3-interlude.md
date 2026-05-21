@@ -1,6 +1,6 @@
 ---
-title: 'ElmoreLab открывает новый Interlude-сервер Erica x3'
-description: 'ElmoreLab запускает новый сервер Erica x3 на хронике Interlude. Старт 22 мая 2026 в 19:00 GMT+2. Rates x3, No P2W, offline shop и поэтапная система прогрессии — разбираем параметры.'
+title: 'Erica x3 от ElmoreLab — новый Interlude-сервер Lineage 2 (старт 22 мая)'
+description: 'ElmoreLab запускает новый сервер Lineage 2 (л2) Erica x3 на хронике Interlude. Старт 22 мая 2026 в 19:00 GMT+2. Rates x3, No P2W, offline shop и поэтапная система прогрессии — разбираем параметры.'
 date: 2026-05-21
 slug: 'elmorelab-startuet-erica-x3-interlude'
 image: '/images/news/ericax3.jpg'

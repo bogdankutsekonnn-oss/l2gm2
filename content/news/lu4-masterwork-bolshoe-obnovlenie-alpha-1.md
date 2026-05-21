@@ -1,6 +1,6 @@
 ---
-title: 'Lu4 от MasterWork готовит большое обновление: кап 75, сабы и Альфа-1'
-description: 'Сервер Lu4 от MasterWork анонсировал крупное обновление: кап уровня 75, саб-классы и саб-скиллы, новый класс, переработанный Аден и переход на Unreal Engine 5. Разбираем, что известно.'
+title: 'Lu4 Lineage 2 от MasterWork: большое обновление — кап 75, сабы и Альфа-1'
+description: 'Сервер Lu4 (Lineage 2) от MasterWork анонсировал крупное обновление: кап уровня 75, саб-классы и саб-скиллы, новый класс, переработанный Аден и переход на Unreal Engine 5. Разбираем, что известно.'
 date: 2026-05-21
 slug: 'lu4-masterwork-bolshoe-obnovlenie-alpha-1'
 image: '/images/news/lu4_update.jpg'
