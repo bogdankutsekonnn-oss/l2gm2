@@ -1275,5 +1275,35 @@
     "createdAt": "2026-05-11",
     "expiresAt": null,
     "category": "gve"
+  },
+  {
+    "id": 327,
+    "name": "EmeraldX",
+    "url": "https://emeraldx.zapto.org",
+    "chronicle": "High Five+",
+    "rate": 300,
+    "startDate": "2026-05-26",
+    "cardType": "basic",
+    "icons": ["obt"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-05-28",
+    "expiresAt": null
+  },
+  {
+    "id": 328,
+    "name": "L2FS",
+    "url": "https://www.fazavserver.com/",
+    "chronicle": "Interlude",
+    "rate": 1200,
+    "startDate": "2026-06-01",
+    "cardType": "basic",
+    "icons": ["hot-start"],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-05-28",
+    "expiresAt": null
   }
 ]
