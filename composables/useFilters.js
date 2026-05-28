@@ -28,12 +28,12 @@ export const useFilters = () => {
   }
 
   const getServers = (filters = {}) => {
-    // Объединяем серверы из JSON и API (дедупликация по URL — API приоритетнее)
+    // Объединяем серверы из JSON и API (дедупликация по URL — JSON приоритетнее)
     const source = (() => {
       if (!apiServers.value) return serversJson
-      const apiUrls = new Set(apiServers.value.map(s => s.url))
-      const jsonOnly = serversJson.filter(s => !apiUrls.has(s.url))
-      return [...jsonOnly, ...apiServers.value]
+      const jsonUrls = new Set(serversJson.map(s => s.url))
+      const apiOnly = apiServers.value.filter(s => !jsonUrls.has(s.url))
+      return [...serversJson, ...apiOnly]
     })()
 
     // Не показываем серверы, которые открылись больше 30 дней назад
