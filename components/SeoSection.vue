@@ -4,7 +4,12 @@
     <div class="seo-text">
       <template v-for="(block, index) in blocks" :key="index">
         <h3 v-if="block.type === 'h3'" class="seo-subheading">{{ block.text }}</h3>
-        <p v-else>{{ block.text }}</p>
+        <p v-else>
+          <template v-for="(seg, segIndex) in block.segments" :key="segIndex">
+            <NuxtLink v-if="seg.type === 'link'" :to="seg.href" class="seo-inline-link">{{ seg.text }}</NuxtLink>
+            <template v-else>{{ seg.text }}</template>
+          </template>
+        </p>
       </template>
     </div>
     <div v-if="links?.length" class="seo-links">
@@ -47,6 +52,25 @@ const props = defineProps({
   },
 })
 
+const LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g
+
+function parseInline(text) {
+  const segments = []
+  let lastIndex = 0
+  let match
+  while ((match = LINK_RE.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ type: 'text', text: text.slice(lastIndex, match.index) })
+    }
+    segments.push({ type: 'link', text: match[1], href: match[2] })
+    lastIndex = match.index + match[0].length
+  }
+  if (lastIndex < text.length) {
+    segments.push({ type: 'text', text: text.slice(lastIndex) })
+  }
+  return segments.length ? segments : [{ type: 'text', text }]
+}
+
 const blocks = computed(() =>
   props.text
     .split('\n\n')
@@ -55,7 +79,7 @@ const blocks = computed(() =>
     .map((chunk) =>
       chunk.startsWith('## ')
         ? { type: 'h3', text: chunk.slice(3).trim() }
-        : { type: 'p', text: chunk }
+        : { type: 'p', segments: parseInline(chunk) }
     )
 )
 </script>
@@ -72,6 +96,17 @@ const blocks = computed(() =>
 .seo-text > p + .seo-subheading,
 .seo-text > .seo-subheading + p {
   margin-top: var(--spacing-md);
+}
+
+.seo-inline-link {
+  color: var(--primary-main);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.seo-inline-link:hover {
+  color: var(--primary-hover, var(--primary-main));
+  text-decoration: underline;
 }
 
 .seo-links {
