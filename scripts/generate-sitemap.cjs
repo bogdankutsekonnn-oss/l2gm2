@@ -4,7 +4,7 @@ const path = require('path')
 
 const SITE_URL = 'https://l2gm.com'
 
-const chronicles = ['c4', 'interlude', 'interlude-plus', 'classic', 'high-five-plus', 'high-five', 'epilogue', 'essence', 'crusade']
+const chronicles = require('../data/chronicles.json').map(c => c.slug)
 const rates = ['x1', 'x3', 'x7', 'x10', 'x20', 'x50', 'x100', 'x500', 'x1200', 'x10000', 'x50000', 'x100000']
 const tags = ['today', 'top', 'pvp', 'gve', 'foreign', 'low-rate', 'mid-rate', 'multicraft', 'multiprof']
 
