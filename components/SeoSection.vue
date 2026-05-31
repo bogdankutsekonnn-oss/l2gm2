@@ -2,9 +2,10 @@
   <div class="seo-section">
     <h2>{{ title }}</h2>
     <div class="seo-text">
-      <p v-for="(paragraph, index) in paragraphs" :key="index">
-        {{ paragraph }}
-      </p>
+      <template v-for="(block, index) in blocks" :key="index">
+        <h3 v-if="block.type === 'h3'" class="seo-subheading">{{ block.text }}</h3>
+        <p v-else>{{ block.text }}</p>
+      </template>
     </div>
     <div v-if="links?.length" class="seo-links">
       <NuxtLink v-for="link in links" :key="link.to" :to="link.to" class="seo-links__item">
@@ -46,12 +47,33 @@ const props = defineProps({
   },
 })
 
-const paragraphs = computed(() =>
-  props.text.split('\n\n').filter((p) => p.trim())
+const blocks = computed(() =>
+  props.text
+    .split('\n\n')
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .map((chunk) =>
+      chunk.startsWith('## ')
+        ? { type: 'h3', text: chunk.slice(3).trim() }
+        : { type: 'p', text: chunk }
+    )
 )
 </script>
 
 <style scoped>
+.seo-subheading {
+  font-size: var(--font-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.seo-text > p + .seo-subheading,
+.seo-text > .seo-subheading + p {
+  margin-top: var(--spacing-md);
+}
+
 .seo-links {
   display: flex;
   flex-wrap: wrap;
