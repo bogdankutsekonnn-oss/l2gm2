@@ -637,9 +637,7 @@
     "rate": 300,
     "startDate": "2026-05-26",
     "cardType": "basic",
-    "icons": [
-      "obt"
-    ],
+    "icons": ["obt"],
     "avatarUrl": null,
     "ownerId": null,
     "description": null,
@@ -664,7 +662,7 @@
   {
     "id": 312,
     "name": "SCRYDE X",
-    "url": "https://scryde.com",
+    "url": "https://ru.scryde.game/",
     "chronicle": "High Five",
     "rate": 1,
     "startDate": "2026-05-29",
@@ -745,9 +743,7 @@
     "rate": 1200,
     "startDate": "2026-06-01",
     "cardType": "basic",
-    "icons": [
-      "hot-start"
-    ],
+    "icons": ["hot-start"],
     "avatarUrl": null,
     "ownerId": null,
     "description": null,
@@ -983,7 +979,7 @@
   {
     "id": 330,
     "name": "SCRYDE",
-    "url": "https://scryde.com",
+    "url": "https://ru.scryde.game/",
     "chronicle": "High Five",
     "rate": 100,
     "startDate": "2026-06-19",
@@ -1043,7 +1039,7 @@
   {
     "id": 339,
     "name": "SCRYDE X",
-    "url": "https://scrd.link/projectx",
+    "url": "https://ru.scryde.game/",
     "chronicle": "High Five",
     "rate": 1,
     "startDate": "2026-06-26",
