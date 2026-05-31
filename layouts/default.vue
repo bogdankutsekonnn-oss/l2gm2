@@ -9,6 +9,9 @@
     </main>
     <AppFooter />
     <CookieBanner />
+    <noscript>
+      <div><img src="https://mc.yandex.ru/watch/109541411" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
   </div>
 </template>
 

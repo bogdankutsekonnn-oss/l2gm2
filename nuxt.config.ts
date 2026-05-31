@@ -23,7 +23,7 @@ const blogCategoryRoutes = ['novosti', 'gajdy', 'obzory', 'stati'].map(
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxtjs/sitemap', '@nuxt/image', '@nuxt/content'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/robots', '@nuxtjs/sitemap', '@nuxt/image', '@nuxt/content', '@nuxt/scripts'],
 
   // Инлайн CSS компонентов в HTML — устраняет render-blocking CSS-запросы
   // (Lighthouse показывал ~150мс задержки LCP из-за внешних FiltersPanel.css,
