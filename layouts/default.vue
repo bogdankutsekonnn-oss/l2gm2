@@ -343,6 +343,12 @@ body {
 @media (max-width: 1024px) {
   .main-content {
     padding: 0;
+    margin-top: 0;
+    padding-top: 64px;
+  }
+
+  .banner-wrapper {
+    display: none;
   }
 }
 </style>
