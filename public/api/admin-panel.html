@@ -105,7 +105,7 @@
   <div class="dash-header">
     <h1>L2GM Admin Panel</h1>
     <div class="dash-actions">
-      <button class="btn-add-test" onclick="addTestServer()">+ Тестовая заявка</button>
+      <button class="btn-add-test" onclick="openAdd()">+ Добавить сервер</button>
       <button class="btn-logout" onclick="logout()">Выйти</button>
     </div>
   </div>
@@ -161,6 +161,66 @@
       <tbody id="statsBody"></tbody>
     </table>
     <div class="empty" id="statsEmpty" style="display:none">Нет данных</div>
+  </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>Добавить сервер</h2>
+
+    <label>Название *</label>
+    <input type="text" id="addName" placeholder="L2 Example">
+
+    <label>URL *</label>
+    <input type="url" id="addUrl" placeholder="https://example.com">
+
+    <label>Хроника *</label>
+    <input type="text" id="addChronicle" placeholder="Interlude / High Five / Essence ...">
+
+    <label>Рейт (число, опционально)</label>
+    <input type="number" id="addRate" placeholder="100">
+
+    <label>Категория (если без рейта)</label>
+    <input type="text" id="addCategory" placeholder="LowRate / MidRate / HighRate">
+
+    <label>Дата старта *</label>
+    <input type="date" id="addStartDate">
+
+    <label>Тип карточки</label>
+    <select id="addCardType">
+      <option value="basic">Обычная</option>
+      <option value="top">Стандартный VIP</option>
+      <option value="vip">VIP</option>
+      <option value="vip-plus">VIP+</option>
+      <option value="premium">Premium</option>
+    </select>
+
+    <label>Дата истечения (для платных)</label>
+    <input type="date" id="addExpiresAt">
+
+    <label>Типы сервера (через запятую: pvp, craft, x100 ...)</label>
+    <input type="text" id="addServerTypes" placeholder="pvp, craft">
+
+    <label>Иконки (через запятую, опционально)</label>
+    <input type="text" id="addIcons" placeholder="">
+
+    <label>Email</label>
+    <input type="email" id="addEmail">
+
+    <label>Контакты (Telegram / Discord)</label>
+    <input type="text" id="addContacts" placeholder="@admin">
+
+    <label>Статус публикации</label>
+    <select id="addStatus">
+      <option value="approved">Опубликовать сразу</option>
+      <option value="pending">На модерацию</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Отмена</button>
+      <button class="btn-save" onclick="saveAdd()">Создать</button>
+    </div>
   </div>
 </div>
 
@@ -350,43 +410,91 @@ async function deleteServer(id) {
   renderServers();
 }
 
-// Тестовая заявка
-async function addTestServer() {
-  const testData = {
-    name: 'TEST-SERVER',
-    url: 'https://test-server.com',
-    chronicle: 'Interlude',
-    rate: 100,
-    category: null,
-    startDate: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
-    cardType: 'basic',
-    icons: [],
-    serverTypes: ['pvp'],
-    email: 'test@test.com',
-    contacts: '@test_admin',
-    expiresAt: null,
+function openAdd() {
+  document.getElementById('addName').value = '';
+  document.getElementById('addUrl').value = '';
+  document.getElementById('addChronicle').value = '';
+  document.getElementById('addRate').value = '';
+  document.getElementById('addCategory').value = '';
+  document.getElementById('addStartDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('addCardType').value = 'basic';
+  document.getElementById('addExpiresAt').value = '';
+  document.getElementById('addServerTypes').value = '';
+  document.getElementById('addIcons').value = '';
+  document.getElementById('addEmail').value = '';
+  document.getElementById('addContacts').value = '';
+  document.getElementById('addStatus').value = 'approved';
+  document.getElementById('addModal').classList.add('active');
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('active');
+}
+
+function parseList(s) {
+  return (s || '').split(',').map(x => x.trim()).filter(Boolean);
+}
+
+async function saveAdd() {
+  const name = document.getElementById('addName').value.trim();
+  const url = document.getElementById('addUrl').value.trim();
+  const chronicle = document.getElementById('addChronicle').value.trim();
+  const startDate = document.getElementById('addStartDate').value;
+
+  if (!name || !url || !chronicle || !startDate) {
+    alert('Заполните обязательные поля: Название, URL, Хроника, Дата старта');
+    return;
+  }
+
+  const rateRaw = document.getElementById('addRate').value;
+  const data = {
+    name,
+    url,
+    chronicle,
+    rate: rateRaw ? parseInt(rateRaw) : null,
+    category: document.getElementById('addCategory').value.trim() || null,
+    startDate,
+    cardType: document.getElementById('addCardType').value,
+    icons: parseList(document.getElementById('addIcons').value),
+    serverTypes: parseList(document.getElementById('addServerTypes').value),
+    email: document.getElementById('addEmail').value.trim() || null,
+    contacts: document.getElementById('addContacts').value.trim() || null,
+    expiresAt: document.getElementById('addExpiresAt').value || null,
   };
+
+  const desiredStatus = document.getElementById('addStatus').value;
 
   try {
     const res = await fetch(`${API_BASE}/servers.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(testData),
+      body: JSON.stringify(data),
     });
     const result = await res.json();
 
-    if (result.success) {
-      // Добавляем в локальный список
-      testData.id = result.id;
-      testData.status = 'pending';
-      testData.createdAt = new Date().toISOString();
-      allServers.unshift(testData);
-      switchTab('pending');
-      updateCounts();
-      renderServers();
-    } else {
+    if (!result.success) {
       alert('Ошибка: ' + (result.error || 'Unknown'));
+      return;
     }
+
+    // Сервер создан со статусом pending. Если нужно сразу опубликовать — апрувим.
+    if (desiredStatus === 'approved') {
+      await apiAction('approve', result.id);
+    }
+
+    // Добавляем в локальный список
+    const local = {
+      ...data,
+      id: result.id,
+      status: desiredStatus,
+      createdAt: new Date().toISOString(),
+    };
+    allServers.unshift(local);
+
+    closeAddModal();
+    switchTab(desiredStatus);
+    updateCounts();
+    renderServers();
   } catch (e) {
     alert('Ошибка подключения к API');
   }
