@@ -65,7 +65,7 @@
 
           <!-- Социальные иконки -->
           <div class="footer-social">
-            <a href="https://t.me/l2gm_official" target="_blank" class="social-link" aria-label="Telegram канал L2GM">
+            <a href="https://t.me/L2gmcom" target="_blank" class="social-link" aria-label="Написать в Telegram">
               <img src="/images/social/telegram.svg" alt="Telegram" width="40" height="40" />
             </a>
             <a href="mailto:info@l2gm.com" class="social-link" aria-label="Email">

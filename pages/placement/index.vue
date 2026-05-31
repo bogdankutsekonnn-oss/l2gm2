@@ -34,7 +34,7 @@
             </div>
 
             <div class="placement-block__actions">
-              <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
+              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
                 Разместить баннер
               </a>
               <a href="https://www.figma.com/design/C0uIARQHjOlMubE0cNsoMv/template_banner_l2gm?node-id=1-28&t=UfngLCteYrS7wOkh-1" target="_blank" rel="noopener" class="btn-secondary">
@@ -89,7 +89,7 @@
             </div>
 
             <div class="placement-block__actions">
-              <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
+              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
                 Разместить баннер
               </a>
             </div>
@@ -123,7 +123,7 @@
             <p class="placement-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
 
             <div class="placement-block__actions">
-              <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
+              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
             </div>
@@ -151,7 +151,7 @@
             <p class="placement-block__description">VIP сервера получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
 
             <div class="placement-block__actions">
-              <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
+              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
             </div>
@@ -182,7 +182,7 @@
             </ul>
 
             <div class="placement-block__actions">
-              <a href="https://t.me/l2gm" target="_blank" rel="noopener" class="btn-primary">
+              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
                 Разместить сервер
               </a>
             </div>
