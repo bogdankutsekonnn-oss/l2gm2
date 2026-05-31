@@ -237,20 +237,14 @@ const crumbs = computed(() => {
 }
 
 .breadcrumbs-list {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
   list-style: none;
   padding: 0;
   margin: 0;
+  line-height: 1.6;
 }
 
 .breadcrumbs-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  white-space: nowrap;
+  display: inline;
 }
 
 .breadcrumbs-link {
@@ -268,6 +262,7 @@ const crumbs = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  vertical-align: middle;
 }
 
 .breadcrumbs-icon {
@@ -278,11 +273,13 @@ const crumbs = computed(() => {
 .breadcrumbs-separator {
   color: var(--text-secondary);
   font-size: var(--font-base);
+  margin: 0 6px;
 }
 
 .breadcrumbs-current {
   color: var(--text-primary);
   font-size: var(--font-base);
+  overflow-wrap: anywhere;
 }
 
 .sr-only {
