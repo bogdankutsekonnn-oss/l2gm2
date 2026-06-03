@@ -3,38 +3,36 @@ import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
 import { isPlacementExpired } from '~/utils/dateUtils'
 
-// Глобальный кэш серверов из API
-const apiServers = ref(null)
-const apiLoaded = ref(false)
-
-// Загрузка серверов из API (один раз)
-async function fetchApiServers() {
-  if (apiLoaded.value) return
-  apiLoaded.value = true
-  try {
-    const data = await $fetch('/api/servers.php', { timeout: 3000 })
-    if (Array.isArray(data) && data.length > 0) {
-      apiServers.value = data
-    }
-  } catch {
-    // API недоступен — используем JSON fallback
-  }
-}
+// Production-URL для админ-API. На билде в GitHub Actions (nuxt generate) фетч
+// идёт по этому адресу, результат запекается в HTML — это даёт SEO для серверов,
+// добавленных через админку. На клиенте payload поднимается из гидрации.
+const ADMIN_API_URL = 'https://l2gm.com/api/servers.php'
 
 export const useFilters = () => {
-  // Запускаем загрузку из API на клиенте
-  if (import.meta.client && !apiLoaded.value) {
-    fetchApiServers()
-  }
+  // useAsyncData с уникальным ключом — дедуплицирует фетч между компонентами
+  // и переносит данные через payload SSG → клиент (без повторного запроса).
+  // id-ам префикс `api_`, чтобы не пересекались с числовыми id из servers.json.
+  const { data: apiServers } = useAsyncData(
+    'admin-servers',
+    async () => {
+      try {
+        const data = await $fetch(ADMIN_API_URL, { timeout: 5000 })
+        if (!Array.isArray(data) || data.length === 0) return null
+        return data.map(s => ({ ...s, id: `api_${s.id}` }))
+      } catch {
+        return null
+      }
+    },
+    { default: () => null },
+  )
 
   const getServers = (filters = {}) => {
-    // Объединяем серверы из JSON и API (дедупликация по URL — JSON приоритетнее)
-    const source = (() => {
-      if (!apiServers.value) return serversJson
-      const jsonUrls = new Set(serversJson.map(s => s.url))
-      const apiOnly = apiServers.value.filter(s => !jsonUrls.has(s.url))
-      return [...serversJson, ...apiOnly]
-    })()
+    // id-пространства не пересекаются (API префиксованы), поэтому простая
+    // конкатенация без дедупа. Один сервер может присутствовать несколькими
+    // карточками — это норма (разные миры/рейты/даты на одном сайте).
+    const source = apiServers.value
+      ? [...serversJson, ...apiServers.value]
+      : serversJson
 
     // Не показываем серверы, которые открылись больше 30 дней назад
     const today = new Date()
