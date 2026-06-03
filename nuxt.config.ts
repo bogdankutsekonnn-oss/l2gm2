@@ -232,6 +232,7 @@ export default defineNuxtConfig({
         '/multicraft/',
         '/multiprof/',
         // Chronicles
+        '/chronicle/c1/',
         '/chronicle/c4/',
         '/chronicle/interlude/',
         '/chronicle/interlude-plus/',
@@ -255,7 +256,7 @@ export default defineNuxtConfig({
         '/rate/x50000/',
         '/rate/x100000/',
         // Chronicle + Rate combinations
-        ...['c4', 'interlude', 'interlude-plus', 'classic', 'high-five-plus', 'high-five', 'epilogue', 'essence', 'crusade']
+        ...['c1', 'c4', 'interlude', 'interlude-plus', 'classic', 'high-five-plus', 'high-five', 'epilogue', 'essence', 'crusade']
           .flatMap(c => ['x1', 'x3', 'x7', 'x10', 'x20', 'x50', 'x100', 'x500', 'x1200', 'x10000', 'x50000', 'x100000']
             .map(r => `/chronicle/${c}/rate/${r}/`)),
       ],

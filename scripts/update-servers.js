@@ -14,6 +14,7 @@ function normalizeChronicle(chr) {
   if (!chr) return null
   const lower = chr.toLowerCase().trim()
   const map = {
+    'c1': 'C1',
     'c4': 'C4',
     'interlude': 'Interlude',
     'interlude+': 'Interlude+',
