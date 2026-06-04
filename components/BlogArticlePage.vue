@@ -45,6 +45,13 @@
           >
             {{ formatDate(article.date) }}
           </time>
+          <time
+            v-if="article.updated && article.updated !== article.date"
+            class="article__updated"
+            :datetime="article.updated"
+          >
+            · обновлено {{ formatDate(article.updated) }}
+          </time>
           <span class="article__reading-time" :aria-label="`Время чтения ${readingTime} минут`">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
@@ -69,7 +76,7 @@
         />
       </figure>
 
-      <meta itemprop="dateModified" :content="article.date" />
+      <meta itemprop="dateModified" :content="article.updated || article.date" />
       <meta itemprop="description" :content="article.description" />
       <meta itemprop="image" :content="fullImageUrl" />
       <meta itemprop="inLanguage" content="ru-RU" />
@@ -469,7 +476,7 @@ const articleJsonLd = computed(() => ({
   description: article.value.description,
   image: [fullImageUrl.value],
   datePublished: article.value.date,
-  dateModified: article.value.date,
+  dateModified: article.value.updated || article.value.date,
   articleSection: article.value.category,
   inLanguage: 'ru-RU',
   wordCount: wordCount.value,
@@ -707,6 +714,12 @@ a.article__category:hover {
 .article__date {
   font-size: var(--font-sm);
   color: var(--text-disabled);
+}
+
+.article__updated {
+  font-size: var(--font-sm);
+  color: var(--text-disabled);
+  font-style: italic;
 }
 
 .article__reading-time {

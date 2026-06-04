@@ -2,6 +2,7 @@
 title: 'Lu4 Lineage 2 от MasterWork: Первая Альфа на UE5 — кап 75, сабы и A-grade (12 июня)'
 description: 'Сервер Lu4 (Lineage 2) от MasterWork и E-Global выпускает Первую Альфу на Unreal Engine 5 12 июня: кап уровня 75, саб-классы с 20 lvl, A-grade, новые локации и переработанный Cemetery. Разбираем обновление.'
 date: 2026-05-21
+updated: 2026-06-04
 slug: 'lu4-masterwork-bolshoe-obnovlenie-alpha-1'
 image: '/images/news/lu4_update.jpg'
 ---

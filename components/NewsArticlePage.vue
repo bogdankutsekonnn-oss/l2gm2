@@ -17,6 +17,13 @@
           >
             {{ formatDate(article.date) }}
           </time>
+          <time
+            v-if="article.updated && article.updated !== article.date"
+            class="article__updated"
+            :datetime="article.updated"
+          >
+            · обновлено {{ formatDate(article.updated) }}
+          </time>
         </div>
         <h1 itemprop="headline">{{ article.title }}</h1>
       </div>
@@ -34,7 +41,7 @@
         />
       </figure>
 
-      <meta itemprop="dateModified" :content="article.date" />
+      <meta itemprop="dateModified" :content="article.updated || article.date" />
       <meta itemprop="description" :content="article.description" />
       <meta itemprop="image" :content="fullImageUrl" />
       <meta itemprop="inLanguage" content="ru-RU" />
@@ -265,7 +272,7 @@ const articleJsonLd = computed(() => ({
   description: article.value.description,
   image: [fullImageUrl.value],
   datePublished: article.value.date,
-  dateModified: article.value.date,
+  dateModified: article.value.updated || article.value.date,
   inLanguage: 'ru-RU',
   mainEntityOfPage: {
     '@type': 'WebPage',
@@ -377,6 +384,12 @@ useHead({
 .article__date {
   font-size: var(--font-sm);
   color: var(--text-disabled);
+}
+
+.article__updated {
+  font-size: var(--font-sm);
+  color: var(--text-disabled);
+  font-style: italic;
 }
 
 .article__hero {

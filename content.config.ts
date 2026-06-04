@@ -11,6 +11,7 @@ export default defineContentConfig({
         category: z.string(),
         image: z.string(),
         date: z.string(),
+        updated: z.string().optional(),
         slug: z.string(),
         faq: z
           .array(
@@ -29,6 +30,7 @@ export default defineContentConfig({
         title: z.string(),
         description: z.string(),
         date: z.string(),
+        updated: z.string().optional(),
         slug: z.string(),
         image: z.string().optional(),
         videoUrl: z.string().optional(),

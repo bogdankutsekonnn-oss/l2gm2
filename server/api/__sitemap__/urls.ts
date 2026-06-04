@@ -16,7 +16,7 @@ export default defineSitemapEventHandler(async (event) => {
 
   const blogUrls = articles.map((a: any) => ({
     loc: `/blog/${a.slug}/`,
-    lastmod: a.date,
+    lastmod: a.updated || a.date,
     changefreq: 'monthly',
     priority: 0.8,
     _i18nTransform: true,
@@ -24,7 +24,7 @@ export default defineSitemapEventHandler(async (event) => {
 
   const newsUrls = newsArticles.map((a: any) => ({
     loc: `/news/${a.slug}/`,
-    lastmod: a.date,
+    lastmod: a.updated || a.date,
     changefreq: 'weekly',
     priority: 0.8,
   }))
