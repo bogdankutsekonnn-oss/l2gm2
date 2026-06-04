@@ -427,6 +427,15 @@ useHead({
   font-size: var(--font-base);
 }
 
+.article__content :deep(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: var(--spacing-lg) auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 .article__content :deep(h2) {
   font-size: var(--font-h2);
   font-weight: var(--font-bold);

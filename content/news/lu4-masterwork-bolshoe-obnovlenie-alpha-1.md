@@ -133,6 +133,32 @@ images:
 - **Silent Valley** [G] — 75
 - **Lair of Antharas** [G] — 60–68
 
+## Пещера Гигантов: новые элитные мобы x6–x8
+
+Отдельная история — **Giant's Cave (Пещера Гигантов)** в землях Адена. На свежем апдейте сюда завезли элитных монстров ранга **x6–x8** — это сильные мобы с повышенным дропом, ради которых имеет смысл собирать группу.
+
+::image-slider
+---
+images:
+  - src: /images/news/lu4-masterwork-bolshoe-obnovlenie-alpha-1/gigant1.jpg
+  - src: /images/news/lu4-masterwork-bolshoe-obnovlenie-alpha-1/gigant2.jpg
+  - src: /images/news/lu4-masterwork-bolshoe-obnovlenie-alpha-1/gigant3.jpg
+  - src: /images/news/lu4-masterwork-bolshoe-obnovlenie-alpha-1/gigant4.jpg
+  - src: /images/news/lu4-masterwork-bolshoe-obnovlenie-alpha-1/gigant5.jpg
+---
+::
+
+Состав новых гигантов:
+
+- **Giant Stonebreaker** — 70 lvl
+- **Giant Huntsman** — 69 lvl
+- **Giant Runecaster** — 68 lvl
+- **Giant Warden** — 67 lvl
+- **Giant Remnant** — 67 lvl
+- **Giant Overseer** — 70 lvl
+
+С учётом капа 75 и переработанного дропа A-grade с мобов 66+, это превращает Giant's Cave из «локации мимо» в одну из ключевых точек фарма для групп на топ-уровне.
+
 ## Система Сокровищ: сундуки и ключи
 
 Отдельная новинка обновления — **Система Сокровищ**. Идея в том, чтобы разбавить рутинный фарм мобов и дать миру развитие «в ширину»: дополнительный контент помимо привычного PvE и нескольких PvP-активностей. Это не отдельный режим, не ивент и не дейлик — сундуки встречаются прямо во время игры: фармишь локацию или бежишь из Гирана в Аден — и по пути можешь наткнуться на сундук, открыть его и забрать награду. Повод выйти за пределы города и осмотреться по сторонам, а не наматывать круги в ожидании ПЛ.

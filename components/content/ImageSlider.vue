@@ -79,7 +79,8 @@ const next = () => {
 .image-slider__stage {
   position: relative;
   background: #11161c;
-  border-radius: 10px;
+  border-radius: var(--radius-sm, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 
