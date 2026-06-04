@@ -47,9 +47,19 @@ function sendTelegram($text) {
     ]);
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
     curl_close($ch);
 
-    return $httpCode >= 200 && $httpCode < 300;
+    $ok = $httpCode >= 200 && $httpCode < 300;
+    if (!$ok) {
+        error_log("[sendTelegram] HTTP $httpCode curl=$curlError body=" . substr((string)$result, 0, 500));
+    }
+    return [
+        'ok' => $ok,
+        'http_code' => $httpCode,
+        'curl_error' => $curlError,
+        'response' => $result,
+    ];
 }
 
 function handleContactForm($input) {
@@ -69,10 +79,11 @@ function handleContactForm($input) {
         '*Сообщение:* ' . escapeMarkdown($message),
     ]);
 
-    if (sendTelegram($text)) {
+    $r = sendTelegram($text);
+    if ($r['ok']) {
         jsonResponse(['ok' => true]);
     } else {
-        jsonResponse(['error' => 'Failed to send'], 500);
+        jsonResponse(['error' => 'Failed to send', 'tg' => $r], 500);
     }
 }
 
@@ -108,6 +119,6 @@ function handleServerNotification($input) {
         '*Контакты:* ' . escapeMarkdown($fields['contacts'] ?: '—'),
     ]);
 
-    $ok = sendTelegram($text);
-    jsonResponse(['ok' => $ok]);
+    $r = sendTelegram($text);
+    jsonResponse(['ok' => $r['ok'], 'tg' => $r]);
 }
