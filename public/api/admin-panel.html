@@ -382,8 +382,20 @@ async function apiAction(action, id, method = 'POST', body = null) {
   };
   if (body) opts.body = JSON.stringify(body);
 
-  const res = await fetch(`${API_BASE}/admin.php?action=${action}&id=${id}&token=${encodeURIComponent(token)}`, opts);
-  return res.json();
+  const url = `${API_BASE}/admin.php?action=${action}&id=${id}&token=${encodeURIComponent(token)}`;
+  const res = await fetch(url, opts);
+  const text = await res.text();
+  let result;
+  try { result = JSON.parse(text); }
+  catch (e) {
+    console.error(`[apiAction ${action}] non-JSON response (${res.status}):`, text);
+    throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
+  }
+  if (!res.ok || result.error) {
+    console.error(`[apiAction ${action}] error:`, result);
+    throw new Error(result.error || `HTTP ${res.status}`);
+  }
+  return result;
 }
 
 async function approveServer(id) {
@@ -464,40 +476,57 @@ async function saveAdd() {
 
   const desiredStatus = document.getElementById('addStatus').value;
 
+  console.log('[saveAdd] POST payload:', data);
+
+  let res, text, result;
   try {
-    const res = await fetch(`${API_BASE}/servers.php`, {
+    res = await fetch(`${API_BASE}/servers.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    const result = await res.json();
-
-    if (!result.success) {
-      alert('Ошибка: ' + (result.error || 'Unknown'));
-      return;
-    }
-
-    // Сервер создан со статусом pending. Если нужно сразу опубликовать — апрувим.
-    if (desiredStatus === 'approved') {
-      await apiAction('approve', result.id);
-    }
-
-    // Добавляем в локальный список
-    const local = {
-      ...data,
-      id: result.id,
-      status: desiredStatus,
-      createdAt: new Date().toISOString(),
-    };
-    allServers.unshift(local);
-
-    closeAddModal();
-    switchTab(desiredStatus);
-    updateCounts();
-    renderServers();
+    text = await res.text();
+    console.log(`[saveAdd] response ${res.status}:`, text);
   } catch (e) {
-    alert('Ошибка подключения к API');
+    console.error('[saveAdd] fetch failed:', e);
+    alert('Сеть/CORS: ' + e.message);
+    return;
   }
+
+  try { result = JSON.parse(text); }
+  catch (e) {
+    alert(`Сервер вернул не-JSON (HTTP ${res.status}):\n` + text.slice(0, 400));
+    return;
+  }
+
+  if (!res.ok || !result.success) {
+    alert(`Ошибка при создании (HTTP ${res.status}):\n` + (result.error || JSON.stringify(result)));
+    return;
+  }
+
+  // Сервер создан со статусом pending. Если нужно сразу опубликовать — апрувим.
+  if (desiredStatus === 'approved') {
+    try {
+      await apiAction('approve', result.id);
+    } catch (e) {
+      alert(`Сервер #${result.id} создан, но approve упал:\n` + e.message);
+      // не выходим — пусть хотя бы в pending покажется
+    }
+  }
+
+  // Добавляем в локальный список
+  const local = {
+    ...data,
+    id: result.id,
+    status: desiredStatus,
+    createdAt: new Date().toISOString(),
+  };
+  allServers.unshift(local);
+
+  closeAddModal();
+  switchTab(desiredStatus);
+  updateCounts();
+  renderServers();
 }
 
 function openEdit(id) {
