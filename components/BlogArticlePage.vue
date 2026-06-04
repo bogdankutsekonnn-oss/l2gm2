@@ -804,7 +804,7 @@ a.article__category:hover {
   font-size: var(--font-base);
 }
 
-.article__content :deep(img) {
+.article__content :deep(img:not(.image-slider__img)) {
   display: block;
   width: 100%;
   height: auto;

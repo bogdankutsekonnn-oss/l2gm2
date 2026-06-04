@@ -78,26 +78,22 @@ const next = () => {
 
 .image-slider__stage {
   position: relative;
-  background: #11161c;
   border-radius: var(--radius-sm, 8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  line-height: 0;
 }
 
 .image-slider__frame {
   position: relative;
-  min-height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 .image-slider__img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 560px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .image-slider__caption {
