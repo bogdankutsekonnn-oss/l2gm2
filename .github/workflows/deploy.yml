@@ -3,6 +3,9 @@ name: Deploy to Timeweb
 on:
   push:
     branches: [main]
+  # Позволяет запускать деплой вручную и из sync-servers.yml после мёржа из базы
+  # (пуш токеном GITHUB_TOKEN сам по себе деплой не триггерит).
+  workflow_dispatch:
 
 jobs:
   deploy:
