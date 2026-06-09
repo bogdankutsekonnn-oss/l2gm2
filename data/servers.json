@@ -345,6 +345,24 @@
     "expiresAt": null
   },
   {
+    "id": 352,
+    "name": "WHITE WORLD",
+    "url": "https://l2ww.ru/",
+    "chronicle": "C4",
+    "rate": null,
+    "startDate": "2026-05-16",
+    "cardType": "basic",
+    "icons": [
+      "bonus-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-09",
+    "expiresAt": null,
+    "category": "x7"
+  },
+  {
     "id": 261,
     "name": "SCRYDE.NET",
     "url": "https://scryde.net",
@@ -498,23 +516,6 @@
     "expiresAt": null
   },
   {
-    "id": 328,
-    "name": "FAZAVSERVER",
-    "url": "https://www.fazavserver.com/",
-    "chronicle": "Interlude",
-    "rate": 1200,
-    "startDate": "2026-06-01",
-    "cardType": "basic",
-    "icons": [
-      "hot-start"
-    ],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-05-28",
-    "expiresAt": null
-  },
-  {
     "id": 343,
     "name": "EVIL-AGE.WS",
     "url": "https://evil-age.ws",
@@ -665,6 +666,23 @@
     "expiresAt": null
   },
   {
+    "id": 353,
+    "name": "FAZAVSERVER",
+    "url": "https://www.fazavserver.com/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-06-06",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-09",
+    "expiresAt": null
+  },
+  {
     "id": 250,
     "name": "LU4 E-GLOBAL",
     "url": "https://lu4.org/",
@@ -711,6 +729,23 @@
     "category": "gve"
   },
   {
+    "id": 328,
+    "name": "FAZAVSERVER",
+    "url": "https://www.fazavserver.com/",
+    "chronicle": "Interlude",
+    "rate": 1200,
+    "startDate": "2026-06-16",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-05-28",
+    "expiresAt": null
+  },
+  {
     "id": 332,
     "name": "THEBATTLE.CLUB",
     "url": "https://thebattle.club",
@@ -738,6 +773,23 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-05-31",
+    "expiresAt": null
+  },
+  {
+    "id": 354,
+    "name": "L2RAINBOW",
+    "url": "https://l2rainbow.net/invite?ref=l2gm",
+    "chronicle": "GoD",
+    "rate": 100,
+    "startDate": "2026-06-19",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-09",
     "expiresAt": null
   },
   {
