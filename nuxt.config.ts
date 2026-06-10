@@ -102,7 +102,7 @@ export default defineNuxtConfig({
   // Основной URL сайта
   site: {
     url: 'https://l2gm.com',
-    name: 'L2GM - Анонсы серверов Lineage 2',
+    name: 'L2GM — Сервера Lineage 2',
     trailingSlash: true,
   },
 
@@ -125,13 +125,13 @@ export default defineNuxtConfig({
       },
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
-      title: 'L2GM - Анонсы серверов Lineage 2',
+      title: 'L2GM — Сервера Lineage 2',
       meta: [
         // Основные мета-теги
         {
           name: 'description',
           content:
-            'Анонсы серверов Lineage 2 2026 с датами старта. Новые сервера Л2 всех хроник и рейтов — Interlude, High Five, Essence. Выбирай лучший проект на L2GM!',
+            'Новые сервера Lineage 2 2026 с датами старта. Топ серверов Л2 всех хроник и рейтов — Interlude, High Five, Essence. Выбирай лучший проект на L2GM!',
         },
         {
           name: 'keywords',

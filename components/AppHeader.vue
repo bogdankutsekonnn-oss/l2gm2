@@ -4,12 +4,12 @@
       <div class="header-content">
         <div class="header-left">
           <NuxtLink to="/" class="logo">
-            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" width="120" height="24" />
+            <img src="/logo.svg" alt="L2GM — Сервера Lineage 2" width="120" height="24" />
           </NuxtLink>
         </div>
         <div>
           <nav class="nav-links">
-            <NuxtLink to="/">Анонсы</NuxtLink>
+            <NuxtLink to="/">Сервера Л2</NuxtLink>
             <NuxtLink to="/news/">Новости</NuxtLink>
             <NuxtLink to="/blog/">Блог</NuxtLink>
             <NuxtLink to="/placement/">Размещение</NuxtLink>
@@ -49,7 +49,7 @@
             </button>
           </div>
           <nav class="mobile-menu__nav">
-            <NuxtLink to="/" @click="menuOpen = false">Анонсы</NuxtLink>
+            <NuxtLink to="/" @click="menuOpen = false">Сервера Л2</NuxtLink>
             <NuxtLink to="/news/" @click="menuOpen = false">Новости</NuxtLink>
             <NuxtLink to="/blog/" @click="menuOpen = false">Блог</NuxtLink>
             <NuxtLink to="/placement/" @click="menuOpen = false">Размещение</NuxtLink>

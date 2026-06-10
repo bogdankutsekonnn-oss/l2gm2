@@ -70,7 +70,7 @@ function pluralize(n, forms) {
 }
 
 const seoLinks = [
-  { to: '/', text: 'Анонсы серверов' },
+  { to: '/', text: 'Новые сервера Л2' },
   { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
   { to: '/chronicle/high-five/', text: 'Сервера High Five' },
   { to: '/chronicle/essence/', text: 'Сервера Essence' },
@@ -92,7 +92,7 @@ const seoComboLinks = computed(() =>
 const { generateBreadcrumbJsonLd } = useSeo()
 
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
-  { name: 'Анонсы серверов Lineage 2', url: '/' },
+  { name: 'Сервера Lineage 2', url: '/' },
   { name: 'Блог', url: '/blog/' },
   { name: props.category.name, url: `/blog/${props.category.slug}/` },
 ])

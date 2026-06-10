@@ -45,7 +45,7 @@ const seoText = `Блог L2GM — это центр полезной инфор
 Если вы ищете где почитать про Lineage 2 на русском — наш блог для вас. Новые материалы выходят регулярно, все статьи написаны с учётом реального опыта игроков на Interlude, High Five и других хрониках. Следите за обновлениями, выбирайте сервер по душе и играйте на лучших проектах Л2 2026 года.`
 
 const seoLinks = [
-  { to: '/', text: 'Анонсы серверов' },
+  { to: '/', text: 'Новые сервера Л2' },
   { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
   { to: '/chronicle/high-five/', text: 'Сервера High Five' },
   { to: '/chronicle/essence/', text: 'Сервера Essence' },
@@ -67,7 +67,7 @@ const seoComboLinks = [
 const { generateBreadcrumbJsonLd } = useSeo()
 
 const breadcrumbJsonLd = generateBreadcrumbJsonLd([
-  { name: 'Анонсы серверов Lineage 2', url: '/' },
+  { name: 'Сервера Lineage 2', url: '/' },
   { name: 'Блог', url: '/blog/' },
 ])
 

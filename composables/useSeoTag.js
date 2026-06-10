@@ -19,7 +19,7 @@ export const useSeoTag = () => {
 
   const generateTagDescription = (tagSlug) => {
     const tag = getTagData(tagSlug)
-    return tag?.description || 'Анонсы серверов Lineage 2 на L2GM.'
+    return tag?.description || 'Новые сервера Lineage 2 на L2GM.'
   }
 
   const generateTagKeywords = (tagSlug) => {

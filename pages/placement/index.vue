@@ -281,7 +281,7 @@ const seoText = `Размещение сервера на L2GM — это спо
 
 const placementLinks = [
   { to: '/add-server/', text: 'Добавить сервер' },
-  { to: '/', text: 'Анонсы серверов' },
+  { to: '/', text: 'Новые сервера Л2' },
   { to: '/pvp/', text: 'PvP сервера' },
   { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
   { to: '/chronicle/high-five/', text: 'Сервера High Five' },

@@ -5,7 +5,7 @@
         <!-- Левая часть: логотип и копирайт -->
         <div class="footer-brand">
           <NuxtLink to="/" class="footer-logo">
-            <img src="/logo.svg" alt="L2GM - Анонсы серверов Lineage 2" width="120" height="24" />
+            <img src="/logo.svg" alt="L2GM — Сервера Lineage 2" width="120" height="24" />
           </NuxtLink>
           <div class="footer-copyright">© {{ currentYear }}. L2GM.COM</div>
         </div>
@@ -27,7 +27,7 @@
             <div class="footer-column">
               <div class="footer-column-title">ИНФОРМАЦИЯ</div>
               <nav class="footer-column-links">
-                <NuxtLink to="/">Анонс серверов</NuxtLink>
+                <NuxtLink to="/">Сервера Л2</NuxtLink>
                 <NuxtLink to="/news/">Новости серверов</NuxtLink>
                 <NuxtLink to="/blog/">Блог</NuxtLink>
                 <NuxtLink to="/about/">О нас</NuxtLink>

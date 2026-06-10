@@ -3,7 +3,7 @@
     <div class="page-wrapper">
       <Breadcrumbs />
       <div class="page-header">
-        <h1>Новые сервера Lineage 2 — анонсы, даты старта, рейты</h1>
+        <h1>Новые сервера Lineage 2 — список и топ серверов Л2 2026</h1>
       </div>
 
       <!-- Кнопка фильтров (только мобильный) -->
@@ -16,7 +16,10 @@
 
       <div class="page-layout">
       <div class="servers-column">
-        <ClientOnly>
+          <!-- Список рендерится на сервере (SSG) — это основной контент главной
+               для поисковиков. Категории дат запекаются на момент билда; деплой
+               по ежедневному крону не даёт им протухнуть, а onNuxtReady-рефетч
+               в useFilters обновляет список после загрузки. -->
           <div class="categories-grid">
             <!-- Левая колонка — будущие разделы -->
             <div class="category-col">
@@ -60,7 +63,6 @@
               </div>
             </div>
           </div>
-        </ClientOnly>
       </div>
 
       <!-- Десктопная колонка фильтров -->
@@ -92,7 +94,7 @@
     </div>
 
     <SeoSection
-      title="Сервера Lineage 2 с актуальным онлайном"
+      title="Сервера Л2 2026 — как выбрать проект Lineage 2"
       :text="seoText"
       :links="chronicleLinks"
       :combo-links="popularComboLinks"
@@ -108,7 +110,7 @@ import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers, g
 
 const { getServers, apiServers } = useFilters()
 const {
-  generateSeoText,
+  generateHomeSeoText,
   generateDescription,
   generateKeywords,
   getCanonicalUrl,
@@ -166,7 +168,7 @@ const popularComboLinks = [
   { to: '/chronicle/c4/rate/x1/', text: 'C4 x1' },
 ]
 
-const seoText = generateSeoText()
+const seoText = generateHomeSeoText()
 const description = generateDescription()
 const keywords = generateKeywords()
 const canonicalUrl = getCanonicalUrl('/')
@@ -182,26 +184,26 @@ const breadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' }
 ])
 const collectionJsonLd = generateCollectionPageJsonLd(
-  'Анонсы серверов Lineage 2',
+  'Новые сервера Lineage 2 — список и топ серверов Л2',
   description,
   '/',
   servers.value
 )
 
 useHead({
-  title: 'Сервера Lineage 2 2026 — анонсы, даты старта, список новых Л2 | L2GM',
+  title: 'Сервера Lineage 2 2026 — топ новых серверов Л2, даты старта | L2GM',
   meta: [
     { name: 'description', content: description },
     { name: 'keywords', content: keywords },
     // Open Graph
-    { property: 'og:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
+    { property: 'og:title', content: 'Сервера Lineage 2 — топ новых серверов Л2 | L2GM' },
     { property: 'og:description', content: description },
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'L2GM' },
     ...getOgImageMeta(),
     // Twitter
-    { name: 'twitter:title', content: 'Анонсы серверов Lineage 2 | L2GM' },
+    { name: 'twitter:title', content: 'Сервера Lineage 2 — топ новых серверов Л2 | L2GM' },
     { name: 'twitter:description', content: description },
   ],
   link: [

@@ -106,10 +106,10 @@ const crumbs = computed(() => {
   const normalizedPath = currentPath.endsWith('/') ? currentPath : currentPath + '/'
 
   // Единый корневой элемент с иконкой и осмысленным текстом —
-  // "Анонсы серверов Lineage 2" попадает в rich snippet Google/Яндекс.
+  // "Сервера Lineage 2" попадает в rich snippet Google/Яндекс.
   // На главной это единственный элемент.
   const result = [
-    { path: '/', title: 'Анонсы серверов Lineage\u00a02', isHome: true },
+    { path: '/', title: 'Сервера Lineage\u00a02', isHome: true },
   ]
 
   const isNewsSection = normalizedPath.startsWith('/news/')

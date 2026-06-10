@@ -3,7 +3,7 @@
     <Breadcrumbs />
     <div class="page-header">
       <h1>Рейтинг серверов Lineage 2</h1>
-      <h2>Топ серверов по популярности и качеству</h2>
+      <h2>Топ новых серверов Л2 всех хроник и рейтов</h2>
     </div>
 
     <div class="rating-content">
@@ -31,7 +31,7 @@
               :href="buildServerHref(server)"
               class="server-name"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="sponsored nofollow noopener"
               @click="trackServerClick(server)"
             >
               {{ server.name }}
@@ -41,14 +41,20 @@
               <span class="server-rate">{{ server.rate }}</span>
             </div>
           </div>
-          <div class="rating-stats">
-            <div class="stat-item">
+          <div v-if="server.online || server.rating" class="rating-stats">
+            <div v-if="server.online" class="stat-item">
               <span class="stat-label">Онлайн</span>
-              <span class="stat-value">{{ server.online || 'N/A' }}</span>
+              <span class="stat-value">{{ server.online }}</span>
             </div>
-            <div class="stat-item">
+            <div v-if="server.rating" class="stat-item">
               <span class="stat-label">Рейтинг</span>
-              <span class="stat-value">{{ server.rating || 'N/A' }}</span>
+              <span class="stat-value">{{ server.rating }}</span>
+            </div>
+          </div>
+          <div v-else class="rating-stats">
+            <div class="stat-item">
+              <span class="stat-label">Старт</span>
+              <span class="stat-value">{{ formatStartDate(server.startDate) }}</span>
             </div>
           </div>
         </div>
@@ -56,9 +62,11 @@
 
       <div class="rating-note">
         <p>
-          Рейтинг формируется на основе множества факторов: онлайн сервера, 
-          отзывов игроков, стабильности работы и активности сообщества. 
-          Рейтинг обновляется ежедневно.
+          В верхней части рейтинга — сервера Lineage 2 со статусами Premium, VIP и TOP:
+          проекты с подтверждённой репутацией и стабильным онлайном. Далее идут новые
+          сервера Л2 всех хроник — от Interlude и High Five до Essence. Список
+          обновляется ежедневно: здесь только актуальные проекты, открывшиеся недавно
+          или готовящиеся к старту.
         </p>
       </div>
     </div>
@@ -79,44 +87,59 @@ const ratingFilters = [
   { id: 'top', name: 'TOP' }
 ]
 
-// Mock data - в реальном проекте это будет из API
 const allServers = computed(() => getServers())
 const ratedServers = computed(() => {
   let filtered = [...allServers.value]
-  
+
   if (activeFilter.value !== 'all') {
-    filtered = filtered.filter(s => s.status === activeFilter.value)
+    filtered = filtered.filter(s => s.cardType === activeFilter.value)
   }
-  
-  // Сортируем по статусу (premium > vip > top > остальные)
-  const statusOrder = { premium: 1, vip: 2, top: 3 }
+
+  // Сортируем по типу размещения (premium > vip-plus > vip > top > остальные)
+  const statusOrder = { premium: 1, 'vip-plus': 2, vip: 3, top: 4 }
   filtered.sort((a, b) => {
-    const aOrder = statusOrder[a.status] || 99
-    const bOrder = statusOrder[b.status] || 99
+    const aOrder = statusOrder[a.cardType] || 99
+    const bOrder = statusOrder[b.cardType] || 99
     return aOrder - bOrder
   })
-  
+
   return filtered
 })
 
-const { generateBreadcrumbJsonLd } = useSeo()
+const formatStartDate = (dateString) => {
+  if (!dateString) return ''
+  const [y, m, d] = dateString.split('-')
+  return `${d}.${m}.${y}`
+}
+
+const { generateBreadcrumbJsonLd, getCanonicalUrl, getOgImageMeta } = useSeo()
 
 const ratingBreadcrumbJsonLd = generateBreadcrumbJsonLd([
   { name: 'Главная', url: '/' },
   { name: 'Рейтинг', url: '/rating/' },
 ])
 
+const ratingTitle = 'Рейтинг серверов Л2 2026 — топ серверов Lineage 2 | L2GM'
+const ratingDescription = 'Рейтинг серверов Л2 2026 — топ новых серверов Lineage 2 всех хроник и рейтов. Premium и VIP проекты с проверенной репутацией и стабильным онлайном на L2GM.'
+const ratingCanonical = getCanonicalUrl('/rating/')
+
 useHead({
-  title: 'Рейтинг серверов Lineage 2 - L2GM',
+  title: ratingTitle,
   meta: [
-    {
-      name: 'description',
-      content: 'Рейтинг лучших серверов Lineage 2. Топ серверов по популярности, онлайну и качеству.'
-    },
-    {
-      name: 'robots',
-      content: 'noindex, nofollow'
-    }
+    { name: 'description', content: ratingDescription },
+    // Open Graph
+    { property: 'og:title', content: ratingTitle },
+    { property: 'og:description', content: ratingDescription },
+    { property: 'og:url', content: ratingCanonical },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'L2GM' },
+    ...getOgImageMeta(),
+    // Twitter
+    { name: 'twitter:title', content: ratingTitle },
+    { name: 'twitter:description', content: ratingDescription },
+  ],
+  link: [
+    { rel: 'canonical', href: ratingCanonical },
   ],
   script: [
     { type: 'application/ld+json', innerHTML: JSON.stringify(ratingBreadcrumbJsonLd) },

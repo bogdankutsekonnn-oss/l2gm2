@@ -3,7 +3,7 @@
     :href="serverHref"
     :class="['server-card', `server-card--${cardStatus}`]"
     target="_blank"
-    rel="noopener noreferrer"
+    rel="sponsored nofollow noopener"
     @click="trackServerClick(server)"
   >
     <SparksEffect v-if="cardStatus === 'premium'" />

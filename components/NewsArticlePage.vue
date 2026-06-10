@@ -258,7 +258,7 @@ async function copyLink() {
 const { generateBreadcrumbJsonLd } = useSeo()
 
 const breadcrumbItems = computed(() => [
-  { name: 'Анонсы серверов Lineage 2', url: '/' },
+  { name: 'Сервера Lineage 2', url: '/' },
   { name: 'Новости серверов', url: '/news/' },
   { name: article.value.title, url: `/news/${article.value.slug}/` },
 ])

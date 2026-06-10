@@ -447,7 +447,7 @@ const { generateBreadcrumbJsonLd } = useSeo()
 
 const breadcrumbItems = computed(() => {
   const items = [
-    { name: 'Анонсы серверов Lineage 2', url: '/' },
+    { name: 'Сервера Lineage 2', url: '/' },
     { name: 'Блог', url: '/blog/' },
   ]
   if (categorySlug.value) {
