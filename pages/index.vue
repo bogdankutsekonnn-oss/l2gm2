@@ -144,6 +144,8 @@ const rightCategories = computed(() =>
 
 // Ссылки для перелинковки
 const chronicleLinks = [
+  { to: '/top/', text: 'Топ серверов Л2' },
+  { to: '/new/', text: 'Новые сервера Л2' },
   { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
   { to: '/chronicle/high-five/', text: 'Сервера High Five' },
   { to: '/chronicle/classic/', text: 'Сервера Classic' },

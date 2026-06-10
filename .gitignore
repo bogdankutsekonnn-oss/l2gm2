@@ -27,3 +27,6 @@ public/api/secrets.php
 # Локальные файлы Claude Code (личные настройки, рабочие копии)
 .claude/settings.local.json
 .claude/worktrees/
+
+# Индекс блога для блоков перелинковки — генерируется в nuxt.config.ts
+data/blog-index.json

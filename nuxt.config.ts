@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { readdirSync } from 'node:fs'
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, resolve } from 'node:path'
 
@@ -15,6 +15,30 @@ const blogArticleRoutes = readdirSync(resolve(__dirname, 'content/blog'))
 const newsArticleRoutes = readdirSync(resolve(__dirname, 'content/news'))
   .filter((f) => f.endsWith('.md'))
   .map((f) => `/news/${f.replace(/\.md$/, '')}/`)
+
+// Лёгкий индекс статей блога (title/slug/category/date) для блоков перелинковки
+// на лендингах хроник (RelatedArticles.vue). Генерируем при каждой сборке из
+// frontmatter, чтобы не тянуть queryCollection/sqlite-worker на нелендинговые
+// страницы (см. комментарий в Breadcrumbs.vue). Файл в .gitignore.
+const blogIndex = readdirSync(resolve(__dirname, 'content/blog'))
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => {
+    const raw = readFileSync(resolve(__dirname, 'content/blog', f), 'utf8')
+    const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? ''
+    const field = (name: string) =>
+      fm.match(new RegExp(`^${name}:\\s*['"]?(.*?)['"]?\\s*$`, 'm'))?.[1] ?? ''
+    return {
+      slug: f.replace(/\.md$/, ''),
+      title: field('title'),
+      category: field('category'),
+      date: field('date'),
+    }
+  })
+  .sort((a, b) => (a.date < b.date ? 1 : -1))
+writeFileSync(
+  resolve(__dirname, 'data/blog-index.json'),
+  JSON.stringify(blogIndex, null, 2) + '\n',
+)
 
 // Категории блога (статичный список — соответствует composables/useBlogCategories.js)
 const blogCategoryRoutes = ['novosti', 'gajdy', 'obzory', 'stati'].map(

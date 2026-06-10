@@ -72,11 +72,19 @@
       :combo-links-title="`${chronicleName} по рейтам`"
     />
 
+    <RelatedArticles
+      v-if="chronicleArticles.length"
+      :title="`Гайды и статьи по ${chronicleName}`"
+      :articles="chronicleArticles"
+    />
+
     <FaqBlock :items="faqItems" />
   </div>
 </template>
 
 <script setup>
+import blogIndex from '~/data/blog-index.json'
+
 const route = useRoute()
 const { getServers, getChronicles, getRates } = useFilters()
 const {
@@ -117,6 +125,21 @@ const comboRateLinks = computed(() =>
     text: `${chronicleName} ${r.name}`
   }))
 )
+
+// Статьи блога по теме хроники — матчим название (en/ru) в заголовке и slug.
+// Для «плюсовых» хроник (Interlude+) ищем по базовому имени без «+».
+const chronicleArticles = (() => {
+  const needles = [chronicle?.name, chronicle?.nameRu]
+    .filter(Boolean)
+    .map((n) => n.replace(/\+$/, '').toLowerCase())
+  if (!needles.length) return []
+  return blogIndex
+    .filter((article) => {
+      const haystack = `${article.title} ${article.slug}`.toLowerCase()
+      return needles.some((needle) => haystack.includes(needle))
+    })
+    .slice(0, 4)
+})()
 
 const title = generateTitle(filters)
 const h1 = generateH1(filters)
