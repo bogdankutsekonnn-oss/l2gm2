@@ -5,8 +5,10 @@
  * Использование (на сервере, через SSH или панель Timeweb):
  *   php add-user.php <username> <password>
  *
- * Также работает по HTTP, но только с мастер-токеном:
- *   curl -X POST 'https://l2gm.com/api/add-user.php?token=ADMIN_TOKEN' \
+ * Также работает по HTTP, но только с мастер-токеном (в заголовке —
+ * GET-параметр ?token= больше не принимается):
+ *   curl -X POST 'https://l2gm.com/api/add-user.php' \
+ *        -H 'Authorization: Bearer ADMIN_TOKEN' \
  *        -H 'Content-Type: application/json' \
  *        -d '{"username":"vasya","password":"secret123"}'
  */

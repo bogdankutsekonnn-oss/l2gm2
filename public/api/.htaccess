@@ -3,8 +3,8 @@ RewriteEngine On
 RewriteCond %{HTTP:Authorization} .+
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-# Запрещаем прямой доступ к config.php, secrets.php и schema.sql
-<FilesMatch "(config\.php|secrets\.php|schema\.sql)">
+# Запрещаем прямой доступ к config.php, secrets.php и SQL-файлам
+<FilesMatch "(config\.php|secrets\.php|\.sql$)">
     Order Allow,Deny
     Deny from all
 </FilesMatch>

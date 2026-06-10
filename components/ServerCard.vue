@@ -4,6 +4,7 @@
     :class="['server-card', `server-card--${cardStatus}`]"
     target="_blank"
     rel="noopener noreferrer"
+    @click="trackServerClick(server)"
   >
     <SparksEffect v-if="cardStatus === 'premium'" />
 
@@ -101,6 +102,7 @@
 
 <script setup>
 import { formatServerDate } from '~/utils/dateUtils'
+import { buildServerHref, trackServerClick } from '~/utils/serverTracking'
 
 const props = defineProps({
   server: {
@@ -111,10 +113,8 @@ const props = defineProps({
 
 const dateInfo = computed(() => formatServerDate(props.server.startDate))
 
-// Ссылка через трекинг кликов
-const serverHref = computed(() => {
-  return `/api/out.php?url=${encodeURIComponent(props.server.url)}`
-})
+// Прямая ссылка с UTM; клик уходит в фоне через sendBeacon (см. serverTracking)
+const serverHref = computed(() => buildServerHref(props.server))
 
 const formatRate = (rate) => {
   const num = Number(rate)

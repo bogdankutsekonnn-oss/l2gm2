@@ -19,6 +19,15 @@
     .login-box input:focus { border-color: rgb(254, 54, 0); }
     .login-box button { width: 100%; padding: 10px; background: rgb(254, 54, 0); color: #f5f5f7; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .login-box button:hover { background: rgb(179, 30, 0); }
+    .login-sep { margin: 14px 0 10px; text-align: center; font-size: 11px; color: rgba(245,245,247,0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+    .login-error { margin-top: 10px; font-size: 12px; color: #dc3545; text-align: center; min-height: 14px; }
+
+    /* Sync */
+    .btn-sync { padding: 8px 16px; background: rgba(75,210,133,0.15); color: #4BD285; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+    .btn-sync:hover { background: rgba(75,210,133,0.25); }
+    .btn-sync:disabled { opacity: 0.5; cursor: default; }
+    .sync-status { font-size: 12px; color: rgba(245,245,247,0.5); margin: -12px 0 16px; min-height: 16px; }
+    .sync-status a { color: inherit; }
 
     /* Dashboard */
     .dashboard { display: none; max-width: 1200px; margin: 0 auto; padding: 24px; }
@@ -73,8 +82,9 @@
     .modal { background: #0f1113; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; width: 500px; max-height: 80vh; overflow-y: auto; }
     .modal h2 { font-size: 18px; margin-bottom: 16px; color: #f5f5f7; }
     .modal label { display: block; font-size: 12px; color: rgba(245,245,247,0.5); margin-bottom: 4px; margin-top: 12px; }
-    .modal input, .modal select { width: 100%; padding: 8px 12px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; }
-    .modal input:focus, .modal select:focus { border-color: rgb(254, 54, 0); }
+    .modal input, .modal select, .modal textarea { width: 100%; padding: 8px 12px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; }
+    .modal textarea { min-height: 70px; resize: vertical; font-family: inherit; }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: rgb(254, 54, 0); }
     .modal select { color-scheme: dark; }
     .modal-actions { display: flex; gap: 8px; margin-top: 20px; justify-content: flex-end; }
     .modal-actions button { padding: 8px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
@@ -95,8 +105,12 @@
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <h1>L2GM Admin</h1>
-    <input type="password" id="tokenInput" placeholder="Admin token" autofocus>
+    <input type="text" id="loginUser" placeholder="Логин" autofocus autocomplete="username">
+    <input type="password" id="loginPass" placeholder="Пароль" autocomplete="current-password">
+    <div class="login-sep">или</div>
+    <input type="password" id="tokenInput" placeholder="Мастер-токен">
     <button onclick="login()">Войти</button>
+    <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
@@ -105,10 +119,12 @@
   <div class="dash-header">
     <h1>L2GM Admin Panel</h1>
     <div class="dash-actions">
+      <button class="btn-sync" id="syncBtn" onclick="runSync()">Синк с сайтом</button>
       <button class="btn-add-test" onclick="openAdd()">+ Добавить сервер</button>
       <button class="btn-logout" onclick="logout()">Выйти</button>
     </div>
   </div>
+  <div class="sync-status" id="syncStatus"></div>
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-status="pending" onclick="switchTab('pending')">На модерации <span class="count" id="countPending">0</span></button>
@@ -147,12 +163,11 @@
     <table class="servers-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Название</th>
           <th>URL</th>
           <th>Хроника</th>
           <th>Рейт</th>
-          <th>Старт</th>
+          <th>В базе</th>
           <th>Всего кликов</th>
           <th>Уникальных</th>
           <th>Последний клик</th>
@@ -205,6 +220,12 @@
     <label>Иконки (через запятую, опционально)</label>
     <input type="text" id="addIcons" placeholder="">
 
+    <label>Описание (опционально)</label>
+    <textarea id="addDescription" placeholder="Короткое описание сервера"></textarea>
+
+    <label>URL аватарки (опционально)</label>
+    <input type="url" id="addAvatarUrl" placeholder="https://...">
+
     <label>Email</label>
     <input type="email" id="addEmail">
 
@@ -242,6 +263,9 @@
     <label>Рейт</label>
     <input type="number" id="editRate">
 
+    <label>Категория (если без рейта: gve, rvr ...)</label>
+    <input type="text" id="editCategory">
+
     <label>Дата старта</label>
     <input type="date" id="editStartDate">
 
@@ -254,8 +278,27 @@
       <option value="premium">Premium</option>
     </select>
 
+    <label>Статус</label>
+    <select id="editStatus">
+      <option value="approved">Опубликован</option>
+      <option value="pending">На модерации</option>
+      <option value="rejected">Отклонён</option>
+    </select>
+
     <label>Дата истечения (платное)</label>
     <input type="date" id="editExpiresAt">
+
+    <label>Типы сервера (через запятую: pvp, craft ...)</label>
+    <input type="text" id="editServerTypes">
+
+    <label>Иконки (через запятую: hot-start, recommended ...)</label>
+    <input type="text" id="editIcons">
+
+    <label>Описание</label>
+    <textarea id="editDescription"></textarea>
+
+    <label>URL аватарки</label>
+    <input type="url" id="editAvatarUrl">
 
     <label>Email</label>
     <input type="email" id="editEmail">
@@ -276,20 +319,63 @@ let token = localStorage.getItem('admin_token') || '';
 let allServers = [];
 let currentTab = 'pending';
 
+// Токен передаётся ТОЛЬКО в заголовке Authorization — query string оседает
+// в access-логах хостинга.
+function authHeaders(extra = {}) {
+  return { 'Authorization': `Bearer ${token}`, ...extra };
+}
+
+// Экранирование для innerHTML: данные заявок приходят из публичной формы
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function loginError(msg) {
+  document.getElementById('loginError').textContent = msg || '';
+}
+
 // Auto-login if token saved
 if (token) {
   tryLogin(token);
 }
 
-function login() {
-  const input = document.getElementById('tokenInput').value.trim();
-  if (!input) return;
-  tryLogin(input);
+async function login() {
+  loginError('');
+  const masterToken = document.getElementById('tokenInput').value.trim();
+  if (masterToken) {
+    tryLogin(masterToken);
+    return;
+  }
+
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value;
+  if (!username || !password) {
+    loginError('Введите логин и пароль (или мастер-токен)');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/auth.php?action=login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.token) {
+      loginError(data.error === 'Invalid credentials' ? 'Неверный логин или пароль' : (data.error || 'Ошибка входа'));
+      return;
+    }
+    tryLogin(data.token);
+  } catch (e) {
+    loginError('Ошибка подключения к API');
+  }
 }
 
 async function tryLogin(t) {
   try {
-    const res = await fetch(`${API_BASE}/servers.php?all=1&token=${encodeURIComponent(t)}`, {
+    const res = await fetch(`${API_BASE}/servers.php?all=1`, {
       headers: { 'Authorization': `Bearer ${t}` }
     });
     if (res.ok) {
@@ -300,16 +386,19 @@ async function tryLogin(t) {
       document.getElementById('dashboard').classList.add('active');
       updateCounts();
       renderServers();
+      loadSyncStatus();
     } else {
-      alert('Неверный токен');
+      loginError('Сессия недействительна, войдите заново');
       localStorage.removeItem('admin_token');
     }
   } catch (e) {
-    alert('Ошибка подключения к API');
+    loginError('Ошибка подключения к API');
   }
 }
 
 function logout() {
+  // Гасим серверную сессию (для мастер-токена — no-op)
+  fetch(`${API_BASE}/auth.php?action=logout`, { method: 'POST', headers: authHeaders() }).catch(() => {});
   token = '';
   localStorage.removeItem('admin_token');
   location.reload();
@@ -351,13 +440,13 @@ function renderServers() {
   tbody.innerHTML = filtered.map(s => `
     <tr>
       <td>${s.id}</td>
-      <td><a class="server-link" href="${s.url}" target="_blank">${s.name}</a></td>
-      <td>${s.chronicle}</td>
-      <td>${s.rate !== null ? 'x' + s.rate : (s.category || '—')}</td>
-      <td>${s.startDate}</td>
-      <td><span class="badge badge-${s.cardType}">${s.cardType}</span></td>
-      <td><span class="badge badge-${s.status}">${s.status}</span></td>
-      <td class="contacts-cell">${s.email || ''}${s.contacts ? '<br>' + s.contacts : ''}</td>
+      <td><a class="server-link" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a></td>
+      <td>${esc(s.chronicle)}</td>
+      <td>${s.rate !== null ? 'x' + esc(s.rate) : esc(s.category || '—')}</td>
+      <td>${esc(s.startDate)}</td>
+      <td><span class="badge badge-${esc(s.cardType)}">${esc(s.cardType)}</span></td>
+      <td><span class="badge badge-${esc(s.status)}">${esc(s.status)}</span></td>
+      <td class="contacts-cell">${esc(s.email || '')}${s.contacts ? '<br>' + esc(s.contacts) : ''}</td>
       <td>
         <div class="actions">
           ${s.status === 'pending' ? `
@@ -378,11 +467,11 @@ function renderServers() {
 async function apiAction(action, id, method = 'POST', body = null) {
   const opts = {
     method,
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    headers: authHeaders({ 'Content-Type': 'application/json' })
   };
   if (body) opts.body = JSON.stringify(body);
 
-  const url = `${API_BASE}/admin.php?action=${action}&id=${id}&token=${encodeURIComponent(token)}`;
+  const url = `${API_BASE}/admin.php?action=${action}&id=${id}`;
   const res = await fetch(url, opts);
   const text = await res.text();
   let result;
@@ -433,6 +522,8 @@ function openAdd() {
   document.getElementById('addExpiresAt').value = '';
   document.getElementById('addServerTypes').value = '';
   document.getElementById('addIcons').value = '';
+  document.getElementById('addDescription').value = '';
+  document.getElementById('addAvatarUrl').value = '';
   document.getElementById('addEmail').value = '';
   document.getElementById('addContacts').value = '';
   document.getElementById('addStatus').value = 'approved';
@@ -469,6 +560,8 @@ async function saveAdd() {
     cardType: document.getElementById('addCardType').value,
     icons: parseList(document.getElementById('addIcons').value),
     serverTypes: parseList(document.getElementById('addServerTypes').value),
+    description: document.getElementById('addDescription').value.trim() || null,
+    avatarUrl: document.getElementById('addAvatarUrl').value.trim() || null,
     email: document.getElementById('addEmail').value.trim() || null,
     contacts: document.getElementById('addContacts').value.trim() || null,
     expiresAt: document.getElementById('addExpiresAt').value || null,
@@ -482,7 +575,7 @@ async function saveAdd() {
   try {
     res = await fetch(`${API_BASE}/servers.php`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: authHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(data),
     });
     text = await res.text();
@@ -537,9 +630,15 @@ function openEdit(id) {
   document.getElementById('editUrl').value = s.url;
   document.getElementById('editChronicle').value = s.chronicle;
   document.getElementById('editRate').value = s.rate ?? '';
+  document.getElementById('editCategory').value = s.category || '';
   document.getElementById('editStartDate').value = s.startDate;
   document.getElementById('editCardType').value = s.cardType;
+  document.getElementById('editStatus').value = s.status;
   document.getElementById('editExpiresAt').value = s.expiresAt || '';
+  document.getElementById('editServerTypes').value = (s.serverTypes || []).join(', ');
+  document.getElementById('editIcons').value = (s.icons || []).join(', ');
+  document.getElementById('editDescription').value = s.description || '';
+  document.getElementById('editAvatarUrl').value = s.avatarUrl || '';
   document.getElementById('editEmail').value = s.email || '';
   document.getElementById('editContacts').value = s.contacts || '';
   document.getElementById('editModal').classList.add('active');
@@ -556,9 +655,15 @@ async function saveEdit() {
     url: document.getElementById('editUrl').value,
     chronicle: document.getElementById('editChronicle').value,
     rate: document.getElementById('editRate').value ? parseInt(document.getElementById('editRate').value) : null,
+    category: document.getElementById('editCategory').value.trim() || null,
     startDate: document.getElementById('editStartDate').value,
     cardType: document.getElementById('editCardType').value,
+    status: document.getElementById('editStatus').value,
     expiresAt: document.getElementById('editExpiresAt').value || null,
+    serverTypes: parseList(document.getElementById('editServerTypes').value),
+    icons: parseList(document.getElementById('editIcons').value),
+    description: document.getElementById('editDescription').value.trim() || null,
+    avatarUrl: document.getElementById('editAvatarUrl').value.trim() || null,
     email: document.getElementById('editEmail').value,
     contacts: document.getElementById('editContacts').value,
   };
@@ -570,14 +675,17 @@ async function saveEdit() {
   if (s) Object.assign(s, data);
 
   closeModal();
+  updateCounts();
   renderServers();
 }
 
 // === Статистика кликов ===
+// Агрегация по server_key "url|хроника|рейт" — в статистику попадают и
+// скрейпленные сервера, которых нет в админ-базе (колонка «В базе»).
 async function loadStats() {
   try {
-    const res = await fetch(`${API_BASE}/out.php?all_stats=1&token=${encodeURIComponent(token)}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+    const res = await fetch(`${API_BASE}/out.php?all_stats=1`, {
+      headers: authHeaders()
     });
     const data = await res.json();
     renderStats(data);
@@ -605,20 +713,24 @@ function renderStats(stats) {
   summary.textContent = `Всего: ${totalClicks} кликов, ${totalUnique} уникальных`;
 
   tbody.innerHTML = stats.map(s => {
-    const rate = s.rate !== null ? 'x' + s.rate : '—';
+    // server_key = "нормализованный-url|хроника|рейт-или-категория"
+    const [keyUrl = '', chronicle = '', rateOrCat = ''] = String(s.server_key || '').split('|');
+    const rate = /^\d+$/.test(rateOrCat) ? 'x' + rateOrCat : (rateOrCat === 'null' ? '—' : rateOrCat.toUpperCase());
     const lastClick = s.last_click ? new Date(s.last_click).toLocaleString('ru-RU') : '—';
     const clicks = parseInt(s.total_clicks || 0);
     const unique = parseInt(s.unique_clicks || 0);
     const clicksColor = clicks > 0 ? '#4BD285' : 'rgba(245,245,247,0.3)';
+    const inDb = s.server_id
+      ? `<span class="badge badge-approved">#${esc(s.server_id)}</span>`
+      : '<span class="badge badge-basic">скрейп</span>';
 
     return `
       <tr>
-        <td>${s.id}</td>
-        <td><strong style="color:#f5f5f7">${s.name}</strong></td>
-        <td><a class="server-link" href="${s.url}" target="_blank">${s.url.replace(/^https?:\/\//, '')}</a></td>
-        <td>${s.chronicle}</td>
-        <td>${rate}</td>
-        <td>${s.start_date}</td>
+        <td><strong style="color:#f5f5f7">${esc(s.name || keyUrl)}</strong></td>
+        <td><a class="server-link" href="https://${esc(keyUrl)}" target="_blank" rel="noopener noreferrer">${esc(keyUrl)}</a></td>
+        <td>${esc(chronicle)}</td>
+        <td>${esc(rate)}</td>
+        <td>${inDb}</td>
         <td style="color:${clicksColor};font-weight:600">${clicks}</td>
         <td style="color:${clicksColor}">${unique}</td>
         <td style="font-size:12px;color:rgba(245,245,247,0.5)">${lastClick}</td>
@@ -627,9 +739,72 @@ function renderStats(stats) {
   }).join('');
 }
 
+// === Синк с сайтом (GitHub Actions) ===
+let syncPollTimer = null;
+
+async function runSync() {
+  const btn = document.getElementById('syncBtn');
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API_BASE}/sync.php?action=run`, {
+      method: 'POST',
+      headers: authHeaders(),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      alert('Не удалось запустить синк:\n' + (data.error || 'HTTP ' + res.status));
+      btn.disabled = false;
+      return;
+    }
+    setSyncStatusText('Синк запущен, сайт обновится через ~3–5 минут…');
+    // Следим за прогрессом, пока ран не завершится
+    let polls = 0;
+    clearInterval(syncPollTimer);
+    syncPollTimer = setInterval(async () => {
+      const done = await loadSyncStatus();
+      if (done || ++polls > 20) {
+        clearInterval(syncPollTimer);
+        btn.disabled = false;
+      }
+    }, 20000);
+  } catch (e) {
+    alert('Ошибка запуска синка: ' + e.message);
+    btn.disabled = false;
+  }
+}
+
+function setSyncStatusText(html) {
+  document.getElementById('syncStatus').innerHTML = html;
+}
+
+// Возвращает true, когда последний ран синка завершён
+async function loadSyncStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/sync.php?action=status`, { headers: authHeaders() });
+    if (!res.ok) return true;
+    const data = await res.json();
+    const fmt = (run, label) => {
+      if (!run) return `${label}: —`;
+      const time = new Date(run.updated_at).toLocaleString('ru-RU');
+      const state = run.status !== 'completed'
+        ? '<span style="color:#ffc107">выполняется…</span>'
+        : run.conclusion === 'success'
+          ? '<span style="color:#4BD285">ок</span>'
+          : `<span style="color:#dc3545">${esc(run.conclusion)}</span>`;
+      return `${label}: <a href="${esc(run.html_url)}" target="_blank" rel="noopener noreferrer">${state}</a> (${time})`;
+    };
+    setSyncStatusText(`${fmt(data.sync, 'Синк')} &nbsp;·&nbsp; ${fmt(data.deploy, 'Деплой')}`);
+    return !data.sync || data.sync.status === 'completed';
+  } catch (e) {
+    return true;
+  }
+}
+
 // Enter key on login
-document.getElementById('tokenInput').addEventListener('keypress', e => {
-  if (e.key === 'Enter') login();
+['tokenInput', 'loginUser', 'loginPass'].forEach(id => {
+  document.getElementById(id).addEventListener('keypress', e => {
+    if (e.key === 'Enter') login();
+  });
 });
 </script>
 </body>

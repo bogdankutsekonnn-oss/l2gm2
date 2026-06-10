@@ -40,6 +40,26 @@ function handleGet() {
 
 // POST /api/servers.php — новая заявка
 function handlePost() {
+    // Рейт-лимит: 5 заявок в час с одного IP. Запросы с валидным админ-токеном
+    // (кнопка «Добавить сервер» в админке) лимит не трогает.
+    if (!isAuthorized()) {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $file = sys_get_temp_dir() . '/l2gm_submit_' . md5($ip);
+        $now = time();
+        $times = [];
+        if (is_file($file)) {
+            $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+            $times = array_values(array_filter(array_map('intval', $lines), function ($t) use ($now) {
+                return $t > $now - 3600;
+            }));
+        }
+        if (count($times) >= 5) {
+            jsonResponse(['error' => 'Слишком много заявок. Попробуйте через час.'], 429);
+        }
+        $times[] = $now;
+        @file_put_contents($file, implode("\n", $times));
+    }
+
     $input = json_decode(file_get_contents('php://input'), true);
 
     if (!$input) {
@@ -73,6 +93,8 @@ function handlePost() {
     $email = isset($input['email']) ? filter_var(trim($input['email']), FILTER_SANITIZE_EMAIL) : null;
     $contacts = isset($input['contacts']) ? trim(strip_tags($input['contacts'])) : null;
     $expiresAt = $input['expiresAt'] ?? null;
+    $description = isset($input['description']) ? trim(strip_tags($input['description'])) : null;
+    $avatarUrl = isset($input['avatarUrl']) ? filter_var(trim($input['avatarUrl']), FILTER_SANITIZE_URL) : null;
 
     // Валидация URL
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
@@ -86,8 +108,8 @@ function handlePost() {
 
     $db = getDB();
     $stmt = $db->prepare(
-        'INSERT INTO servers (name, url, chronicle, rate, category, start_date, card_type, icons, server_types, email, contacts, status, expires_at)
-         VALUES (:name, :url, :chronicle, :rate, :category, :startDate, :cardType, :icons, :serverTypes, :email, :contacts, "pending", :expiresAt)'
+        'INSERT INTO servers (name, url, chronicle, rate, category, start_date, card_type, icons, server_types, email, contacts, status, expires_at, description, avatar_url)
+         VALUES (:name, :url, :chronicle, :rate, :category, :startDate, :cardType, :icons, :serverTypes, :email, :contacts, "pending", :expiresAt, :description, :avatarUrl)'
     );
 
     $stmt->execute([
@@ -103,6 +125,8 @@ function handlePost() {
         ':email' => $email,
         ':contacts' => $contacts,
         ':expiresAt' => $expiresAt,
+        ':description' => $description,
+        ':avatarUrl' => $avatarUrl,
     ]);
 
     $id = $db->lastInsertId();

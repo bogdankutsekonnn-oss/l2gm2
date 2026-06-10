@@ -71,6 +71,7 @@ function updateServer() {
         'name', 'url', 'chronicle', 'rate', 'category',
         'start_date', 'card_type', 'icons', 'server_types',
         'email', 'contacts', 'status', 'expires_at', 'description',
+        'avatar_url',
     ];
 
     $sets = [];
@@ -95,13 +96,17 @@ function updateServer() {
         jsonResponse(['error' => 'No valid fields to update'], 400);
     }
 
+    // Существование проверяем отдельно: rowCount() = 0 бывает и при
+    // сохранении без изменений — это не ошибка.
+    $check = $db->prepare('SELECT 1 FROM servers WHERE id = :id LIMIT 1');
+    $check->execute([':id' => $id]);
+    if (!$check->fetch()) {
+        jsonResponse(['error' => 'Server not found'], 404);
+    }
+
     $sql = 'UPDATE servers SET ' . implode(', ', $sets) . ' WHERE id = :id';
     $stmt = $db->prepare($sql);
     $stmt->execute($params);
-
-    if ($stmt->rowCount() === 0) {
-        jsonResponse(['error' => 'Server not found or no changes'], 404);
-    }
 
     jsonResponse(['success' => true, 'message' => "Server #$id updated"]);
 }

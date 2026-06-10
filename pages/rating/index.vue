@@ -27,7 +27,13 @@
         >
           <div class="rating-position">{{ index + 1 }}</div>
           <div class="rating-server-info">
-            <a :href="server.url" class="server-name" target="_blank">
+            <a
+              :href="buildServerHref(server)"
+              class="server-name"
+              target="_blank"
+              rel="noopener noreferrer"
+              @click="trackServerClick(server)"
+            >
               {{ server.name }}
             </a>
             <div class="server-details">
@@ -60,6 +66,8 @@
 </template>
 
 <script setup>
+import { buildServerHref, trackServerClick } from '~/utils/serverTracking'
+
 const { getServers } = useFilters()
 
 const activeFilter = ref('all')

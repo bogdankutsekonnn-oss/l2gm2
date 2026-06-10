@@ -28,13 +28,15 @@ jobs:
           ZAYAVKI_BOT_TOKEN: ${{ secrets.ZAYAVKI_BOT_TOKEN }}
           COMMENTS_BOT_TOKEN: ${{ secrets.COMMENTS_BOT_TOKEN }}
           COMMENTS_ADMIN_KEY: ${{ secrets.COMMENTS_ADMIN_KEY }}
+          GH_WORKFLOW_PAT: ${{ secrets.GH_WORKFLOW_PAT }}
         run: |
-          # Секреты для public/api/ (админка + бот заявок)
+          # Секреты для public/api/ (админка + бот заявок + кнопка синка)
           cat > public/api/secrets.php <<PHP
           <?php
           define('DB_PASS', '${DB_PASS}');
           define('ADMIN_TOKEN', '${ADMIN_TOKEN}');
           define('TG_BOT_TOKEN', '${ZAYAVKI_BOT_TOKEN}');
+          define('GH_WORKFLOW_PAT', '${GH_WORKFLOW_PAT}');
           PHP
 
           # Конфиг для public/comments-api/ (комментарии)

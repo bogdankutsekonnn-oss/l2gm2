@@ -8,6 +8,7 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'damonlaptev_servers');
 define('DB_USER', 'damonlaptev_servers');
 define('TG_CHAT_ID', '8847413262');
+define('GH_REPO', 'bogdankutsekonnn-oss/l2gm2'); // для sync.php (запуск GitHub Actions)
 
 // CORS — разрешаем запросы с нашего сайта
 header('Content-Type: application/json; charset=utf-8');
@@ -45,38 +46,10 @@ function getDB() {
     return $pdo;
 }
 
-// Проверка админ-токена
+// Проверка прав админа: принимает мастер-токен ADMIN_TOKEN или сессионный
+// токен из admin_sessions (логин/пароль через auth.php).
 function requireAdmin() {
-    $auth = '';
-
-    // Способ 1: getallheaders
-    if (function_exists('getallheaders')) {
-        $headers = getallheaders();
-        $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
-    }
-
-    // Способ 2: $_SERVER (Apache RewriteRule)
-    if (!$auth && !empty($_SERVER['HTTP_AUTHORIZATION'])) {
-        $auth = $_SERVER['HTTP_AUTHORIZATION'];
-    }
-
-    // Способ 3: REDIRECT_ prefix (CGI/FastCGI)
-    if (!$auth && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-        $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-    }
-
-    // Способ 4: через GET параметр (fallback)
-    if (!$auth && !empty($_GET['token'])) {
-        $auth = 'Bearer ' . $_GET['token'];
-    }
-
-    $token = str_replace('Bearer ', '', $auth);
-
-    if ($token !== ADMIN_TOKEN) {
-        http_response_code(401);
-        echo json_encode(['error' => 'Unauthorized']);
-        exit;
-    }
+    requireUser();
 }
 
 // Безопасный JSON ответ
@@ -86,7 +59,9 @@ function jsonResponse($data, $code = 200) {
     exit;
 }
 
-// Извлечь Bearer-токен из заголовка / GET
+// Извлечь Bearer-токен из заголовка Authorization.
+// GET-параметр ?token= больше не принимается: токен из query string оседает
+// в access-логах хостинга. Заголовок пробрасывается через .htaccess.
 function getBearerToken() {
     $auth = '';
     if (function_exists('getallheaders')) {
@@ -95,8 +70,23 @@ function getBearerToken() {
     }
     if (!$auth && !empty($_SERVER['HTTP_AUTHORIZATION'])) $auth = $_SERVER['HTTP_AUTHORIZATION'];
     if (!$auth && !empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-    if (!$auth && !empty($_GET['token'])) $auth = 'Bearer ' . $_GET['token'];
     return trim(str_replace('Bearer ', '', $auth));
+}
+
+// Тихая проверка токена (без 401) — для опциональных привилегий,
+// например пропуска рейт-лимита заявок, отправленных из админки.
+function isAuthorized() {
+    $token = getBearerToken();
+    if ($token === '') return false;
+    if ($token === ADMIN_TOKEN) return true;
+    try {
+        $db = getDB();
+        $stmt = $db->prepare('SELECT 1 FROM admin_sessions WHERE token = :t AND expires_at > NOW() LIMIT 1');
+        $stmt->execute([':t' => $token]);
+        return (bool)$stmt->fetch();
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 /**

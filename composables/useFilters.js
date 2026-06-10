@@ -2,17 +2,21 @@ import serversJson from '~/data/servers.json'
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
 import { isPlacementExpired } from '~/utils/dateUtils'
+import { serverKey } from '~/utils/serverTracking'
 
 // Production-URL для админ-API. На билде в GitHub Actions (nuxt generate) фетч
 // идёт по этому адресу, результат запекается в HTML — это даёт SEO для серверов,
-// добавленных через админку. На клиенте payload поднимается из гидрации.
+// добавленных через админку.
 const ADMIN_API_URL = 'https://l2gm.com/api/servers.php'
+
+// SSG-payload содержит данные на момент билда — рефетчим один раз за визит.
+let refreshedOnClient = false
 
 export const useFilters = () => {
   // useAsyncData с уникальным ключом — дедуплицирует фетч между компонентами
   // и переносит данные через payload SSG → клиент (без повторного запроса).
   // id-ам префикс `api_`, чтобы не пересекались с числовыми id из servers.json.
-  const { data: apiServers } = useAsyncData(
+  const { data: apiServers, refresh } = useAsyncData(
     'admin-servers',
     async () => {
       try {
@@ -26,13 +30,25 @@ export const useFilters = () => {
     { default: () => null },
   )
 
+  // Payload запечён при деплое, поэтому без рефетча клиент не видит серверов,
+  // апрувнутых в админке после билда. Обновляем список после загрузки страницы.
+  if (import.meta.client && !refreshedOnClient) {
+    refreshedOnClient = true
+    onNuxtReady(() => refresh())
+  }
+
   const getServers = (filters = {}) => {
-    // id-пространства не пересекаются (API префиксованы), поэтому простая
-    // конкатенация без дедупа. Один сервер может присутствовать несколькими
-    // карточками — это норма (разные миры/рейты/даты на одном сайте).
-    const source = apiServers.value
-      ? [...serversJson, ...apiServers.value]
-      : serversJson
+    // Сервера из админ-базы существуют в двух копиях: ежечасный синк кладёт их
+    // в servers.json, и они же приходят из API. API свежее (правки в админке
+    // видны сразу) — json-дубли выкидываем по ключу url|хроника|рейт.
+    let source = serversJson
+    if (apiServers.value) {
+      const apiKeys = new Set(apiServers.value.map(serverKey))
+      source = [
+        ...serversJson.filter(s => !apiKeys.has(serverKey(s))),
+        ...apiServers.value,
+      ]
+    }
 
     // Не показываем серверы, которые открылись больше 30 дней назад
     const today = new Date()

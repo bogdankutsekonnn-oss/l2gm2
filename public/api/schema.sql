@@ -28,17 +28,22 @@ CREATE TABLE IF NOT EXISTS `servers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Таблица кликов (трекинг переходов)
+-- server_id NULL-able: клики по скрейпленным серверам (нет в базе) тоже пишутся.
+-- server_key — "url|хроника|рейт" (формат scripts/sync-from-db.js), по нему агрегация.
 CREATE TABLE IF NOT EXISTS `clicks` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `server_id` INT UNSIGNED NOT NULL,
+  `server_id` INT UNSIGNED DEFAULT NULL,
+  `server_key` VARCHAR(300) DEFAULT NULL,
+  `server_name` VARCHAR(255) DEFAULT NULL,
   `ip` VARCHAR(45) DEFAULT NULL,
   `user_agent` VARCHAR(512) DEFAULT NULL,
   `referer` VARCHAR(512) DEFAULT NULL,
   `clicked_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `idx_server_id` (`server_id`),
+  INDEX `idx_server_key` (`server_key`),
   INDEX `idx_clicked_at` (`clicked_at`),
-  CONSTRAINT `fk_clicks_server` FOREIGN KEY (`server_id`) REFERENCES `servers`(`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_clicks_server` FOREIGN KEY (`server_id`) REFERENCES `servers`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Таблица для админа
