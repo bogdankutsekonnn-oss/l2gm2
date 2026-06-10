@@ -127,6 +127,10 @@ useHead({
   title: ratingTitle,
   meta: [
     { name: 'description', content: ratingDescription },
+    // Заготовка под будущий раздел рейтинга с голосованием — до его запуска
+    // страницу не индексируем (и не включаем в sitemap, см. __sitemap__/urls.ts),
+    // чтобы не каннибализировать главную тонким дублем списка серверов.
+    { name: 'robots', content: 'noindex, nofollow' },
     // Open Graph
     { property: 'og:title', content: ratingTitle },
     { property: 'og:description', content: ratingDescription },

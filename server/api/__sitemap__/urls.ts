@@ -58,7 +58,8 @@ export default defineSitemapEventHandler(async (event) => {
 
   return [
     { loc: '/', changefreq: 'daily', priority: 1.0 },
-    { loc: '/rating/', changefreq: 'daily', priority: 0.8 },
+    // /rating/ не включаем: страница в noindex до запуска полноценного
+    // раздела рейтинга с голосованием (см. pages/rating/index.vue)
     ...tagUrls,
     ...chronicleUrls,
     ...rateUrls,

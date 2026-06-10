@@ -56,8 +56,9 @@ export default defineNuxtConfig({
     autoLastmod: true,
     strictNuxtContentPaths: true,
     // Исключаем chronicle/<x>/rate/<y>/ — это фильтры хроники, canonical ведёт на /chronicle/<x>/
+    // /rating/ — заготовка раздела рейтинга в noindex до его запуска
     // trailing slash в URL берётся из site.trailingSlash: true
-    exclude: ['/chronicle/*/rate/**'],
+    exclude: ['/chronicle/*/rate/**', '/rating/'],
     defaults: {
       changefreq: 'weekly',
       priority: 0.7,
