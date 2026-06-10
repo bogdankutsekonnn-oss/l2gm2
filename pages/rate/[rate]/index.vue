@@ -54,7 +54,13 @@
           </div>
         </div>
         <div v-else class="no-servers">
-          <p>Сервера не найдены</p>
+          <p>Сейчас нет анонсов серверов с рейтом {{ rateText }}. Посмотрите соседние диапазоны:</p>
+          <div class="no-servers__links">
+            <NuxtLink to="/low-rate/">Low rate (x1–x10)</NuxtLink>
+            <NuxtLink to="/mid-rate/">Mid rate (x10–x100)</NuxtLink>
+            <NuxtLink to="/pvp/">PvP сервера (x100+)</NuxtLink>
+            <NuxtLink to="/">Все сервера Л2</NuxtLink>
+          </div>
         </div>
       </div>
 
@@ -159,5 +165,27 @@ useHead({
 <style scoped>
 .rate-page {
   padding: var(--spacing-lg) 0;
+}
+
+.no-servers__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--spacing-md);
+}
+
+.no-servers__links a {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.no-servers__links a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 </style>

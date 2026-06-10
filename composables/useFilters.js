@@ -77,16 +77,17 @@ export const useFilters = () => {
           return rateNum >= min && rateNum <= max
         })
       } else {
-        // Handle exact rate match (e.g. "x1" or 1)
+        // Handle exact rate match (e.g. "x1" or 1).
+        // Без фоллбэка на полный список: раньше пустой рейт молча показывал
+        // все сервера, и страницы вроде /rate/x7/ становились дублями главной
+        // (плохо для SEO). Пустой результат — честное состояние, страницы
+        // рейтов показывают для него ссылки на соседние диапазоны.
         const rateNum = parseInt(filters.rate.replace('x', ''))
-        const exactMatch = filtered.filter(s => {
+        filtered = filtered.filter(s => {
           if (s.rate == null) return false
           const serverRate = typeof s.rate === 'number' ? s.rate : parseInt(String(s.rate).replace('x', ''))
           return serverRate === rateNum
         })
-        if (exactMatch.length > 0) {
-          filtered = exactMatch
-        }
       }
     }
 
