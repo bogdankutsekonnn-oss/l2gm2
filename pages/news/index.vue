@@ -45,7 +45,7 @@ const seoLinks = [
   { to: '/chronicle/interlude/', text: 'Сервера Interlude' },
   { to: '/chronicle/high-five/', text: 'Сервера High Five' },
   { to: '/chronicle/essence/', text: 'Сервера Essence' },
-  { to: '/rating/', text: 'Рейтинг серверов' },
+  // Ссылку на /rating/ вернуть при запуске раздела рейтинга (сейчас noindex-заготовка)
 ]
 
 const { generateBreadcrumbJsonLd } = useSeo()
