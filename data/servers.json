@@ -666,23 +666,6 @@
     "expiresAt": null
   },
   {
-    "id": 353,
-    "name": "FAZAVSERVER",
-    "url": "https://www.fazavserver.com/",
-    "chronicle": "Interlude",
-    "rate": 100,
-    "startDate": "2026-06-06",
-    "cardType": "basic",
-    "icons": [
-      "hot-start"
-    ],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-06-09",
-    "expiresAt": null
-  },
-  {
     "id": 250,
     "name": "LU4 E-GLOBAL",
     "url": "https://lu4.org/",
@@ -805,6 +788,23 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-06-13",
+    "expiresAt": null
+  },
+  {
+    "id": 353,
+    "name": "FAZAVSERVER",
+    "url": "https://www.fazavserver.com/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-06-21",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-09",
     "expiresAt": null
   },
   {
