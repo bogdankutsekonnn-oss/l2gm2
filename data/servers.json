@@ -838,6 +838,23 @@
     "expiresAt": null
   },
   {
+    "id": 357,
+    "name": "CHILL.TOP",
+    "url": "https://ru.chill.top/",
+    "chronicle": "High Five+",
+    "rate": 30,
+    "startDate": "2026-06-26",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-21",
+    "expiresAt": null
+  },
+  {
     "id": 348,
     "name": "L2MAD.NET",
     "url": "https://l2mad.net",
