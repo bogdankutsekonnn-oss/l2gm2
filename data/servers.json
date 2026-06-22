@@ -791,23 +791,6 @@
     "expiresAt": null
   },
   {
-    "id": 353,
-    "name": "FAZAVSERVER",
-    "url": "https://www.fazavserver.com/",
-    "chronicle": "Interlude",
-    "rate": 100,
-    "startDate": "2026-06-21",
-    "cardType": "basic",
-    "icons": [
-      "obt"
-    ],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-06-09",
-    "expiresAt": null
-  },
-  {
     "id": 350,
     "name": "MASTERWORK",
     "url": "https://masterwork.com",
@@ -835,6 +818,23 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-05-31",
+    "expiresAt": null
+  },
+  {
+    "id": 353,
+    "name": "FAZAVSERVER",
+    "url": "https://www.fazavserver.com/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-06-26",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-06-09",
     "expiresAt": null
   },
   {
