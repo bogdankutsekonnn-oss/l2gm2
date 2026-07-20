@@ -78,7 +78,7 @@ export const formatServerDate = (dateString) => {
 
 // Категории для будущих серверов (левая колонка)
 export const FUTURE_CATEGORIES = [
-  'Скоро откроются',      // платные, дата >= сегодня
+  'Топ сервера (скоро откроются)',      // платные, дата >= сегодня
   'Сегодня',              // все, дата === сегодня
   'Завтра',               // все, завтра
   'Ближайшие 7 дней',     // все, 2-7 дней вперёд
@@ -87,13 +87,16 @@ export const FUTURE_CATEGORIES = [
 
 // Категории для прошлых серверов (правая колонка)
 export const PAST_CATEGORIES = [
-  'Уже открылись',        // платные, дата < сегодня
+  'Топ сервера (уже открыты)',        // платные, дата < сегодня
   'Предыдущие 7 дней',    // все, 2-7 дней назад
   'Неделю назад и более'  // все, >7 дней назад
 ]
 
-// Платные типы карточек
-export const PAID_CARD_TYPES = new Set(['premium', 'vip'])
+// Топ-секции (платные размещения) — подсвечиваются в заголовках списков
+export const isTopCategory = (name) => name.startsWith('Топ сервера')
+
+// Платные типы карточек (S-Grade / A-Grade / B-Grade) — попадают в топ-секции
+export const PAID_CARD_TYPES = new Set(['premium', 'vip', 'top'])
 
 // Срок платного размещения (дней)
 export const PLACEMENT_DURATION_DAYS = 30
@@ -149,12 +152,12 @@ const sortByDateDesc = (a, b) => {
 
 export const categorizeServers = (servers) => {
   const categories = {
-    'Скоро откроются': [],
+    'Топ сервера (скоро откроются)': [],
     'Сегодня': [],
     'Завтра': [],
     'Ближайшие 7 дней': [],
     'Через неделю и более': [],
-    'Уже открылись': [],
+    'Топ сервера (уже открыты)': [],
     'Предыдущие 7 дней': [],
     'Неделю назад и более': []
   }
@@ -169,7 +172,7 @@ export const categorizeServers = (servers) => {
     const s = effectiveType !== server.cardType ? { ...server, cardType: effectiveType } : server
 
     if (!server.startDate) {
-      if (isPaid) categories['Скоро откроются'].push(s)
+      if (isPaid) categories['Топ сервера (скоро откроются)'].push(s)
       return
     }
 
@@ -178,8 +181,8 @@ export const categorizeServers = (servers) => {
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24))
 
     if (diffDays >= 0) {
-      // Платные → «Скоро откроются»
-      if (isPaid) categories['Скоро откроются'].push(s)
+      // Платные → «Топ сервера (скоро откроются)»
+      if (isPaid) categories['Топ сервера (скоро откроются)'].push(s)
 
       // Все → по временным разделам
       if (diffDays === 0) {
@@ -192,8 +195,8 @@ export const categorizeServers = (servers) => {
         categories['Через неделю и более'].push(s)
       }
     } else {
-      // Платные → «Уже открылись»
-      if (isPaid) categories['Уже открылись'].push(s)
+      // Платные → «Топ сервера (уже открыты)»
+      if (isPaid) categories['Топ сервера (уже открыты)'].push(s)
 
       // Все → по временным разделам
       if (diffDays >= -7) {
@@ -204,20 +207,22 @@ export const categorizeServers = (servers) => {
     }
   })
 
-  // «Скоро откроются»: premium вверху, vip по дате (ближайшие сначала)
+  // «Топ сервера (скоро откроются)»: S-Grade вверху, затем A-Grade и B-Grade,
+  // внутри грейда — по дате (ближайшие сначала)
   {
-    const cat = 'Скоро откроются'
-    const premium = categories[cat].filter(s => s.cardType === 'premium').sort(sortByDateAsc)
-    const vip = categories[cat].filter(s => s.cardType === 'vip').sort(sortByDateAsc)
-    categories[cat] = [...premium, ...vip]
+    const cat = 'Топ сервера (скоро откроются)'
+    categories[cat] = ['premium', 'vip', 'top'].flatMap(type =>
+      categories[cat].filter(s => s.cardType === type).sort(sortByDateAsc)
+    )
   }
 
-  // «Уже открылись»: premium вверху, vip по дате (недавние сначала)
+  // «Топ сервера (уже открыты)»: S-Grade вверху, затем A-Grade и B-Grade,
+  // внутри грейда — по дате (недавние сначала)
   {
-    const cat = 'Уже открылись'
-    const premium = categories[cat].filter(s => s.cardType === 'premium').sort(sortByDateDesc)
-    const vip = categories[cat].filter(s => s.cardType === 'vip').sort(sortByDateDesc)
-    categories[cat] = [...premium, ...vip]
+    const cat = 'Топ сервера (уже открыты)'
+    categories[cat] = ['premium', 'vip', 'top'].flatMap(type =>
+      categories[cat].filter(s => s.cardType === type).sort(sortByDateDesc)
+    )
   }
 
   // Будущие разделы — ближайшие даты сначала

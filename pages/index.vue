@@ -28,7 +28,7 @@
                 :key="category.name"
                 class="server-category"
               >
-                <h2 class="category-title">
+                <h2 :class="['category-title', { 'category-title--top': isTopCategory(category.name) }]">
                   {{ category.name }}
                   <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
                 </h2>
@@ -49,7 +49,7 @@
                 :key="category.name"
                 class="server-category"
               >
-                <h2 class="category-title">
+                <h2 :class="['category-title', { 'category-title--top': isTopCategory(category.name) }]">
                   {{ category.name }}
                   <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
                 </h2>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup>
-import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers, getCategoryDate } from '~/utils/dateUtils.js'
+import { categorizeServers, FUTURE_CATEGORIES, PAST_CATEGORIES, pluralServers, getCategoryDate, isTopCategory } from '~/utils/dateUtils.js'
 
 const { getServers, apiServers } = useFilters()
 const {
