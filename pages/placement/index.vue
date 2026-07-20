@@ -8,210 +8,228 @@
 
       <div class="page-layout">
         <div class="servers-column placement-blocks">
-
-          <!-- Брендирование сайта -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">Брендирование сайта (фон/обложка)</h2>
-            <span class="placement-block__badge placement-block__badge--available">ДОСТУПНО</span>
-
-            <div class="placement-block__specs">
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Размер баннера (px)</span>
-                <span class="placement-block__spec-value">1920×1080 px</span>
+          <section class="test-boost" aria-labelledby="test-boost-title">
+            <div class="test-boost__intro">
+              <span class="section-eyebrow">Специальное предложение</span>
+              <div class="test-boost__heading">
+                <h2 id="test-boost-title">Test Boost</h2>
+                <p><strong>$7</strong><span>— 7 дней</span></p>
               </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Возможные расширения</span>
-                <span class="placement-block__spec-value">PNG,JPG</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Максимальный вес</span>
-                <span class="placement-block__spec-value">500 kb</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость размещения (30 дней)</span>
-                <span class="placement-block__spec-value">$100</span>
-              </div>
-            </div>
-
-            <div class="placement-block__actions">
-              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
-                Разместить баннер
+              <a
+                href="https://t.me/L2gmcom"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary telegram-button test-boost__action"
+              >
+                Попробовать Test Boost
               </a>
-              <a href="https://www.figma.com/design/C0uIARQHjOlMubE0cNsoMv/template_banner_l2gm?node-id=1-28&t=UfngLCteYrS7wOkh-1" target="_blank" rel="noopener" class="btn-secondary">
-                <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 24C6.208 24 8 22.208 8 20V16H4C1.792 16 0 17.792 0 20C0 22.208 1.792 24 4 24Z" fill="#0ACF83"/>
-                  <path d="M0 12C0 9.792 1.792 8 4 8H8V16H4C1.792 16 0 14.208 0 12Z" fill="#A259FF"/>
-                  <path d="M0 4C0 1.792 1.792 0 4 0H8V8H4C1.792 8 0 6.208 0 4Z" fill="#F24E1E"/>
-                  <path d="M8 0H12C14.208 0 16 1.792 16 4C16 6.208 14.208 8 12 8H8V0Z" fill="#FF7262"/>
-                  <path d="M16 12C16 14.208 14.208 16 12 16C9.792 16 8 14.208 8 12C8 9.792 9.792 8 12 8C14.208 8 16 9.792 16 12Z" fill="#1ABCFE"/>
-                </svg>
-                Шаблон баннера
-              </a>
+              <p class="test-boost__disclaimer">Test Boost можно приобрести только один раз для одного сервера.</p>
             </div>
 
-            <div class="placement-block__warnings">
-              <p>АНИМАЦИЯ В БРЕНДИРОВАНИИ НЕ ДОПУСКАЕТСЯ.</p>
-              <p>СТАРАЙТЕСЬ ИЗБЕГАТЬ СЛИШКОМ РЕЗКИХ, ВЫРВИГЛАЗНЫХ И КОНТРАСТНЫХ СОЧЕТАНИЙ.</p>
-              <p>МЫ МОЖЕМ ОТКАЗАТЬ В РАЗМЕЩЕНИИ ПОЗИЦИИ ПРИ НЕКАЧЕСТВЕННЫХ ИЛИ НЕПОДХОДЯЩИХ ПРОМО-МАТЕРИАЛАХ.</p>
-            </div>
-          </div>
-
-          <!-- Баннерная реклама -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">Баннерная реклама</h2>
-            <span class="placement-block__badge placement-block__badge--available">ДОСТУПНО</span>
-
-            <div class="placement-block__specs">
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Размер баннера (px)</span>
-                <span class="placement-block__spec-value">240x400</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Возможные расширения</span>
-                <span class="placement-block__spec-value">GIF, PNG, JPG</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Максимальный вес</span>
-                <span class="placement-block__spec-value">200 кб</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Баннеров в ротации</span>
-                <span class="placement-block__spec-value">До 5</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Тип ротации</span>
-                <span class="placement-block__spec-value">Случайный показ</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость размещения (30 дней)</span>
-                <span class="placement-block__spec-value">$14</span>
-              </div>
-            </div>
-
-            <div class="placement-block__actions">
-              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
-                Разместить баннер
-              </a>
-            </div>
-
-            <div class="placement-block__warnings">
-              <p>НЕ ПРИНИМАЕМ БАННЕРЫ С ЧРЕЗМЕРНО КИСЛОТНЫМИ ЦВЕТАМИ И «МИГАЮЩЕЙ» АНИМАЦИЕЙ.</p>
-              <p>ЗАПРЕЩЕНЫ: НЕЦЕНЗУРНАЯ ЛЕКСИКА (ВКЛЮЧАЯ ЗАВУАЛИРОВАННУЮ), ЭРОТИКА/ПОРНОГРАФИЯ, ПРИЗЫВЫ К НАСИЛИЮ.</p>
-              <p>НЕЛЬЗЯ ВВОДИТЬ ПОЛЬЗОВАТЕЛЕЙ В ЗАБЛУЖДЕНИЕ И ИСПОЛЬЗОВАТЬ «ЧЁРНЫЕ» МАРКЕТИНГОВЫЕ ПРИЁМЫ.</p>
-            </div>
-          </div>
-
-          <!-- Премиум размещение -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">Премиум размещение</h2>
-
-            <div class="placement-block__card-preview">
-              <ServerCard :server="premiumPreviewServer" />
-            </div>
-
-            <div class="placement-block__specs">
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$40</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$40</span>
-              </div>
-            </div>
-
-            <p class="placement-block__description">Премиум — максимальная заметность: самый яркий дизайн и размещение в самом верху страниц подбора серверов. Плюс дублирование в других блоках — выше обычных и VIP позиций.</p>
-
-            <div class="placement-block__actions">
-              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
-                Разместить сервер
-              </a>
-            </div>
-          </div>
-
-          <!-- VIP размещение -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">VIP размещение</h2>
-
-            <div class="placement-block__card-preview">
-              <ServerCard :server="vipPreviewServer" />
-            </div>
-
-            <div class="placement-block__specs">
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в левой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$20</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость в правой колонке (30 дней)</span>
-                <span class="placement-block__spec-value">$20</span>
-              </div>
-            </div>
-
-            <p class="placement-block__description">VIP сервера получают оригинальный дизайн и отображаются в отдельном блоке в верхней части страниц подбора. Также они дополнительно показываются в остальных блоках, занимая позиции выше стандартных VIP.</p>
-
-            <div class="placement-block__actions">
-              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
-                Разместить сервер
-              </a>
-            </div>
-          </div>
-
-          <!-- Стандартное VIP размещение -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">Стандартное VIP размещение</h2>
-
-            <div class="placement-block__card-preview">
-              <ServerCard :server="topPreviewServer" />
-            </div>
-
-            <div class="placement-block__specs">
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Стоимость (30 дней)</span>
-                <span class="placement-block__spec-value">$9</span>
-              </div>
-              <div class="placement-block__spec">
-                <span class="placement-block__spec-label">Эконом размещение* с нашей кнопкой (30 дней)</span>
-                <span class="placement-block__spec-value">$5</span>
-              </div>
-            </div>
-
-            <ul class="placement-block__features">
-              <li><strong>VIP размещение:</strong> сервер получает метку VIP, поднимается выше обычных серверов в списке и выделяется более заметным оформлением.</li>
-              <li><strong>Эконом размещение*:</strong> при выборе "эконом" нужно установить нашу кнопку на главной странице сайта сервера. Удалять кнопку и/или менять её код до окончания срока размещения запрещено.</li>
+            <ul class="test-boost__features">
+              <li>A-Grade статус</li>
+              <li>Бейдж «Рекомендуем»</li>
+              <li>Правый баннер 240 × 400 px</li>
+              <li>Мини-отчёт по кликам</li>
+              <li>Ротация баннера каждые 5 секунд</li>
             </ul>
+          </section>
 
-            <div class="placement-block__actions">
-              <a href="https://t.me/L2gmcom" target="_blank" rel="noopener" class="btn-primary">
-                Разместить сервер
-              </a>
-            </div>
-          </div>
-
-          <!-- Обычное размещение -->
-          <div class="placement-block">
-            <h2 class="placement-block__title">Обычное размещение</h2>
-            <span class="placement-block__badge placement-block__badge--free">БЕСПЛАТНО</span>
-
-            <div class="placement-block__card-preview">
-              <ServerCard :server="freePreviewServer" />
+          <section class="placement-section comparison-section" aria-labelledby="comparison-title">
+            <div class="section-heading">
+              <span class="section-eyebrow">Форматы размещения</span>
+              <h2 id="comparison-title">Сравнение тарифов</h2>
             </div>
 
-            <p class="placement-block__description">Бесплатное размещение сервера в общем каталоге L2GM. Сервер отображается в стандартном списке без выделения и дополнительного оформления.</p>
+            <div class="comparison-table" role="table" aria-label="Сравнение форматов размещения">
+              <div class="comparison-table__head" role="row">
+                <div role="columnheader">Пример отображения</div>
+                <div role="columnheader">Позиция</div>
+                <div role="columnheader">Стоимость</div>
+              </div>
 
-            <ul class="placement-block__features">
-              <li><strong>Условие:</strong> для бесплатного размещения необходимо установить наш баннер на главной странице сайта вашего сервера.</li>
-              <li><strong>Что входит:</strong> карточка сервера в общем каталоге с указанием хроники, рейтов и даты старта.</li>
-              <li><strong>Удаление баннера:</strong> если баннер будет удалён или изменён до окончания срока размещения, сервер будет снят с публикации.</li>
-            </ul>
+              <article
+                v-for="item in comparisonItems"
+                :key="item.id"
+                class="comparison-row"
+                role="row"
+              >
+                <div class="comparison-row__preview" role="cell">
+                  <span class="comparison-row__mobile-label">Пример отображения</span>
+                  <div class="server-card-preview" @click.prevent>
+                    <ServerCard :server="item.server" />
+                  </div>
+                </div>
 
-            <div class="placement-block__actions">
-              <NuxtLink to="/add-server/" class="btn-primary">
-                Добавить сервер
-              </NuxtLink>
+                <div class="comparison-row__position" role="cell">
+                  <span class="comparison-row__mobile-label">Позиция</span>
+                  <strong>{{ item.position }}</strong>
+                  <small v-if="item.note">{{ item.note }}</small>
+                </div>
+
+                <div class="comparison-row__price" role="cell">
+                  <span class="comparison-row__mobile-label">Стоимость</span>
+                  <strong :class="{ 'comparison-row__free': item.isFree }">{{ item.price }}</strong>
+                  <NuxtLink v-if="item.isFree" to="/add-server/">Добавить сервер</NuxtLink>
+                </div>
+              </article>
             </div>
-          </div>
 
+            <div class="comparison-configurator">
+              <div class="section-heading comparison-configurator__heading">
+                <span class="section-eyebrow">Настройте размещение</span>
+                <h3 id="plans-title">Тариф и срок</h3>
+                <p>Выберите подходящий формат и длительность размещения.</p>
+              </div>
+
+              <div class="plan-selector" role="radiogroup" aria-labelledby="plans-title">
+                <fieldset
+                  v-for="plan in placementPlans"
+                :key="plan.id"
+                :class="['plan-card', { 'plan-card--active': selectedPlanId === plan.id }]"
+              >
+                  <legend class="sr-only">{{ plan.name }}</legend>
+                  <div class="plan-card__info">
+                    <strong>{{ plan.name }}</strong>
+                    <small>от {{ formatPrice(plan.weeklyPrice) }} / 7 дней</small>
+                  </div>
+
+                  <div class="duration-grid">
+                    <label
+                      v-for="duration in placementDurations"
+                      :key="duration.days"
+                      :class="[
+                        'duration-option',
+                        { 'duration-option--active': isSelectedOption(plan.id, duration.days) },
+                      ]"
+                    >
+                      <input
+                        v-model="selectedOption"
+                        type="radio"
+                        name="placement-option"
+                        :value="getOptionValue(plan.id, duration.days)"
+                      >
+                      <span class="duration-option__content">
+                        <span>{{ duration.days }} дней</span>
+                        <strong>{{ formatPrice(calculatePlacementPrice(plan.weeklyPrice, duration.days, duration.discount)) }}</strong>
+                      </span>
+                      <small v-if="duration.discount" class="discount-badge">−{{ duration.discount }}%</small>
+                    </label>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="order-summary" aria-live="polite" aria-labelledby="summary-title">
+                <div>
+                  <span class="section-eyebrow">Ваш выбор</span>
+                  <h3 id="summary-title">{{ selectedPlan.name }} · {{ selectedDuration.days }} дней</h3>
+                </div>
+                <dl class="order-summary__details">
+                  <div>
+                    <dt>Тариф</dt>
+                    <dd>{{ selectedPlan.name }}</dd>
+                  </div>
+                  <div>
+                    <dt>Срок</dt>
+                    <dd>{{ selectedDuration.days }} дней</dd>
+                  </div>
+                  <div class="order-summary__total">
+                    <dt>Итого</dt>
+                    <dd>{{ formatPrice(selectedPrice) }}</dd>
+                  </div>
+                </dl>
+                <a
+                  href="https://t.me/L2gmcom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary telegram-button"
+                >
+                  Связаться
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <section class="placement-section banner-section" aria-labelledby="banner-title">
+            <div class="section-heading">
+              <span class="section-eyebrow">Брендирование сайта</span>
+              <h2 id="banner-title">Баннерная реклама</h2>
+              <p>Схема показывает расположение рекламных форматов на страницах L2GM.</p>
+            </div>
+
+            <div class="banner-layout">
+              <article class="banner-slot banner-slot--header">
+                <div class="banner-slot__content">
+                  <div class="banner-slot__heading">
+                    <h3>Header-баннер</h3>
+                    <span class="availability-chip">Свободно</span>
+                  </div>
+                  <dl>
+                    <div><dt>Размер</dt><dd>1920 × 600 px</dd></div>
+                    <div><dt>Стоимость</dt><dd>$15 / неделя</dd></div>
+                  </dl>
+                </div>
+                <a
+                  href="https://t.me/L2gmcom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary telegram-button"
+                >
+                  Связаться
+                </a>
+              </article>
+
+              <div class="server-skeleton" aria-label="Схема списка серверов">
+                <span class="server-skeleton__title">Список серверов</span>
+                <div class="server-skeleton__columns" aria-hidden="true">
+                  <div v-for="column in 2" :key="column" class="server-skeleton__column">
+                    <span v-for="row in 5" :key="row"></span>
+                  </div>
+                </div>
+              </div>
+
+              <article class="banner-slot banner-slot--right">
+                <div class="banner-slot__content">
+                  <div class="banner-slot__heading">
+                    <h3>Правый баннер</h3>
+                    <span class="availability-chip">Свободно</span>
+                  </div>
+                  <dl>
+                    <div><dt>Размер</dt><dd>240 × 400 px</dd></div>
+                    <div><dt>Стоимость</dt><dd>$7 / неделя</dd></div>
+                  </dl>
+                </div>
+                <a
+                  href="https://t.me/L2gmcom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary telegram-button"
+                >
+                  Связаться
+                </a>
+              </article>
+            </div>
+          </section>
+
+          <section class="blog-review" aria-labelledby="blog-review-title">
+            <div class="blog-review__content">
+              <span class="section-eyebrow">Дополнительно</span>
+              <h2 id="blog-review-title">Обзор сервера в блоге</h2>
+              <div class="blog-review__price">
+                <strong>$8</strong>
+                <span>— стоимость</span>
+              </div>
+              <p>Разместим нативный обзор вашего проекта в блоге L2GM: расскажем о сервере, его особенностях, старте, бонусах и добавим CTA-ссылку на ваш сайт.</p>
+            </div>
+            <a
+              href="https://t.me/L2gmcom"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary telegram-button blog-review__action"
+            >
+              Хочу обзор
+            </a>
+          </section>
         </div>
 
         <div class="filters-column">
@@ -229,45 +247,131 @@
 </template>
 
 <script setup>
-const topPreviewServer = {
-  name: 'SERVER NAME',
-  rate: 100000,
-  chronicle: 'Interlude+',
-  startDate: '2025-08-22',
-  cardType: 'top',
-  icons: [],
-  url: '#',
+const placementPlans = [
+  {
+    id: 's-grade',
+    name: 'S-Grade',
+    weeklyPrice: 7,
+  },
+  {
+    id: 'a-grade',
+    name: 'A-Grade',
+    weeklyPrice: 5,
+  },
+  {
+    id: 'b-grade',
+    name: 'B-Grade',
+    weeklyPrice: 3,
+  },
+]
+
+const placementDurations = [
+  { days: 7, discount: 0 },
+  { days: 14, discount: 15 },
+  { days: 21, discount: 20 },
+  { days: 28, discount: 30 },
+]
+
+const calculatePlacementPrice = (weeklyPrice, days, discount) => {
+  const weeks = days / 7
+  const baseTotal = weeklyPrice * weeks
+  const finalTotal = baseTotal * (1 - discount / 100)
+
+  return Math.round(finalTotal * 100) / 100
 }
 
-const vipPreviewServer = {
-  name: 'SERVER NAME',
-  rate: 100000,
-  chronicle: 'Interlude+',
-  startDate: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-  cardType: 'vip',
-  icons: [],
-  url: '#',
-}
+const comparisonItems = [
+  {
+    id: 's-grade',
+    name: 'S-Grade',
+    position: 'Первые места в списке',
+    note: '1–2 места в каждой колонке',
+    price: '7 дней — $7',
+    server: {
+      id: 'placement-s-grade-preview',
+      name: 'S-Grade сервер',
+      rate: 100,
+      chronicle: 'High Five',
+      startDate: '',
+      cardType: 'premium',
+      icons: [],
+      url: '',
+    },
+  },
+  {
+    id: 'a-grade',
+    name: 'A-Grade',
+    position: 'Сразу после S-Grade серверов',
+    note: 'Возможна фиксация на 2–5 позициях',
+    price: '7 дней — $5',
+    server: {
+      id: 'placement-a-grade-preview',
+      name: 'A-Grade сервер',
+      rate: 50,
+      chronicle: 'Interlude',
+      startDate: '',
+      cardType: 'vip',
+      icons: [],
+      url: '',
+    },
+  },
+  {
+    id: 'b-grade',
+    name: 'B-Grade',
+    position: 'В общем списке',
+    note: '',
+    price: '7 дней — $3',
+    server: {
+      id: 'placement-b-grade-preview',
+      name: 'B-Grade сервер',
+      rate: 10,
+      chronicle: 'Essence',
+      startDate: '',
+      cardType: 'top',
+      icons: [],
+      url: '',
+    },
+  },
+  {
+    id: 'free',
+    name: 'Бесплатное размещение',
+    position: 'В общем списке',
+    note: '',
+    price: 'Бесплатно',
+    isFree: true,
+    server: {
+      id: 'placement-free-preview',
+      name: 'Free сервер',
+      rate: 1,
+      chronicle: 'Epilogue',
+      startDate: '',
+      cardType: 'basic',
+      icons: [],
+      url: '',
+    },
+  },
+]
 
-const premiumPreviewServer = {
-  name: 'SERVER NAME',
-  rate: 100000,
-  chronicle: 'Interlude+',
-  startDate: new Date().toISOString().split('T')[0],
-  cardType: 'premium',
-  icons: [],
-  url: '#',
-}
+const selectedOption = ref('s-grade:7')
 
-const freePreviewServer = {
-  name: 'SERVER NAME',
-  rate: 100000,
-  chronicle: 'Interlude+',
-  startDate: '2025-08-22',
-  cardType: 'default',
-  icons: [],
-  url: '#',
-}
+const getOptionValue = (planId, days) => `${planId}:${days}`
+
+const selectedPlanId = computed(() => selectedOption.value.split(':')[0])
+const selectedDays = computed(() => Number(selectedOption.value.split(':')[1]))
+const selectedPlan = computed(() => (
+  placementPlans.find(plan => plan.id === selectedPlanId.value) || placementPlans[0]
+))
+const selectedDuration = computed(() => (
+  placementDurations.find(duration => duration.days === selectedDays.value) || placementDurations[0]
+))
+const selectedPrice = computed(() => calculatePlacementPrice(
+  selectedPlan.value.weeklyPrice,
+  selectedDuration.value.days,
+  selectedDuration.value.discount,
+))
+
+const isSelectedOption = (planId, days) => selectedOption.value === getOptionValue(planId, days)
+const formatPrice = price => `$${Number(price.toFixed(2))}`
 
 const seoText = `Размещение сервера на L2GM — это способ продвижения проекта Lineage 2 через каталог серверов с ежедневной аудиторией игроков. L2GM предлагает несколько форматов рекламы: баннеры, брендирование фона, а также выделенные позиции в каталоге со статусами Premium и VIP. Каждый формат решает свою задачу — привлечь внимание на старте, выделиться среди конкурентов или закрепиться в топе выдачи.
 
@@ -353,191 +457,837 @@ useHead({
 })
 </script>
 
+
 <style scoped>
+.placement-page {
+  padding: var(--spacing-lg) 0;
+  overflow-x: clip;
+}
+
 .placement-blocks {
-  display: flex;
-  flex-direction: column;
   gap: var(--spacing-lg);
 }
 
-/* Placement block */
-.placement-block {
-  background: #1B1D1F;
-  border-radius: 8px;
+.placement-section,
+.test-boost,
+.order-summary,
+.blog-review {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  background: #1b1d1f;
+}
+
+.placement-section {
+  padding: var(--spacing-lg);
+}
+
+.section-heading {
+  margin-bottom: var(--spacing-lg);
+}
+
+.section-heading h2,
+.section-heading h3,
+.order-summary h2,
+.order-summary h3,
+.blog-review h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-h2);
+  line-height: 1.25;
+}
+
+.section-heading p,
+.blog-review p {
+  max-width: 680px;
+  margin: var(--spacing-xs) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  line-height: 1.6;
+}
+
+.section-eyebrow {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: #ff8a5c;
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.telegram-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 0;
+  font-size: var(--font-base);
+  white-space: nowrap;
+}
+
+.test-boost::after {
+  display: none;
+}
+
+.telegram-button img {
+  flex: 0 0 auto;
+}
+
+.telegram-button:focus-visible,
+.comparison-row__price a:focus-visible,
+.duration-option:focus-within {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}
+
+.telegram-button:active {
+  transform: translateY(1px);
+}
+
+.test-boost {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.2fr);
+  align-items: stretch;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  border-color: rgba(255, 112, 56, 0.36);
+  background: linear-gradient(110deg, #24201f 0%, #1b1d1f 60%);
+}
+
+.test-boost__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.test-boost__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.test-boost__heading h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.test-boost__heading p {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.test-boost__heading strong {
+  color: var(--text-primary);
+  font-size: var(--font-xl);
+}
+
+.test-boost__disclaimer {
+  margin: var(--spacing-lg) 0 0;
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.test-boost__action {
+  margin-top: var(--spacing-lg);
+}
+
+.test-boost__features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  align-content: center;
+  gap: var(--spacing-md);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.test-boost__features li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 56px;
+  padding: 8px 16px 8px 42px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.test-boost__features li::before {
+  position: absolute;
+  left: 16px;
+  color: var(--status-success);
+  font-size: var(--font-lg);
+  font-weight: var(--font-bold);
+  content: '✓';
+}
+
+.comparison-table {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-sm);
+  background: #121416;
+}
+
+.comparison-table__head,
+.comparison-row {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.55fr) minmax(170px, 0.85fr) minmax(120px, 0.5fr);
+}
+
+.comparison-table__head {
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.comparison-table__head > div,
+.comparison-row > div {
+  min-width: 0;
+  padding: var(--spacing-md);
+}
+
+.comparison-table__head > div + div,
+.comparison-row > div + div {
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.comparison-row {
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.server-card-preview {
+  min-width: 0;
+}
+
+.server-card-preview :deep(.server-card) {
+  cursor: default;
+}
+
+.server-card-preview :deep(.server-card__date:empty::before) {
+  color: var(--text-disabled);
+  font-size: 10px;
+  content: 'Не указано';
+  text-transform: none;
+}
+
+.comparison-row__position,
+.comparison-row__price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.comparison-row__position strong,
+.comparison-row__price strong {
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+}
+
+.comparison-row__position small {
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+}
+
+.comparison-row__price .comparison-row__free {
+  color: var(--status-success);
+}
+
+.comparison-row__price a {
+  color: var(--primary-main);
+  font-size: var(--font-xs);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+}
+
+.comparison-row__price a:hover {
+  color: var(--text-primary);
+}
+
+.comparison-row__mobile-label {
+  display: none;
+}
+
+.comparison-configurator {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-configurator__heading h3 {
+  font-size: var(--font-h2);
+}
+
+.plan-selector {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--spacing-md);
+}
+
+.plan-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(145px, 0.45fr) minmax(0, 1.55fr);
+  align-items: center;
+  gap: var(--spacing-lg);
+  min-width: 0;
+  margin: 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  background: #121416;
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.plan-card--active {
+  border-color: var(--primary-main);
+  background: #1f1c1c;
+}
+
+.plan-card--active::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--primary-main);
+  content: '';
+}
+
+.plan-card__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  color: var(--text-primary);
+}
+
+.plan-card__info strong {
+  font-size: var(--font-lg);
+}
+
+.plan-card__info small {
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+  font-weight: var(--font-regular);
+  white-space: nowrap;
+}
+
+.duration-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+
+.duration-option {
+  position: relative;
+  min-width: 0;
+  min-height: 60px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.duration-option:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.duration-option:active {
+  transform: translateY(1px);
+}
+
+.duration-option--active {
+  border-color: var(--primary-main);
+  background: rgba(200, 40, 0, 0.13);
+}
+
+.duration-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.duration-option__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+  text-align: center;
+}
+
+.duration-option__content strong {
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+}
+
+.discount-badge {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  padding: 2px 5px;
+  border-radius: var(--radius-full);
+  background: rgba(40, 167, 69, 0.18);
+  color: #59cb72;
+  font-size: 9px;
+  font-weight: var(--font-bold);
+}
+
+.order-summary {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(300px, 1.4fr) auto;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+  border-color: rgba(200, 40, 0, 0.45);
+  background: #201b1b;
+}
+
+.order-summary__details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.order-summary__details > div {
+  min-width: 0;
+  padding: 0 var(--spacing-md);
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.order-summary__details dt {
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+}
+
+.order-summary__details dd {
+  margin: 2px 0 0;
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+  overflow-wrap: anywhere;
+}
+
+.order-summary__details .order-summary__total dd {
+  color: #ff8a5c;
+  font-size: var(--font-xl);
+}
+
+.banner-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: var(--spacing-md);
+}
+
+.banner-slot,
+.server-skeleton {
+  min-width: 0;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-sm);
+  background: #15181a;
+}
+
+.banner-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
+.banner-slot--header {
+  grid-column: 1 / -1;
+  min-height: 190px;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.banner-slot--right {
+  min-height: 300px;
+}
+
+.banner-slot__content {
+  min-width: 0;
+}
+
+.banner-slot__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.banner-slot h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+
+.availability-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(40, 167, 69, 0.18);
+  color: #59cb72;
+  font-size: var(--font-xs);
+  font-weight: var(--font-bold);
+}
+
+.banner-slot dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-md) 0 0;
+}
+
+.banner-slot dl > div {
+  min-width: 0;
+}
+
+.banner-slot dt {
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+}
+
+.banner-slot dd {
+  margin: 1px 0 0;
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+}
+
+.server-skeleton {
+  min-height: 300px;
+  padding: var(--spacing-lg);
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.07);
+  background: #0c0e10;
+}
+
+.server-skeleton__title {
+  display: block;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+}
+
+.server-skeleton__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-md);
+}
+
+.server-skeleton__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+
+.server-skeleton__column span {
+  display: block;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  background: #202427;
+}
+
+.blog-review {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--spacing-xl);
   padding: var(--spacing-xl);
 }
 
-.placement-block__title {
-  font-size: var(--font-lg);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-sm);
+.blog-review__content {
+  min-width: 0;
 }
 
-.placement-block__badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: var(--font-xs);
-  font-weight: var(--font-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.placement-block__badge--available {
-  background: #4BD28514;
-  color: #4BD285;
-}
-
-.placement-block__badge--free {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary);
-}
-
-/* Card preview */
-.placement-block__card-preview {
-  margin-top: var(--spacing-md);
-  max-width: 50%;
-  pointer-events: none;
-}
-
-@media (max-width: 640px) {
-  .placement-block__card-preview {
-    max-width: 100%;
-  }
-}
-
-/* Features list */
-.placement-block__features {
-  list-style: none;
-  padding: 0;
-  margin: var(--spacing-md) 0 0;
+.blog-review__price {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
 }
 
-.placement-block__features li {
+.blog-review__price > span {
   color: var(--text-secondary);
-  font-size: var(--font-sm);
-  line-height: 1.6;
-  padding-left: var(--spacing-md);
-  position: relative;
-}
-
-.placement-block__features li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: var(--text-secondary);
-}
-
-.placement-block__features li strong {
-  color: var(--text-primary);
+  font-size: var(--font-base);
   font-weight: var(--font-semibold);
 }
 
-/* Specs table */
-.placement-block__specs {
-  margin-top: var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-}
-
-.placement-block__spec {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-sm) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.placement-block__spec-label {
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
-}
-
-.placement-block__spec-value {
+.blog-review__price > strong {
   color: var(--text-primary);
-  font-size: var(--font-sm);
-  font-weight: var(--font-medium);
+  font-size: var(--font-xl);
 }
 
-/* Description */
-.placement-block__description {
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
-  line-height: 1.6;
-  margin: var(--spacing-md) 0 0;
+.blog-review__action {
+  justify-self: end;
 }
 
-/* Actions */
-.placement-block__actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
+.blog-review__content > p {
   margin-top: var(--spacing-lg);
 }
 
+@media (max-width: 1180px) and (min-width: 1025px) {
+  .test-boost {
+    grid-template-columns: minmax(230px, 0.75fr) minmax(360px, 1.25fr);
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+  }
+
+  .plan-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    grid-template-columns: 1fr auto;
+  }
+
+  .order-summary__details {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 900px) {
+  .test-boost {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .plan-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    grid-template-columns: 1fr auto;
+  }
+
+  .order-summary__details {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 800px) {
+  .comparison-table {
+    border: 0;
+    background: transparent;
+  }
+
+  .comparison-table__head {
+    display: none;
+  }
+
+  .comparison-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-sm);
+    background: #121416;
+  }
+
+  .comparison-row + .comparison-row {
+    margin-top: var(--spacing-md);
+  }
+
+  .comparison-row > div + div {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    border-left: 0;
+  }
+
+  .comparison-row__mobile-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-disabled);
+    font-size: var(--font-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .banner-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-slot--header {
+    grid-column: auto;
+    min-height: 220px;
+  }
+
+  .banner-slot--right {
+    min-height: 280px;
+  }
+}
+
 @media (max-width: 640px) {
-  .placement-block__actions {
+  .placement-page {
+    padding: 0;
+  }
+
+  .placement-section,
+  .test-boost,
+  .order-summary,
+  .blog-review {
+    padding: var(--spacing-md);
+  }
+
+  .section-heading h2,
+  .order-summary h2,
+  .blog-review h2 {
+    font-size: 20px;
+  }
+
+  .test-boost {
+    grid-template-columns: 1fr;
+  }
+
+  .test-boost__features {
+    grid-template-columns: 1fr;
+  }
+
+  .test-boost__action {
+    width: 100%;
+  }
+
+  .plan-card {
+    grid-template-columns: 1fr;
+  }
+
+  .duration-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .order-summary {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
   }
+
+  .order-summary__details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .order-summary__details > div {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .order-summary__details > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .order-summary > .telegram-button {
+    width: 100%;
+  }
+
+  .banner-slot--header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .banner-slot .telegram-button {
+    width: 100%;
+  }
+
+  .server-skeleton__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .server-skeleton__column:nth-child(2) {
+    display: none;
+  }
+
+  .blog-review {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .blog-review__action {
+    justify-self: stretch;
+    width: 100%;
+  }
 }
 
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
-  background: var(--primary-main);
-  color: var(--primary-contrast);
-  border-radius: var(--radius-button);
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-sm);
-  transition: background 0.2s;
-}
+@media (max-width: 390px) {
+  .placement-section,
+  .test-boost,
+  .order-summary,
+  .blog-review {
+    padding: 14px;
+  }
 
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
+  .test-boost__heading {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs) var(--spacing-md);
+  }
 
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
-  border-radius: var(--radius-button);
-  text-decoration: none;
-  font-weight: var(--font-semibold);
-  font-size: var(--font-sm);
-  transition: background 0.2s;
-}
+  .duration-grid {
+    grid-template-columns: 1fr;
+  }
 
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
+  .duration-option {
+    min-height: 58px;
+  }
 
-/* Warnings */
-.placement-block__warnings {
-  margin-top: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+  .order-summary__details {
+    gap: var(--spacing-sm);
+  }
 
-.placement-block__warnings p {
-  color: #AE6E00;
-  font-size: var(--font-xs);
-  font-weight: var(--font-medium);
-  text-transform: uppercase;
-  line-height: 1.5;
-  margin: 0;
+  .order-summary__details > div {
+    padding: 0;
+    border-left: 0;
+  }
+
+  .order-summary__details dd,
+  .order-summary__details .order-summary__total dd {
+    font-size: var(--font-sm);
+  }
 }
 </style>
