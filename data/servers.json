@@ -6,7 +6,7 @@
     "chronicle": "C4",
     "rate": null,
     "startDate": "2026-05-16",
-    "cardType": "basic",
+    "cardType": "vip-plus",
     "icons": [
       "bonus-start"
     ],
@@ -14,7 +14,7 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-07-05",
-    "expiresAt": null,
+    "expiresAt": "2026-08-20",
     "category": "x7"
   },
   {
@@ -267,7 +267,7 @@
     "chronicle": "GoD",
     "rate": 100,
     "startDate": "2026-06-19",
-    "cardType": "basic",
+    "cardType": "premium",
     "icons": [
       "obt"
     ],
@@ -275,7 +275,7 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-06-09",
-    "expiresAt": null
+    "expiresAt": "2026-08-20"
   },
   {
     "id": 355,
@@ -1016,6 +1016,22 @@
     "description": null,
     "createdAt": "2026-07-10",
     "expiresAt": null
+  },
+  {
+    "id": 403,
+    "name": "WORLD-HERO",
+    "url": "https://world-hero.net/ru",
+    "chronicle": "Interlude",
+    "rate": 1200,
+    "startDate": "2026-07-21",
+    "cardType": "premium",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-20",
+    "expiresAt": "2026-08-21",
+    "category": "HighRate"
   },
   {
     "id": 372,
