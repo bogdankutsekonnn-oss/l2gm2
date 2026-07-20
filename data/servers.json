@@ -1033,6 +1033,23 @@
     "expiresAt": null
   },
   {
+    "id": 402,
+    "name": "LA2WARNET",
+    "url": "http://la2warnet.de",
+    "chronicle": "Interlude",
+    "rate": 50,
+    "startDate": "2026-07-25",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-20",
+    "expiresAt": null
+  },
+  {
     "id": 373,
     "name": "LIGHT OF ELCARDIA",
     "url": "https://loe.promo",
