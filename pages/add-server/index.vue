@@ -456,12 +456,12 @@ const selectCode = () => {
 
 const tariffs = [
   { id: 'free', name: 'Бесплатный', icon: null },
-  { id: 'premium', name: 'Premium', icon: '/images/status/premium.png' },
-  { id: 'vip', name: 'VIP', icon: '/images/status/vip.png' },
+  { id: 'premium', name: 'S-grade', icon: '/images/status/premium.png' },
+  { id: 'vip', name: 'A-grade', icon: '/images/status/vip.png' },
   {
     id: 'vip-standard',
-    name: 'VIP Стандартный',
-    icon: '/images/status/vip.png',
+    name: 'B-grade',
+    icon: '/images/status/top.png',
   },
 ]
 
@@ -486,11 +486,6 @@ const extras = [
     id: 'hot-start',
     name: 'Горячий старт',
     icon: '/images/badges/hot-start.webp',
-  },
-  {
-    id: 'recommended',
-    name: 'Рекомендуем',
-    icon: '/images/badges/recommended.webp',
   },
 ]
 
@@ -524,7 +519,7 @@ const tariffToCardType = {
 // Иконки из extras для превью
 const previewIcons = computed(() =>
   form.extras.filter((e) =>
-    ['obt', 'bonus-start', 'hot-start', 'recommended'].includes(e),
+    ['obt', 'bonus-start', 'hot-start'].includes(e),
   ),
 )
 
