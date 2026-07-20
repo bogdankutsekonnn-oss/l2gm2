@@ -95,8 +95,9 @@ export const PAST_CATEGORIES = [
 // Топ-секции (платные размещения) — подсвечиваются в заголовках списков
 export const isTopCategory = (name) => name.startsWith('Топ сервера')
 
-// Платные типы карточек (S-Grade / A-Grade / B-Grade) — попадают в топ-секции
-export const PAID_CARD_TYPES = new Set(['premium', 'vip', 'top'])
+// Типы карточек в топ-секциях: только S-Grade (premium) и A-Grade (vip).
+// B-Grade (top) — выделенная карточка в общем списке, в топы не попадает.
+export const PAID_CARD_TYPES = new Set(['premium', 'vip'])
 
 // Срок платного размещения (дней)
 export const PLACEMENT_DURATION_DAYS = 30
@@ -207,20 +208,20 @@ export const categorizeServers = (servers) => {
     }
   })
 
-  // «Топ сервера (скоро откроются)»: S-Grade вверху, затем A-Grade и B-Grade,
+  // «Топ сервера (скоро откроются)»: S-Grade вверху, затем A-Grade,
   // внутри грейда — по дате (ближайшие сначала)
   {
     const cat = 'Топ сервера (скоро откроются)'
-    categories[cat] = ['premium', 'vip', 'top'].flatMap(type =>
+    categories[cat] = ['premium', 'vip'].flatMap(type =>
       categories[cat].filter(s => s.cardType === type).sort(sortByDateAsc)
     )
   }
 
-  // «Топ сервера (уже открыты)»: S-Grade вверху, затем A-Grade и B-Grade,
+  // «Топ сервера (уже открыты)»: S-Grade вверху, затем A-Grade,
   // внутри грейда — по дате (недавние сначала)
   {
     const cat = 'Топ сервера (уже открыты)'
-    categories[cat] = ['premium', 'vip', 'top'].flatMap(type =>
+    categories[cat] = ['premium', 'vip'].flatMap(type =>
       categories[cat].filter(s => s.cardType === type).sort(sortByDateDesc)
     )
   }

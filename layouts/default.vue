@@ -173,10 +173,6 @@
   margin-bottom: var(--spacing-sm);
 }
 
-.category-title--top {
-  color: #ffbf60;
-}
-
 .category-date {
   font-size: var(--font-sm);
   font-weight: var(--font-regular);
