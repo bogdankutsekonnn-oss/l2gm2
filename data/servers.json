@@ -18,23 +18,6 @@
     "category": "x7"
   },
   {
-    "id": 433,
-    "name": "FAZAVSERVER",
-    "url": "https://www.fazavserver.com/",
-    "chronicle": "Interlude",
-    "rate": 1200,
-    "startDate": "2026-06-16",
-    "cardType": "basic",
-    "icons": [
-      "hot-start"
-    ],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-07-20",
-    "expiresAt": null
-  },
-  {
     "id": 431,
     "name": "L2RAINBOW",
     "url": "https://l2rainbow.net/invite?ref=l2gm",
@@ -50,21 +33,6 @@
     "description": null,
     "createdAt": "2026-07-20",
     "expiresAt": "2026-08-20"
-  },
-  {
-    "id": 434,
-    "name": "W-CENTARA",
-    "url": "https://w-centara.com/",
-    "chronicle": "Interlude+",
-    "rate": 7,
-    "startDate": "2026-06-19",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-07-20",
-    "expiresAt": null
   },
   {
     "id": 397,

@@ -62,6 +62,16 @@ function isOlderThanOneMonth(dateStr) {
   return d < cutoff
 }
 
+// Активное платное размещение (expiresAt в будущем). Такие записи не чистим
+// по возрасту — иначе часовой синк из админ-базы вернёт их и записи будут
+// «флапать» между еженедельной чисткой и синком.
+function hasActivePlacement(s) {
+  if (!s.expiresAt) return false
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return new Date(s.expiresAt) >= today
+}
+
 if (!fs.existsSync(NEW_SERVERS_PATH)) {
   console.error('Error: data/new-servers.json not found')
   console.log('Create data/new-servers.json with an array of new server objects:')
@@ -137,7 +147,7 @@ for (const ns of newServers) {
 
 let removed = 0
 const filtered = existing.filter(s => {
-  if (s.ownerId) return true
+  if (s.ownerId || hasActivePlacement(s)) return true
   if (isOlderThanOneMonth(s.startDate)) {
     removed++
     return false

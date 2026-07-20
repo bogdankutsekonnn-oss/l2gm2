@@ -38,6 +38,24 @@ function serverKey(s) {
   return `${normalizeUrl(s.url)}|${s.chronicle}|${s.category ?? s.rate}`
 }
 
+// Те же правила «свежести», что в update-servers.js: сервера со стартом
+// старше месяца и без активного платного размещения еженедельная чистка
+// удаляет — синк не должен возвращать их обратно, иначе записи «флапают».
+function isOlderThanOneMonth(dateStr) {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const cutoff = new Date(today)
+  cutoff.setMonth(cutoff.getMonth() - 1)
+  return new Date(dateStr) < cutoff
+}
+
+function hasActivePlacement(s) {
+  if (!s.expiresAt) return false
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return new Date(s.expiresAt) >= today
+}
+
 async function fetchApproved() {
   const res = await fetch(API_URL, { headers: { Accept: 'application/json' } })
   if (!res.ok) throw new Error(`API ${res.status} ${res.statusText}`)
@@ -106,6 +124,11 @@ for (const db of dbServers) {
       updated++
     }
   } else {
+    // Устаревший сервер без активного размещения — не возвращаем в json,
+    // его только что вычистил update-servers.js.
+    if (db.startDate && isOlderThanOneMonth(db.startDate) && !hasActivePlacement(entry)) {
+      continue
+    }
     maxId++
     const fresh = {
       id: maxId,
