@@ -147,9 +147,9 @@ const cardStatus = computed(() => {
 
 const statusText = computed(() => {
   const statusMap = {
-    premium: 'Premium',
-    vip: 'VIP',
-    top: 'TOP',
+    premium: 'S-Grade',
+    vip: 'A-Grade',
+    top: 'B-Grade',
     regular: '',
   }
   return statusMap[cardStatus.value] || ''

@@ -73,18 +73,19 @@ export const useServers = () => {
   }
 
   /**
-   * Типы карточек
+   * Типы карточек (ключи cardType в данных остаются прежними,
+   * публичные названия тарифов — S/A/B-Grade)
    * basic - обычная (бесплатно)
-   * vip - VIP (чёрный фон, белая рамка)
-   * vip-plus - VIP+ (градиент рамка)
-   * premium - Премиум (розовый градиент фон)
+   * top - B-Grade (выделенная карточка в общем списке)
+   * vip - A-Grade (чёрный фон, белая рамка)
+   * premium - S-Grade (первые места, анимированная карточка)
    */
   const CARD_TYPES = {
     basic: { priority: 5, name: 'Обычная' },
-    top: { priority: 4, name: 'Стандартный VIP' },
-    vip: { priority: 3, name: 'VIP' },
+    top: { priority: 4, name: 'B-Grade' },
+    vip: { priority: 3, name: 'A-Grade' },
     'vip-plus': { priority: 2, name: 'VIP+' },
-    premium: { priority: 1, name: 'Премиум' },
+    premium: { priority: 1, name: 'S-Grade' },
   }
 
   /**
