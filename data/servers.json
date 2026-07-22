@@ -1198,6 +1198,21 @@
     "expiresAt": null
   },
   {
+    "id": 433,
+    "name": "DUSKFALL.NET",
+    "url": "https://duskfall.net",
+    "chronicle": "Interlude",
+    "rate": 20,
+    "startDate": "2026-09-01",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-22",
+    "expiresAt": null
+  },
+  {
     "id": 430,
     "name": "ESSENCE.GAME",
     "url": "https://essence.game",
