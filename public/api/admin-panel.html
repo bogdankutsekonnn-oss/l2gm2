@@ -143,7 +143,7 @@
           <th>Хроника</th>
           <th>Рейт</th>
           <th>Старт</th>
-          <th>Тариф</th>
+          <th>Тир</th>
           <th>Статус</th>
           <th>Контакты</th>
           <th>Действия</th>
@@ -202,13 +202,12 @@
     <label>Дата старта *</label>
     <input type="date" id="addStartDate">
 
-    <label>Тип карточки</label>
+    <label>Тир сервера</label>
     <select id="addCardType">
-      <option value="basic">Обычная</option>
-      <option value="top">Стандартный VIP</option>
-      <option value="vip">VIP</option>
-      <option value="vip-plus">VIP+</option>
-      <option value="premium">Premium</option>
+      <option value="basic">Обычный</option>
+      <option value="top">B-Grade</option>
+      <option value="vip">A-Grade</option>
+      <option value="premium">S-Grade</option>
     </select>
 
     <label>Дата истечения (для платных)</label>
@@ -269,13 +268,12 @@
     <label>Дата старта</label>
     <input type="date" id="editStartDate">
 
-    <label>Тип карточки</label>
+    <label>Тир сервера</label>
     <select id="editCardType">
-      <option value="basic">Обычная</option>
-      <option value="top">Стандартный VIP</option>
-      <option value="vip">VIP</option>
-      <option value="vip-plus">VIP+</option>
-      <option value="premium">Premium</option>
+      <option value="basic">Обычный</option>
+      <option value="top">B-Grade</option>
+      <option value="vip">A-Grade</option>
+      <option value="premium">S-Grade</option>
     </select>
 
     <label>Статус</label>
@@ -330,6 +328,13 @@ function esc(s) {
   return String(s ?? '')
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Публичные названия тиров. Ключи cardType в данных остаются прежними
+// (basic/top/vip/premium), витрина показывает S/A/B-Grade.
+const GRADE_LABELS = { basic: 'Обычный', top: 'B-Grade', vip: 'A-Grade', premium: 'S-Grade', 'vip-plus': 'VIP+' };
+function gradeLabel(cardType) {
+  return GRADE_LABELS[cardType] || cardType;
 }
 
 function loginError(msg) {
@@ -444,7 +449,7 @@ function renderServers() {
       <td>${esc(s.chronicle)}</td>
       <td>${s.rate !== null ? 'x' + esc(s.rate) : esc(s.category || '—')}</td>
       <td>${esc(s.startDate)}</td>
-      <td><span class="badge badge-${esc(s.cardType)}">${esc(s.cardType)}</span></td>
+      <td><span class="badge badge-${esc(s.cardType)}">${esc(gradeLabel(s.cardType))}</span></td>
       <td><span class="badge badge-${esc(s.status)}">${esc(s.status)}</span></td>
       <td class="contacts-cell">${esc(s.email || '')}${s.contacts ? '<br>' + esc(s.contacts) : ''}</td>
       <td>
