@@ -40,6 +40,21 @@ writeFileSync(
   JSON.stringify(blogIndex, null, 2) + '\n',
 )
 
+// Маршруты фильтров берём из тех же data/*.json, что и карта сайта
+// (server/api/__sitemap__/urls.ts). Пока списки дублировались руками, карта
+// обещала поисковикам страницы, которых сборка не создавала: /chronicle/freya/,
+// /chronicle/god/ и ещё 5 хроник отдавали 404 (найдено смоук-тестом 19.08.2026).
+const readJson = (rel: string) =>
+  JSON.parse(readFileSync(resolve(__dirname, rel), 'utf8'))
+const tagRoutes = readJson('data/tags.json').map((t: any) => `/${t.slug}/`)
+const chronicleSlugs = readJson('data/chronicles.json').map((c: any) => c.slug)
+const rateSlugs = readJson('data/rates.json').map((r: any) => r.slug)
+const chronicleRoutes = chronicleSlugs.map((s: string) => `/chronicle/${s}/`)
+const rateRoutes = rateSlugs.map((s: string) => `/rate/${s}/`)
+const chronicleRateRoutes = chronicleSlugs.flatMap((c: string) =>
+  rateSlugs.map((r: string) => `/chronicle/${c}/rate/${r}/`),
+)
+
 // Категории блога (статичный список — соответствует composables/useBlogCategories.js)
 const blogCategoryRoutes = ['novosti', 'gajdy', 'obzory', 'stati'].map(
   (slug) => `/blog/${slug}/`,
@@ -250,47 +265,15 @@ export default defineNuxtConfig({
         '/add-server/',
         '/faq/',
         '/thanks/',
-        // Tags
-        '/today/',
-        '/tomorrow/',
-        '/this-week/',
-        '/new/',
-        '/top/',
-        '/pvp/',
-        '/gve/',
-        '/foreign/',
-        '/low-rate/',
-        '/mid-rate/',
-        '/multicraft/',
-        '/multiprof/',
-        // Chronicles
-        '/chronicle/c1/',
-        '/chronicle/c4/',
-        '/chronicle/interlude/',
-        '/chronicle/interlude-plus/',
-        '/chronicle/classic/',
-        '/chronicle/high-five-plus/',
-        '/chronicle/high-five/',
-        '/chronicle/epilogue/',
-        '/chronicle/essence/',
-        '/chronicle/crusade/',
-        // Rates
-        '/rate/x1/',
-        '/rate/x3/',
-        '/rate/x7/',
-        '/rate/x10/',
-        '/rate/x20/',
-        '/rate/x50/',
-        '/rate/x100/',
-        '/rate/x500/',
-        '/rate/x1200/',
-        '/rate/x10000/',
-        '/rate/x50000/',
-        '/rate/x100000/',
-        // Chronicle + Rate combinations
-        ...['c1', 'c4', 'interlude', 'interlude-plus', 'classic', 'high-five-plus', 'high-five', 'epilogue', 'essence', 'crusade']
-          .flatMap(c => ['x1', 'x3', 'x7', 'x10', 'x20', 'x50', 'x100', 'x500', 'x1200', 'x10000', 'x50000', 'x100000']
-            .map(r => `/chronicle/${c}/rate/${r}/`)),
+        // Юридические страницы: есть в pages/, попадают в sitemap автоматически
+        '/cookies/',
+        '/privacy/',
+        '/terms/',
+        ...tagRoutes,
+        ...chronicleRoutes,
+        ...rateRoutes,
+        // Фильтры хроника+рейт: в sitemap исключены, canonical ведёт на хронику
+        ...chronicleRateRoutes,
       ],
     },
   },
