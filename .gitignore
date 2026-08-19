@@ -22,6 +22,7 @@ logs
 
 # Секреты бэкендов (токены ботов, доступ к БД) — генерируются при деплое
 public/comments-api/config.php
+public/auth-api/config.php
 public/api/secrets.php
 
 # Локальные файлы Claude Code (личные настройки, рабочие копии)

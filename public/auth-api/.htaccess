@@ -1,0 +1,12 @@
+# Пробрасываем заголовок Authorization в PHP (нужно для Bearer-токена).
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# Запрещаем прямой доступ к конфигу и общим PHP-библиотекам.
+<FilesMatch "(config\.php|config\.example\.php|lib\.php|db\.php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

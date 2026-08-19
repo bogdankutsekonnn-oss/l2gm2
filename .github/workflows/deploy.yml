@@ -34,6 +34,14 @@ jobs:
           COMMENTS_BOT_TOKEN: ${{ secrets.COMMENTS_BOT_TOKEN }}
           COMMENTS_ADMIN_KEY: ${{ secrets.COMMENTS_ADMIN_KEY }}
           GH_WORKFLOW_PAT: ${{ secrets.GH_WORKFLOW_PAT }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
+          YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
         run: |
           # Секреты для public/api/ (админка + бот заявок + кнопка синка)
           cat > public/api/secrets.php <<PHP
@@ -57,6 +65,31 @@ jobs:
               'channel' => '@l2gm_official',
               'admin_key' => '${COMMENTS_ADMIN_KEY}',
               'allow_origin' => 'https://l2gm.com',
+          ];
+          PHP
+
+          # Конфиг для public/auth-api/ (Google / Яндекс / Email / Telegram)
+          cat > public/auth-api/config.php <<PHP
+          <?php
+          return [
+              'db_host' => 'localhost',
+              'db_name' => 'damonlaptev_servers',
+              'db_user' => 'damonlaptev_servers',
+              'db_pass' => '${DB_PASS}',
+              'google_client_id' => '${GOOGLE_CLIENT_ID}',
+              'google_client_secret' => '${GOOGLE_CLIENT_SECRET}',
+              'yandex_client_id' => '${YANDEX_CLIENT_ID}',
+              'yandex_client_secret' => '${YANDEX_CLIENT_SECRET}',
+              'smtp_host' => '${SMTP_HOST}',
+              'smtp_port' => 465,
+              'smtp_user' => '${SMTP_USER}',
+              'smtp_pass' => '${SMTP_PASS}',
+              'smtp_from' => '${SMTP_FROM}',
+              'smtp_from_name' => 'L2GM',
+              'redirect_base' => 'https://l2gm.com',
+              'allow_origin' => 'https://l2gm.com',
+              'telegram_bot_token' => '${COMMENTS_BOT_TOKEN}',
+              'telegram_channel' => '@l2gm_official',
           ];
           PHP
 

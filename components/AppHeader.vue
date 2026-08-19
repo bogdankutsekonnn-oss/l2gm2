@@ -21,6 +21,7 @@
           <NuxtLink to="/add-server/" class="btn-primary">
             Добавить сервер
           </NuxtLink>
+          <UserMenu />
         </div>
 
         <!-- Бургер (только мобильный) -->
@@ -57,6 +58,9 @@
             <NuxtLink to="/about/" @click="menuOpen = false">О нас</NuxtLink>
           </nav>
           <div class="mobile-menu__footer">
+            <div class="mobile-menu__user" @click="menuOpen = false">
+              <UserMenu show-name />
+            </div>
             <NuxtLink to="/add-server/" class="btn-primary" @click="menuOpen = false">
               Добавить сервер
             </NuxtLink>
@@ -111,6 +115,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--spacing-xl);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
 .logo {
@@ -222,6 +232,14 @@ onUnmounted(() => {
   width: 100%;
   display: block;
   text-align: center;
+}
+
+.mobile-menu__user {
+  margin-bottom: 12px;
+}
+
+.mobile-menu__user :deep(.user-menu__login) {
+  width: 100%;
 }
 
 /* Анимация меню (справа) */

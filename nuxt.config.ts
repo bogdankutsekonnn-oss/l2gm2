@@ -137,7 +137,7 @@ export default defineNuxtConfig({
       {
         userAgent: ['*'],
         allow: ['/'],
-        disallow: ['/thanks', '/add-server'],
+        disallow: ['/thanks', '/add-server', '/auth', '/profile'],
       },
     ],
     sitemap: ['https://l2gm.com/sitemap.xml'],
@@ -243,6 +243,10 @@ export default defineNuxtConfig({
         '/add-server/',
         '/faq/',
         '/thanks/',
+        // Авторизация / профиль (клиентские, noindex)
+        '/auth/callback/',
+        '/auth/reset/',
+        '/profile/',
         // Tags
         '/today/',
         '/tomorrow/',
@@ -292,6 +296,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: 'https://l2gm.com',
+      // Пользовательская авторизация (Google / Яндекс / Email / Telegram)
+      authApi: '/auth-api',
       // Комментарии в новостях (Telegram-логин + гейт подписки)
       commentsApi: '/comments-api',
       tgChannel: 'l2gm_official',
