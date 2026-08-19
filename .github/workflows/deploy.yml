@@ -62,6 +62,21 @@ jobs:
 
       - run: npx nuxt generate
 
+      - name: Проверка сборки на запечённые 404
+        run: |
+          # Страховка поверх prerender.failOnError: страница может отрендерить
+          # error.vue без падения пререндера и уехать на прод с кодом 200 и
+          # заголовком «Страница не найдена» (так 13 страниц попали в индекс
+          # Яндекса 12-13.08.2026). Сам 404.html — легитимный, его исключаем.
+          hits=$(grep -rlF 'Страница не найдена | L2GM' .output/public --include='*.html' \
+            | grep -vE '/(404|200)\.html$' || true)
+          if [ -n "$hits" ]; then
+            echo "::error::Сборка содержит 404-страницы вместо контента — деплой остановлен:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "OK: запечённых 404 в сборке нет"
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

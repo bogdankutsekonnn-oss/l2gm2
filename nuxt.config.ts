@@ -224,7 +224,14 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'static',
     prerender: {
-      failOnError: false,
+      // Ошибка пререндера должна ронять сборку, а не запекать error.vue внутрь
+      // HTML страницы: такая страница уезжает на прод с кодом 200 и заголовком
+      // «Страница не найдена». Так 13 страниц (статьи блога, новости, теги,
+      // /chronicle/c1/) попали в индекс Яндекса 12-13.08.2026 — по брендовому
+      // запросу выдача показывала title 404-страницы. Статьи бросают 404, если
+      // @nuxt/content не отдал документ (BlogArticlePage.vue, NewsArticlePage.vue),
+      // и на флаки sqlite-воркера это ловится только здесь.
+      failOnError: true,
       crawlLinks: false,
       routes: [
         '/',
