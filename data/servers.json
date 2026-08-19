@@ -35,6 +35,21 @@
     "expiresAt": "2026-08-20"
   },
   {
+    "id": 401,
+    "name": "WESTEROS.WS",
+    "url": "https://westeros.ws/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-07-17",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-10",
+    "expiresAt": null
+  },
+  {
     "id": 332,
     "name": "THEBATTLE.CLUB",
     "url": "https://thebattle.club",
@@ -290,21 +305,6 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-07-20",
-    "expiresAt": null
-  },
-  {
-    "id": 401,
-    "name": "WESTEROS.WS",
-    "url": "https://westeros.ws/",
-    "chronicle": "Interlude",
-    "rate": 100,
-    "startDate": "2026-08-14",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-07-10",
     "expiresAt": null
   },
   {
