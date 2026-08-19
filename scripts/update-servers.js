@@ -72,6 +72,19 @@ function hasActivePlacement(s) {
   return new Date(s.expiresAt) >= today
 }
 
+// Свежее ли next относительно current. Дату двигаем только вперёд: скрейп
+// конкурентов иногда отдаёт устаревшую дату уже открытого сервера, а сдвиг
+// назад загнал бы запись под чистку по возрасту.
+function isNewerDate(next, current) {
+  if (!next) return false
+  const n = new Date(next)
+  if (isNaN(n)) return false
+  if (!current) return true
+  const c = new Date(current)
+  if (isNaN(c)) return true
+  return n > c
+}
+
 if (!fs.existsSync(NEW_SERVERS_PATH)) {
   console.error('Error: data/new-servers.json not found')
   console.log('Create data/new-servers.json with an array of new server objects:')
@@ -82,11 +95,18 @@ if (!fs.existsSync(NEW_SERVERS_PATH)) {
 const existing = JSON.parse(fs.readFileSync(SERVERS_PATH, 'utf8'))
 const newServers = JSON.parse(fs.readFileSync(NEW_SERVERS_PATH, 'utf8'))
 
-const existingKeys = new Set(existing.map(serverKey))
+// Ключ → запись: нужна не только для дедупа, но и чтобы обновить дату старта
+// у сервера, который уже есть в базе.
+const existingByKey = new Map()
+for (const s of existing) {
+  const k = serverKey(s)
+  if (!existingByKey.has(k)) existingByKey.set(k, s)
+}
 let maxId = Math.max(...existing.map(s => s.id), 0)
 const todayStr = new Date().toISOString().split('T')[0]
 
 let added = 0
+let updated = 0
 let skipped = 0
 let invalidChronicle = 0
 
@@ -119,13 +139,27 @@ for (const ns of newServers) {
   }
 
   const key = serverKey(entry)
-  if (existingKeys.has(key)) {
-    skipped++
+  const dup = existingByKey.get(key)
+  if (dup) {
+    // Сервер уже в базе. Регулярно перезапускающиеся проекты приходят из
+    // скрейпа с новой датой старта — её нужно перенести на существующую
+    // запись, иначе чистка ниже удалит её как протухшую и сервер пропадёт
+    // с сайта, хотя анонс актуален.
+    //
+    // Записи владельцев и активные платные размещения ведёт админ-база
+    // (sync-from-db.js) — их дату скрейп конкурентов не трогает.
+    if (!dup.ownerId && !hasActivePlacement(dup) && isNewerDate(entry.startDate, dup.startDate)) {
+      console.log(`  Update (${dup.startDate} -> ${entry.startDate}): ${dup.name}`)
+      dup.startDate = entry.startDate
+      updated++
+    } else {
+      skipped++
+    }
     continue
   }
 
   maxId++
-  existing.push({
+  const created = {
     id: maxId,
     name: entry.name.toUpperCase(),
     url: entry.url,
@@ -140,8 +174,9 @@ for (const ns of newServers) {
     createdAt: todayStr,
     expiresAt: null,
     ...(entry.category ? { category: entry.category } : {})
-  })
-  existingKeys.add(key)
+  }
+  existing.push(created)
+  existingByKey.set(key, created)
   added++
 }
 
@@ -167,6 +202,7 @@ fs.writeFileSync(SERVERS_PATH, JSON.stringify(filtered, null, 2) + '\n', 'utf8')
 
 console.log('\n=== Server Update Summary ===')
 console.log(`  Added:    ${added}`)
+console.log(`  Updated:  ${updated} (новая дата старта)`)
 console.log(`  Skipped:  ${skipped} (duplicates)`)
 console.log(`  Invalid:  ${invalidChronicle} (unknown chronicle)`)
 console.log(`  Removed:  ${removed} (older than 1 month)`)
