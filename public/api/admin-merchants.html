@@ -559,7 +559,7 @@ function renderCard(m) {
   const slotsByIndex = {};
   for (const s of slots) slotsByIndex[s.slot_index] = s;
 
-  const hardMax = m.role === 'sell' ? 4 : 5;
+  const hardMax = 5; // у всех ролей 5 слотов
   const filledMax = slots.length ? Math.max(...slots.map(s => s.slot_index)) : 0;
   const maxSlots = m.role === 'shots' ? Math.max(1, filledMax) : hardMax;
   const slotRows = [];

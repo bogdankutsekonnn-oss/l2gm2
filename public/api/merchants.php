@@ -204,7 +204,7 @@ function setSlot($user) {
     $merchant = $m->fetch();
     if (!$merchant) jsonResponse(['error' => 'Merchant not found'], 404);
 
-    $maxSlots = $merchant['role'] === 'sell' ? 4 : ($merchant['role'] === 'shots' ? 5 : 5);
+    $maxSlots = 5; // у всех ролей 5 слотов
     if ($slotIndex < 1 || $slotIndex > $maxSlots) jsonResponse(['error' => "slot_index must be 1..{$maxSlots}"], 400);
 
     $r = $db->prepare('SELECT id FROM resources WHERE slug = :s');
