@@ -46,9 +46,11 @@ function checkToken(token) {
   if (!/^[\x21-\x7E]+$/.test(token)) {
     fail(
       'в ADMIN_TOKEN не токен, а заглушка — там кириллица или пробелы.\n' +
-      '  Боевой токен есть только на проде. Забери его из /public_html/api/secrets.php\n' +
-      '  (файловый менеджер Timeweb или SSH) и запусти так:\n' +
-      '    ADMIN_TOKEN=<токен> node scripts/add-admin-user.js <логин> <пароль>\n' +
+      '  Боевой токен есть только на проде: /public_html/api/secrets.php\n' +
+      '  (файловый менеджер Timeweb или SSH). Дальше в PowerShell:\n' +
+      '    $env:ADMIN_TOKEN = "<токен>"\n' +
+      '    node scripts/add-admin-user.js <логин> <пароль>\n' +
+      '  В bash — одной строкой: ADMIN_TOKEN=<токен> node scripts/add-admin-user.js ...\n' +
       '  Либо, если есть SSH, обойдись без токена совсем:\n' +
       '    cd /public_html/api && php add-user.php <логин> <пароль>'
     )
