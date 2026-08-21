@@ -1,5 +1,5 @@
 <template>
-  <div class="error-page">
+  <div class="error-page" data-error-page="true">
     <div class="error-container">
       <span class="error-code">{{ error?.statusCode || 404 }}</span>
       <h1 class="error-title">Страница не найдена</h1>
@@ -14,8 +14,17 @@ const props = defineProps({
   error: Object,
 })
 
+// Страница ошибки не должна попадать в индекс ни при каких обстоятельствах.
+// Даже если она случайно запечётся в статику под адресом реальной страницы
+// (как в августе 2026, когда 13 адресов уехали на прод с кодом 200 и этим
+// заголовком), noindex не даст поисковику взять её в выдачу.
+// useRobotsRule перебивает и мету, которую @nuxtjs/robots вставляет через
+// nitro-хук, и глобальную мету robots из nuxt.config — одного useHead мало.
+useRobotsRule('noindex, nofollow')
+
 useHead({
   title: 'Страница не найдена | L2GM',
+  meta: [{ name: 'robots', content: 'noindex, nofollow' }],
 })
 </script>
 

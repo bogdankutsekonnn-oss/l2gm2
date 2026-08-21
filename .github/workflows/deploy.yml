@@ -62,20 +62,8 @@ jobs:
 
       - run: npx nuxt generate
 
-      - name: Проверка сборки на запечённые 404
-        run: |
-          # Страховка поверх prerender.failOnError: страница может отрендерить
-          # error.vue без падения пререндера и уехать на прод с кодом 200 и
-          # заголовком «Страница не найдена» (так 13 страниц попали в индекс
-          # Яндекса 12-13.08.2026). Сам 404.html — легитимный, его исключаем.
-          hits=$(grep -rlF 'Страница не найдена | L2GM' .output/public --include='*.html' \
-            | grep -vE '/(404|200)\.html$' || true)
-          if [ -n "$hits" ]; then
-            echo "::error::Сборка содержит 404-страницы вместо контента — деплой остановлен:"
-            echo "$hits"
-            exit 1
-          fi
-          echo "OK: запечённых 404 в сборке нет"
+      - name: Проверка сборки перед заливкой
+        run: npm run check:build
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -90,40 +78,7 @@ jobs:
         run: |
           # Гейт выше проверяет сборку, но не то, что реально легло на хостинг:
           # FTP заливает файлы поштучно, и оборванная заливка оставляет часть
-          # страниц битыми, а workflow при этом отчитается об успехе. Проверяем
-          # выдачу по всем адресам из sitemap — список динамический, новые
-          # статьи попадают в проверку сами.
+          # страниц битыми, а workflow при этом отчитается об успехе. Скрипт
+          # обходит все собранные адреса плюс всё, что обещает живой sitemap.
           sleep 20
-          UA='Mozilla/5.0 (compatible; l2gm-deploy-check)'
-          urls=$(curl -s --max-time 30 -A "$UA" https://l2gm.com/sitemap.xml \
-            | grep -o '<loc>[^<]*</loc>' | sed 's/<[^>]*>//g')
-          count=$(printf '%s\n' "$urls" | grep -c . || true)
-          if [ "$count" -lt 50 ]; then
-            echo "::error::sitemap.xml отдал $count адресов — сайт после деплоя недоступен или карта битая"
-            exit 1
-          fi
-          fails=''
-          for u in $urls; do
-            # Две попытки: одиночный сетевой сбой не должен красить деплой
-            for attempt in 1 2; do
-              resp=$(curl -s -L --max-time 25 -A "$UA" -w '\n%{http_code}' "$u" || true)
-              code=$(printf '%s' "$resp" | tail -n1)
-              title=$(printf '%s' "$resp" | grep -o '<title>[^<]*</title>' | head -1 | sed 's/<[^>]*>//g')
-              if [ "$code" = "200" ] && [ -n "$title" ]; then break; fi
-            done
-            if [ "$code" != "200" ]; then
-              fails="$fails\n  HTTP $code — $u"
-            elif [ -z "$title" ]; then
-              fails="$fails\n  без title — $u"
-            else
-              case "$title" in
-                *'Страница не найдена'*) fails="$fails\n  404-заголовок — $u" ;;
-              esac
-            fi
-          done
-          if [ -n "$fails" ]; then
-            echo "::error::Живой сайт отдаёт битые страницы:"
-            printf '%b\n' "$fails"
-            exit 1
-          fi
-          echo "OK: проверено $count адресов, все отдают 200 и свой title"
+          node scripts/check-live.mjs https://l2gm.com

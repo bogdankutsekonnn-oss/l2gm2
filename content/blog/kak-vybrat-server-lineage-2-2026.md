@@ -117,7 +117,7 @@ Classic лучше всего работает на [low-rate x1–x3](/low-rate
 
 **Идеально для:** тех, кто хочет долгий, глубокий опыт с настоящей клановой политикой. Подробнее — в [статье о low-rate серверах](/blog/chto-takoe-low-rate-server-lineage-2/).
 
-**Лучшие связки:** [Classic x1](/chronicle/classic/), [Interlude x3](/chronicle/interlude/rate/x3/), [High Five x5](/chronicle/high-five/rate/x5/).
+**Лучшие связки:** [Classic x1](/chronicle/classic/), [Interlude x3](/chronicle/interlude/rate/x3/), [High Five x5](/chronicle/high-five/).
 
 ### Mid-rate (x10–x100) — золотая середина
 

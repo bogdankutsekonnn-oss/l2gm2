@@ -152,7 +152,11 @@ export default defineNuxtConfig({
       {
         userAgent: ['*'],
         allow: ['/'],
-        disallow: ['/thanks', '/add-server'],
+        // /200.html и /404.html — служебные оболочки статической сборки
+        // (пустой SPA-шелл с дефолтным title). Ни на что не ссылаются, но
+        // лежат в корне и теоретически краулятся: закрываем, заодно модуль
+        // проставляет им noindex в мету — это ловит гейт scripts/check-build.mjs.
+        disallow: ['/thanks', '/add-server', '/200.html', '/404.html'],
       },
     ],
     sitemap: ['https://l2gm.com/sitemap.xml'],
@@ -179,7 +183,11 @@ export default defineNuxtConfig({
             'lineage 2, л2, ла2, сервера lineage 2, сервера л2, анонсы серверов, новые сервера л2, новые сервера l2, interlude, интерлюд, high five, хай файв, essence, эссенс, classic, классик',
         },
         { name: 'author', content: 'L2GM' },
-        { name: 'robots', content: 'index, follow' },
+        // Мету robots не задаём глобально: её проставляет @nuxtjs/robots
+        // (index, follow, max-image-preview:large... на обычных страницах и
+        // noindex там, где страница закрыта). Глобальная «index, follow»
+        // конфликтовала с noindex на error.vue — страница ошибки уезжала в
+        // статику сразу с двумя противоположными директивами.
 
         // Open Graph (Facebook, VK, Telegram)
         { property: 'og:type', content: 'website' },

@@ -30,25 +30,25 @@ faq:
 
 **L2ESSENCE.ONLINE x100** — [Essence](/chronicle/essence/rate/x100/), high-rate. Быстрый вход в Essence для тех, кто хочет попробовать хронику без недель гринда. За 1-2 дня вы увидите весь контент и поймёте, нравится ли вам формат.
 
-**THEBATTLE.CLUB x15** — [High Five](/chronicle/high-five/rate/x15/), mid-rate PvP. Комфортный темп для тех, кому x1 слишком медленно, а x50 слишком быстро. Прокачка за 1-2 недели, дальше — чистый PvP.
+**THEBATTLE.CLUB x15** — [High Five](/chronicle/high-five/), mid-rate PvP. Комфортный темп для тех, кому x1 слишком медленно, а x50 слишком быстро. Прокачка за 1-2 недели, дальше — чистый PvP.
 
-**FORCEPLAY.ORG x25** — [Interlude](/chronicle/interlude/rate/x25/), mid-rate PvP. Проверенная админка, уже запускавшая серверы ранее. Рейт x25 — золотая середина для Interlude: адена остаётся ценной, а прогресс ощутим.
+**FORCEPLAY.ORG x25** — [Interlude](/chronicle/interlude/), mid-rate PvP. Проверенная админка, уже запускавшая серверы ранее. Рейт x25 — золотая середина для Interlude: адена остаётся ценной, а прогресс ощутим.
 
 **VIRANIUM x10** — [Interlude](/chronicle/interlude/rate/x10/), low-mid rate. Ещё один «десятирейтник» — формат, набирающий популярность. Быстрее чем x3, но без ощущения «всё слишком легко».
 
-**L2HELIOS.NET x2000** — [High Five](/chronicle/high-five/rate/x2000/), ultra high-rate. Чистый PvP-формат: прокачка за час, максимальная экипировка за вечер. Сервер для тех, кто пришёл воевать, а не фармить.
+**L2HELIOS.NET x2000** — [High Five](/chronicle/high-five/), ultra high-rate. Чистый PvP-формат: прокачка за час, максимальная экипировка за вечер. Сервер для тех, кто пришёл воевать, а не фармить.
 
 Также стартуют: **LA2BEST.ORG x100** (Interlude+), **L2TEHNO.ICU x50** (High Five), **L2.PRIME x100** (High Five), **ECLIPSION.NET x50000** и **EMERIAL.WORLD x50000** (Interlude+ PvP-серверы мгновенного старта).
 
 ### 2 мая — REWORK.MULTERIA.WORLD x12
 
-**MULTERIA REWORK** — [High Five+ x12](/chronicle/high-five-plus/rate/x12/), модифицированный mid-rate. Нишевый проект с кастомным контентом поверх High Five. Рейт x12 — редкий выбор, который даёт чуть больше скорости, чем x10, но сохраняет хардкорное ощущение.
+**MULTERIA REWORK** — [High Five+ x12](/chronicle/high-five-plus/), модифицированный mid-rate. Нишевый проект с кастомным контентом поверх High Five. Рейт x12 — редкий выбор, который даёт чуть больше скорости, чем x10, но сохраняет хардкорное ощущение.
 
 Также стартует **L2DRAIN.COM x50000** — Interlude+ PvP мгновенного старта.
 
 ### 4 мая — COLDWAR24 x35
 
-**COLDWAR24.RU** — [High Five+ x35](/chronicle/high-five-plus/rate/x35/), mid-rate с модификациями. Необычный рейт x35 — нечто среднее между «серьёзным» x25 и «быстрым» x50. Подойдёт тем, кто хочет добраться до PvP за неделю, но не за один вечер.
+**COLDWAR24.RU** — [High Five+ x35](/chronicle/high-five-plus/), mid-rate с модификациями. Необычный рейт x35 — нечто среднее между «серьёзным» x25 и «быстрым» x50. Подойдёт тем, кто хочет добраться до PvP за неделю, но не за один вечер.
 
 ### 5 мая — KETRAWARS x1200
 
@@ -62,7 +62,7 @@ faq:
 
 **BOHPTS.NET x7** — [Interlude](/chronicle/interlude/rate/x7/), мягкий low-mid rate. Рейт x7 — интересный формат, похожий на «Interlude x1 с ускорением». Прогресс ощущается, но каждый предмет по-прежнему ценен.
 
-**L2REBORN.ORG x15** — [Interlude](/chronicle/interlude/rate/x15/), mid-rate. Стандартный формат, проверенный временем.
+**L2REBORN.ORG x15** — [Interlude](/chronicle/interlude/), mid-rate. Стандартный формат, проверенный временем.
 
 Также стартует **ELARIA.WORLD x50000** — Interlude+ PvP мгновенного старта.
 
@@ -72,7 +72,7 @@ faq:
 
 **ELMORELAB.COM x3** — [Interlude](/chronicle/interlude/rate/x3/), low-rate PvP. Классический формат для хардкорщиков. Рейт x3 — это 2-3 недели до 80 lvl, ценная адена и долгоживущая экономика.
 
-**BEOMULT x15** — [High Five](/chronicle/high-five/rate/x15/), mid-rate. Комфортный темп для High Five.
+**BEOMULT x15** — [High Five](/chronicle/high-five/), mid-rate. Комфортный темп для High Five.
 
 **PVPESSENCE.COM x100** — [Essence](/chronicle/essence/rate/x100/), high-rate PvP. Быстрый PvP на Essence — прокачка за день, дальше чистые бои.
 
@@ -82,7 +82,7 @@ faq:
 
 ### 16 мая — ZMEGA x30
 
-**ZMEGA.COM** — [Interlude](/chronicle/interlude/rate/x30/), mid-rate. Рейт x30 — ещё один промежуточный вариант между «серьёзным» x25 и «быстрым» x50. Хорош для игроков с ограниченным временем.
+**ZMEGA.COM** — [Interlude](/chronicle/interlude/), mid-rate. Рейт x30 — ещё один промежуточный вариант между «серьёзным» x25 и «быстрым» x50. Хорош для игроков с ограниченным временем.
 
 ### 22 мая — SCRYDE x100 и GoD
 
@@ -98,7 +98,7 @@ faq:
 
 **SCRYDE X x1** — [High Five](/chronicle/high-five/rate/x1/), low-rate. Второй старт SCRYDE в мае — на этот раз хардкорный x1. Если пропустили SCRYDE x100 22 мая — это альтернатива для другой аудитории.
 
-**L2MAD.NET x30** — [Interlude](/chronicle/interlude/rate/x30/), mid-rate. Последний крупный старт месяца.
+**L2MAD.NET x30** — [Interlude](/chronicle/interlude/), mid-rate. Последний крупный старт месяца.
 
 ## Тренды мая 2026
 

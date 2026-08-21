@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# Несуществующий адрес отдаём как настоящий 404 с брендовой страницей.
+# Без ErrorDocument Apache показывал свою стандартную заглушку; сам /404.html
+# закрыт в robots.txt и содержит noindex, так что в индекс не попадёт.
+ErrorDocument 404 /404.html
+
 # 301: legacy tag slug /l2top/ → /top/ (renamed for SEO intent match)
 RewriteRule ^l2top/?$ https://%{HTTP_HOST}/top/ [R=301,L]
 

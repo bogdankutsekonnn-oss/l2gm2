@@ -29,7 +29,7 @@ slug: 'novye-servera-lineage-2-aprel-2026'
 
 ### 25 апреля — Lineage2Dex x25
 
-**Lineage2Dex** — проверенный проект на [Interlude+](/chronicle/interlude-plus/) с [mid-rate x25](/chronicle/interlude-plus/rate/x25/ ). Рейт x25 — не самый популярный, но он даёт комфортный темп: прокачка занимает 7-10 дней, адена остаётся ценной, а экономика не ломается.
+**Lineage2Dex** — проверенный проект на [Interlude+](/chronicle/interlude-plus/) с **mid-rate x25**. Рейт x25 — не самый популярный, но он даёт комфортный темп: прокачка занимает 7-10 дней, адена остаётся ценной, а экономика не ломается.
 
 ### 27 апреля — MasterWork x1
 
@@ -43,7 +43,7 @@ slug: 'novye-servera-lineage-2-aprel-2026'
 
 **SCRYDE x50** — [High Five](/chronicle/high-five/rate/x50/), high-rate PvP. Премиум-сервер, mid-rate для опытного PvP. Оптимальный формат для тех, кому надоело ждать на x1: весь контент за 2-3 недели, дальше — чистый PvP и осады.
 
-**ForcePlay x25** — [Interlude](/chronicle/interlude/rate/x25/), mid-rate PvP. Очередной старт на классическом Interlude. Рейт x25 выбран для баланса между скоростью и сохранением ценности предметов.
+**ForcePlay x25** — [Interlude](/chronicle/interlude/), mid-rate PvP. Очередной старт на классическом Interlude. Рейт x25 выбран для баланса между скоростью и сохранением ценности предметов.
 
 ### 8 мая — KetraWars x1200
 
