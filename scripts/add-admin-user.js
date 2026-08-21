@@ -29,13 +29,31 @@ function fail(msg) {
 }
 
 function readToken() {
-  if (process.env.ADMIN_TOKEN) return process.env.ADMIN_TOKEN
+  if (process.env.ADMIN_TOKEN) return checkToken(process.env.ADMIN_TOKEN.trim())
   if (!fs.existsSync(SECRETS_PATH)) {
     fail(`не нашёл ${SECRETS_PATH}.\n  Положи туда secrets.php или запусти с ADMIN_TOKEN=... в окружении.`)
   }
   const m = fs.readFileSync(SECRETS_PATH, 'utf8').match(/define\(\s*'ADMIN_TOKEN'\s*,\s*'([^']+)'/)
   if (!m) fail(`в ${SECRETS_PATH} нет define('ADMIN_TOKEN', ...)`)
-  return m[1]
+  return checkToken(m[1].trim())
+}
+
+// Локальный secrets.php обычно заполнен заглушками из secrets.example.php —
+// боевой токен генерится при деплое из GitHub Secrets и на машину не попадает.
+// Ловим это здесь: иначе кириллица в заголовке роняет fetch невнятной
+// ошибкой про ByteString.
+function checkToken(token) {
+  if (!/^[\x21-\x7E]+$/.test(token)) {
+    fail(
+      'в ADMIN_TOKEN не токен, а заглушка — там кириллица или пробелы.\n' +
+      '  Боевой токен есть только на проде. Забери его из /public_html/api/secrets.php\n' +
+      '  (файловый менеджер Timeweb или SSH) и запусти так:\n' +
+      '    ADMIN_TOKEN=<токен> node scripts/add-admin-user.js <логин> <пароль>\n' +
+      '  Либо, если есть SSH, обойдись без токена совсем:\n' +
+      '    cd /public_html/api && php add-user.php <логин> <пароль>'
+    )
+  }
+  return token
 }
 
 // Спрятанный ввод: readline пишет промпт сам, поэтому глушим всё остальное.
