@@ -150,6 +150,10 @@
     .modal { background: #0f1113; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; width: 460px; max-height: 90vh; overflow-y: auto; }
     .modal h2 { font-size: 16px; margin-bottom: 16px; }
     .modal label { display: block; font-size: 11px; color: rgba(245,245,247,0.5); margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .price-hint { text-transform: none; letter-spacing: 0; font-weight: 600; }
+    .price-hint.sell { color: #4BD285; }
+    .price-hint.buy  { color: #fe5722; }
+    .price-hint .adena-icon-sm { vertical-align: -2px; }
     .modal input, .modal select { width: 100%; padding: 8px 10px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #f5f5f7; font-size: 13px; outline: none; }
     .modal select { color-scheme: dark; }
     .modal input:focus, .modal select:focus { border-color: rgb(254, 54, 0); }
@@ -338,7 +342,7 @@
     <div class="resource-picker" id="resourcePicker"></div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
       <div>
-        <label>Цена за 1 шт</label>
+        <label>Цена за 1 шт <span class="price-hint" id="slotPriceHint"></span></label>
         <input type="text" inputmode="numeric" id="slotPrice" placeholder="опционально">
       </div>
       <div>
@@ -857,6 +861,7 @@ function editSlot(merchantId, slotIndex) {
   document.getElementById('slotPrice').value = existing && existing.price_per_unit !== null ? existing.price_per_unit : '';
   document.getElementById('slotQty').value = existing && existing.qty !== null ? existing.qty : '';
   renderResourcePicker();
+  updatePriceHint();
   document.getElementById('slotModal').classList.add('active');
   setTimeout(() => document.getElementById('slotResourceSearch').focus(), 50);
   checkConflicts();
@@ -889,7 +894,29 @@ function pickResource(slug) {
   if (!state.editing) return;
   state.editing.selectedSlug = slug;
   renderResourcePicker();
+  updatePriceHint();
   checkConflicts();
+}
+
+// Подсказка справочной цены: торговец продаёт — берём «Продажа ср.»,
+// покупает — «Покупка ср.» (соски торговец тоже продаёт).
+function updatePriceHint() {
+  const el = document.getElementById('slotPriceHint');
+  const priceInput = document.getElementById('slotPrice');
+  const e = state.editing;
+  const r = e && e.selectedSlug ? state.resourcesBySlug[e.selectedSlug] : null;
+  const side = e && e.role === 'buy' ? 'buy' : 'sell';
+  const value = r ? (side === 'buy' ? r.buy_avg : r.sell_avg) : null;
+
+  el.className = 'price-hint ' + side;
+  if (value === null || value === undefined) {
+    el.innerHTML = r ? '· цены в базе нет' : '';
+    priceInput.placeholder = 'опционально';
+    return;
+  }
+  const label = side === 'buy' ? 'покупка ср.' : 'продажа ср.';
+  el.innerHTML = '· ' + label + ' ' + fmt(value) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">';
+  priceInput.placeholder = fmt(value);
 }
 
 function shortCat(c) {
