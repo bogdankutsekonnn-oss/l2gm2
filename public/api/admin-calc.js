@@ -145,6 +145,22 @@ window.L2Calc = (function () {
     return (v === null || v === undefined || v === '') ? null : Number(v);
   }
 
+  /** Все ингредиенты рецепта, рекурсивно, включая промежуточные. */
+  function ingredientSlugs(resource, bySlug, acc, visited) {
+    acc = acc || new Set();
+    visited = visited || new Set();
+    if (!resource || !resource.recipe || visited.has(resource.slug)) return acc;
+    visited.add(resource.slug);
+    for (const ing of resource.recipe) {
+      acc.add(ing.slug);
+      const ingRes = bySlug[ing.slug];
+      if (ingRes && ingRes.recipe && ingRes.recipe.length) {
+        ingredientSlugs(ingRes, bySlug, acc, visited);
+      }
+    }
+    return acc;
+  }
+
   function recipeToText(r, bySlug) {
     if (!r.recipe) return '';
     return r.recipe.map(i => `${(bySlug[i.slug] || {}).name || i.slug}×${i.qty}`).join(' + ');
@@ -154,6 +170,6 @@ window.L2Calc = (function () {
     fmt, fmtSigned, escapeHtml,
     computeCost, findMissingIngredients,
     flipMetrics, craftMetrics,
-    topFlip, topCraft, recipeToText,
+    topFlip, topCraft, recipeToText, ingredientSlugs,
   };
 })();

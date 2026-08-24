@@ -242,6 +242,27 @@
     .pp-tag { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: rgba(255,193,7,0.12); color: #ffc107; white-space: nowrap; }
     .pp-note { grid-column: 1 / -1; font-size: 11px; color: rgba(245,245,247,0.33); line-height: 1.55; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
     .pp-empty { font-size: 12px; color: rgba(245,245,247,0.35); padding: 8px 0; }
+    .pp-chip.city .v { color: #fe5722; }
+    .pp-cities { grid-column: 1 / -1; }
+    .pp-cities h3 { font-size: 12px; font-weight: 700; margin-bottom: 8px; color: rgba(245,245,247,0.75); }
+    .pc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+    .pc-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px 10px; }
+    .pc-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+    .pc-head img { width: 18px; height: 18px; }
+    .pc-city { font-size: 12px; font-weight: 700; }
+    .pc-role { font-size: 10px; color: rgba(245,245,247,0.5); }
+    .pc-meta { margin-left: auto; font-size: 10px; color: rgba(245,245,247,0.35); white-space: nowrap; }
+    .pc-rec { display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .pc-rec:hover { background: rgba(254,54,0,0.1); }
+    .pc-rec img { width: 18px; height: 18px; flex: none; }
+    .pc-plus { color: rgb(254,54,0); font-weight: 700; width: 10px; flex: none; }
+    .pc-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pc-via { font-size: 10px; color: rgba(245,245,247,0.35); white-space: nowrap; }
+    .pc-via.raw { color: #ffc107; }
+    .pc-val { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; color: #4BD285; white-space: nowrap; }
+    .pc-swap { font-size: 11px; color: rgba(245,245,247,0.45); padding: 2px 6px 4px; }
+    .pc-ok { font-size: 11px; color: rgba(75,210,133,0.6); padding: 4px 6px; }
+
     .card.flash { animation: cardFlash 1.6s ease-out; }
     @keyframes cardFlash { 0%, 100% { box-shadow: none; } 12%, 55% { box-shadow: 0 0 0 2px rgba(254,54,0,0.75); } }
 
@@ -525,7 +546,6 @@ async function showDashboard() {
   document.getElementById('whoami').textContent = state.user ? `👤 ${state.user.username}` : '';
   await Promise.all([loadResources(), loadMerchants()]);
   render();
-  renderProfitPanel();
 }
 
 // ---- Data ----
@@ -603,6 +623,7 @@ function render() {
   });
 
   document.getElementById('toolbarInfo').textContent = `${items.length} из ${state.merchants.length}`;
+  renderProfitPanel();
 
   const cont = document.getElementById('cards');
   if (!items.length) {
@@ -948,6 +969,7 @@ function renderProfitPanel() {
   const sortBy = state.profitSort;
   const flip  = L2Calc.topFlip(state.resources, {sortBy, limit: PROFIT_ROWS});
   const craft = L2Calc.topCraft(state.resources, state.resourcesBySlug, {sortBy, limit: PROFIT_ROWS});
+  const advice = cityAdvice(sortBy);
 
   // Свёрнутый вид — две строки чипов
   document.getElementById('ppPreview').innerHTML =
@@ -956,7 +978,8 @@ function renderProfitPanel() {
     '</div>' +
     '<div class="pp-line"><span class="pp-line-label">🔨 крафт</span>' +
       (craft.slice(0, PROFIT_CHIPS).map(row => profitChip(row, 'craft')).join('') || '<span class="pp-dim">нет данных</span>') +
-    '</div>';
+    '</div>' +
+    cityPreviewLine(advice);
 
   // Развёрнутый вид — две таблицы
   const flipTable = flip.length
@@ -973,10 +996,12 @@ function renderProfitPanel() {
   document.getElementById('ppBody').innerHTML =
     '<div class="pp-col"><h3>💰 Выгоднее всего перепродавать</h3>' + flipTable + '</div>' +
     '<div class="pp-col"><h3>🔨 Выгоднее всего крафтить</h3>' + craftTable + '</div>' +
+    renderCityAdvice(advice) +
     '<div class="pp-note">Сортировка по <strong>' + (sortBy === 'roi' ? '% ROI' : 'адене') + '</strong>: ' +
       'ROI — когда ограничен капитал, адена — когда ограничены слоты. ' +
       'Цены берутся из вкладки «Цены ресурсов», крафт считается рекурсивно с учётом выхода (соски — пачками). ' +
-      'Клик по строке — прыжок к торговцу с этим ресурсом.</div>';
+      'Клик по строке — прыжок к торговцу с этим ресурсом, ' +
+      'клик по подсказке города — открывает нужный слот с уже выбранным ресурсом.</div>';
 }
 
 function profitChip(row, kind) {
@@ -1054,6 +1079,188 @@ function focusResource(slug) {
   el.classList.remove('flash');
   void el.offsetWidth; // рестарт анимации
   el.classList.add('flash');
+}
+
+// ---- Подсказки по городам ----
+// Смотрим только на города, где есть активные торговцы: что выгодного там ещё не стоит
+// ни в одном слоте. Если слоты кончились — предлагаем замену самому слабому.
+const SLOTS_PER_MERCHANT = 5;
+const CITY_RECS_MAX = 4;      // сколько подсказок показываем на группу
+const SWAP_MIN_GAIN = 1.25;   // замена предлагается, если кандидат лучше слабого хотя бы в 1.25 раза
+
+// Ингредиент → самый прибыльный крафт, которому он нужен.
+// Так buy-торговец видит, что скупать даже у ресурсов без цены продажи.
+function craftDemandMap() {
+  const demand = {};
+  for (const r of state.resources) {
+    const c = L2Calc.craftMetrics(r, state.resourcesBySlug);
+    if (!c || c.profit === null || c.profit <= 0) continue;
+    for (const slug of L2Calc.ingredientSlugs(r, state.resourcesBySlug)) {
+      const prev = demand[slug];
+      if (!prev || c.profit > prev.profit) demand[slug] = {target: r, profit: c.profit, roi: c.roi};
+    }
+  }
+  return demand;
+}
+
+// Что имеет смысл держать торговцу этой роли, по убыванию выгоды.
+function roleCandidates(role, sortBy, demand) {
+  const key = sortBy === 'profit' ? 'profit' : 'roi';
+  const flips = [];
+  const raw = [];
+  for (const r of state.resources) {
+    if (role === 'shots' && r.category !== 'shots') continue;
+    const f = L2Calc.flipMetrics(r);
+    const c = (role === 'buy') ? null : L2Calc.craftMetrics(r, state.resourcesBySlug);
+
+    let best = null;
+    if (f.profit !== null && f.profit > 0) best = {profit: f.profit, roi: f.roi, via: 'перепродажа'};
+    if (c && c.profit !== null && c.profit > 0) {
+      const craft = {profit: c.profit, roi: c.roi, via: 'крафт'};
+      if (!best || (craft[key] ?? -Infinity) > (best[key] ?? -Infinity)) best = craft;
+    }
+    if (best) { flips.push({resource: r, ...best}); continue; }
+
+    // Цены продажи нет, но ресурс нужен для прибыльного крафта — значит его стоит скупать.
+    if (role === 'buy' && demand[r.slug]) {
+      const d = demand[r.slug];
+      raw.push({resource: r, profit: d.profit, roi: d.roi, via: 'сырьё для ' + d.target.name, isRaw: true});
+    }
+  }
+  const bySort = (a, b) => (b[key] ?? -Infinity) - (a[key] ?? -Infinity);
+  return flips.sort(bySort).concat(raw.sort(bySort));
+}
+
+// Группы «город + роль» по активным торговцам.
+function cityAdvice(sortBy) {
+  const demand = craftDemandMap();
+  const groups = new Map();
+
+  for (const m of state.merchants) {
+    if (m.status === 'archived') continue;
+    const key = m.city + '|' + m.role;
+    if (!groups.has(key)) groups.set(key, {city: m.city, role: m.role, merchants: [], covered: new Set(), free: [], occupied: []});
+    const g = groups.get(key);
+    g.merchants.push(m);
+
+    const taken = new Set();
+    for (const s of (m.slots || [])) {
+      g.covered.add(s.resource_slug);
+      taken.add(s.slot_index);
+      if (m.status === 'active') g.occupied.push({merchant: m, slot: s});
+    }
+    if (m.status !== 'active') continue;
+    for (let i = 1; i <= SLOTS_PER_MERCHANT; i++) {
+      if (!taken.has(i)) g.free.push({merchantId: m.id, slotIndex: i});
+    }
+  }
+
+  const out = [];
+  for (const g of groups.values()) {
+    if (!g.merchants.some(m => m.status === 'active')) continue;
+    const cands = roleCandidates(g.role, sortBy, demand).filter(c => !g.covered.has(c.resource.slug));
+    const recs = g.free.slice(0, CITY_RECS_MAX).map((slot, i) => cands[i] ? {...cands[i], ...slot} : null).filter(Boolean);
+
+    // Слотов нет — ищем, что не жалко заменить.
+    let swap = null;
+    if (!g.free.length && cands.length && g.occupied.length) {
+      const key = sortBy === 'profit' ? 'profit' : 'roi';
+      const scored = g.occupied.map(o => {
+        const r = state.resourcesBySlug[o.slot.resource_slug];
+        const cand = r ? roleValue(r, g.role, key) : null;
+        return {...o, value: cand};
+      }).sort((a, b) => (a.value ?? -Infinity) - (b.value ?? -Infinity));
+      const weakest = scored[0];
+      const best = cands[0];
+      const wv = weakest.value;
+      if (wv === null || (best[key] ?? 0) > wv * SWAP_MIN_GAIN) {
+        swap = {weakest, best, merchantId: weakest.merchant.id, slotIndex: weakest.slot.slot_index};
+      }
+    }
+
+    out.push({...g, recs, swap, activeCount: g.merchants.filter(m => m.status === 'active').length});
+  }
+
+  const roleOrder = {buy: 0, sell: 1, shots: 2};
+  return out.sort((a, b) => {
+    const d = (b.recs.length + (b.swap ? 1 : 0)) - (a.recs.length + (a.swap ? 1 : 0));
+    if (d !== 0) return d;
+    return (roleOrder[a.role] ?? 1) - (roleOrder[b.role] ?? 1);
+  });
+}
+
+// Значение ресурса для роли по выбранной метрике — чтобы сравнивать занятые слоты с кандидатами.
+function roleValue(r, role, key) {
+  const f = L2Calc.flipMetrics(r);
+  const c = (role === 'buy') ? null : L2Calc.craftMetrics(r, state.resourcesBySlug);
+  const vals = [];
+  if (f.profit !== null) vals.push(f[key]);
+  if (c && c.profit !== null) vals.push(c[key]);
+  const clean = vals.filter(v => v !== null && v !== undefined);
+  return clean.length ? Math.max(...clean) : null;
+}
+
+function renderCityAdvice(groups) {
+  if (!groups.length) return '';
+
+  const cards = groups.map(g => {
+    const city = CITY_BY_SLUG[g.city] || {name: g.city, slug: g.city};
+    const roleLabel = g.role === 'sell' ? '🟢 продают' : g.role === 'buy' ? '🔴 скупают' : '🟣 соски';
+    let inner;
+    if (g.recs.length) {
+      inner = g.recs.map(rec => cityRecRow(rec, 'plus')).join('');
+    } else if (g.swap) {
+      const w = g.swap.weakest;
+      inner = '<div class="pc-swap">Слоты забиты. Самый слабый — <strong>' + escapeHtml(w.slot.resource_name) +
+        '</strong> у ' + escapeHtml(w.merchant.name) + '</div>' +
+        cityRecRow({...g.swap.best, merchantId: g.swap.merchantId, slotIndex: g.swap.slotIndex}, 'swap');
+    } else {
+      inner = '<div class="pc-ok">✓ всё топовое уже стоит</div>';
+    }
+    return '<div class="pc-card">' +
+      '<div class="pc-head">' +
+        '<img src="' + CITY_ICON_BASE + '/' + city.slug + '.svg" alt="">' +
+        '<span class="pc-city">' + escapeHtml(city.name) + '</span>' +
+        '<span class="pc-role">' + roleLabel + '</span>' +
+        '<span class="pc-meta">' + g.activeCount + ' торг. · ' +
+          (g.free.length ? 'своб. слотов ' + g.free.length : 'слоты забиты') + '</span>' +
+      '</div>' + inner + '</div>';
+  }).join('');
+
+  return '<div class="pp-cities"><h3>🏙 По твоим городам</h3><div class="pc-grid">' + cards + '</div></div>';
+}
+
+// Строка в свёрнутом виде: где и сколько подсказок.
+function cityPreviewLine(groups) {
+  const withRecs = groups.filter(g => g.recs.length || g.swap);
+  if (!withRecs.length) return '';
+  const roleIcon = {buy: '🔴', sell: '🟢', shots: '🟣'};
+  const chips = withRecs.slice(0, 6).map(g => {
+    const city = CITY_BY_SLUG[g.city] || {name: g.city};
+    const n = g.recs.length || 1;
+    return '<span class="pp-chip city">' + (roleIcon[g.role] || '') + ' ' + escapeHtml(city.name) +
+      '<span class="v">' + (g.swap && !g.recs.length ? 'замена' : '+' + n) + '</span></span>';
+  }).join('');
+  return '<div class="pp-line"><span class="pp-line-label">🏙 города</span>' + chips + '</div>';
+}
+
+function cityRecRow(rec, kind) {
+  const r = rec.resource;
+  const val = state.profitSort === 'roi' ? pctText(rec.roi) : L2Calc.fmtSigned(rec.profit);
+  return '<div class="pc-rec" onclick="suggestSlot(' + rec.merchantId + ', ' + rec.slotIndex + ', \'' + r.slug + '\')" ' +
+    'title="Открыть слот с этим ресурсом">' +
+    '<span class="pc-plus">' + (kind === 'swap' ? '⇄' : '+') + '</span>' +
+    '<img src="' + ICON_BASE + '/' + r.icon + '" onerror="this.onerror=null;this.src=\'' + ICON_BASE + '/placeholder.svg\'" alt="">' +
+    '<span class="pc-name">' + escapeHtml(r.name) + '</span>' +
+    '<span class="pc-via' + (rec.isRaw ? ' raw' : '') + '">' + escapeHtml(rec.via) + '</span>' +
+    '<span class="pc-val">' + val + '</span>' +
+  '</div>';
+}
+
+// Клик по подсказке — сразу открываем нужный слот с выбранным ресурсом.
+function suggestSlot(merchantId, slotIndex, slug) {
+  editSlot(merchantId, slotIndex);
+  pickResource(slug);
 }
 
 // ---- Slot edit modal ----
