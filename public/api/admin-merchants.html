@@ -202,6 +202,63 @@
 
     .empty-state { text-align: center; padding: 60px 20px; color: rgba(245,245,247,0.4); }
 
+    /* Панель выгоды */
+    .profit-panel { background: #0f1113; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+    .pp-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; user-select: none; flex-wrap: wrap; }
+    .pp-header:hover { background: rgba(255,255,255,0.02); }
+    .pp-arrow { color: rgba(245,245,247,0.4); font-size: 11px; transition: transform 0.15s; }
+    .profit-panel.open .pp-arrow { transform: rotate(90deg); }
+    .pp-title { font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .pp-preview { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+    .profit-panel.open .pp-preview { display: none; }
+    .pp-line { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .pp-line-label { font-size: 10px; color: rgba(245,245,247,0.4); width: 56px; flex: none; }
+    .pp-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; background: rgba(255,255,255,0.04); border-radius: 6px; font-size: 11px; white-space: nowrap; cursor: pointer; }
+    .pp-chip:hover { background: rgba(255,255,255,0.09); }
+    .pp-chip img { width: 16px; height: 16px; }
+    .pp-chip .v { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .pp-chip.flip .v { color: #4BD285; }
+    .pp-chip.craft .v { color: #ffc107; }
+    .pp-sort { display: flex; gap: 3px; margin-left: auto; }
+    .pp-sort-btn { padding: 4px 9px; background: rgba(255,255,255,0.05); border: none; border-radius: 5px; color: rgba(245,245,247,0.5); cursor: pointer; font-size: 11px; }
+    .pp-sort-btn.active { background: rgb(254,54,0); color: #f5f5f7; }
+    .pp-body { display: none; padding: 0 14px 12px; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .profit-panel.open .pp-body { display: grid; }
+    .pp-col h3 { font-size: 12px; font-weight: 700; margin-bottom: 6px; color: rgba(245,245,247,0.75); }
+    .pp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .pp-table th { text-align: right; font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: rgba(245,245,247,0.35); padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
+    .pp-table th:first-child { text-align: left; }
+    .pp-table td { padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .pp-table td:first-child { text-align: left; }
+    .pp-table tbody tr { cursor: pointer; }
+    .pp-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .pp-res { display: flex; align-items: center; gap: 6px; }
+    .pp-res img { width: 20px; height: 20px; flex: none; }
+    .pp-res-name { overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+    .pp-pos { color: #4BD285; }
+    .pp-neg { color: #ff6b6b; }
+    .pp-dim { color: rgba(245,245,247,0.35); }
+    .pp-pct { color: rgba(245,245,247,0.4); font-size: 11px; }
+    .pp-tag { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: rgba(255,193,7,0.12); color: #ffc107; white-space: nowrap; }
+    .pp-note { grid-column: 1 / -1; font-size: 11px; color: rgba(245,245,247,0.33); line-height: 1.55; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 8px; }
+    .pp-empty { font-size: 12px; color: rgba(245,245,247,0.35); padding: 8px 0; }
+    .card.flash { animation: cardFlash 1.6s ease-out; }
+    @keyframes cardFlash { 0%, 100% { box-shadow: none; } 12%, 55% { box-shadow: 0 0 0 2px rgba(254,54,0,0.75); } }
+
+    /* Метрики в модалке слота */
+    .slot-metrics { display: none; flex-direction: column; gap: 4px; margin-top: 10px; padding: 8px 10px; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 12px; }
+    .slot-metrics.show { display: flex; }
+    .sm-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .sm-label { font-weight: 700; width: 62px; flex: none; }
+    .sm-label.flip { color: #4BD285; }
+    .sm-label.craft { color: #ffc107; }
+    .sm-chain { color: rgba(245,245,247,0.5); font-variant-numeric: tabular-nums; }
+    .sm-val { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .sm-pos { color: #4BD285; }
+    .sm-neg { color: #ff6b6b; }
+    .sm-note { font-size: 11px; color: #ffc107; }
+    .sm-dim { color: rgba(245,245,247,0.35); font-size: 11px; }
+
     /* Responsive */
     @media (max-width: 768px) {
       .dashboard { padding: 12px; }
@@ -212,6 +269,8 @@
       .toolbar { gap: 6px; }
       .search-input { min-width: 0; width: 100%; }
       .cards { grid-template-columns: 1fr; gap: 10px; }
+      .pp-body { grid-template-columns: 1fr; }
+      .pp-line-label { width: 100%; }
       .card { padding: 12px; }
       .modal { width: calc(100vw - 24px); max-width: 460px; padding: 16px; }
       .login-box { width: calc(100vw - 32px); max-width: 360px; }
@@ -287,6 +346,20 @@
   <div class="city-filters" id="cityFilters"></div>
   <div style="height: 12px;"></div>
 
+  <!-- Что выгодно: флип и крафт по текущим ценам -->
+  <div class="profit-panel" id="profitPanel" style="display:none;">
+    <div class="pp-header" onclick="toggleProfitPanel()">
+      <span class="pp-arrow" id="ppArrow">▸</span>
+      <span class="pp-title">📊 Что выгодно</span>
+      <div class="pp-preview" id="ppPreview"></div>
+      <div class="pp-sort" onclick="event.stopPropagation()">
+        <button class="pp-sort-btn" data-sort="roi" onclick="setProfitSort('roi')">% ROI</button>
+        <button class="pp-sort-btn" data-sort="profit" onclick="setProfitSort('profit')">₳ адена</button>
+      </div>
+    </div>
+    <div class="pp-body" id="ppBody"></div>
+  </div>
+
   <div class="cards" id="cards"></div>
 </div>
 
@@ -350,6 +423,7 @@
         <input type="text" inputmode="numeric" id="slotQty" placeholder="опционально">
       </div>
     </div>
+    <div class="slot-metrics" id="slotMetrics"></div>
     <div class="conflict-warn" id="conflictWarn"></div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeSlotModal()">Отмена</button>
@@ -360,6 +434,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="admin-calc.js?v=1"></script>
 <script>
 const API_BASE = '/api';
 const ICON_BASE = '/img/resources';
@@ -393,6 +468,9 @@ let state = {
   user: null,
   // Slot edit modal state
   editing: null, // {merchantId, slotIndex, currentSlug, role}
+  // Панель выгоды
+  profitSort: localStorage.getItem('l2gm_profit_sort') === 'profit' ? 'profit' : 'roi',
+  profitOpen: localStorage.getItem('l2gm_profit_open') === '1',
 };
 
 // ---- Auth ----
@@ -447,6 +525,7 @@ async function showDashboard() {
   document.getElementById('whoami').textContent = state.user ? `👤 ${state.user.username}` : '';
   await Promise.all([loadResources(), loadMerchants()]);
   render();
+  renderProfitPanel();
 }
 
 // ---- Data ----
@@ -638,14 +717,8 @@ function statusLabel(s) {
   return ({active:'Активен',paused:'На паузе',archived:'Архив'})[s] || s;
 }
 
-function fmt(n) {
-  if (n === null || n === undefined) return '—';
-  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-function escapeHtml(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+function fmt(n) { return L2Calc.fmt(n); }
+function escapeHtml(s) { return L2Calc.escapeHtml(s); }
 
 function relTime(d) {
   const sec = Math.round((Date.now() - d) / 1000);
@@ -844,6 +917,145 @@ async function saveNewMerchant() {
   } catch (e) { toast('Сеть недоступна', 'error'); }
 }
 
+// ---- Панель выгоды ----
+// Считает по справочным ценам из /api/prices.php (вкладка «Цены ресурсов»).
+// Флип  = купить по «покупка ср.» → продать по «продажа ср.»
+// Крафт = скупить ингредиенты (рекурсивно, дешевле из «купить/скрафтить») → продать готовое
+const PROFIT_ROWS = 15;   // строк в развёрнутых таблицах
+const PROFIT_CHIPS = 5;   // сколько показываем в свёрнутом виде
+
+function toggleProfitPanel() {
+  state.profitOpen = !state.profitOpen;
+  localStorage.setItem('l2gm_profit_open', state.profitOpen ? '1' : '0');
+  renderProfitPanel();
+}
+
+function setProfitSort(sort) {
+  state.profitSort = sort === 'profit' ? 'profit' : 'roi';
+  localStorage.setItem('l2gm_profit_sort', state.profitSort);
+  if (!state.profitOpen) { state.profitOpen = true; localStorage.setItem('l2gm_profit_open', '1'); }
+  renderProfitPanel();
+}
+
+function renderProfitPanel() {
+  const panel = document.getElementById('profitPanel');
+  if (!panel) return;
+  if (!state.resources.length) { panel.style.display = 'none'; return; }
+  panel.style.display = '';
+  panel.classList.toggle('open', state.profitOpen);
+  document.querySelectorAll('.pp-sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === state.profitSort));
+
+  const sortBy = state.profitSort;
+  const flip  = L2Calc.topFlip(state.resources, {sortBy, limit: PROFIT_ROWS});
+  const craft = L2Calc.topCraft(state.resources, state.resourcesBySlug, {sortBy, limit: PROFIT_ROWS});
+
+  // Свёрнутый вид — две строки чипов
+  document.getElementById('ppPreview').innerHTML =
+    '<div class="pp-line"><span class="pp-line-label">💰 закуп</span>' +
+      (flip.slice(0, PROFIT_CHIPS).map(row => profitChip(row, 'flip')).join('') || '<span class="pp-dim">нет данных</span>') +
+    '</div>' +
+    '<div class="pp-line"><span class="pp-line-label">🔨 крафт</span>' +
+      (craft.slice(0, PROFIT_CHIPS).map(row => profitChip(row, 'craft')).join('') || '<span class="pp-dim">нет данных</span>') +
+    '</div>';
+
+  // Развёрнутый вид — две таблицы
+  const flipTable = flip.length
+    ? '<table class="pp-table"><thead><tr><th>Ресурс</th><th>Купить</th><th>Продать</th><th>Профит</th>' +
+      '<th title="Худший случай: скупили по максимуму, продали по минимуму">Гарант.</th></tr></thead><tbody>' +
+      flip.map(flipRow).join('') + '</tbody></table>'
+    : '<div class="pp-empty">Нет ресурсов, у которых заполнены и покупка, и продажа.</div>';
+
+  const craftTable = craft.length
+    ? '<table class="pp-table"><thead><tr><th>Ресурс</th><th>Себест.</th><th>Продать</th><th>Профит</th></tr></thead><tbody>' +
+      craft.map(craftRow).join('') + '</tbody></table>'
+    : '<div class="pp-empty">Не хватает цен на ингредиенты — себестоимость не считается.</div>';
+
+  document.getElementById('ppBody').innerHTML =
+    '<div class="pp-col"><h3>💰 Выгоднее всего перепродавать</h3>' + flipTable + '</div>' +
+    '<div class="pp-col"><h3>🔨 Выгоднее всего крафтить</h3>' + craftTable + '</div>' +
+    '<div class="pp-note">Сортировка по <strong>' + (sortBy === 'roi' ? '% ROI' : 'адене') + '</strong>: ' +
+      'ROI — когда ограничен капитал, адена — когда ограничены слоты. ' +
+      'Цены берутся из вкладки «Цены ресурсов», крафт считается рекурсивно с учётом выхода (соски — пачками). ' +
+      'Клик по строке — прыжок к торговцу с этим ресурсом.</div>';
+}
+
+function profitChip(row, kind) {
+  const r = row.resource;
+  const val = state.profitSort === 'roi' ? pctText(row.roi) : L2Calc.fmtSigned(row.profit);
+  return '<span class="pp-chip ' + kind + '" onclick="event.stopPropagation();focusResource(\'' + r.slug + '\')" title="' + escapeAttr(r.name) + '">' +
+    '<img src="' + ICON_BASE + '/' + r.icon + '" onerror="this.onerror=null;this.src=\'' + ICON_BASE + '/placeholder.svg\'" alt="">' +
+    '<span>' + escapeHtml(r.name) + '</span><span class="v">' + val + '</span></span>';
+}
+
+function flipRow(row) {
+  const r = row.resource;
+  const guarCls = row.guaranteed === null ? 'pp-dim' : (row.guaranteed >= 0 ? 'pp-pos' : 'pp-neg');
+  return '<tr onclick="focusResource(\'' + r.slug + '\')">' +
+    '<td>' + resCell(r) + '</td>' +
+    '<td class="pp-dim">' + fmt(row.buy) + '</td>' +
+    '<td class="pp-dim">' + fmt(row.sell) + '</td>' +
+    '<td>' + profitCell(row.profit, row.roi) + '</td>' +
+    '<td class="' + guarCls + '">' + (row.guaranteed === null ? '—' : L2Calc.fmtSigned(row.guaranteed)) + '</td>' +
+  '</tr>';
+}
+
+function craftRow(row) {
+  const r = row.resource;
+  const tag = row.cheaperToBuy
+    ? '<span class="pp-tag" title="Готовое на рынке дешевле, чем собирать — ставь в скупку">дешевле купить</span>'
+    : '';
+  return '<tr onclick="focusResource(\'' + r.slug + '\')" title="' + escapeAttr(L2Calc.recipeToText(r, state.resourcesBySlug)) + '">' +
+    '<td>' + resCell(r, tag) + '</td>' +
+    '<td class="pp-dim">' + fmt(row.cost) + '</td>' +
+    '<td class="pp-dim">' + fmt(row.sell) + '</td>' +
+    '<td>' + profitCell(row.profit, row.roi) + '</td>' +
+  '</tr>';
+}
+
+function resCell(r, extra) {
+  return '<div class="pp-res">' +
+    '<img src="' + ICON_BASE + '/' + r.icon + '" onerror="this.onerror=null;this.src=\'' + ICON_BASE + '/placeholder.svg\'" alt="">' +
+    '<span class="pp-res-name">' + escapeHtml(r.name) + '</span>' + (extra || '') + '</div>';
+}
+
+function profitCell(profit, roi) {
+  if (profit === null) return '<span class="pp-dim">—</span>';
+  return '<span class="' + (profit >= 0 ? 'pp-pos' : 'pp-neg') + '">' + L2Calc.fmtSigned(profit) + '</span> ' +
+    '<span class="pp-pct">' + pctText(roi) + '</span>';
+}
+
+function pctText(roi) {
+  if (roi === null || roi === undefined) return '';
+  return (roi >= 0 ? '+' : '') + roi.toFixed(roi >= 100 ? 0 : 1) + '%';
+}
+
+// Клик по ресурсу в панели — прыжок к торговцу, который им торгует.
+function focusResource(slug) {
+  const r = state.resourcesBySlug[slug];
+  if (!r) return;
+  const owner = state.merchants.find(m => m.status !== 'archived' && (m.slots || []).some(s => s.resource_slug === slug));
+  if (!owner) {
+    toast(r.name + ' — никто не торгует, свободная ниша', 'success');
+    return;
+  }
+  let el = document.querySelector('.card[data-id="' + owner.id + '"]');
+  if (!el) {
+    // карточка скрыта фильтрами — снимаем их и перерисовываем
+    state.filterRoles.clear();
+    state.filterCities.clear();
+    state.filterStatus = 'all';
+    document.querySelectorAll('[data-status]').forEach(b => b.classList.toggle('active', b.dataset.status === 'all'));
+    document.getElementById('searchInput').value = '';
+    render();
+    el = document.querySelector('.card[data-id="' + owner.id + '"]');
+  }
+  if (!el) return;
+  el.scrollIntoView({behavior: 'smooth', block: 'center'});
+  el.classList.remove('flash');
+  void el.offsetWidth; // рестарт анимации
+  el.classList.add('flash');
+}
+
 // ---- Slot edit modal ----
 function editSlot(merchantId, slotIndex) {
   const m = findMerchant(merchantId); if (!m) return;
@@ -909,6 +1121,7 @@ function updatePriceHint() {
   const value = r ? (side === 'buy' ? r.buy_avg : r.sell_avg) : null;
 
   el.className = 'price-hint ' + side;
+  renderSlotMetrics();
   if (value === null || value === undefined) {
     el.innerHTML = r ? '· цены в базе нет' : '';
     priceInput.placeholder = 'опционально';
@@ -917,6 +1130,63 @@ function updatePriceHint() {
   const label = side === 'buy' ? 'покупка ср.' : 'продажа ср.';
   el.innerHTML = '· ' + label + ' ' + fmt(value) + ' <img class="adena-icon-sm" src="' + ICON_BASE + '/adena.png">';
   priceInput.placeholder = fmt(value);
+}
+
+// Выгода по выбранному ресурсу — прямо в модалке, где принимается решение.
+// Для роли «покупает» первым идёт флип, для продажи и сосок — крафт.
+function renderSlotMetrics() {
+  const box = document.getElementById('slotMetrics');
+  if (!box) return;
+  const e = state.editing;
+  const r = e && e.selectedSlug ? state.resourcesBySlug[e.selectedSlug] : null;
+  if (!r) { box.innerHTML = ''; box.classList.remove('show'); return; }
+
+  const f = L2Calc.flipMetrics(r);
+  const c = L2Calc.craftMetrics(r, state.resourcesBySlug);
+  const rows = [];
+
+  if (f.profit !== null) {
+    let extra = '';
+    if (f.guaranteed !== null && f.guaranteed !== f.profit) {
+      extra = ' <span class="sm-dim">гарант. ' + L2Calc.fmtSigned(f.guaranteed) + '</span>';
+    }
+    rows.push(metricRow('flip', '💰 Флип',
+      'купить ' + fmt(f.buy) + ' → продать ' + fmt(f.sell) + extra,
+      f.profit, f.roi));
+  }
+
+  if (c && c.profit !== null) {
+    const tag = c.cheaperToBuy ? ' <span class="sm-note">· готовое дешевле купить</span>' : '';
+    rows.push(metricRow('craft', '🔨 Крафт',
+      'себест. ' + fmt(c.cost) + ' → продать ' + fmt(c.sell) + tag,
+      c.profit, c.roi));
+  } else if (c && c.cost === null) {
+    rows.push('<div class="sm-row"><span class="sm-label craft">🔨 Крафт</span>' +
+      '<span class="sm-dim">нет цен на ингредиенты: ' +
+      escapeHtml(L2Calc.findMissingIngredients(r, state.resourcesBySlug).slice(0, 3).join(', ')) + '</span></div>');
+  } else if (c) {
+    rows.push('<div class="sm-row"><span class="sm-label craft">🔨 Крафт</span>' +
+      '<span class="sm-chain">себест. ' + fmt(c.cost) + '</span>' +
+      '<span class="sm-val sm-dim">цены продажи нет</span></div>');
+  }
+
+  if (e.role === 'sell' || e.role === 'shots') rows.reverse();
+
+  if (!rows.length) {
+    box.innerHTML = '<div class="sm-row"><span class="sm-dim">Нет цен для расчёта выгоды — заполни их во вкладке «Цены ресурсов».</span></div>';
+  } else {
+    box.innerHTML = rows.join('');
+  }
+  box.classList.add('show');
+}
+
+function metricRow(kind, label, chain, profit, roi) {
+  return '<div class="sm-row">' +
+    '<span class="sm-label ' + kind + '">' + label + '</span>' +
+    '<span class="sm-chain">' + chain + '</span>' +
+    '<span class="sm-val ' + (profit >= 0 ? 'sm-pos' : 'sm-neg') + '">' +
+      L2Calc.fmtSigned(profit) + ' <span class="pp-pct">' + pctText(roi) + '</span></span>' +
+  '</div>';
 }
 
 function shortCat(c) {

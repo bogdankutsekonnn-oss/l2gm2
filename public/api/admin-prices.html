@@ -197,6 +197,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="admin-calc.js?v=1"></script>
 <script>
 const API_BASE = '/api';
 const ICON_BASE = '/img/resources';
@@ -400,59 +401,16 @@ function recipeToText(r) {
   }).join(' + ');
 }
 
-function fmt(n) {
-  if (n === null || n === undefined) return '—';
-  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
+function fmt(n) { return L2Calc.fmt(n); }
+function escapeHtml(s) { return L2Calc.escapeHtml(s); }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-// ---- Cost calc ----
+// ---- Cost calc ---- (общая логика — admin-calc.js)
 function computeCost(resource, visited) {
-  visited = visited || new Set();
-  if (!resource.recipe || !resource.recipe.length) {
-    return resource.buy_avg !== null ? resource.buy_avg : null;
-  }
-  if (visited.has(resource.slug)) return null;
-  visited.add(resource.slug);
-
-  let total = 0;
-  for (const ing of resource.recipe) {
-    const ingRes = state.bySlug[ing.slug];
-    if (!ingRes) return null;
-    // Берём минимум из buy_avg и себестоимости крафта (если рецепт у ингредиента дешевле)
-    let unitCost = ingRes.buy_avg;
-    if (ingRes.recipe && ingRes.recipe.length) {
-      const craftCost = computeCost(ingRes, new Set(visited));
-      if (craftCost !== null) {
-        unitCost = (unitCost === null) ? craftCost : Math.min(unitCost, craftCost);
-      }
-    }
-    if (unitCost === null) return null;
-    total += unitCost * ing.qty;
-  }
-  return Math.round(total / (resource.yield_qty || 1));
+  return L2Calc.computeCost(resource, state.bySlug, visited);
 }
 
 function findMissingIngredients(resource, missing, visited) {
-  missing = missing || [];
-  visited = visited || new Set();
-  if (visited.has(resource.slug)) return missing;
-  visited.add(resource.slug);
-  if (!resource.recipe) return missing;
-  for (const ing of resource.recipe) {
-    const ingRes = state.bySlug[ing.slug];
-    if (!ingRes) { missing.push(ing.slug); continue; }
-    if (ingRes.buy_avg !== null) continue; // есть цена — норм
-    if (ingRes.recipe && ingRes.recipe.length) {
-      findMissingIngredients(ingRes, missing, visited);
-    } else {
-      if (!missing.includes(ingRes.name)) missing.push(ingRes.name);
-    }
-  }
-  return missing;
+  return L2Calc.findMissingIngredients(resource, state.bySlug, missing, visited);
 }
 
 // ---- Inline edit ----
