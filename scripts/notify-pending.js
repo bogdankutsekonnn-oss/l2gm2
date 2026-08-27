@@ -51,10 +51,18 @@ function writeState(lastNotifiedId) {
   fs.writeFileSync(STATE_PATH, JSON.stringify({ lastNotifiedId }, null, 2) + '\n')
 }
 
+// Протухший ADMIN_TOKEN нельзя молча приравнивать к «сеть моргнула»: заявки
+// перестанут приходить, а запуски останутся зелёными — ровно та беда, из-за
+// которой уведомления и потерялись в первый раз.
+class AuthError extends Error {}
+
 async function fetchApplications() {
   const res = await fetch(`${API_URL}?all=1`, {
     headers: { Accept: 'application/json', Authorization: `Bearer ${ADMIN_TOKEN}` },
   })
+  if (res.status === 401 || res.status === 403) {
+    throw new AuthError(`API отверг ADMIN_TOKEN (${res.status}) — обнови секрет`)
+  }
   if (!res.ok) throw new Error(`API ${res.status} ${res.statusText}`)
   const data = await res.json()
   if (!Array.isArray(data)) throw new Error('API вернул не массив')
@@ -101,6 +109,10 @@ let applications
 try {
   applications = await fetchApplications()
 } catch (e) {
+  if (e instanceof AuthError) {
+    console.error(e.message)
+    process.exit(1)
+  }
   // API прилёг — не роняем расписание, попробуем через полчаса. Отметку не
   // двигаем, так что ни одна заявка не потеряется.
   console.error(`Не удалось получить заявки: ${e.message}`)
