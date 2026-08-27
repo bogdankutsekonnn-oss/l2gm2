@@ -49,12 +49,23 @@
     <div class="filter-divider"></div>
 
     <div class="filter-section">
-      <NuxtLink to="/" class="promo-banner">
-        <div class="promo-placeholder">
-          <span>Реклама</span>
-          <span class="promo-size">282x470px</span>
-        </div>
-      </NuxtLink>
+      <a
+        href="https://duskfall.net/?utm_source=l2gm&utm_medium=banner&utm_campaign=DUSKFALL.NET"
+        class="promo-banner"
+        target="_blank"
+        rel="sponsored nofollow noopener"
+      >
+        <NuxtImg
+          src="/images/promo-duskfall.jpg"
+          alt="DUSKFALL.NET — Lineage 2 Interlude x20, старт 1 сентября"
+          class="promo-image"
+          width="282"
+          height="470"
+          format="webp"
+          quality="85"
+          loading="lazy"
+        />
+      </a>
     </div>
 
     <div class="filter-divider"></div>
@@ -232,27 +243,19 @@ const isRateActive = (slug) => {
 }
 
 .promo-banner {
+  display: block;
   width: 100%;
   aspect-ratio: 282 / 470;
   background: var(--bg-main);
   border-radius: var(--radius-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
-.promo-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
-  color: var(--text-secondary);
-  font-size: var(--font-sm);
-}
-
-.promo-size {
-  font-size: var(--font-xs);
+.promo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .server-finder {
