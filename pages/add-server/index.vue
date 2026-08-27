@@ -534,30 +534,6 @@ const previewServer = computed(() => ({
   icons: previewIcons.value,
 }))
 
-const sendTelegramNotification = async (serverData) => {
-  try {
-    await fetch('/api/contact.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        source: 'add-server',
-        name: serverData.name,
-        url: serverData.url,
-        chronicle: serverData.chronicle,
-        rate: serverData.rate,
-        startDate: serverData.startDate,
-        cardType: serverData.cardType,
-        serverTypes: serverData.serverTypes,
-        icons: serverData.icons,
-        email: serverData.email,
-        contacts: serverData.contacts,
-      }),
-    })
-  } catch {
-    // Не блокируем отправку формы при ошибке уведомления
-  }
-}
-
 const isSubmitting = ref(false)
 
 const handleSubmit = async () => {
@@ -584,7 +560,9 @@ const handleSubmit = async () => {
     serverTypes: form.serverTypes,
   }
 
-  // Отправка на API и в Telegram параллельно
+  // Уведомление в Telegram отсюда не шлём: хостинг не достаёт до
+  // api.telegram.org, а второй запрос из браузера всё равно теряется молча.
+  // О заявке сообщает scripts/notify-pending.js из GitHub Actions.
   const apiPayload = {
     name: serverData.name,
     url: serverData.url,
@@ -600,14 +578,11 @@ const handleSubmit = async () => {
     expiresAt: serverData.expiresAt,
   }
 
-  await Promise.allSettled([
-    fetch('/api/servers.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(apiPayload),
-    }).catch(() => {}),
-    sendTelegramNotification(serverData),
-  ])
+  await fetch('/api/servers.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(apiPayload),
+  }).catch(() => {})
 
   navigateTo('/thanks')
 }

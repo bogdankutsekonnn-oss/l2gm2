@@ -1,0 +1,64 @@
+name: Notify new applications
+
+# Заявки на добавление сервера уходят в Telegram отсюда, а не с хостинга:
+# Timeweb не пускает исходящие на api.telegram.org (см. scripts/notify-pending.js).
+
+on:
+  schedule:
+    # Каждые полчаса. Модерация ручная, минуты роли не играют — чаще гонять
+    # раннеры смысла нет.
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write # коммит отметки об отправленных заявках
+
+concurrency:
+  group: notify-applications
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Проверка новых заявок
+        id: notify
+        env:
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          ZAYAVKI_BOT_TOKEN: ${{ secrets.ZAYAVKI_BOT_TOKEN }}
+        run: |
+          set +e
+          node scripts/notify-pending.js
+          code=$?
+          set -e
+          case "$code" in
+            0)  echo "changed=false" >> "$GITHUB_OUTPUT" ;;
+            10) echo "changed=true"  >> "$GITHUB_OUTPUT" ;;
+            # 11 — часть заявок ушла, потом обрыв: отметку коммитим, но job
+            # роняем ниже, чтобы обрыв был виден.
+            11) echo "changed=true"  >> "$GITHUB_OUTPUT"
+                echo "failed=true"   >> "$GITHUB_OUTPUT" ;;
+            *)  echo "Скрипт уведомлений упал (код $code)"; exit "$code" ;;
+          esac
+
+      - name: Commit and push
+        if: steps.notify.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/notified-applications.json
+          git commit -m "Уведомления: отметка об отправленных заявках"
+          git push
+
+      - name: Обрыв отправки
+        if: steps.notify.outputs.failed == 'true'
+        run: |
+          echo "Часть заявок не ушла в Telegram — смотри лог шага выше."
+          exit 1

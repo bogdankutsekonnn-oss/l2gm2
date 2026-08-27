@@ -29,8 +29,23 @@ function escapeMarkdown($text) {
     );
 }
 
+// ВНИМАНИЕ: с хостинга (Timeweb) исходящие на api.telegram.org виснут по
+// таймауту — доставка отсюда не работает в принципе. Заявки на добавление
+// сервера уводятся в обход, через scripts/notify-pending.js в GitHub Actions.
+// Форма «О нас» пока завязана на этот путь и сообщения теряет.
 function sendTelegram($text) {
-    $url = 'https://api.telegram.org/bot' . TG_BOT_TOKEN . '/sendMessage';
+    $token = defined('TG_BOT_TOKEN') ? TG_BOT_TOKEN : '';
+    if ($token === '' || strpos($token, 'ПЛЕЙСХОЛДЕР') !== false || strpos($token, 'ТОКЕН_') === 0) {
+        error_log('[sendTelegram] TG_BOT_TOKEN пуст или содержит заглушку — проверь секрет ZAYAVKI_BOT_TOKEN');
+        return [
+            'ok' => false,
+            'http_code' => 0,
+            'curl_error' => 'TG_BOT_TOKEN is not configured',
+            'response' => false,
+        ];
+    }
+
+    $url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
     $payload = json_encode([
         'chat_id' => TG_CHAT_ID,
         'text' => $text,
