@@ -1,5 +1,5 @@
 <?php
-// Добавление комментария. Требует валидную сессию и подписку на канал.
+// Добавление комментария. Требует валидную сессию.
 require __DIR__ . '/lib.php';
 require __DIR__ . '/db.php';
 
@@ -32,11 +32,6 @@ if (!$row) {
     send_json(['error' => 'unauthorized'], 401);
 }
 $tgId = (int) $row['tg_id'];
-
-// перепроверка подписки (пользователь мог отписаться)
-if (!is_channel_member($cfg['bot_token'], $cfg['channel'], $tgId)) {
-    send_json(['error' => 'not_subscribed'], 403);
-}
 
 // антифлуд: не чаще 1 комментария в 15 секунд
 $stmt = $pdo->prepare("SELECT created_at FROM comments WHERE tg_id = ? ORDER BY created_at DESC LIMIT 1");

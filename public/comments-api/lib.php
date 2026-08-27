@@ -77,37 +77,3 @@ function verify_telegram_auth(array $authData, string $botToken): bool
     return true;
 }
 
-// HTTP GET к Telegram Bot API (cURL с fallback на file_get_contents).
-function tg_api_get(string $url): ?string
-{
-    if (function_exists('curl_init')) {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        $resp = curl_exec($ch);
-        curl_close($ch);
-        return $resp === false ? null : $resp;
-    }
-    $resp = @file_get_contents($url);
-    return $resp === false ? null : $resp;
-}
-
-// Проверка, подписан ли пользователь на канал.
-function is_channel_member(string $botToken, string $channel, int $userId): bool
-{
-    $url = "https://api.telegram.org/bot{$botToken}/getChatMember"
-        . "?chat_id=" . urlencode($channel)
-        . "&user_id=" . $userId;
-
-    $resp = tg_api_get($url);
-    if ($resp === null) {
-        return false;
-    }
-    $data = json_decode($resp, true);
-    if (empty($data['ok'])) {
-        return false;
-    }
-    $status = $data['result']['status'] ?? '';
-    return in_array($status, ['creator', 'administrator', 'member'], true);
-}

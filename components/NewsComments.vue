@@ -55,26 +55,7 @@
         </p>
       </div>
 
-      <!-- Вошёл, но не подписан -->
-      <div v-else-if="!subscribed" class="comments__gate">
-        <p class="comments__hint">
-          Чтобы комментировать, подпишитесь на наш Telegram-канал.
-        </p>
-        <div class="comments__gate-actions">
-          <a
-            :href="`https://t.me/${channel}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-primary"
-          >Подписаться на канал</a>
-          <button type="button" class="comments__recheck" :disabled="rechecking" @click="recheck">
-            {{ rechecking ? 'Проверяем…' : 'Я подписался' }}
-          </button>
-        </div>
-        <p v-if="gateError" class="comments__warn">Подписка не найдена. Подпишитесь и попробуйте снова.</p>
-      </div>
-
-      <!-- Вошёл и подписан -->
+      <!-- Вошёл -->
       <form v-else class="comments__form" @submit.prevent="submit">
         <div class="comments__form-head">
           <img
@@ -120,19 +101,15 @@ const props = defineProps({
 const config = useRuntimeConfig()
 const apiBase = config.public.commentsApi || '/comments-api'
 const botName = config.public.tgBotName || ''
-const channel = config.public.tgChannel || 'l2gm_official'
 
 const comments = ref([])
 const loading = ref(true)
 const user = ref(null)
 const token = ref('')
-const subscribed = ref(false)
 
 const draft = ref('')
 const sending = ref(false)
 const sendError = ref('')
-const rechecking = ref(false)
-const gateError = ref(false)
 
 const widgetContainer = ref(null)
 
@@ -175,7 +152,6 @@ function restoreSession() {
     if (saved?.token && saved?.user) {
       token.value = saved.token
       user.value = saved.user
-      subscribed.value = Boolean(saved.subscribed)
     }
   } catch (e) {
     /* ignore */
@@ -187,7 +163,6 @@ function saveSession() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       token: token.value,
       user: user.value,
-      subscribed: subscribed.value,
     }))
   } catch (e) {
     /* ignore */
@@ -205,7 +180,6 @@ async function onTelegramAuth(tgUser) {
     if (data.token) {
       token.value = data.token
       user.value = data.user
-      subscribed.value = Boolean(data.subscribed)
       saveSession()
     }
   } catch (e) {
@@ -213,25 +187,6 @@ async function onTelegramAuth(tgUser) {
   }
 }
 
-async function recheck() {
-  rechecking.value = true
-  gateError.value = false
-  try {
-    const res = await fetch(`${apiBase}/recheck.php`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: token.value }),
-    })
-    const data = await res.json()
-    subscribed.value = Boolean(data.subscribed)
-    saveSession()
-    if (!subscribed.value) gateError.value = true
-  } catch (e) {
-    gateError.value = true
-  } finally {
-    rechecking.value = false
-  }
-}
 
 async function submit() {
   const text = draft.value.trim()
@@ -248,9 +203,6 @@ async function submit() {
     if (data.comment) {
       comments.value.push(data.comment)
       draft.value = ''
-    } else if (data.error === 'not_subscribed') {
-      subscribed.value = false
-      saveSession()
     } else if (data.error === 'too_fast') {
       sendError.value = 'Слишком часто. Подождите немного.'
     } else if (data.error === 'unauthorized') {
@@ -269,7 +221,6 @@ async function submit() {
 function logout() {
   user.value = null
   token.value = ''
-  subscribed.value = false
   try {
     localStorage.removeItem(STORAGE_KEY)
   } catch (e) {
@@ -436,35 +387,6 @@ watch(user, (val) => {
   font-size: var(--font-xs);
   line-height: 1.5;
   max-width: 460px;
-}
-
-.comments__gate-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  flex-wrap: wrap;
-}
-
-.comments__recheck {
-  background: rgba(255, 255, 255, 0.06);
-  border: none;
-  color: var(--text-primary);
-  padding: 10px 18px;
-  border-radius: var(--radius-full);
-  font-family: inherit;
-  font-size: var(--font-sm);
-  font-weight: var(--font-semibold);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.comments__recheck:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.comments__recheck:disabled {
-  opacity: 0.6;
-  cursor: default;
 }
 
 .comments__form-head {

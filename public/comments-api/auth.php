@@ -1,7 +1,7 @@
 <?php
 // Авторизация через Telegram Login Widget.
 // Принимает JSON с полями виджета (id, first_name, ..., hash),
-// проверяет подпись, проверяет подписку на канал, выдаёт сессионный токен.
+// проверяет подпись и выдаёт сессионный токен.
 require __DIR__ . '/lib.php';
 require __DIR__ . '/db.php';
 
@@ -39,8 +39,6 @@ $stmt->execute([
     (string) ($body['photo_url'] ?? ''),
 ]);
 
-$subscribed = is_channel_member($cfg['bot_token'], $cfg['channel'], $tgId);
-
 // новая сессия на 30 дней
 $token = bin2hex(random_bytes(32));
 $stmt = $pdo->prepare(
@@ -51,7 +49,6 @@ $stmt->execute([$token, $tgId]);
 
 send_json([
     'token' => $token,
-    'subscribed' => $subscribed,
     'user' => [
         'id' => $tgId,
         'first_name' => (string) ($body['first_name'] ?? ''),

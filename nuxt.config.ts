@@ -290,9 +290,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteUrl: 'https://l2gm.com',
-      // Комментарии в новостях (Telegram-логин + гейт подписки)
+      // Комментарии в новостях (Telegram-логин)
       commentsApi: '/comments-api',
-      tgChannel: 'l2gm_official',
       // Имя бота-комментатора без @ (создать через @BotFather,
       // сделать админом канала). Пока пусто — виджет логина не показывается.
       tgBotName: 'l2gm_comment_bot',
