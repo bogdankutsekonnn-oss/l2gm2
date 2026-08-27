@@ -15,125 +15,60 @@ $source = $input['source'] ?? '';
 
 if ($source === 'about') {
     handleContactForm($input);
-} elseif ($source === 'add-server') {
-    handleServerNotification($input);
 } else {
     jsonResponse(['error' => 'Unknown source'], 400);
 }
 
-function escapeMarkdown($text) {
-    return str_replace(
-        ['*', '_', '`', '['],
-        ['\\*', '\\_', '\\`', '\\['],
-        $text
-    );
-}
-
-// ВНИМАНИЕ: с хостинга (Timeweb) исходящие на api.telegram.org виснут по
-// таймауту — доставка отсюда не работает в принципе. Заявки на добавление
-// сервера уводятся в обход, через scripts/notify-pending.js в GitHub Actions.
-// Форма «О нас» пока завязана на этот путь и сообщения теряет.
-function sendTelegram($text) {
-    $token = defined('TG_BOT_TOKEN') ? TG_BOT_TOKEN : '';
-    if ($token === '' || strpos($token, 'ПЛЕЙСХОЛДЕР') !== false || strpos($token, 'ТОКЕН_') === 0) {
-        error_log('[sendTelegram] TG_BOT_TOKEN пуст или содержит заглушку — проверь секрет ZAYAVKI_BOT_TOKEN');
-        return [
-            'ok' => false,
-            'http_code' => 0,
-            'curl_error' => 'TG_BOT_TOKEN is not configured',
-            'response' => false,
-        ];
+// Рейт-лимит по IP — тот же приём, что для заявок в servers.php. Раньше форма
+// писала только в телегу и лимит был не нужен, теперь пишет в базу.
+function throttleByIp($bucket, $limit, $window) {
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $file = sys_get_temp_dir() . '/l2gm_' . $bucket . '_' . md5($ip);
+    $now = time();
+    $times = [];
+    if (is_file($file)) {
+        $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+        $times = array_values(array_filter(array_map('intval', $lines), function ($t) use ($now, $window) {
+            return $t > $now - $window;
+        }));
     }
-
-    $url = 'https://api.telegram.org/bot' . $token . '/sendMessage';
-    $payload = json_encode([
-        'chat_id' => TG_CHAT_ID,
-        'text' => $text,
-        'parse_mode' => 'Markdown',
-    ]);
-
-    $ch = curl_init($url);
-    curl_setopt_array($ch, [
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $payload,
-        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 10,
-    ]);
-    $result = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch);
-    curl_close($ch);
-
-    $ok = $httpCode >= 200 && $httpCode < 300;
-    if (!$ok) {
-        error_log("[sendTelegram] HTTP $httpCode curl=$curlError body=" . substr((string)$result, 0, 500));
+    if (count($times) >= $limit) {
+        return false;
     }
-    return [
-        'ok' => $ok,
-        'http_code' => $httpCode,
-        'curl_error' => $curlError,
-        'response' => $result,
-    ];
+    $times[] = $now;
+    @file_put_contents($file, implode("\n", $times));
+    return true;
 }
 
 function handleContactForm($input) {
-    $name = trim($input['name'] ?? '');
-    $reply = trim($input['reply'] ?? '');
-    $message = trim($input['message'] ?? '');
+    $name = trim(strip_tags($input['name'] ?? ''));
+    $reply = trim(strip_tags($input['reply'] ?? ''));
+    $message = trim(strip_tags($input['message'] ?? ''));
 
     if ($name === '' || $message === '') {
         jsonResponse(['error' => 'name and message are required'], 400);
     }
 
-    $text = implode("\n", [
-        "\xF0\x9F\x93\xA9 *Сообщение с сайта (О нас)*",
-        '',
-        '*Имя:* ' . escapeMarkdown($name),
-        '*Контакт:* ' . escapeMarkdown($reply ?: '—'),
-        '*Сообщение:* ' . escapeMarkdown($message),
-    ]);
-
-    $r = sendTelegram($text);
-    if ($r['ok']) {
-        jsonResponse(['ok' => true]);
-    } else {
-        jsonResponse(['error' => 'Failed to send', 'tg' => $r], 500);
+    if (!throttleByIp('contact', 5, 3600)) {
+        jsonResponse(['error' => 'Слишком много сообщений. Попробуйте через час.'], 429);
     }
-}
 
-function handleServerNotification($input) {
-    $fields = [
-        'name' => $input['name'] ?? '—',
-        'url' => $input['url'] ?? '—',
-        'chronicle' => $input['chronicle'] ?? '—',
-        'rate' => $input['rate'] ?? '—',
-        'startDate' => $input['startDate'] ?? '—',
-        'cardType' => $input['cardType'] ?? '—',
-        'serverTypes' => $input['serverTypes'] ?? '—',
-        'icons' => $input['icons'] ?? '—',
-        'email' => $input['email'] ?? '—',
-        'contacts' => $input['contacts'] ?? '—',
-    ];
-
-    $types = is_array($fields['serverTypes']) ? implode(', ', $fields['serverTypes']) : $fields['serverTypes'];
-    $icons = is_array($fields['icons']) ? implode(', ', $fields['icons']) : $fields['icons'];
-
-    $text = implode("\n", [
-        "\xF0\x9F\x8E\xAE *Новая заявка на добавление сервера*",
-        '',
-        '*Название:* ' . escapeMarkdown($fields['name']),
-        '*Сайт:* ' . escapeMarkdown($fields['url']),
-        '*Хроники:* ' . escapeMarkdown($fields['chronicle']),
-        '*Рейты:* ' . escapeMarkdown((string)$fields['rate']),
-        '*Дата открытия:* ' . escapeMarkdown($fields['startDate']),
-        '*Тариф:* ' . escapeMarkdown($fields['cardType']),
-        '*Тип сервера:* ' . escapeMarkdown($types ?: '—'),
-        '*Доп. значки:* ' . escapeMarkdown($icons ?: '—'),
-        '*Email:* ' . escapeMarkdown($fields['email']),
-        '*Контакты:* ' . escapeMarkdown($fields['contacts'] ?: '—'),
+    // Раньше сообщение уходило прямо в телегу и нигде не сохранялось. Хостинг
+    // до api.telegram.org не достаёт (исходящие на 443 виснут по таймауту),
+    // так что каждое письмо просто пропадало. Теперь кладём в базу, оттуда
+    // его заберёт и отправит scripts/notify-pending.js с раннера GitHub.
+    $db = getDB();
+    $stmt = $db->prepare(
+        'INSERT INTO contact_messages (name, reply, message, ip)
+         VALUES (:name, :reply, :message, :ip)'
+    );
+    $stmt->execute([
+        ':name' => mb_substr($name, 0, 255),
+        ':reply' => $reply !== '' ? mb_substr($reply, 0, 255) : null,
+        ':message' => mb_substr($message, 0, 4000),
+        ':ip' => $_SERVER['REMOTE_ADDR'] ?? null,
     ]);
 
-    $r = sendTelegram($text);
-    jsonResponse(['ok' => $r['ok'], 'tg' => $r]);
+    jsonResponse(['ok' => true]);
 }
+

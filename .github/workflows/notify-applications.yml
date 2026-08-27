@@ -1,7 +1,8 @@
 name: Notify new applications
 
-# Заявки на добавление сервера уходят в Telegram отсюда, а не с хостинга:
-# Timeweb не пускает исходящие на api.telegram.org (см. scripts/notify-pending.js).
+# Заявки на добавление сервера и письма из формы «О нас» уходят в Telegram
+# отсюда, а не с хостинга: Timeweb не пускает исходящие на api.telegram.org
+# (см. scripts/notify-pending.js).
 
 on:
   schedule:
