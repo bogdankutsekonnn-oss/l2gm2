@@ -850,6 +850,21 @@
     "expiresAt": null
   },
   {
+    "id": 457,
+    "name": "MAYHEM",
+    "url": "https://l2mayhem.ru/",
+    "chronicle": "High Five",
+    "rate": 3,
+    "startDate": "2026-09-25",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-08-30",
+    "expiresAt": null
+  },
+  {
     "id": 430,
     "name": "ESSENCE.GAME",
     "url": "https://essence.game",
