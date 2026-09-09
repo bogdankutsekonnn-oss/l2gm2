@@ -833,7 +833,7 @@
     "chronicle": "High Five",
     "rate": 3,
     "startDate": "2026-09-18",
-    "cardType": "vip",
+    "cardType": "premium",
     "icons": [
       "recommended"
     ],
@@ -1105,7 +1105,7 @@
     "chronicle": "High Five",
     "rate": 5,
     "startDate": "2026-10-02",
-    "cardType": "premium",
+    "cardType": "basic",
     "icons": [],
     "avatarUrl": null,
     "ownerId": null,
