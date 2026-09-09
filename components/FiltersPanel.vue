@@ -50,19 +50,17 @@
 
     <div class="filter-section">
       <a
-        href="https://duskfall.net/?utm_source=l2gm&utm_medium=banner&utm_campaign=DUSKFALL.NET"
+        href="https://l2afterwork.com/?utm_source=l2gm&utm_medium=banner&utm_campaign=L2AFTERWORK"
         class="promo-banner"
         target="_blank"
         rel="sponsored nofollow noopener"
       >
-        <NuxtImg
-          src="/images/promo-duskfall.jpg"
-          alt="DUSKFALL.NET — Lineage 2 Interlude x20, старт 1 сентября"
+        <img
+          src="/images/promo-l2afterwork.gif"
+          alt="L2Afterwork — сервер Lineage 2 High Five x3 с динамическими рейтами и автофармом"
           class="promo-image"
-          width="282"
-          height="470"
-          format="webp"
-          quality="85"
+          width="240"
+          height="400"
           loading="lazy"
         />
       </a>
@@ -245,7 +243,7 @@ const isRateActive = (slug) => {
 .promo-banner {
   display: block;
   width: 100%;
-  aspect-ratio: 282 / 470;
+  aspect-ratio: 240 / 400;
   background: var(--bg-main);
   border-radius: var(--radius-base);
   overflow: hidden;
