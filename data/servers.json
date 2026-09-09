@@ -1,5 +1,20 @@
 [
   {
+    "id": 401,
+    "name": "WESTEROS.WS",
+    "url": "https://westeros.ws/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-07-17",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-10",
+    "expiresAt": null
+  },
+  {
     "id": 404,
     "name": "PLAYORBIS",
     "url": "https://playorbis.net",
@@ -508,21 +523,6 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-09-09",
-    "expiresAt": null
-  },
-  {
-    "id": 401,
-    "name": "WESTEROS.WS",
-    "url": "https://westeros.ws/",
-    "chronicle": "Interlude",
-    "rate": 100,
-    "startDate": "2026-09-11",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-07-10",
     "expiresAt": null
   },
   {
