@@ -93,6 +93,15 @@
     .btn-cancel { background: rgba(255,255,255,0.05); color: rgba(245,245,247,0.6); }
     .btn-cancel:hover { background: rgba(255,255,255,0.1); }
 
+    /* Icon picker */
+    .modal .icon-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+    .modal .icon-pick { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 5px 10px 5px 6px; background: #06080a; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; font-size: 12px; color: rgba(245,245,247,0.6); cursor: pointer; user-select: none; transition: all 0.15s; }
+    .modal .icon-pick:hover { border-color: rgba(255,255,255,0.2); color: #f5f5f7; }
+    .modal .icon-pick input { width: auto; margin: 0; accent-color: rgb(254, 54, 0); cursor: pointer; }
+    .modal .icon-pick img { width: 18px; height: 18px; object-fit: contain; }
+    .modal .icon-pick.is-on { border-color: rgb(254, 54, 0); color: #f5f5f7; background: rgba(254,54,0,0.08); }
+    .modal .icon-hint { font-size: 11px; color: rgba(245,245,247,0.3); margin-top: 6px; }
+
     .empty { text-align: center; padding: 48px; color: rgba(245,245,247,0.3); }
     .server-link { color: rgb(254, 54, 0); text-decoration: none; }
     .server-link:hover { text-decoration: underline; }
@@ -216,8 +225,9 @@
     <label>Типы сервера (через запятую: pvp, craft, x100 ...)</label>
     <input type="text" id="addServerTypes" placeholder="pvp, craft">
 
-    <label>Иконки (через запятую, опционально)</label>
-    <input type="text" id="addIcons" placeholder="">
+    <label>Иконки (опционально)</label>
+    <div class="icon-picker" id="addIconsPicker"></div>
+    <div class="icon-hint">На карточке сервера показывается только первая выбранная.</div>
 
     <label>Описание (опционально)</label>
     <textarea id="addDescription" placeholder="Короткое описание сервера"></textarea>
@@ -289,8 +299,9 @@
     <label>Типы сервера (через запятую: pvp, craft ...)</label>
     <input type="text" id="editServerTypes">
 
-    <label>Иконки (через запятую: hot-start, recommended ...)</label>
-    <input type="text" id="editIcons">
+    <label>Иконки</label>
+    <div class="icon-picker" id="editIconsPicker"></div>
+    <div class="icon-hint">На карточке сервера показывается только первая выбранная.</div>
 
     <label>Описание</label>
     <textarea id="editDescription"></textarea>
@@ -526,7 +537,7 @@ function openAdd() {
   document.getElementById('addCardType').value = 'basic';
   document.getElementById('addExpiresAt').value = '';
   document.getElementById('addServerTypes').value = '';
-  document.getElementById('addIcons').value = '';
+  renderIconPicker('addIconsPicker', []);
   document.getElementById('addDescription').value = '';
   document.getElementById('addAvatarUrl').value = '';
   document.getElementById('addEmail').value = '';
@@ -541,6 +552,37 @@ function closeAddModal() {
 
 function parseList(s) {
   return (s || '').split(',').map(x => x.trim()).filter(Boolean);
+}
+
+// Иконки карточки: id совпадает с именем файла в /images/badges/<id>.webp,
+// подписи — как в badgeText() у ServerCard.vue.
+const BADGES = [
+  { id: 'recommended', name: 'Рекомендуем' },
+  { id: 'hot-start', name: 'Горячий старт' },
+  { id: 'bonus-start', name: 'Бонус старт' },
+  { id: 'obt', name: 'ОБТ' },
+];
+
+// Значения из базы, которых нет в BADGES (старые записи), показываем отдельными
+// чекбоксами — иначе сохранение формы молча их сотрёт.
+function renderIconPicker(containerId, selected) {
+  const picked = Array.isArray(selected) ? selected : [];
+  const list = BADGES.concat(
+    picked.filter(id => !BADGES.some(b => b.id === id)).map(id => ({ id, name: id }))
+  );
+  document.getElementById(containerId).innerHTML = list.map(b => {
+    const on = picked.includes(b.id);
+    return `<label class="icon-pick${on ? ' is-on' : ''}">
+      <input type="checkbox" value="${esc(b.id)}"${on ? ' checked' : ''}
+             onchange="this.parentNode.classList.toggle('is-on', this.checked)">
+      <img src="/images/badges/${esc(b.id)}.webp" alt="" onerror="this.remove()">
+      ${esc(b.name)}
+    </label>`;
+  }).join('');
+}
+
+function getPickedIcons(containerId) {
+  return [...document.querySelectorAll(`#${containerId} input:checked`)].map(i => i.value);
 }
 
 async function saveAdd() {
@@ -563,7 +605,7 @@ async function saveAdd() {
     category: document.getElementById('addCategory').value.trim() || null,
     startDate,
     cardType: document.getElementById('addCardType').value,
-    icons: parseList(document.getElementById('addIcons').value),
+    icons: getPickedIcons('addIconsPicker'),
     serverTypes: parseList(document.getElementById('addServerTypes').value),
     description: document.getElementById('addDescription').value.trim() || null,
     avatarUrl: document.getElementById('addAvatarUrl').value.trim() || null,
@@ -641,7 +683,7 @@ function openEdit(id) {
   document.getElementById('editStatus').value = s.status;
   document.getElementById('editExpiresAt').value = s.expiresAt || '';
   document.getElementById('editServerTypes').value = (s.serverTypes || []).join(', ');
-  document.getElementById('editIcons').value = (s.icons || []).join(', ');
+  renderIconPicker('editIconsPicker', s.icons || []);
   document.getElementById('editDescription').value = s.description || '';
   document.getElementById('editAvatarUrl').value = s.avatarUrl || '';
   document.getElementById('editEmail').value = s.email || '';
@@ -666,7 +708,7 @@ async function saveEdit() {
     status: document.getElementById('editStatus').value,
     expiresAt: document.getElementById('editExpiresAt').value || null,
     serverTypes: parseList(document.getElementById('editServerTypes').value),
-    icons: parseList(document.getElementById('editIcons').value),
+    icons: getPickedIcons('editIconsPicker'),
     description: document.getElementById('editDescription').value.trim() || null,
     avatarUrl: document.getElementById('editAvatarUrl').value.trim() || null,
     email: document.getElementById('editEmail').value,

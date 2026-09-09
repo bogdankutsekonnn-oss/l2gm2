@@ -84,8 +84,11 @@ function handlePost() {
     $cardType = in_array($input['cardType'] ?? 'basic', ['basic', 'top', 'vip', 'vip-plus', 'premium'])
         ? $input['cardType']
         : 'basic';
+    // Иконки — только из белого списка: значение подставляется в путь
+    // /images/badges/<icon>.webp на фронте, произвольную строку туда пускать нельзя.
+    $allowedIcons = ['recommended', 'hot-start', 'bonus-start', 'obt'];
     $icons = isset($input['icons']) && is_array($input['icons'])
-        ? json_encode($input['icons'])
+        ? json_encode(array_values(array_intersect($input['icons'], $allowedIcons)))
         : '[]';
     $serverTypes = isset($input['serverTypes']) && is_array($input['serverTypes'])
         ? json_encode($input['serverTypes'])
