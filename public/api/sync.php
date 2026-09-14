@@ -8,6 +8,7 @@
  *
  * Требует GH_WORKFLOW_PAT в secrets.php — fine-grained PAT с правом
  * Actions: Read and write на репозиторий GH_REPO (см. config.php).
+ * Обёртка над GitHub API — в github.php.
  */
 
 require_once __DIR__ . '/config.php';
@@ -29,28 +30,6 @@ switch ($action) {
         break;
     default:
         jsonResponse(['error' => 'Unknown action. Use: run, status'], 400);
-}
-
-function ghRequest($method, $path, $body = null) {
-    $ch = curl_init('https://api.github.com' . $path);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => $method,
-        CURLOPT_TIMEOUT => 15,
-        CURLOPT_HTTPHEADER => [
-            'Authorization: Bearer ' . GH_WORKFLOW_PAT,
-            'Accept: application/vnd.github+json',
-            'User-Agent: l2gm-admin',
-            'X-GitHub-Api-Version: 2022-11-28',
-        ],
-    ]);
-    if ($body !== null) {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
-    }
-    $res = curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    return [$code, $res ? json_decode($res, true) : null];
 }
 
 // POST ?action=run — workflow_dispatch синка

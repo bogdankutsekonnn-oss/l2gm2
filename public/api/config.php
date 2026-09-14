@@ -10,6 +10,9 @@ define('DB_USER', 'damonlaptev_servers');
 define('TG_CHAT_ID', '8847413262');
 define('GH_REPO', 'bogdankutsekonnn-oss/l2gm2'); // для sync.php (запуск GitHub Actions)
 
+// Запуск воркфлоу с хостинга: синк из админки и пинок уведомлений о заявках.
+require_once __DIR__ . '/github.php';
+
 // CORS — разрешаем запросы с нашего сайта
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: https://l2gm.com');
