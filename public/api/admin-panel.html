@@ -129,6 +129,7 @@
     <h1>L2GM Admin Panel</h1>
     <div class="dash-actions">
       <button class="btn-sync" id="syncBtn" onclick="runSync()">Синк с сайтом</button>
+      <button class="btn-sync" id="netBtn" onclick="runNetCheck()">Проверка связи</button>
       <button class="btn-add-test" onclick="openAdd()">+ Добавить сервер</button>
       <button class="btn-logout" onclick="logout()">Выйти</button>
     </div>
@@ -816,6 +817,38 @@ async function runSync() {
     }, 20000);
   } catch (e) {
     alert('Ошибка запуска синка: ' + e.message);
+    btn.disabled = false;
+  }
+}
+
+// === Проверка связи с хостинга ===
+// Уведомления о заявках ходят через раннер GitHub только потому, что хостинг
+// не выпускает соединения на api.telegram.org. Кнопка показывает, так ли это
+// до сих пор: откроется телега — посредник станет не нужен.
+async function runNetCheck() {
+  const btn = document.getElementById('netBtn');
+  btn.disabled = true;
+  setSyncStatusText('Проверяю связь…');
+  try {
+    const res = await fetch(`${API_BASE}/net-check.php`, { headers: authHeaders() });
+    const data = await res.json();
+    if (!res.ok) {
+      setSyncStatusText('Проверка не прошла: ' + (data.error || 'HTTP ' + res.status));
+      return;
+    }
+    const line = (label, p) => {
+      if (!p || p.reachable === null) return `${label}: ${p && p.error ? p.error : 'нет данных'}`;
+      if (!p.reachable) return `${label}: не достучались — ${p.error || 'нет ответа'} (${p.seconds} с)`;
+      return `${label}: есть связь, HTTP ${p.httpCode} (${p.seconds} с)`;
+    };
+    setSyncStatusText([
+      line('Телеграм', data.telegram),
+      line('GitHub', data.github),
+      'Токен запуска воркфлоу: ' + (data.ghTokenSet ? 'задан' : 'НЕ задан'),
+    ].join(' &nbsp;·&nbsp; '));
+  } catch (e) {
+    setSyncStatusText('Ошибка проверки связи: ' + e.message);
+  } finally {
     btn.disabled = false;
   }
 }
