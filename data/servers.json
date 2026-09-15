@@ -1191,6 +1191,23 @@
     "expiresAt": null
   },
   {
+    "id": 498,
+    "name": "SAVIEL.FUN",
+    "url": "https://saviel.fun",
+    "chronicle": "Classic",
+    "rate": 5,
+    "startDate": "2026-10-02",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-15",
+    "expiresAt": null
+  },
+  {
     "id": 495,
     "name": "EXPANSE",
     "url": "https://playexpanse.com",
