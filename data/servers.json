@@ -1174,6 +1174,23 @@
     "expiresAt": null
   },
   {
+    "id": 497,
+    "name": "DUSKFALL X10",
+    "url": "https://duskfall.net",
+    "chronicle": "Interlude",
+    "rate": 10,
+    "startDate": "2026-10-02",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-15",
+    "expiresAt": null
+  },
+  {
     "id": 495,
     "name": "EXPANSE",
     "url": "https://playexpanse.com",
