@@ -1084,6 +1084,21 @@
     "expiresAt": null
   },
   {
+    "id": 499,
+    "name": "L2>PM",
+    "url": "https://l2.pm",
+    "chronicle": "High Five",
+    "rate": 100,
+    "startDate": "2026-09-25",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-19",
+    "expiresAt": null
+  },
+  {
     "id": 490,
     "name": "L2REBIRTH.NET",
     "url": "https://l2rebirth.net",
