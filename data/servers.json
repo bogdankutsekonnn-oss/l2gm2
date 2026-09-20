@@ -1085,18 +1085,20 @@
   },
   {
     "id": 499,
-    "name": "L2>PM",
+    "name": "L2.PM",
     "url": "https://l2.pm",
     "chronicle": "High Five",
     "rate": 100,
     "startDate": "2026-09-25",
-    "cardType": "basic",
-    "icons": [],
+    "cardType": "vip",
+    "icons": [
+      "recommended"
+    ],
     "avatarUrl": null,
     "ownerId": null,
     "description": null,
     "createdAt": "2026-09-19",
-    "expiresAt": null
+    "expiresAt": "2026-09-28"
   },
   {
     "id": 490,
