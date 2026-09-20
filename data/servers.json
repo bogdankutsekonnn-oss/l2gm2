@@ -833,7 +833,7 @@
     "chronicle": "High Five",
     "rate": 3,
     "startDate": "2026-09-18",
-    "cardType": "vip",
+    "cardType": "basic",
     "icons": [
       "recommended"
     ],
@@ -1099,6 +1099,40 @@
     "description": null,
     "createdAt": "2026-09-19",
     "expiresAt": "2026-09-28"
+  },
+  {
+    "id": 500,
+    "name": "LA2PHOENIX.COM",
+    "url": "https://la2phoenix.com/",
+    "chronicle": "C4",
+    "rate": 10,
+    "startDate": "2026-09-25",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-20",
+    "expiresAt": null
+  },
+  {
+    "id": 501,
+    "name": "L2JUPITER",
+    "url": "https://l2jupiter.fun/",
+    "chronicle": "C4",
+    "rate": 10,
+    "startDate": "2026-09-25",
+    "cardType": "basic",
+    "icons": [
+      "bonus-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-20",
+    "expiresAt": null
   },
   {
     "id": 490,
