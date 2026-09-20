@@ -50,14 +50,14 @@
 
     <div class="filter-section">
       <a
-        href="https://l2afterwork.com/?utm_source=l2gm&utm_medium=banner&utm_campaign=L2AFTERWORK"
+        href="https://l2.pm/?utm_source=l2gm&utm_medium=banner&utm_campaign=L2PM"
         class="promo-banner"
         target="_blank"
         rel="sponsored nofollow noopener"
       >
         <img
-          src="/images/promo-l2afterwork.gif"
-          alt="L2Afterwork — сервер Lineage 2 High Five x3 с динамическими рейтами и автофармом"
+          src="/images/promo-l2pm.jpg"
+          alt="L2.PM Prime — сервер Lineage 2 High Five x100, открытие 25 сентября 2026 в 20:00"
           class="promo-image"
           width="240"
           height="400"
