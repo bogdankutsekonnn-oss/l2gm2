@@ -148,6 +148,17 @@ async function main() {
   if (unmatched.length) console.log(`Нет в нашей таблице: ${unmatched.join(', ')}`)
   if (!Object.keys(items).length) await fail('Ни одной позиции не сопоставилось — формат GiranInfo поменялся?', { notify: true })
 
+  // Сначала приводим список ресурсов в базе к prices-seed.json: новые позиции
+  // из seed (например, свитки заточки) появятся до записи цен, а не через прогон.
+  const seedRes = await fetch(`${API_BASE}/prices.php?action=seed`, {
+    method: 'POST',
+    headers: { Accept: 'application/json', Authorization: `Bearer ${ADMIN_TOKEN}` },
+  })
+  const seedBody = await seedRes.text()
+  if (!seedRes.ok) await fail(`Seed в админке упал ${seedRes.status}: ${seedBody.slice(0, 300)}`, { notify: true })
+  const sd = JSON.parse(seedBody)
+  if (sd.inserted || sd.deleted) console.log(`Seed: добавлено ${sd.inserted}, удалено ${sd.deleted}`)
+
   const res = await fetch(`${API_BASE}/prices.php?action=bulk`, {
     method: 'POST',
     headers: {

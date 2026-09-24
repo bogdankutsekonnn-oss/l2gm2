@@ -74,5 +74,14 @@
   {"slug":"maestro-holder","name":"Maestro Holder","icon":"maestro-holder.png","category":"craft_only","sort_order":700,"yield_qty":1,"recipe":[{"slug":"varnish-of-purity","qty":10},{"slug":"mold-hardener","qty":10},{"slug":"mold-lubricant","qty":10}]},
   {"slug":"craftsman-mold","name":"Craftsman Mold","icon":"craftsman-mold.png","category":"craft_only","sort_order":710,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":2},{"slug":"mold-hardener","qty":20},{"slug":"enria","qty":5}]},
   {"slug":"warsmiths-holder","name":"Warsmith's Holder","icon":"warsmiths-holder.png","category":"craft_only","sort_order":720,"yield_qty":1,"recipe":[{"slug":"maestro-holder","qty":2},{"slug":"mold-glue","qty":10},{"slug":"thread","qty":20}]},
-  {"slug":"warsmiths-mold","name":"Warsmith's Mold","icon":"warsmiths-mold.png","category":"craft_only","sort_order":730,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":1},{"slug":"mold-hardener","qty":10},{"slug":"enria","qty":5}]}
+  {"slug":"warsmiths-mold","name":"Warsmith's Mold","icon":"warsmiths-mold.png","category":"craft_only","sort_order":730,"yield_qty":1,"recipe":[{"slug":"artisans-frame","qty":1},{"slug":"mold-hardener","qty":10},{"slug":"enria","qty":5}]},
+
+  {"slug":"enchant-weapon-d","name":"Scroll: Enchant Weapon (D-Grade)","icon":"enchant-weapon-d.png","category":"enchant","sort_order":1400},
+  {"slug":"enchant-armor-d","name":"Scroll: Enchant Armor (D-Grade)","icon":"enchant-armor-d.png","category":"enchant","sort_order":1410},
+  {"slug":"enchant-weapon-c","name":"Scroll: Enchant Weapon (C-Grade)","icon":"enchant-weapon-c.png","category":"enchant","sort_order":1420},
+  {"slug":"enchant-armor-c","name":"Scroll: Enchant Armor (C-Grade)","icon":"enchant-armor-c.png","category":"enchant","sort_order":1430},
+  {"slug":"enchant-weapon-b","name":"Scroll: Enchant Weapon (B-Grade)","icon":"enchant-weapon-b.png","category":"enchant","sort_order":1440},
+  {"slug":"enchant-armor-b","name":"Scroll: Enchant Armor (B-Grade)","icon":"enchant-armor-b.png","category":"enchant","sort_order":1450},
+  {"slug":"enchant-weapon-a","name":"Scroll: Enchant Weapon (A-Grade)","icon":"enchant-weapon-a.png","category":"enchant","sort_order":1460},
+  {"slug":"enchant-armor-a","name":"Scroll: Enchant Armor (A-Grade)","icon":"enchant-armor-a.png","category":"enchant","sort_order":1470}
 ]

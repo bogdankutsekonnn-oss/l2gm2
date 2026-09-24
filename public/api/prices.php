@@ -262,6 +262,7 @@ function seedAction($user) {
     if (!is_array($data)) jsonResponse(['error' => 'Invalid seed JSON'], 500);
 
     $db = getDB();
+    ensureCategoryEnum($db, array_column($data, 'category'));
     $inserted = 0; $updated = 0;
 
     $sql = 'INSERT INTO resources (slug, name, icon, category, recipe, yield_qty, sort_order)
@@ -309,4 +310,27 @@ function seedAction($user) {
         'updated'  => $updated,
         'deleted'  => $deleted,
     ]);
+}
+
+// category в resources — ENUM. Новая категория в prices-seed.json (например,
+// enchant) без миграции уронила бы INSERT, поэтому seed сам дописывает
+// недостающие значения. Существующие не трогаем и не удаляем.
+function ensureCategoryEnum($db, $cats) {
+    $col = $db->query("SHOW COLUMNS FROM resources LIKE 'category'")->fetch();
+    if (!$col || !preg_match("/^enum\((.*)\)$/i", $col['Type'], $m)) return;
+    preg_match_all("/'([^']*)'/", $m[1], $mm);
+    $have = $mm[1];
+
+    $missing = [];
+    foreach (array_unique($cats) as $c) {
+        if (!is_string($c) || !preg_match('/^[a-z_]+$/', $c)) {
+            jsonResponse(['error' => 'Invalid category in seed: ' . json_encode($c)], 500);
+        }
+        if (!in_array($c, $have, true)) $missing[] = $c;
+    }
+    if (!$missing) return;
+
+    $all = array_merge($have, $missing);
+    $enum = "'" . implode("','", $all) . "'";
+    $db->exec("ALTER TABLE resources MODIFY `category` ENUM($enum) NOT NULL");
 }
