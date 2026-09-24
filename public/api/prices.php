@@ -21,6 +21,7 @@ $user = requireUser();
 
 switch ($action) {
     case 'update': updatePrices($user); break;
+    case 'bulk':   bulkUpdate($user); break;
     case 'seed':   seedAction($user); break;
     default:
         jsonResponse(['error' => 'Unknown action'], 400);
@@ -61,19 +62,7 @@ function updatePrices($user) {
     $input = json_decode(file_get_contents('php://input'), true);
     if (!is_array($input)) jsonResponse(['error' => 'Invalid JSON'], 400);
 
-    $allowed = ['buy_avg', 'buy_max', 'sell_avg', 'sell_min'];
-    $updates = [];
-    foreach ($input as $k => $v) {
-        if (!in_array($k, $allowed, true)) continue;
-        if ($v === '' || $v === null) {
-            $updates[$k] = null;
-        } else {
-            if (!is_numeric($v) || $v < 0) {
-                jsonResponse(['error' => "Field $k must be a non-negative number"], 400);
-            }
-            $updates[$k] = (int)$v;
-        }
-    }
+    $updates = parsePriceFields($input);
     if (!$updates) jsonResponse(['error' => 'Nothing to update'], 400);
 
     $db = getDB();
@@ -84,51 +73,11 @@ function updatePrices($user) {
 
     $db->beginTransaction();
     try {
-        $touchBuy  = false;
-        $touchSell = false;
-        $changes   = [];
-
-        foreach ($updates as $f => $newV) {
-            $oldV = $res[$f] !== null ? (int)$res[$f] : null;
-            if ($oldV === $newV) continue; // ничего не поменялось
-
-            $changes[] = ['field' => $f, 'old' => $oldV, 'new' => $newV];
-
-            if ($f === 'buy_avg' || $f === 'buy_max')   $touchBuy  = true;
-            if ($f === 'sell_avg' || $f === 'sell_min') $touchSell = true;
-        }
-
-        if (!$changes) {
+        $changed = applyPriceChanges($db, $res, $updates, $user['user_id']);
+        if (!$changed) {
             $db->rollBack();
             jsonResponse(['success' => true, 'changed' => false]);
         }
-
-        $sets = [];
-        $params = [':id' => $res['id']];
-        foreach ($updates as $f => $v) {
-            $sets[] = "`$f` = :$f";
-            $params[":$f"] = $v;
-        }
-        if ($touchBuy)  $sets[] = "buy_updated_at = NOW()";
-        if ($touchSell) $sets[] = "sell_updated_at = NOW()";
-
-        $db->prepare('UPDATE resources SET ' . implode(', ', $sets) . ' WHERE id = :id')
-           ->execute($params);
-
-        $hist = $db->prepare(
-            'INSERT INTO price_history (resource_id, field, old_value, new_value, user_id)
-             VALUES (:rid, :f, :ov, :nv, :uid)'
-        );
-        foreach ($changes as $c) {
-            $hist->execute([
-                ':rid' => $res['id'],
-                ':f'   => $c['field'],
-                ':ov'  => $c['old'],
-                ':nv'  => $c['new'],
-                ':uid' => $user['user_id'],
-            ]);
-        }
-
         $db->commit();
     } catch (Throwable $e) {
         $db->rollBack();
@@ -144,7 +93,115 @@ function updatePrices($user) {
     }
     $fresh['recipe'] = $fresh['recipe'] ? json_decode($fresh['recipe'], true) : null;
 
-    jsonResponse(['success' => true, 'resource' => $fresh, 'changes' => count($changes)]);
+    jsonResponse(['success' => true, 'resource' => $fresh, 'changes' => $changed]);
+}
+
+// Поля цены из тела запроса: только разрешённые, '' / null — очистка.
+function parsePriceFields($input) {
+    $allowed = ['buy_avg', 'buy_max', 'sell_avg', 'sell_min'];
+    $updates = [];
+    foreach ($input as $k => $v) {
+        if (!in_array($k, $allowed, true)) continue;
+        if ($v === '' || $v === null) {
+            $updates[$k] = null;
+        } else {
+            if (!is_numeric($v) || $v < 0) {
+                jsonResponse(['error' => "Field $k must be a non-negative number"], 400);
+            }
+            $updates[$k] = (int)round($v);
+        }
+    }
+    return $updates;
+}
+
+// Пишет изменившиеся поля ресурса + price_history. Транзакция — на вызывающем.
+// Возвращает число изменённых полей (0 — ничего не поменялось, UPDATE не делаем).
+function applyPriceChanges($db, $res, $updates, $userId) {
+    $touchBuy  = false;
+    $touchSell = false;
+    $changes   = [];
+
+    foreach ($updates as $f => $newV) {
+        $oldV = $res[$f] !== null ? (int)$res[$f] : null;
+        if ($oldV === $newV) continue; // ничего не поменялось
+
+        $changes[] = ['field' => $f, 'old' => $oldV, 'new' => $newV];
+
+        if ($f === 'buy_avg' || $f === 'buy_max')   $touchBuy  = true;
+        if ($f === 'sell_avg' || $f === 'sell_min') $touchSell = true;
+    }
+    if (!$changes) return 0;
+
+    $sets = [];
+    $params = [':id' => $res['id']];
+    foreach ($changes as $c) {
+        $sets[] = "`{$c['field']}` = :{$c['field']}";
+        $params[":{$c['field']}"] = $c['new'];
+    }
+    if ($touchBuy)  $sets[] = "buy_updated_at = NOW()";
+    if ($touchSell) $sets[] = "sell_updated_at = NOW()";
+
+    $db->prepare('UPDATE resources SET ' . implode(', ', $sets) . ' WHERE id = :id')
+       ->execute($params);
+
+    $hist = $db->prepare(
+        'INSERT INTO price_history (resource_id, field, old_value, new_value, user_id)
+         VALUES (:rid, :f, :ov, :nv, :uid)'
+    );
+    foreach ($changes as $c) {
+        $hist->execute([
+            ':rid' => $res['id'],
+            ':f'   => $c['field'],
+            ':ov'  => $c['old'],
+            ':nv'  => $c['new'],
+            ':uid' => $userId,
+        ]);
+    }
+    return count($changes);
+}
+
+// POST /api/prices.php?action=bulk
+// body: {items: {"<slug>": {buy_avg?, buy_max?, sell_avg?, sell_min?}, ...}}
+// Пакетное обновление одной транзакцией — для автозабора цен с GiranInfo
+// (scripts/sync-giran-prices.js). Незнакомые slug пропускаются, а не роняют пакет.
+function bulkUpdate($user) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $items = is_array($input) ? ($input['items'] ?? null) : null;
+    if (!is_array($items) || !$items) jsonResponse(['error' => 'items required'], 400);
+
+    $parsed = [];
+    foreach ($items as $slug => $fields) {
+        if (!is_array($fields)) continue;
+        $u = parsePriceFields($fields);
+        if ($u) $parsed[(string)$slug] = $u;
+    }
+
+    $db = getDB();
+    $sel = $db->prepare('SELECT * FROM resources WHERE slug = :s LIMIT 1');
+    $updated = 0; $fields = 0; $unknown = [];
+
+    $db->beginTransaction();
+    try {
+        foreach ($parsed as $slug => $updates) {
+            $sel->execute([':s' => $slug]);
+            $res = $sel->fetch();
+            if (!$res) { $unknown[] = $slug; continue; }
+            $n = applyPriceChanges($db, $res, $updates, $user['user_id']);
+            if ($n) { $updated++; $fields += $n; }
+        }
+        $db->commit();
+    } catch (Throwable $e) {
+        $db->rollBack();
+        jsonResponse(['error' => 'DB error: ' . $e->getMessage()], 500);
+    }
+
+    jsonResponse([
+        'success'  => true,
+        'received' => count($parsed),
+        'updated'  => $updated,
+        'fields'   => $fields,
+        'unknown'  => $unknown,
+    ]);
 }
 
 // GET /api/prices.php?action=history&slug=...&field=buy_avg&limit=20
