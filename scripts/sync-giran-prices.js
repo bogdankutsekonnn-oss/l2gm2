@@ -22,7 +22,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const GIRAN_BASE = process.env.GIRAN_BASE || 'https://giran.info'
 const GIRAN_SERVER = process.env.GIRAN_SERVER || 'Gamma'
-const GIRAN_COOKIE = process.env.GIRAN_COOKIE || ''
+const GIRAN_COOKIE = normCookie(process.env.GIRAN_COOKIE || '')
 const API_BASE = process.env.API_BASE || 'https://l2gm.com/api'
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || ''
 const TG_API_BASE = process.env.TG_API_BASE || 'https://api.telegram.org'
@@ -39,6 +39,21 @@ const ALIASES = {
   'crystal b grade': 'crystal-b',
   'crystal a grade': 'crystal-a',
 }
+
+// Секрет вставляют руками из DevTools — прощаем типичные огрехи копирования:
+// префикс «cookie:», кавычки, переносы строк и голое значение без «gi_session=».
+function normCookie(raw) {
+  let c = String(raw).replace(/[\r\n]+/g, '').trim()
+  c = c.replace(/^cookie:\s*/i, '').replace(/^["']|["']$/g, '').trim()
+  if (c && !c.includes('=')) c = `gi_session=${c}`
+  return c
+}
+
+// Для лога: какие cookie переданы и какой длины значения — без самих значений.
+const cookieShape = (c) =>
+  c.split(';').map((p) => p.trim()).filter(Boolean)
+    .map((p) => { const i = p.indexOf('='); return `${p.slice(0, i)}(${p.length - i - 1} симв.)` })
+    .join(', ') || '—'
 
 // "High-Grade Suede" / "High Grade Suede", "Artisan's Frame" → одно и то же.
 const normName = (s) => String(s).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
@@ -77,9 +92,10 @@ async function fetchGiran() {
   try { data = JSON.parse(text) } catch {}
 
   if (res.status === 401) {
+    console.error(`Переданные cookie: ${cookieShape(GIRAN_COOKIE)}; ответ: ${text.slice(0, 200)}`)
     await fail(
-      'GiranInfo не пускает (401): cookie протухла. Зайди на giran.info через Telegram ' +
-      'и обнови секрет GIRAN_COOKIE в GitHub.',
+      'GiranInfo не пускает (401): cookie протухла или скопирована не целиком. Зайди на giran.info ' +
+      'через Telegram и обнови секрет GIRAN_COOKIE в GitHub (gi_session=…).',
       { notify: true },
     )
   }
