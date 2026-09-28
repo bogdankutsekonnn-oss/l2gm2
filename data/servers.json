@@ -1150,6 +1150,21 @@
     "expiresAt": null
   },
   {
+    "id": 503,
+    "name": "L2MAJOR.COM",
+    "url": "https://l2major.com/ru",
+    "chronicle": "Interlude+",
+    "rate": 50000,
+    "startDate": "2026-09-29",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-28",
+    "expiresAt": null
+  },
+  {
     "id": 445,
     "name": "SCRYDE X5",
     "url": "https://scryde.game",
