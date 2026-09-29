@@ -1274,6 +1274,23 @@
     "expiresAt": null
   },
   {
+    "id": 504,
+    "name": "2LINEAGE.RU",
+    "url": "https://2lineage.ru/?la2top=l2gm.com",
+    "chronicle": "Interlude",
+    "rate": 50,
+    "startDate": "2026-10-03",
+    "cardType": "basic",
+    "icons": [
+      "bonus-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-29",
+    "expiresAt": null
+  },
+  {
     "id": 495,
     "name": "EXPANSE",
     "url": "https://playexpanse.com",
