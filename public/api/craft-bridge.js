@@ -2,9 +2,10 @@
  * L2GM → калькулятор крафта Lu4 (access.112312312.xyz/craft).
  * Подгружается закладкой (букмарклетом) прямо на странице калькулятора,
  * берёт наши цены из /api/prices.php и проставляет их в поля «цена».
- * craft.js там — ES-модуль, его state снаружи недоступен, поэтому пишем
- * в его localStorage и перезагружаем страницу. Запас (owned) и выбранные
- * режимы игрока не трогаем.
+ * craft.js там — ES-модуль, его state снаружи недоступен, поэтому цены
+ * заходят через штатный импорт сценария (выбранный предмет сохраняется),
+ * а если предмет не выбран — через localStorage + перезагрузку.
+ * Запас (owned) и выбранные режимы игрока не трогаем.
  */
 (async () => {
   const API = 'https://l2gm.com/api/prices.php';
@@ -93,14 +94,56 @@
   }).filter(Boolean);
 
   const latest = resources.map(r => r.sell_updated_at || r.buy_updated_at || r.updated_at).filter(Boolean).sort().pop();
-  let reloadTimer = null;
+  const $ = id => document.getElementById(id);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
 
-  function apply(modeKey) {
-    clearTimeout(reloadTimer);
+  // Текущий выбор игрока: предмет, рецепт, клики — чтобы не потерять его
+  function currentSelection() {
+    const recipeId = $('recipe-select')?.value;
+    if (!recipeId || $('recipe-card')?.hidden) return null;
+    const recipe = catalog.find(row => String(row.id) === recipeId);
+    if (!recipe?.output?.id) return null;
+    return {
+      selectedId: String(recipe.output.id), recipeId,
+      quantity: Math.max(1, Math.trunc(Number($('target-quantity')?.value) || 1)),
+      name: $('scenario-name')?.value || recipe.output.name || 'L2GM',
+    };
+  }
+
+  // Прогоняем данные через штатный «Импорт сценария»: он обновляет состояние
+  // калькулятора без перезагрузки и сохраняет выбранный предмет. Временный
+  // сценарий потом удаляем из списка сохранённых.
+  async function importScenario(scenario) {
+    const input = $('scenario-file');
+    if (!input || typeof DataTransfer === 'undefined') return false;
+    const dt = new DataTransfer();
+    dt.items.add(new File([JSON.stringify(scenario)], 'l2gm-prices.json', { type: 'application/json' }));
+    input.files = dt.files;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    for (let i = 0; i < 40; i++) {
+      await wait(50);
+      const status = $('scenario-status')?.textContent || '';
+      if (status.startsWith('Импортировано')) {
+        if ($('scenario-select')?.value) $('delete-scenario')?.click();
+        $('scenario-status').textContent = 'Цены L2GM подставлены.';
+        return true;
+      }
+      if (status.startsWith('Не удалось импортировать')) return false;
+    }
+    return false;
+  }
+
+  let busy = false;
+
+  async function apply(modeKey) {
+    if (busy) return;
+    busy = true;
     const mode = MODES[modeKey];
     let saved = {};
     try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch { /* пусто */ }
     const values = saved.values && typeof saved.values === 'object' ? saved.values : {};
+    const modes = saved.modes && typeof saved.modes === 'object' ? saved.modes : {};
+    const crafterFee = Number(saved.crafterFee ?? $('crafter-fee')?.value) || 0;
 
     let count = 0;
     for (const { id, r } of targets) {
@@ -110,22 +153,33 @@
       count++;
     }
 
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...saved, values, modes: saved.modes || {}, crafterFee: saved.crafterFee || 0 }));
-    } catch {
-      panel('браузер не даёт сохранить данные калькулятора (приватный режим?).');
-      return;
+    const sel = currentSelection();
+    let live = false;
+    if (sel) live = await importScenario({ version: 1, ...sel, crafterFee, values, modes });
+
+    if (!live) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...saved, values, modes, crafterFee }));
+      } catch {
+        panel('браузер не даёт сохранить данные калькулятора (приватный режим?).');
+        busy = false;
+        return;
+      }
     }
 
     const other = modeKey === 'sell' ? 'buy' : 'sell';
+    const note = live ? ''
+      : sel ? '<br><span style="color:#f0a">не получилось подставить на лету — страница обновится, предмет выбери заново</span>'
+      : '<br><span style="color:#999">страница обновится через пару секунд…</span>';
     const el = panel(
       'подставлено <b>' + count + '</b> цен (' + mode.label + ')' +
-      (latest ? '<br><span style="color:#999">цены от ' + latest.slice(0, 16) + ' МСК</span>' : '') +
-      '<br><span style="color:#999">страница обновится через пару секунд…</span><br>' +
-      '<button data-switch style="' + btn + 'background:#2a303b;color:#e8e8e8;border:1px solid #444">Взять ' + MODES[other].label + '</button>'
+      (latest ? '<br><span style="color:#999">цены от ' + latest.slice(0, 16) + ' МСК</span>' : '') + note + '<br>' +
+      (live ? '<button data-switch style="' + btn + 'background:#2a303b;color:#e8e8e8;border:1px solid #444">Взять ' + MODES[other].label + '</button>' : '')
     );
-    el.querySelector('[data-switch]').onclick = () => apply(other);
-    reloadTimer = setTimeout(() => location.reload(), RELOAD_DELAY);
+    const sw = el.querySelector('[data-switch]');
+    if (sw) sw.onclick = () => apply(other);
+    busy = false;
+    if (!live) setTimeout(() => location.reload(), RELOAD_DELAY);
   }
 
   apply('sell');
