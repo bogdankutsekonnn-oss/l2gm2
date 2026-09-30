@@ -6,6 +6,8 @@ $action = $_GET['action'] ?? '';
 
 // GET без action → публичный список (можно вытащить и неавторизованным)
 if ($method === 'GET' && $action === '') {
+    // Публичные данные: читает и закладка на калькуляторе крафта Lu4 (craft-bridge.js)
+    header('Access-Control-Allow-Origin: *');
     listPrices();
     exit;
 }
