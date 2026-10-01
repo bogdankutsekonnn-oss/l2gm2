@@ -1240,23 +1240,6 @@
     "expiresAt": null
   },
   {
-    "id": 497,
-    "name": "DUSKFALL X10",
-    "url": "https://duskfall.net",
-    "chronicle": "Interlude",
-    "rate": 10,
-    "startDate": "2026-10-02",
-    "cardType": "basic",
-    "icons": [
-      "obt"
-    ],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-09-15",
-    "expiresAt": null
-  },
-  {
     "id": 498,
     "name": "SAVIEL.FUN",
     "url": "https://saviel.fun",
@@ -1338,6 +1321,23 @@
     "createdAt": "2026-09-23",
     "expiresAt": "2026-10-20",
     "category": "gve"
+  },
+  {
+    "id": 497,
+    "name": "DUSKFALL X10",
+    "url": "https://duskfall.net",
+    "chronicle": "Interlude",
+    "rate": 10,
+    "startDate": "2026-11-02",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-09-15",
+    "expiresAt": null
   },
   {
     "id": 430,
