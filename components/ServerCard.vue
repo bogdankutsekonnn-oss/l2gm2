@@ -111,7 +111,8 @@ const props = defineProps({
   },
 })
 
-const dateInfo = computed(() => formatServerDate(props.server.startDate))
+const now = useNow()
+const dateInfo = computed(() => formatServerDate(props.server.startDate, now.value))
 
 // Прямая ссылка с UTM; клик уходит в фоне через sendBeacon (см. serverTracking)
 const serverHref = computed(() => buildServerHref(props.server))

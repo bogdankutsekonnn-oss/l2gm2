@@ -25,7 +25,7 @@
             >
               <h2 :class="['category-title', { 'category-title--top': isTopCategory(category.name) }]">
                 {{ category.name }}
-                <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
+                <span v-if="getCategoryDate(category.name, now)" class="category-date">{{ getCategoryDate(category.name, now) }}</span>
               </h2>
               <div class="servers-grid">
                 <ServerCard
@@ -44,7 +44,7 @@
             >
               <h2 :class="['category-title', { 'category-title--top': isTopCategory(category.name) }]">
                 {{ category.name }}
-                <span v-if="getCategoryDate(category.name)" class="category-date">{{ getCategoryDate(category.name) }}</span>
+                <span v-if="getCategoryDate(category.name, now)" class="category-date">{{ getCategoryDate(category.name, now) }}</span>
               </h2>
               <div class="servers-grid">
                 <ServerCard
@@ -131,7 +131,8 @@ if (filterKey) {
 }
 
 const filteredServers = computed(() => getServers(filters))
-const categories = computed(() => getOrderedCategories(filteredServers.value))
+const now = useNow()
+const categories = computed(() => getOrderedCategories(filteredServers.value, now.value))
 
 const relatedTagLinks = computed(() =>
   getAllTags()

@@ -8,9 +8,10 @@ export const pluralServers = (n) => {
   return 'серверов'
 }
 
-// Получить текущую дату в московском времени (UTC+3)
-const getMoscowToday = () => {
-  const now = new Date()
+// Получить текущую дату в московском времени (UTC+3).
+// nowMs — «текущий момент» (см. composables/useNow.js), по умолчанию реальное время.
+const getMoscowToday = (nowMs = Date.now()) => {
+  const now = new Date(nowMs)
   // Получаем UTC время и добавляем 3 часа для Москвы
   const moscowOffset = 3 * 60 * 60 * 1000
   const moscowTime = new Date(now.getTime() + now.getTimezoneOffset() * 60 * 1000 + moscowOffset)
@@ -27,8 +28,8 @@ const parseServerDate = (dateString) => {
 // Дата + день недели для категорий "Сегодня" и "Завтра"
 const WEEKDAYS = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
 
-export const getCategoryDate = (categoryName) => {
-  const today = getMoscowToday()
+export const getCategoryDate = (categoryName, nowMs) => {
+  const today = getMoscowToday(nowMs)
   let date = null
 
   if (categoryName === 'Сегодня') {
@@ -48,11 +49,11 @@ export const getCategoryDate = (categoryName) => {
   return `${dd}.${mm}.${yyyy} / ${weekday}`
 }
 
-export const formatServerDate = (dateString) => {
+export const formatServerDate = (dateString, nowMs) => {
   if (!dateString) return ''
 
   const date = parseServerDate(dateString)
-  const today = getMoscowToday()
+  const today = getMoscowToday(nowMs)
 
   const serverDate = new Date(date)
   serverDate.setHours(0, 0, 0, 0)
@@ -123,9 +124,9 @@ export const calculateExpiresAt = (createdAt, cardType) => {
  * @param {Object} server - объект сервера с полем expiresAt
  * @returns {boolean}
  */
-export const isPlacementExpired = (server) => {
+export const isPlacementExpired = (server, nowMs) => {
   if (!server.expiresAt) return false
-  const today = getMoscowToday()
+  const today = getMoscowToday(nowMs)
   return parseServerDate(server.expiresAt) < today
 }
 
@@ -151,7 +152,7 @@ const sortByDateDesc = (a, b) => {
   return getCardPriority(a) - getCardPriority(b)
 }
 
-export const categorizeServers = (servers) => {
+export const categorizeServers = (servers, nowMs) => {
   const categories = {
     'Топ сервера (скоро откроются)': [],
     'Сегодня': [],
@@ -163,11 +164,11 @@ export const categorizeServers = (servers) => {
     'Неделю назад и более': []
   }
 
-  const today = getMoscowToday()
+  const today = getMoscowToday(nowMs)
 
   servers.forEach(server => {
     // Если подписка истекла — считаем как basic
-    const effectiveType = isPlacementExpired(server) ? 'basic' : server.cardType
+    const effectiveType = isPlacementExpired(server, nowMs) ? 'basic' : server.cardType
     const isPaid = PAID_CARD_TYPES.has(effectiveType)
     // Передаём эффективный тип в объект для рендера карточки
     const s = effectiveType !== server.cardType ? { ...server, cardType: effectiveType } : server
@@ -245,8 +246,8 @@ export const categorizeServers = (servers) => {
 }
 
 // Получить категоризированные сервера в виде двух независимых колонок
-export const getOrderedCategories = (servers) => {
-  const categorized = categorizeServers(servers)
+export const getOrderedCategories = (servers, nowMs) => {
+  const categorized = categorizeServers(servers, nowMs)
 
   const leftColumn = []
   const rightColumn = []

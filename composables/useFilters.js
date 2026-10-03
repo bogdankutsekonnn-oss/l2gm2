@@ -2,7 +2,9 @@ import serversJson from '~/data/servers.json'
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
 import { isPlacementExpired } from '~/utils/dateUtils'
-import { serverKey } from '~/utils/serverTracking'
+import { serverKey, normalizeServerUrl } from '~/utils/serverTracking'
+
+const launchKey = (s) => `${normalizeServerUrl(s.url)}|${s.startDate}`
 
 // Production-URL для админ-API. На билде в GitHub Actions (nuxt generate) фетч
 // идёт по этому адресу, результат запекается в HTML — это даёт SEO для серверов,
@@ -13,6 +15,8 @@ const ADMIN_API_URL = 'https://l2gm.com/api/servers.php'
 let refreshedOnClient = false
 
 export const useFilters = () => {
+  const now = useNow()
+
   // useAsyncData с уникальным ключом — дедуплицирует фетч между компонентами
   // и переносит данные через payload SSG → клиент (без повторного запроса).
   // id-ам префикс `api_`, чтобы не пересекались с числовыми id из servers.json.
@@ -40,18 +44,22 @@ export const useFilters = () => {
   const getServers = (filters = {}) => {
     // Сервера из админ-базы существуют в двух копиях: ежечасный синк кладёт их
     // в servers.json, и они же приходят из API. API свежее (правки в админке
-    // видны сразу) — json-дубли выкидываем по ключу url|хроника|рейт.
+    // видны сразу) — json-дубли выкидываем по ключу url|хроника|рейт, а также
+    // по сайту + дате старта: если в админке поправили рейт или хронику, старая
+    // json-копия иначе висела бы рядом со своим (устаревшим) статусом.
     let source = serversJson
     if (apiServers.value) {
       const apiKeys = new Set(apiServers.value.map(serverKey))
+      const apiLaunches = new Set(apiServers.value.map(launchKey))
       source = [
-        ...serversJson.filter(s => !apiKeys.has(serverKey(s))),
+        ...serversJson.filter(s => !apiKeys.has(serverKey(s)) && !apiLaunches.has(launchKey(s))),
         ...apiServers.value,
       ]
     }
 
     // Не показываем серверы, которые открылись больше 30 дней назад
-    const today = new Date()
+    const nowMs = now.value
+    const today = new Date(nowMs)
     today.setHours(0, 0, 0, 0)
     const thirtyDaysAgo = new Date(today)
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -93,13 +101,13 @@ export const useFilters = () => {
 
     // Фильтр по дате (сегодня)
     if (filters.today) {
-      const today = new Date().toISOString().split('T')[0]
+      const today = new Date(nowMs).toISOString().split('T')[0]
       filtered = filtered.filter(s => s.startDate === today)
     }
 
     // Фильтр по дате (завтра)
     if (filters.tomorrow) {
-      const tomorrow = new Date()
+      const tomorrow = new Date(nowMs)
       tomorrow.setDate(tomorrow.getDate() + 1)
       const tomorrowStr = tomorrow.toISOString().split('T')[0]
       filtered = filtered.filter(s => s.startDate === tomorrowStr)
@@ -107,7 +115,7 @@ export const useFilters = () => {
 
     // Фильтр по дате (эта неделя — ближайшие 7 дней включая сегодня)
     if (filters.thisWeek) {
-      const now = new Date()
+      const now = new Date(nowMs)
       const todayStr = now.toISOString().split('T')[0]
       const weekEnd = new Date(now)
       weekEnd.setDate(weekEnd.getDate() + 6)
@@ -117,7 +125,7 @@ export const useFilters = () => {
 
     // Фильтр: недавно открывшиеся (за последние 7 дней)
     if (filters.recentlyOpened) {
-      const now = new Date()
+      const now = new Date(nowMs)
       const todayStr = now.toISOString().split('T')[0]
       const weekAgo = new Date(now)
       weekAgo.setDate(weekAgo.getDate() - 7)
@@ -128,7 +136,7 @@ export const useFilters = () => {
     // Фильтр по типу карточки (топ/vip/premium) — исключаем истёкшие
     if (filters.top) {
       filtered = filtered.filter(s => {
-        if (isPlacementExpired(s)) return false
+        if (isPlacementExpired(s, nowMs)) return false
         return s.cardType === 'premium' || s.cardType === 'vip-plus' || s.cardType === 'vip' || s.cardType === 'top'
       })
     }
