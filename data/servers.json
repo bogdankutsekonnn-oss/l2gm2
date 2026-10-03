@@ -1259,6 +1259,21 @@
     "expiresAt": null
   },
   {
+    "id": 505,
+    "name": "L2 GLORY HIGH FIVE",
+    "url": "https://l2glory.duckdns.org",
+    "chronicle": "High Five",
+    "rate": 40,
+    "startDate": "2026-10-05",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-03",
+    "expiresAt": null
+  },
+  {
     "id": 401,
     "name": "WESTEROS.WS",
     "url": "https://westeros.ws/",
