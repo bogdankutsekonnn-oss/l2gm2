@@ -908,6 +908,21 @@
     "expiresAt": null
   },
   {
+    "id": 538,
+    "name": "LA2 MAIN — БЕЗ ДОНАТА",
+    "url": "https://la2main.ru/",
+    "chronicle": "High Five",
+    "rate": 50,
+    "startDate": "2026-10-01",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-06",
+    "expiresAt": null
+  },
+  {
     "id": 491,
     "name": "ETERNAL.MS",
     "url": "https://eternal.ms",
