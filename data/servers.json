@@ -1397,6 +1397,23 @@
     "expiresAt": null
   },
   {
+    "id": 539,
+    "name": "L2APEX",
+    "url": "https://l2apex.ru",
+    "chronicle": "High Five",
+    "rate": 50,
+    "startDate": "2026-10-20",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-07",
+    "expiresAt": null
+  },
+  {
     "id": 533,
     "name": "THEBATTLE.CLUB",
     "url": "https://thebattle.club",
