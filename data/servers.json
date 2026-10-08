@@ -1444,6 +1444,23 @@
     "expiresAt": null
   },
   {
+    "id": 540,
+    "name": "LEGEND-WORLD",
+    "url": "https://legendw.net/?utm_source=l2gmcom&utm_medium=banner&utm_campaign=interlude_x1200_23oct",
+    "chronicle": "Interlude",
+    "rate": 1200,
+    "startDate": "2026-10-23",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-08",
+    "expiresAt": null
+  },
+  {
     "id": 445,
     "name": "SCRYDE X5",
     "url": "https://scryde.game",
