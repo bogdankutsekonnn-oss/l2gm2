@@ -1397,6 +1397,23 @@
     "expiresAt": null
   },
   {
+    "id": 541,
+    "name": "LA2PHOENIX.COM",
+    "url": "https://la2phoenix.com/",
+    "chronicle": "C4",
+    "rate": 50,
+    "startDate": "2026-10-16",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-09",
+    "expiresAt": null
+  },
+  {
     "id": 539,
     "name": "L2APEX",
     "url": "https://l2apex.ru",
