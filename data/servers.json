@@ -1555,6 +1555,24 @@
     "expiresAt": null
   },
   {
+    "id": 542,
+    "name": "MISTWORLD.PRO",
+    "url": "https://mistworld.pro/",
+    "chronicle": "High Five",
+    "rate": null,
+    "startDate": "2026-11-13",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-10",
+    "expiresAt": null,
+    "category": "х50"
+  },
+  {
     "id": 537,
     "name": "BOHPTS.NET",
     "url": "https://bohpts.net",
