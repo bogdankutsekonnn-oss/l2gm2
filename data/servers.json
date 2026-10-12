@@ -397,9 +397,7 @@
     "rate": 3,
     "startDate": "2026-09-18",
     "cardType": "basic",
-    "icons": [
-      "recommended"
-    ],
+    "icons": [],
     "avatarUrl": null,
     "ownerId": null,
     "description": null,
@@ -684,9 +682,7 @@
     "rate": 100,
     "startDate": "2026-09-25",
     "cardType": "vip",
-    "icons": [
-      "recommended"
-    ],
+    "icons": [],
     "avatarUrl": null,
     "ownerId": null,
     "description": null,
@@ -1371,7 +1367,6 @@
     "startDate": "2026-10-16",
     "cardType": "premium",
     "icons": [
-      "recommended",
       "hot-start"
     ],
     "avatarUrl": null,
