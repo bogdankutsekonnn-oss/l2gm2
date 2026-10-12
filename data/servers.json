@@ -1478,6 +1478,23 @@
     "expiresAt": null
   },
   {
+    "id": 543,
+    "name": "L2DESTINY",
+    "url": "https://l2destiny.online/",
+    "chronicle": "C4",
+    "rate": 3,
+    "startDate": "2026-10-23",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-12",
+    "expiresAt": null
+  },
+  {
     "id": 445,
     "name": "SCRYDE X5",
     "url": "https://scryde.game",
