@@ -49,6 +49,10 @@ function handleContactForm($input) {
         jsonResponse(['error' => 'name and message are required'], 400);
     }
 
+    if (empty($input['consent'])) {
+        jsonResponse(['error' => 'Нужно дать согласие на обработку персональных данных.'], 400);
+    }
+
     if (!throttleByIp('contact', 5, 3600)) {
         jsonResponse(['error' => 'Слишком много сообщений. Попробуйте через час.'], 429);
     }
@@ -68,6 +72,15 @@ function handleContactForm($input) {
         ':message' => mb_substr($message, 0, 4000),
         ':ip' => $_SERVER['REMOTE_ADDR'] ?? null,
     ]);
+
+    // Отметка о согласии — отдельным запросом: пока миграция
+    // migration-2026-10-consent.sql не применена, сообщение всё равно сохраняется.
+    try {
+        $db->prepare('UPDATE contact_messages SET consent_at = NOW() WHERE id = :id')
+           ->execute([':id' => $db->lastInsertId()]);
+    } catch (Exception $e) {
+        error_log('contact.php: consent_at не записан — ' . $e->getMessage());
+    }
 
     // Пинаем воркфлоу уведомлений: письмо уже в базе, раннер заберёт его через
     // минуту. Без этого пришлось бы ждать крона, а GitHub держит расписание

@@ -101,7 +101,32 @@ function handlePost() {
 
     // Валидация URL
     if (!filter_var($url, FILTER_VALIDATE_URL)) {
-        jsonResponse(['error' => 'Invalid URL'], 400);
+        jsonResponse(['error' => 'Укажите корректный адрес сайта.'], 400);
+    }
+
+    // Принимаем только адрес сайта проекта: без файлов и страниц загрузки.
+    // Та же проверка на фронте — pages/add-server/index.vue.
+    $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+    $path = (string)parse_url($url, PHP_URL_PATH);
+    $segments = array_filter(explode('/', $path), 'strlen');
+    $blockedSegment = false;
+    foreach ($segments as $segment) {
+        if (preg_match('/^(download|downloads|files?|patch|patches|client|launcher|updater|torrent)$/i', $segment)) {
+            $blockedSegment = true;
+        }
+    }
+    if (!in_array($scheme, ['http', 'https'], true)
+        || preg_match('/\.(exe|msi|zip|rar|7z|torrent|iso|bin|apk|bat|cmd)$/i', $path)
+        || $blockedSegment) {
+        jsonResponse(['error' => 'Укажите адрес главной страницы сайта, а не ссылку на файл или страницу загрузки.'], 400);
+    }
+
+    // Заявка с сайта принимается только с согласием на Правила размещения и
+    // на обработку персональных данных. Админка (токен) добавляет серверы без них.
+    $fromAdmin = isAuthorized();
+    $consentGiven = !empty($input['consent']) && !empty($input['rulesAccepted']);
+    if (!$fromAdmin && !$consentGiven) {
+        jsonResponse(['error' => 'Нужно принять Правила размещения и дать согласие на обработку персональных данных.'], 400);
     }
 
     // Валидация даты
@@ -133,6 +158,18 @@ function handlePost() {
     ]);
 
     $id = $db->lastInsertId();
+
+    // Фиксируем момент согласия отдельным запросом: если миграция
+    // migration-2026-10-consent.sql ещё не применена и колонки нет, заявка
+    // всё равно сохраняется, теряется только отметка.
+    if ($consentGiven) {
+        try {
+            $db->prepare('UPDATE servers SET consent_at = NOW() WHERE id = :id')
+               ->execute([':id' => $id]);
+        } catch (Exception $e) {
+            error_log('servers.php: consent_at не записан — ' . $e->getMessage());
+        }
+    }
 
     // Пинаем воркфлоу уведомлений: заявка уже в базе, раннер заберёт её через
     // минуту. Без этого пришлось бы ждать крона, а GitHub держит расписание

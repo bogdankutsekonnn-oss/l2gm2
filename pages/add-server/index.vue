@@ -41,14 +41,14 @@
                   размещения.
                 </li>
                 <li>
-                  Для платного размещения кнопка не обязательна —
-                  <NuxtLink to="/placement/" class="info-block__link"
-                    >подробнее о тарифах</NuxtLink
+                  Размещение регулируется
+                  <NuxtLink to="/rules/" class="info-block__link"
+                    >Правилами размещения</NuxtLink
                   >.
                 </li>
                 <li>
-                  Администрация может отклонить публикацию без комментариев
-                  (например, при нарушении правил или некорректных данных).
+                  Администрация может отклонить заявку или удалить анонс без
+                  объяснения причин.
                 </li>
               </ul>
             </div>
@@ -155,6 +155,11 @@
                   placeholder="Например: https://my.server.com/"
                   required
                 />
+                <p class="form-row__hint">
+                  Укажите адрес главной страницы. Ссылки на файлы и страницы
+                  загрузки не принимаются.
+                </p>
+                <p v-if="urlError" class="form-row__error">{{ urlError }}</p>
               </div>
             </div>
 
@@ -206,33 +211,6 @@
             <div class="form-row">
               <div class="form-row__header">
                 <span class="form-row__num">6</span>
-                <label class="form-row__label">Тариф</label>
-              </div>
-              <div class="form-row__chips">
-                <button
-                  v-for="tariff in tariffs"
-                  :key="tariff.id"
-                  type="button"
-                  :class="[
-                    'chip',
-                    { 'chip--active': form.tariff === tariff.id },
-                  ]"
-                  @click="form.tariff = tariff.id"
-                >
-                  <img
-                    v-if="tariff.icon"
-                    :src="tariff.icon"
-                    :alt="tariff.name"
-                    class="chip__icon"
-                  />
-                  {{ tariff.name }}
-                </button>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-row__header">
-                <span class="form-row__num">7</span>
                 <label class="form-row__label">Тип сервера</label>
               </div>
               <div class="form-row__chips">
@@ -253,7 +231,7 @@
 
             <div class="form-row">
               <div class="form-row__header">
-                <span class="form-row__num">8</span>
+                <span class="form-row__num">7</span>
                 <label class="form-row__label">Дополнительно</label>
               </div>
               <div class="form-row__chips">
@@ -275,7 +253,7 @@
 
             <div class="form-row">
               <div class="form-row__header">
-                <span class="form-row__num">9</span>
+                <span class="form-row__num">8</span>
                 <label class="form-row__label">Email</label>
               </div>
               <div class="form-row__input">
@@ -291,7 +269,7 @@
 
             <div class="form-row">
               <div class="form-row__header">
-                <span class="form-row__num">10</span>
+                <span class="form-row__num">9</span>
                 <label class="form-row__label">Контакты</label>
               </div>
               <div class="form-row__input">
@@ -313,10 +291,37 @@
               </div>
             </div>
 
+            <div class="form-consents">
+              <label class="form-consent">
+                <input v-model="form.rulesAccepted" type="checkbox" required />
+                <span>
+                  Я принимаю
+                  <NuxtLink to="/rules/" target="_blank" class="info-block__link"
+                    >Правила размещения</NuxtLink
+                  >
+                  и подтверждаю, что вправе действовать от имени проекта, а
+                  проект и его сайт не нарушают права третьих лиц.
+                </span>
+              </label>
+              <label class="form-consent">
+                <input v-model="form.consent" type="checkbox" required />
+                <span>
+                  Я даю
+                  <NuxtLink to="/consent/" target="_blank" class="info-block__link"
+                    >согласие на обработку персональных данных</NuxtLink
+                  >.
+                </span>
+              </label>
+            </div>
+
+            <p v-if="submitError" class="form-submit-error" role="alert">
+              {{ submitError }}
+            </p>
+
             <button
               type="submit"
               class="btn-primary btn-submit"
-              :disabled="isSubmitting"
+              :disabled="isSubmitting || !form.rulesAccepted || !form.consent"
             >
               {{ isSubmitting ? 'Отправка...' : 'Добавить сервер' }}
             </button>
@@ -454,17 +459,6 @@ const selectCode = () => {
   }
 }
 
-const tariffs = [
-  { id: 'free', name: 'Бесплатный', icon: null },
-  { id: 'premium', name: 'S-Grade', icon: '/images/status/premium.png' },
-  { id: 'vip', name: 'A-Grade', icon: '/images/status/vip.png' },
-  {
-    id: 'vip-standard',
-    name: 'B-Grade',
-    icon: '/images/status/top.png',
-  },
-]
-
 const serverTypes = [
   { id: 'pvp', name: 'PVP' },
   { id: 'rvr', name: 'RVR' },
@@ -497,7 +491,8 @@ const form = reactive({
   serverDate: '',
   serverEmail: '',
   contacts: '',
-  tariff: 'free',
+  rulesAccepted: false,
+  consent: false,
   serverTypes: [],
   extras: [],
 })
@@ -508,13 +503,34 @@ const toggleChip = (arr, id) => {
   else arr.splice(idx, 1)
 }
 
-// Маппинг тарифа в cardType для превью
-const tariffToCardType = {
-  free: 'basic',
-  premium: 'premium',
-  vip: 'vip',
-  'vip-standard': 'top',
+// Через форму подаются заявки на обычное размещение; формат карточки при
+// необходимости меняет администратор.
+const FORM_CARD_TYPE = 'basic'
+
+// Принимаем только адрес сайта проекта: без файлов и страниц загрузки.
+// Та же проверка продублирована на сервере (public/api/servers.php).
+const BLOCKED_URL_EXT = /\.(exe|msi|zip|rar|7z|torrent|iso|bin|apk|bat|cmd)$/i
+const BLOCKED_URL_SEGMENT = /^(download|downloads|files?|patch|patches|client|launcher|updater|torrent)$/i
+
+const validateServerUrl = (value) => {
+  let parsed
+  try {
+    parsed = new URL(value)
+  } catch {
+    return 'Укажите корректный адрес сайта.'
+  }
+  if (!/^https?:$/.test(parsed.protocol)) {
+    return 'Адрес должен начинаться с http:// или https://.'
+  }
+  const segments = parsed.pathname.split('/').filter(Boolean)
+  if (BLOCKED_URL_EXT.test(parsed.pathname) || segments.some((s) => BLOCKED_URL_SEGMENT.test(s))) {
+    return 'Укажите адрес главной страницы сайта, а не ссылку на файл или страницу загрузки.'
+  }
+  return ''
 }
+
+const urlError = ref('')
+const submitError = ref('')
 
 // Иконки из extras для превью
 const previewIcons = computed(() =>
@@ -530,7 +546,7 @@ const previewServer = computed(() => ({
   chronicle: form.serverChronicle || 'INTERLUDE+',
   rate: form.serverRate || '100K',
   startDate: form.serverDate || new Date().toISOString().slice(0, 10),
-  cardType: tariffToCardType[form.tariff] || 'basic',
+  cardType: FORM_CARD_TYPE,
   icons: previewIcons.value,
 }))
 
@@ -538,9 +554,13 @@ const isSubmitting = ref(false)
 
 const handleSubmit = async () => {
   if (isSubmitting.value) return
+  submitError.value = ''
+  urlError.value = validateServerUrl(form.serverUrl.trim())
+  if (urlError.value) return
+  if (!form.rulesAccepted || !form.consent) return
   isSubmitting.value = true
   const today = new Date().toISOString().slice(0, 10)
-  const cardType = tariffToCardType[form.tariff] || 'basic'
+  const cardType = FORM_CARD_TYPE
 
   const serverData = {
     name: form.serverName,
@@ -576,13 +596,32 @@ const handleSubmit = async () => {
     email: serverData.email,
     contacts: serverData.contacts,
     expiresAt: serverData.expiresAt,
+    rulesAccepted: form.rulesAccepted,
+    consent: form.consent,
   }
 
-  await fetch('/api/servers.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(apiPayload),
-  }).catch(() => {})
+  // Раньше ответ сервера игнорировался и пользователь всегда уходил на
+  // /thanks. Теперь сервер может отклонить заявку (нет согласия, ссылка на
+  // файл) — показываем причину и остаёмся на форме.
+  try {
+    const res = await fetch('/api/servers.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(apiPayload),
+    })
+    if (!res.ok) {
+      const data = await res.json().catch(() => null)
+      submitError.value = typeof data?.error === 'string'
+        ? data.error
+        : 'Не удалось отправить заявку. Попробуйте позже.'
+      isSubmitting.value = false
+      return
+    }
+  } catch {
+    submitError.value = 'Не удалось отправить заявку. Проверьте соединение и попробуйте ещё раз.'
+    isSubmitting.value = false
+    return
+  }
 
   navigateTo('/thanks')
 }
@@ -596,9 +635,9 @@ const toggleFaq = (index) => {
 
 const faqItems = [
   {
-    question: 'Сколько стоит размещение сервера на L2GM?',
+    question: 'Какие форматы размещения доступны?',
     answer:
-      'Базовое размещение бесплатно — достаточно разместить нашу кнопку на сайте вашего сервера. Также доступны платные тарифы (S-Grade, A-Grade, B-Grade), которые дают приоритетное расположение в списке и выделенное оформление карточки. Подробнее о тарифах можно узнать на странице рекламы.',
+      'Через эту форму подаётся заявка на обычное размещение в общем списке — для него нужно разместить нашу кнопку на сайте вашего сервера. Остальные форматы (S-Grade, A-Grade, B-Grade, баннеры) описаны на странице «Размещение».',
   },
   {
     question: 'Как быстро сервер появится в списке после добавления?',
@@ -608,7 +647,7 @@ const faqItems = [
   {
     question: 'Что будет, если я удалю кнопку с сайта сервера?',
     answer:
-      'Для бесплатного тарифа наличие кнопки обязательно на весь срок размещения. Если кнопка будет удалена или её код изменён, сервер может быть снят с публикации без предупреждения. Для платных тарифов размещение кнопки не требуется.',
+      'Наличие кнопки обязательно на весь срок размещения, если с администрацией не согласовано иное. Если кнопка будет удалена или её код изменён, сервер может быть снят с публикации без предупреждения.',
   },
   {
     question: 'Можно ли изменить данные сервера после добавления?',
@@ -616,14 +655,14 @@ const faqItems = [
       'Да, вы можете обратиться в администрацию через контакты, указанные на сайте, и запросить изменение информации о сервере — например, обновить дату открытия, хроники или рейты. Изменения будут внесены после проверки.',
   },
   {
-    question: 'Что даёт платное размещение?',
+    question: 'Что означают статусы S-Grade, A-Grade и B-Grade?',
     answer:
-      'Платные тарифы обеспечивают приоритетную позицию в списке серверов, выделенное оформление карточки (S-Grade, A-Grade или B-Grade дизайн) и дополнительную видимость для игроков. Это значительно увеличивает количество переходов на сайт вашего сервера.',
+      'Это форматы размещения анонса. Они влияют на положение и оформление карточки в списке и не являются оценкой или рекомендацией проекта.',
   },
   {
     question: 'По какой причине могут отклонить заявку?',
     answer:
-      'Заявка может быть отклонена, если указаны некорректные данные, сайт сервера недоступен, кнопка не размещена (для бесплатного тарифа) или сервер нарушает общие правила площадки. Администрация оставляет за собой право отклонить публикацию без комментариев.',
+      'Заявка может быть отклонена, если указаны некорректные данные, сайт сервера недоступен, кнопка не размещена, вместо адреса сайта указана ссылка на файл или сервер нарушает Правила размещения. Администрация оставляет за собой право отклонить заявку без объяснения причин.',
   },
 ]
 
@@ -632,7 +671,7 @@ const seoText = `Разместить сервер Lineage 2 на L2GM — эт�
 
 L2GM поддерживает все популярные хроники — от Interlude и High Five до Essence и Classic. Независимо от типа вашего сервера, будь то PvP, крафт или RvR, вы найдёте свою аудиторию среди наших посетителей. Удобные фильтры помогают игрокам быстро находить сервера по хроникам, рейтам и дате открытия.
 
-Для владельцев серверов доступны бесплатные и платные тарифы размещения. Бесплатный тариф требует установки кнопки на сайт сервера. Платные тарифы S-Grade, A-Grade и B-Grade дают приоритетное расположение и выделенный дизайн карточки, что значительно повышает видимость и количество переходов.`
+Перед отправкой заявки установите кнопку L2GM на сайт сервера. Заявки проходят ручную модерацию, условия описаны в Правилах размещения.`
 
 const { getCanonicalUrl, generateBreadcrumbJsonLd } = useSeo()
 const addServerCanonical = getCanonicalUrl('/add-server/')
@@ -981,6 +1020,54 @@ useHead({
   color: var(--text-disabled);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.form-row__hint,
+.form-row__error {
+  margin: 6px 0 0;
+  font-size: var(--font-xs);
+  line-height: 1.5;
+  color: var(--text-disabled);
+}
+
+.form-row__error,
+.form-submit-error {
+  color: #ff6b6b;
+}
+
+.form-consents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md);
+}
+
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  font-size: var(--font-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.form-consent input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary-main);
+}
+
+.form-submit-error {
+  margin: 0 var(--spacing-md);
+  font-size: var(--font-sm);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Кнопка сабмита */

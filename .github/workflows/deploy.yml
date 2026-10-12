@@ -65,6 +65,14 @@ jobs:
       - name: Проверка сборки перед заливкой
         run: npm run check:build
 
+      # Синтаксическая ошибка в PHP роняет публичный API и приём заявок целиком,
+      # а локально PHP у разработчика может не быть — ловим до заливки.
+      - name: Проверка синтаксиса PHP
+        run: |
+          for f in public/api/*.php public/comments-api/*.php; do
+            php -l "$f"
+          done
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

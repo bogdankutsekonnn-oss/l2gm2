@@ -144,8 +144,15 @@
                 :disabled="isSubmitting"
               ></textarea>
             </div>
+            <label class="form-consent">
+              <input v-model="contactForm.consent" type="checkbox" required :disabled="isSubmitting" />
+              <span>
+                Я даю
+                <NuxtLink to="/consent/" target="_blank">согласие на обработку персональных данных</NuxtLink>.
+              </span>
+            </label>
             <div class="form-actions">
-              <button type="submit" class="btn-submit" :disabled="isSubmitting">
+              <button type="submit" class="btn-submit" :disabled="isSubmitting || !contactForm.consent">
                 {{ isSubmitting ? 'Отправляем...' : 'Отправить' }}
               </button>
               <Transition name="fade">
@@ -168,7 +175,7 @@
 const modalOpen = ref(false)
 const isSubmitting = ref(false)
 const submitStatus = ref('')
-const contactForm = ref({ name: '', reply: '', message: '' })
+const contactForm = ref({ name: '', reply: '', message: '', consent: false })
 
 const closeModal = () => {
   modalOpen.value = false
@@ -207,11 +214,12 @@ const submitContactForm = async () => {
         name: contactForm.value.name,
         reply: contactForm.value.reply,
         message: contactForm.value.message,
+        consent: contactForm.value.consent,
       }),
     })
     if (res.ok) {
       submitStatus.value = 'success'
-      contactForm.value = { name: '', reply: '', message: '' }
+      contactForm.value = { name: '', reply: '', message: '', consent: false }
     } else {
       submitStatus.value = 'error'
     }
@@ -466,6 +474,33 @@ useHead({
 
 .form-group input:disabled,
 .form-group textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  font-size: var(--font-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.form-consent input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary-main);
+}
+
+.form-consent a {
+  color: var(--primary-main);
+}
+
+.btn-submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
