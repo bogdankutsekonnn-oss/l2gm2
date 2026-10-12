@@ -30,9 +30,9 @@
 
       <span class="server-card__name">{{ server.name }}</span>
 
-      <div v-if="server.icons?.length" class="server-card__badges">
+      <div v-if="visibleBadges.length" class="server-card__badges">
         <img
-          v-for="badge in server.icons?.slice(0, 1)"
+          v-for="badge in visibleBadges"
           :key="badge"
           :src="`/images/badges/${badge}.webp`"
           :alt="badgeText(badge)"
@@ -85,9 +85,9 @@
         <div :class="['server-card__date', dateInfo.dateClass]">
           {{ dateInfo.text }}
         </div>
-        <div v-if="server.icons?.length" class="server-card__badges">
+        <div v-if="visibleBadges.length" class="server-card__badges">
           <img
-            v-for="badge in server.icons?.slice(0, 1)"
+            v-for="badge in visibleBadges"
             :key="badge"
             :src="`/images/badges/${badge}.webp`"
             :alt="badgeText(badge)"
@@ -156,9 +156,14 @@ const statusText = computed(() => {
   return statusMap[cardStatus.value] || ''
 })
 
+// Значок «recommended» больше не показываем: сайт не даёт оценок проектам.
+// В базе он ещё может встречаться у старых записей, поэтому отфильтровываем.
+const visibleBadges = computed(() =>
+  (props.server.icons || []).filter((b) => b !== 'recommended').slice(0, 1),
+)
+
 const badgeText = (badge) => {
   const badgeMap = {
-    recommended: 'Рекомендуем',
     'hot-start': 'Горячий старт',
     'bonus-start': 'Бонус старт',
     obt: 'ОБТ',

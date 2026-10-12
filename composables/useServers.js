@@ -90,13 +90,11 @@ export const useServers = () => {
 
   /**
    * Платные иконки
-   * recommended - Рекомендуем (от нас)
    * hot-start - Горячий старт
    * bonus-start - Бонус к старту
    * obt - ОБТ
    */
   const ICON_TYPES = {
-    recommended: { name: 'Рекомендуем', icon: 'recommended.svg' },
     'hot-start': { name: 'Горячий старт', icon: 'hot-start.svg' },
     'bonus-start': { name: 'Бонус к старту', icon: 'bonus-start.svg' },
     obt: { name: 'ОБТ', icon: 'obt.svg' },

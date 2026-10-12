@@ -62,8 +62,8 @@
 
       <div class="rating-note">
         <p>
-          В верхней части рейтинга — сервера Lineage 2 со статусами S-Grade, A-Grade и B-Grade:
-          проекты с подтверждённой репутацией и стабильным онлайном. Далее идут новые
+          В верхней части рейтинга — сервера Lineage 2 со статусами S-Grade, A-Grade и B-Grade
+          (это формат размещения, а не оценка проекта). Далее идут новые
           сервера Л2 всех хроник — от Interlude и High Five до Essence. Список
           обновляется ежедневно: здесь только актуальные проекты, открывшиеся недавно
           или готовящиеся к старту.
@@ -120,7 +120,7 @@ const ratingBreadcrumbJsonLd = generateBreadcrumbJsonLd([
 ])
 
 const ratingTitle = 'Рейтинг серверов Л2 2026 — топ серверов Lineage 2 | L2GM'
-const ratingDescription = 'Рейтинг серверов Л2 2026 — топ новых серверов Lineage 2 всех хроник и рейтов. S-Grade и A-Grade проекты с проверенной репутацией и стабильным онлайном на L2GM.'
+const ratingDescription = 'Рейтинг серверов Л2 2026 — топ новых серверов Lineage 2 всех хроник и рейтов. Календарь открытий и фильтры по хроникам на L2GM.'
 const ratingCanonical = getCanonicalUrl('/rating/')
 
 useHead({
