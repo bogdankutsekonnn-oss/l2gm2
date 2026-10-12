@@ -107,6 +107,14 @@ useHead({
   padding-left: var(--spacing-lg);
 }
 
+.legal-content :deep(.about-section ul) {
+  list-style: disc;
+}
+
+.legal-content :deep(.about-section ol) {
+  list-style: decimal;
+}
+
 .legal-content :deep(.about-section li + li) {
   margin-top: 6px;
 }

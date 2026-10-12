@@ -36,6 +36,9 @@
                 <NuxtLink to="/privacy/">Политика конфиденциальности</NuxtLink>
                 <NuxtLink to="/terms/">Пользовательское соглашение</NuxtLink>
                 <NuxtLink to="/rightholders/">Правообладателям</NuxtLink>
+                <button type="button" class="footer-link-button" @click="openSettings">
+                  Настройки cookie
+                </button>
               </nav>
             </div>
 
@@ -90,6 +93,7 @@
 
 <script setup>
 const currentYear = new Date().getFullYear()
+const { openSettings } = useCookieConsent()
 </script>
 
 <style scoped>
@@ -184,6 +188,23 @@ const currentYear = new Date().getFullYear()
 }
 
 .footer-column-links a:hover {
+  color: var(--text-primary);
+}
+
+/* «Настройки cookie» — кнопка, оформленная как соседние ссылки */
+.footer-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--font-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-link-button:hover {
   color: var(--text-primary);
 }
 

@@ -138,7 +138,16 @@ export default defineNuxtConfig({
     },
   },
 
-  css: [],
+  // Шрифт Onest лежит на нашем сервере (пакет @fontsource/onest), к Google Fonts
+  // запросов нет: IP посетителей не уходит за рубеж.
+  css: [
+    ...[400, 500, 600, 700].flatMap((weight) => [
+      `@fontsource/onest/cyrillic-${weight}.css`,
+      `@fontsource/onest/cyrillic-ext-${weight}.css`,
+      `@fontsource/onest/latin-${weight}.css`,
+      `@fontsource/onest/latin-ext-${weight}.css`,
+    ]),
+  ],
 
   // Основной URL сайта
   site: {
@@ -213,18 +222,6 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' },
       ],
       link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap',
-          media: 'print',
-          onload: "this.media='all'",
-        },
         // Favicon
         { rel: 'icon', type: 'image/x-icon', href: '/favicon/favicon.ico' },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon/favicon.svg' },

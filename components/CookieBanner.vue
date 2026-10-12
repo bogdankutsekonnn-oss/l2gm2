@@ -1,37 +1,34 @@
 <template>
   <Transition name="cookie-slide">
-    <div v-if="isVisible" class="cookie-banner">
+    <div v-if="bannerOpen" class="cookie-banner" role="dialog" aria-label="Настройки cookie">
       <div class="cookie-banner__content">
         <p class="cookie-banner__text">
-          Мы используем файлы cookie для улучшения работы сайта.
+          Мы используем файлы cookie, чтобы сайт работал, и — с вашего согласия —
+          Яндекс.Метрику для статистики посещений.
           <NuxtLink to="/cookies/" class="cookie-banner__link">Подробнее</NuxtLink>
         </p>
-        <button class="cookie-banner__button" @click="acceptCookies">
-          Принять
-        </button>
+        <div class="cookie-banner__actions">
+          <button
+            class="cookie-banner__button cookie-banner__button--secondary"
+            @click="choose('necessary')"
+          >
+            Только необходимые
+          </button>
+          <button class="cookie-banner__button" @click="choose('all')">
+            Принять
+          </button>
+        </div>
       </div>
     </div>
   </Transition>
 </template>
 
 <script setup>
-const isVisible = ref(false)
+// Состояние общее с plugins/analytics.client.js и ссылкой «Настройки cookie»
+// в подвале — см. composables/useCookieConsent.js.
+const { bannerOpen, load, choose } = useCookieConsent()
 
-onMounted(() => {
-  if (typeof localStorage !== 'undefined') {
-    const consent = localStorage.getItem('cookieConsent')
-    if (consent !== 'true') {
-      isVisible.value = true
-    }
-  }
-})
-
-const acceptCookies = () => {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('cookieConsent', 'true')
-  }
-  isVisible.value = false
-}
+onMounted(load)
 </script>
 
 <style scoped>
@@ -96,6 +93,21 @@ const acceptCookies = () => {
   background: var(--primary-hover);
 }
 
+.cookie-banner__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.cookie-banner__button--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.cookie-banner__button--secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
 /* Slide up animation */
 .cookie-slide-enter-active {
   transition: transform 0.4s ease-out, opacity 0.4s ease-out;
@@ -120,6 +132,11 @@ const acceptCookies = () => {
     flex-direction: column;
     text-align: center;
     padding: 16px;
+  }
+
+  .cookie-banner__actions {
+    width: 100%;
+    flex-direction: column;
   }
 
   .cookie-banner__button {
