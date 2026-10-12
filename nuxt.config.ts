@@ -140,14 +140,7 @@ export default defineNuxtConfig({
 
   // Шрифт Onest лежит на нашем сервере (пакет @fontsource/onest), к Google Fonts
   // запросов нет: IP посетителей не уходит за рубеж.
-  css: [
-    ...[400, 500, 600, 700].flatMap((weight) => [
-      `@fontsource/onest/cyrillic-${weight}.css`,
-      `@fontsource/onest/cyrillic-ext-${weight}.css`,
-      `@fontsource/onest/latin-${weight}.css`,
-      `@fontsource/onest/latin-ext-${weight}.css`,
-    ]),
-  ],
+  css: ['~/assets/css/fonts.css'],
 
   // Основной URL сайта
   site: {
