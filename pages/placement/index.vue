@@ -13,12 +13,12 @@
               href="https://t.me/L2gmcom"
               target="_blank"
               rel="noopener noreferrer"
-              class="btn-primary contact-button"
+              class="contact-button contact-button--light"
             >
               <img src="/images/social/telegram.svg" alt="" width="18" height="18" />
               Telegram
             </a>
-            <a href="mailto:info@l2gm.com" class="btn-primary contact-button">
+            <a href="mailto:info@l2gm.com" class="contact-button contact-button--light">
               <img src="/images/social/mail.svg" alt="" width="18" height="18" />
               Почта
             </a>
@@ -166,6 +166,21 @@ useHead({
   font-size: var(--font-base);
   white-space: nowrap;
   text-decoration: none;
+}
+
+/* Кнопки связи — светлые, только на этой странице */
+.contact-button--light {
+  border-radius: var(--radius-button);
+  background: #ffffff;
+  color: #000000;
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.contact-button--light:hover {
+  background: #e6e6e6;
+  color: #000000;
 }
 
 .contact-button:focus-visible {
