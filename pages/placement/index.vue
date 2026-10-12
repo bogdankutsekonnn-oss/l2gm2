@@ -46,10 +46,6 @@
             Размещение регулируется <NuxtLink to="/rules/">Правилами размещения</NuxtLink>.
             Формат размещения не является оценкой или рекомендацией проекта.
           </p>
-
-          <NuxtLink to="/add-server/" class="btn-primary contact-button placement-add">
-            Добавить сервер
-          </NuxtLink>
         </div>
 
         <div class="filters-column">
@@ -286,10 +282,6 @@ useHead({
 .placement-note a {
   color: var(--text-primary);
   text-decoration: underline;
-}
-
-.placement-add {
-  align-self: flex-start;
 }
 
 @media (max-width: 800px) {
