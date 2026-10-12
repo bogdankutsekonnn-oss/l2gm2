@@ -1,0 +1,50 @@
+[
+  {
+    "id": "s-grade",
+    "title": "S-Grade размещение",
+    "description": "Первые места в списке, 1–2 места в каждой колонке",
+    "cardType": "premium",
+    "status": "free",
+    "freeFrom": ""
+  },
+  {
+    "id": "a-grade",
+    "title": "A-Grade размещение",
+    "description": "Сразу после S-Grade, позиции 2–12",
+    "cardType": "vip",
+    "status": "free",
+    "freeFrom": ""
+  },
+  {
+    "id": "b-grade",
+    "title": "B-Grade размещение",
+    "description": "В общем списке, выделенная карточка",
+    "cardType": "top",
+    "status": "free",
+    "freeFrom": ""
+  },
+  {
+    "id": "regular",
+    "title": "Обычное размещение",
+    "description": "В общем списке",
+    "cardType": "basic",
+    "status": "free",
+    "freeFrom": ""
+  },
+  {
+    "id": "header-banner",
+    "title": "Header-баннер",
+    "description": "Размер: 1920×600",
+    "cardType": null,
+    "status": "free",
+    "freeFrom": ""
+  },
+  {
+    "id": "right-banner",
+    "title": "Правый баннер",
+    "description": "Размер: 240×400",
+    "cardType": null,
+    "status": "free",
+    "freeFrom": ""
+  }
+]

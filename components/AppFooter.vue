@@ -14,9 +14,9 @@
         <div class="footer-right">
           <!-- Колонки с ссылками -->
           <div class="footer-columns">
-            <!-- Рекламодателям -->
+            <!-- Владельцам серверов -->
             <div class="footer-column">
-              <div class="footer-column-title">РЕКЛАМОДАТЕЛЯМ</div>
+              <div class="footer-column-title">ВЛАДЕЛЬЦАМ СЕРВЕРОВ</div>
               <nav class="footer-column-links">
                 <NuxtLink to="/placement/">Размещение</NuxtLink>
                 <NuxtLink to="/add-server/">Добавить сервер</NuxtLink>
