@@ -78,8 +78,9 @@ onMounted(load)
   flex-shrink: 0;
   padding: 8px 24px;
   background: var(--primary-main);
-  /* #000 на ярком оранжевом ~6:1 (WCAG AA), белый давал 3.4 — Lighthouse ругался */
-  color: #000;
+  /* Белый на текущем --primary-main (200, 40, 0) даёт ~5.6:1 — проходит WCAG AA.
+     Чёрный текст остался со времён более яркого оранжевого, где белый давал 3.4. */
+  color: #fff;
   font-size: var(--font-sm);
   font-weight: var(--font-semibold, 600);
   border: none;
