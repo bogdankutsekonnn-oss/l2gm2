@@ -25,7 +25,7 @@ function handleGet() {
         requireAdmin();
         $stmt = $db->query('SELECT * FROM servers ORDER BY created_at DESC');
         $servers = $stmt->fetchAll();
-        jsonResponse(formatServers($servers));
+        jsonResponse(formatServers($servers, true));
     }
 
     // Публичный доступ — только approved
@@ -142,10 +142,12 @@ function handlePost() {
     jsonResponse(['success' => true, 'id' => (int)$id], 201);
 }
 
-// Форматирование серверов в формат, совместимый с фронтом
-function formatServers($rows) {
-    return array_map(function ($row) {
-        return [
+// Форматирование серверов в формат, совместимый с фронтом.
+// $admin = false — публичная выдача: без email, контактов заявителя и служебных
+// полей. Ответ запекается в HTML каждой страницы, персональным данным там не место.
+function formatServers($rows, $admin = false) {
+    return array_map(function ($row) use ($admin) {
+        $server = [
             'id' => (int)$row['id'],
             'name' => $row['name'],
             'url' => $row['url'],
@@ -158,11 +160,14 @@ function formatServers($rows) {
             'serverTypes' => json_decode($row['server_types'] ?? '[]', true),
             'avatarUrl' => $row['avatar_url'],
             'description' => $row['description'],
-            'email' => $row['email'],
-            'contacts' => $row['contacts'],
-            'status' => $row['status'],
-            'createdAt' => $row['created_at'],
             'expiresAt' => $row['expires_at'],
         ];
+        if ($admin) {
+            $server['email'] = $row['email'];
+            $server['contacts'] = $row['contacts'];
+            $server['status'] = $row['status'];
+            $server['createdAt'] = $row['created_at'];
+        }
+        return $server;
     }, $rows);
 }
