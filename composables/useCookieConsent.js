@@ -1,5 +1,6 @@
 // Выбор посетителя по cookie: 'all' — можно грузить аналитику (Яндекс.Метрика),
-// 'necessary' — только необходимое, null — выбор ещё не сделан.
+// 'necessary' — согласие отозвано, null — выбор ещё не сделан (баннер висит,
+// пока не нажмут «Принять»; аналитика при этом не грузится).
 // Хранится в localStorage 12 месяцев; сам выбор — «необходимые» данные,
 // согласия не требует.
 
@@ -47,5 +48,10 @@ export const useCookieConsent = () => {
     bannerOpen.value = true
   }
 
-  return { consent, loaded, bannerOpen, load, choose, openSettings }
+  // Закрыть баннер, не меняя выбора. Пока выбора нет, баннер не закрывается.
+  const close = () => {
+    if (consent.value !== null) bannerOpen.value = false
+  }
+
+  return { consent, loaded, bannerOpen, load, choose, openSettings, close }
 }
