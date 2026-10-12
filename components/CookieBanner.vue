@@ -7,17 +7,20 @@
           Яндекс.Метрику для статистики посещений.
           <NuxtLink to="/cookies/" class="cookie-banner__link">Подробнее</NuxtLink>
         </p>
-        <div class="cookie-banner__actions">
-          <button
-            class="cookie-banner__button cookie-banner__button--secondary"
-            @click="choose('necessary')"
-          >
-            Только необходимые
-          </button>
-          <button class="cookie-banner__button" @click="choose('all')">
-            Принять
-          </button>
-        </div>
+        <button class="cookie-banner__button" @click="choose('all')">
+          Принять
+        </button>
+        <!-- Крестик = отказ от аналитики: баннер закрывается, Метрика не грузится -->
+        <button
+          class="cookie-banner__close"
+          aria-label="Закрыть без согласия на аналитику"
+          title="Закрыть"
+          @click="choose('necessary')"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
   </Transition>
@@ -54,6 +57,7 @@ onMounted(load)
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   pointer-events: all;
+  position: relative;
 }
 
 .cookie-banner__text {
@@ -94,19 +98,25 @@ onMounted(load)
   background: var(--primary-hover);
 }
 
-.cookie-banner__actions {
-  display: flex;
+.cookie-banner__close {
+  display: inline-flex;
   flex-shrink: 0;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
-.cookie-banner__button--secondary {
+.cookie-banner__close:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
-}
-
-.cookie-banner__button--secondary:hover {
-  background: rgba(255, 255, 255, 0.18);
 }
 
 /* Slide up animation */
@@ -135,13 +145,18 @@ onMounted(load)
     padding: 16px;
   }
 
-  .cookie-banner__actions {
-    width: 100%;
-    flex-direction: column;
+  .cookie-banner__content {
+    padding-top: 40px;
   }
 
   .cookie-banner__button {
     width: 100%;
+  }
+
+  .cookie-banner__close {
+    position: absolute;
+    top: 6px;
+    right: 6px;
   }
 }
 </style>
