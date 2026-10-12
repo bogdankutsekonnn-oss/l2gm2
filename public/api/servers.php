@@ -25,7 +25,7 @@ function handleGet() {
         requireAdmin();
         $stmt = $db->query('SELECT * FROM servers ORDER BY created_at DESC');
         $servers = $stmt->fetchAll();
-        jsonResponse(formatServers($servers));
+        jsonResponse(formatServers($servers, true));
     }
 
     // Публичный доступ — только approved
@@ -86,7 +86,7 @@ function handlePost() {
         : 'basic';
     // Иконки — только из белого списка: значение подставляется в путь
     // /images/badges/<icon>.webp на фронте, произвольную строку туда пускать нельзя.
-    $allowedIcons = ['recommended', 'hot-start', 'bonus-start', 'obt'];
+    $allowedIcons = ['hot-start', 'bonus-start', 'obt'];
     $icons = isset($input['icons']) && is_array($input['icons'])
         ? json_encode(array_values(array_intersect($input['icons'], $allowedIcons)))
         : '[]';
@@ -142,10 +142,16 @@ function handlePost() {
     jsonResponse(['success' => true, 'id' => (int)$id], 201);
 }
 
-// Форматирование серверов в формат, совместимый с фронтом
-function formatServers($rows) {
-    return array_map(function ($row) {
-        return [
+// Форматирование серверов в формат, совместимый с фронтом.
+// $admin = false — публичная выдача: без email, контактов заявителя и служебных
+// полей. Ответ запекается в HTML каждой страницы, персональным данным там не место.
+function formatServers($rows, $admin = false) {
+    return array_map(function ($row) use ($admin) {
+        $icons = json_decode($row['icons'] ?? '[]', true) ?: [];
+        if (!$admin) {
+            $icons = array_values(array_diff($icons, ['recommended']));
+        }
+        $server = [
             'id' => (int)$row['id'],
             'name' => $row['name'],
             'url' => $row['url'],
@@ -154,15 +160,18 @@ function formatServers($rows) {
             'category' => $row['category'],
             'startDate' => $row['start_date'],
             'cardType' => $row['card_type'],
-            'icons' => json_decode($row['icons'] ?? '[]', true),
+            'icons' => $icons,
             'serverTypes' => json_decode($row['server_types'] ?? '[]', true),
             'avatarUrl' => $row['avatar_url'],
             'description' => $row['description'],
-            'email' => $row['email'],
-            'contacts' => $row['contacts'],
-            'status' => $row['status'],
-            'createdAt' => $row['created_at'],
             'expiresAt' => $row['expires_at'],
         ];
+        if ($admin) {
+            $server['email'] = $row['email'];
+            $server['contacts'] = $row['contacts'];
+            $server['status'] = $row['status'];
+            $server['createdAt'] = $row['created_at'];
+        }
+        return $server;
     }, $rows);
 }
