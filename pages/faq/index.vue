@@ -130,7 +130,7 @@ const faqItems = [
   {
     question: 'Как связаться с нами или предложить улучшение сервиса?',
     answer:
-      'Вы можете написать нам в <a href="https://t.me/DamonLaptev" target="_blank" rel="noopener">Telegram</a>, на почту <a href="mailto:info@l2gm.com">info@l2gm.com</a> или через <a href="/about/">страницу контактов</a>. Мы открыты к предложениям и обратной связи!',
+      'Вы можете написать нам в <a href="https://t.me/L2gmcom" target="_blank" rel="noopener">Telegram</a>, на почту <a href="mailto:info@l2gm.com">info@l2gm.com</a> или через <a href="/about/">страницу контактов</a>. Мы открыты к предложениям и обратной связи!',
   },
 ]
 

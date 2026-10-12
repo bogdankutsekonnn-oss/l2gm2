@@ -20,6 +20,7 @@
               <nav class="footer-column-links">
                 <NuxtLink to="/placement/">Размещение</NuxtLink>
                 <NuxtLink to="/add-server/">Добавить сервер</NuxtLink>
+                <NuxtLink to="/rules/">Правила размещения</NuxtLink>
               </nav>
             </div>
 
@@ -34,6 +35,7 @@
                 <NuxtLink to="/cookies/">Файлы Cookie</NuxtLink>
                 <NuxtLink to="/privacy/">Политика конфиденциальности</NuxtLink>
                 <NuxtLink to="/terms/">Пользовательское соглашение</NuxtLink>
+                <NuxtLink to="/rightholders/">Правообладателям</NuxtLink>
               </nav>
             </div>
 
@@ -74,6 +76,14 @@
           </div>
         </div>
       </div>
+
+      <p class="footer-disclaimer">
+        L2GM — информационный каталог анонсов. Сайт не размещает и не распространяет
+        игровые клиенты и файлы, не является официальным ресурсом Lineage II и не связан
+        с NCSOFT Corporation и её лицензиатами. Lineage и Lineage II — товарные знаки
+        NCSOFT Corporation.
+        <NuxtLink to="/rightholders/">Правообладателям</NuxtLink>
+      </p>
     </div>
   </footer>
 </template>
@@ -89,6 +99,20 @@ const currentYear = new Date().getFullYear()
   padding: var(--spacing-xxl) 0;
   position: relative;
   z-index: 50;
+}
+
+.footer-disclaimer {
+  max-width: 880px;
+  margin: var(--spacing-xl) 0 0;
+  color: var(--text-disabled);
+  font-size: var(--font-xs);
+  line-height: 1.6;
+}
+
+.footer-disclaimer a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .footer-content {

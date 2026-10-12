@@ -97,7 +97,8 @@ export default defineNuxtConfig({
     // Исключаем chronicle/<x>/rate/<y>/ — это фильтры хроники, canonical ведёт на /chronicle/<x>/
     // /rating/ — заготовка раздела рейтинга в noindex до его запуска
     // trailing slash в URL берётся из site.trailingSlash: true
-    exclude: ['/chronicle/*/rate/**', '/rating/'],
+    // /consent/ — служебный текст согласия для форм, в noindex
+    exclude: ['/chronicle/*/rate/**', '/rating/', '/consent/'],
     defaults: {
       changefreq: 'weekly',
       priority: 0.7,
@@ -277,6 +278,9 @@ export default defineNuxtConfig({
         '/cookies/',
         '/privacy/',
         '/terms/',
+        '/rightholders/',
+        '/rules/',
+        '/consent/',
         ...tagRoutes,
         ...chronicleRoutes,
         ...rateRoutes,
