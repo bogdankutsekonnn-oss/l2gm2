@@ -41,15 +41,17 @@ function ghRequest($method, $path, $body = null, $timeout = 15) {
  * Пнуть notify-applications.yml — новая заявка или письмо уже в базе.
  *
  * Вызывается после того, как запись сохранена: ответ форме отдаём не дожидаясь
- * GitHub (shutdown-функция + fastcgi_finish_request), ошибку глотаем. Если
- * дёрнуть не вышло — запись никуда не денется, её заберёт следующий запуск по
- * крону, курсор в .github/notified-applications.json общий.
+ * GitHub (shutdown-функция), ошибку глотаем. Если дёрнуть не вышло — запись
+ * никуда не денется, её заберёт следующий запуск по крону, курсор в
+ * .github/notified-applications.json общий.
  */
 function ghDispatchNotify() {
+    // Ответ формы (jsonResponse ниже по коду) копим в буфере, чтобы в
+    // shutdown-функции знать его длину и отдать браузеру целиком до запроса в
+    // GitHub.
+    ob_start();
     register_shutdown_function(function () {
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
+        ghFinishResponse();
         if (!defined('GH_WORKFLOW_PAT') || GH_WORKFLOW_PAT === '') {
             return;
         }
@@ -63,4 +65,39 @@ function ghDispatchNotify() {
             error_log('ghDispatchNotify: GitHub API HTTP ' . $code . ' ' . json_encode($data));
         }
     });
+}
+
+/**
+ * Отдать клиенту ответ и закрыть соединение, а скрипт пусть работает дальше.
+ *
+ * fastcgi_finish_request есть только под PHP-FPM. На Timeweb PHP работает без
+ * него, и форма «Добавить сервер» крутилась, пока сайт ждал GitHub — до 15
+ * секунд. Запасной путь: Content-Length + Connection: close и сброс буферов —
+ * браузер получает ответ полностью и не ждёт конца скрипта.
+ */
+function ghFinishResponse() {
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+        return;
+    }
+    if (function_exists('litespeed_finish_request')) {
+        litespeed_finish_request();
+        return;
+    }
+    ignore_user_abort(true);
+    // Сжатие на лету держит ответ до конца скрипта и ломает Content-Length.
+    if (function_exists('apache_setenv')) {
+        @apache_setenv('no-gzip', '1');
+    }
+    @ini_set('zlib.output_compression', '0');
+    $body = '';
+    while (ob_get_level() > 0) {
+        $body = ob_get_clean() . $body;
+    }
+    if (!headers_sent()) {
+        header('Content-Length: ' . strlen($body));
+        header('Connection: close');
+    }
+    echo $body;
+    flush();
 }
