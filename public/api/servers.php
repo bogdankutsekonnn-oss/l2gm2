@@ -135,29 +135,38 @@ function handlePost() {
     }
 
     $db = getDB();
-    $stmt = $db->prepare(
-        'INSERT INTO servers (name, url, chronicle, rate, category, start_date, card_type, icons, server_types, email, contacts, status, expires_at, description, avatar_url)
-         VALUES (:name, :url, :chronicle, :rate, :category, :startDate, :cardType, :icons, :serverTypes, :email, :contacts, "pending", :expiresAt, :description, :avatarUrl)'
-    );
+    // Без перехвата сбой записи отдавал пустую 500: форма не могла показать
+    // причину, а мы — понять, что сломалось, без доступа к логам хостинга.
+    // Наружу уходит только SQLSTATE, текст ошибки — в error_log.
+    try {
+        $stmt = $db->prepare(
+            'INSERT INTO servers (name, url, chronicle, rate, category, start_date, card_type, icons, server_types, email, contacts, status, expires_at, description, avatar_url)
+             VALUES (:name, :url, :chronicle, :rate, :category, :startDate, :cardType, :icons, :serverTypes, :email, :contacts, "pending", :expiresAt, :description, :avatarUrl)'
+        );
 
-    $stmt->execute([
-        ':name' => $name,
-        ':url' => $url,
-        ':chronicle' => $chronicle,
-        ':rate' => $rate,
-        ':category' => $category,
-        ':startDate' => $startDate,
-        ':cardType' => $cardType,
-        ':icons' => $icons,
-        ':serverTypes' => $serverTypes,
-        ':email' => $email,
-        ':contacts' => $contacts,
-        ':expiresAt' => $expiresAt,
-        ':description' => $description,
-        ':avatarUrl' => $avatarUrl,
-    ]);
+        $stmt->execute([
+            ':name' => $name,
+            ':url' => $url,
+            ':chronicle' => $chronicle,
+            ':rate' => $rate,
+            ':category' => $category,
+            ':startDate' => $startDate,
+            ':cardType' => $cardType,
+            ':icons' => $icons,
+            ':serverTypes' => $serverTypes,
+            ':email' => $email,
+            ':contacts' => $contacts,
+            ':expiresAt' => $expiresAt,
+            ':description' => $description,
+            ':avatarUrl' => $avatarUrl,
+        ]);
 
-    $id = $db->lastInsertId();
+        $id = $db->lastInsertId();
+    } catch (Throwable $e) {
+        error_log('servers.php: заявка не сохранена — ' . $e->getMessage());
+        $code = $e instanceof PDOException ? (string)$e->getCode() : get_class($e);
+        jsonResponse(['error' => 'Не удалось сохранить заявку. Попробуйте позже или напишите нам.', 'code' => $code], 500);
+    }
 
     // Фиксируем момент согласия отдельным запросом: если миграция
     // migration-2026-10-consent.sql ещё не применена и колонки нет, заявка
