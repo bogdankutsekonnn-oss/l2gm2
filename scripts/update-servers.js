@@ -135,7 +135,10 @@ for (const ns of newServers) {
     chronicle,
     rate,
     startDate: ns.startDate,
-    category: ns.category || undefined
+    category: ns.category || undefined,
+    // Тип сервера для /multicraft/, /multiprof/ и /foreign/ (useFilters.js)
+    features: Array.isArray(ns.features) && ns.features.length ? ns.features : undefined,
+    region: ns.region || undefined
   }
 
   const key = serverKey(entry)
@@ -148,6 +151,12 @@ for (const ns of newServers) {
     //
     // Записи владельцев и активные платные размещения ведёт админ-база
     // (sync-from-db.js) — их дату скрейп конкурентов не трогает.
+    // Признаки типа дописываем и к уже известным серверам: до 20.10.2026
+    // их не собирали вовсе, и тег-страницы стояли пустыми.
+    if (!dup.ownerId) {
+      if (entry.features && !dup.features) dup.features = entry.features
+      if (entry.region && !dup.region) dup.region = entry.region
+    }
     if (!dup.ownerId && !hasActivePlacement(dup) && isNewerDate(entry.startDate, dup.startDate)) {
       console.log(`  Update (${dup.startDate} -> ${entry.startDate}): ${dup.name}`)
       dup.startDate = entry.startDate
@@ -173,7 +182,9 @@ for (const ns of newServers) {
     description: null,
     createdAt: todayStr,
     expiresAt: null,
-    ...(entry.category ? { category: entry.category } : {})
+    ...(entry.category ? { category: entry.category } : {}),
+    ...(entry.features ? { features: entry.features } : {}),
+    ...(entry.region ? { region: entry.region } : {})
   }
   existing.push(created)
   existingByKey.set(key, created)
