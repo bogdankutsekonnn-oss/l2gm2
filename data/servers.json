@@ -1,5 +1,20 @@
 [
   {
+    "id": 577,
+    "name": "L2-AGATION",
+    "url": "https://l2-agation.com",
+    "chronicle": "Interlude",
+    "rate": 1,
+    "startDate": "2026-03-01",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-20",
+    "expiresAt": null
+  },
+  {
     "id": 457,
     "name": "MAYHEM",
     "url": "https://l2mayhem.ru/",
@@ -1581,21 +1596,6 @@
     "expiresAt": null
   },
   {
-    "id": 577,
-    "name": "L2-AGATION.COM",
-    "url": "https://l2-agation.com",
-    "chronicle": "Interlude",
-    "rate": 1,
-    "startDate": "2026-10-30",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-10-20",
-    "expiresAt": null
-  },
-  {
     "id": 578,
     "name": "SHAMON.WS",
     "url": "https://shamon.ws",
@@ -1722,6 +1722,24 @@
     "createdAt": "2026-10-10",
     "expiresAt": null,
     "category": "х50"
+  },
+  {
+    "id": 582,
+    "name": "MISTWORLD.PRO",
+    "url": "https://mistworld.pro/",
+    "chronicle": "High Five",
+    "rate": null,
+    "startDate": "2026-11-13",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-20",
+    "expiresAt": null,
+    "category": "x50"
   },
   {
     "id": 537,
