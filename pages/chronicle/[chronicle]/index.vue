@@ -53,6 +53,21 @@
             </div>
           </div>
         </div>
+        <div v-else-if="neighborServers.length" class="chronicle-fallback">
+          <p class="chronicle-fallback__note">
+            Сейчас анонсов на {{ chronicleName }} нет. Ближайшие старты на похожих хрониках —
+            <template v-for="(n, i) in neighborChronicles" :key="n.slug">
+              <NuxtLink :to="`/chronicle/${n.slug}/`">{{ n.name }}</NuxtLink><template v-if="i < neighborChronicles.length - 1">, </template>
+            </template>:
+          </p>
+          <div class="servers-grid">
+            <ServerCard
+              v-for="server in neighborServers"
+              :key="server.id"
+              :server="server"
+            />
+          </div>
+        </div>
         <div v-else class="no-servers">
           <p>Сервера не найдены</p>
         </div>
@@ -84,6 +99,8 @@
 
 <script setup>
 import blogIndex from '~/data/blog-index.json'
+import serversJson from '~/data/servers.json'
+import { CHRONICLE_NEIGHBORS, isChronicleEmpty } from '~/utils/chronicleCoverage.js'
 
 const route = useRoute()
 const { getServers, getChronicles, getRates } = useFilters()
@@ -111,6 +128,21 @@ const filters = { chronicle: chronicleSlug }
 const filteredServers = computed(() => getServers(filters))
 const now = useNow()
 const categories = computed(() => getOrderedCategories(filteredServers.value, now.value))
+
+// Пустая хроника (utils/chronicleCoverage.js): noindex + старты соседей.
+const chronicleEmpty = isChronicleEmpty(chronicle, serversJson, now.value)
+const neighborChronicles = (CHRONICLE_NEIGHBORS[chronicleSlug] || [])
+  .map((slug) => chronicles.find((c) => c.slug === slug))
+  .filter(Boolean)
+const neighborServers = computed(() => {
+  if (filteredServers.value.length) return []
+  const today = new Date(now.value).toISOString().slice(0, 10)
+  return neighborChronicles
+    .flatMap((c) => getServers({ chronicle: c.slug }))
+    .filter((s) => s.startDate >= today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate))
+    .slice(0, 12)
+})
 
 const rates = getRates()
 
@@ -169,6 +201,9 @@ useHead({
     ...getOgImageMeta(),
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
+    // Пока на хронике нет серверов — вне индекса (и вне sitemap, см.
+    // server/api/__sitemap__/urls.ts); ссылки по странице поисковик обходит.
+    ...(chronicleEmpty ? [{ name: 'robots', content: 'noindex, follow' }] : []),
   ],
   link: [{ rel: 'canonical', href: canonicalUrl }],
   script: [
@@ -182,5 +217,15 @@ useHead({
 <style scoped>
 .chronicle-page {
   padding: var(--spacing-lg) 0;
+}
+
+.chronicle-fallback__note {
+  margin: 0 0 var(--spacing-md);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.chronicle-fallback__note a {
+  color: var(--text-primary);
 }
 </style>

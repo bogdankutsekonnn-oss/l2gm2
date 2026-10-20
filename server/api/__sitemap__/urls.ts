@@ -2,6 +2,8 @@ import { queryCollection } from '@nuxt/content/server'
 import tagsData from '~/data/tags.json'
 import chroniclesData from '~/data/chronicles.json'
 import ratesData from '~/data/rates.json'
+import serversData from '~/data/servers.json'
+import { activeChronicleNames } from '~/utils/chronicleCoverage.js'
 
 const BLOG_CATEGORY_SLUGS = ['novosti', 'gajdy', 'obzory', 'stati']
 
@@ -42,8 +44,11 @@ export default defineSitemapEventHandler(async (event) => {
     priority: 0.8,
   }))
 
-  // Страницы хроник (/chronicle/interlude/, /chronicle/high-five/ и т.д.)
-  const chronicleUrls = chroniclesData.map((c: any) => ({
+  // Страницы хроник (/chronicle/interlude/, /chronicle/high-five/ и т.д.).
+  // Хроники без серверов стоят в noindex (pages/chronicle/[chronicle]) —
+  // в карту их не кладём; вернутся сами после ребилда, когда появится сервер.
+  const activeNames = activeChronicleNames(serversData as any[])
+  const chronicleUrls = chroniclesData.filter((c: any) => activeNames.has(c.name)).map((c: any) => ({
     loc: `/chronicle/${c.slug}/`,
     changefreq: 'weekly',
     priority: 0.7,

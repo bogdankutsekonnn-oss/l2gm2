@@ -8,7 +8,11 @@
           :key="chronicle.id"
           :to="getChronicleUrl(chronicle.slug)"
           class="filter-chip"
-          :class="{ 'is-active': isChronicleActive(chronicle.slug) }"
+          :class="{
+            'is-active': isChronicleActive(chronicle.slug),
+            'is-empty': emptyChronicles.has(chronicle.name),
+          }"
+          :title="emptyChronicles.has(chronicle.name) ? 'Сейчас анонсов нет' : undefined"
         >
           {{ chronicle.name }}
         </NuxtLink>
@@ -109,11 +113,20 @@
 </template>
 
 <script setup>
+import serversJson from '~/data/servers.json'
+import { activeChronicleNames } from '~/utils/chronicleCoverage.js'
+
 const { getChronicles, getRates, getServers } = useFilters()
 const route = useRoute()
 
 const chronicles = getChronicles()
 const rates = getRates()
+
+// Хроники без серверов приглушены (utils/chronicleCoverage.js). Считаем по
+// servers.json и общему моменту useNow — одинаково на SSR и при гидрации.
+const now = useNow()
+const activeNames = activeChronicleNames(serversJson, now.value)
+const emptyChronicles = new Set(chronicles.map((c) => c.name).filter((n) => !activeNames.has(n)))
 const allServers = getServers()
 const selectedChronicle = ref('')
 const selectedRate = ref('')
@@ -229,6 +242,11 @@ const isRateActive = (slug) => {
 .filter-chip.is-active {
   background: var(--primary-main);
   color: var(--primary-contrast);
+}
+
+.filter-chip.is-empty:not(.is-active) {
+  color: var(--text-disabled);
+  opacity: 0.6;
 }
 
 .filter-chips-tags {
