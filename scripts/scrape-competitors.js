@@ -29,6 +29,13 @@ const UA =
 // Старты старше этого окна update-servers.js всё равно вычистит.
 const MAX_AGE_DAYS = 31
 
+// Бренды, у которых каталоги ссылаются на промо-лендинг (21.10.2026).
+const VERIFIED_URLS = {
+  'valhalla-age': 'https://valhalla-age.org',
+  'emerland': 'https://emik.gg',
+  'emerland season 1': 'https://emik.gg',
+}
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 async function fetchHtml(url) {
@@ -253,6 +260,8 @@ async function main() {
   const existing = JSON.parse(fs.readFileSync(SERVERS_PATH, 'utf8'))
   const knownUrl = new Map()
   for (const s of existing) if (!knownUrl.has(brandKey(s.name))) knownUrl.set(brandKey(s.name), s.url)
+  // Проверено руками: каталоги ведут на промо-домены, а не на основной сайт.
+  for (const [name, url] of Object.entries(VERIFIED_URLS)) if (!knownUrl.has(brandKey(name))) knownUrl.set(brandKey(name), url)
 
   // 1. Группируем по бренд|хроника(без «+»)|рейт.
   const groups = new Map()
