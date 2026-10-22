@@ -1,5 +1,20 @@
 [
   {
+    "id": 577,
+    "name": "L2-AGATION",
+    "url": "https://l2-agation.com",
+    "chronicle": "Interlude",
+    "rate": 1,
+    "startDate": "2026-03-01",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-20",
+    "expiresAt": null
+  },
+  {
     "id": 457,
     "name": "MAYHEM",
     "url": "https://l2mayhem.ru/",
@@ -1603,21 +1618,6 @@
     "rate": 25,
     "startDate": "2026-10-30",
     "cardType": "vip",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-10-20",
-    "expiresAt": null
-  },
-  {
-    "id": 577,
-    "name": "L2-AGATION",
-    "url": "https://l2-agation.com",
-    "chronicle": "Interlude",
-    "rate": 1,
-    "startDate": "2026-10-30",
-    "cardType": "basic",
     "icons": [],
     "avatarUrl": null,
     "ownerId": null,
