@@ -73,6 +73,11 @@ jobs:
             php -l "$f"
           done
 
+      # Снимок живой карты до заливки: по нему IndexNow ниже найдёт новые адреса.
+      - name: Снимок sitemap до заливки
+        continue-on-error: true
+        run: curl -fsS -A 'Mozilla/5.0 (compatible; l2gm-deploy)' https://l2gm.com/sitemap.xml -o /tmp/sitemap-before.xml || true
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -90,3 +95,14 @@ jobs:
           # обходит все собранные адреса плюс всё, что обещает живой sitemap.
           sleep 20
           node scripts/check-live.mjs https://l2gm.com
+
+      # Пуш в main — отправляем всю карту (могли поменяться статьи и шаблоны);
+      # ребилд по расписанию и запуск из синка — только списки серверов и новые адреса.
+      - name: IndexNow
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            node scripts/indexnow.mjs --all
+          else
+            node scripts/indexnow.mjs --before /tmp/sitemap-before.xml
+          fi
