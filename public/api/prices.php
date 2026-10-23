@@ -164,8 +164,7 @@ function applyPriceChanges($db, $res, $updates, $userId) {
 
 // POST /api/prices.php?action=bulk
 // body: {items: {"<slug>": {buy_avg?, buy_max?, sell_avg?, sell_min?}, ...}}
-// Пакетное обновление одной транзакцией — для автозабора цен с GiranInfo
-// (scripts/sync-giran-prices.js). Незнакомые slug пропускаются, а не роняют пакет.
+// Пакетное обновление одной транзакцией. Незнакомые slug пропускаются, а не роняют пакет.
 function bulkUpdate($user) {
     $input = json_decode(file_get_contents('php://input'), true);
     $items = is_array($input) ? ($input['items'] ?? null) : null;
