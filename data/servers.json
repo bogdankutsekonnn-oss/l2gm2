@@ -1719,6 +1719,23 @@
     "expiresAt": null
   },
   {
+    "id": 591,
+    "name": "FESTIVAL",
+    "url": "https://samurai-festival.ru/",
+    "chronicle": "Classic",
+    "rate": 1,
+    "startDate": "2026-11-01",
+    "cardType": "basic",
+    "icons": [
+      "obt"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-24",
+    "expiresAt": null
+  },
+  {
     "id": 497,
     "name": "DUSKFALL X10",
     "url": "https://duskfall.net",
