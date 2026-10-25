@@ -1864,6 +1864,24 @@
     "category": "x50"
   },
   {
+    "id": 592,
+    "name": "GIRAN.CC INTERLUDE AI PVP",
+    "url": "https://giran.cc/",
+    "chronicle": "Interlude+",
+    "rate": null,
+    "startDate": "2026-11-13",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-25",
+    "expiresAt": null,
+    "category": "х1000"
+  },
+  {
     "id": 533,
     "name": "THEBATTLE.CLUB",
     "url": "https://thebattle.club",
