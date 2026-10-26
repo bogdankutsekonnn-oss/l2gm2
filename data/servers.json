@@ -1798,6 +1798,21 @@
     "expiresAt": null
   },
   {
+    "id": 593,
+    "name": "ASTREON",
+    "url": "https://astreon.club",
+    "chronicle": "High Five",
+    "rate": 100,
+    "startDate": "2026-11-06",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-26",
+    "expiresAt": null
+  },
+  {
     "id": 580,
     "name": "FLAURON.COM",
     "url": "https://flauron.com",
