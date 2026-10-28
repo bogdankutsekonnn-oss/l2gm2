@@ -1689,6 +1689,23 @@
     "expiresAt": null
   },
   {
+    "id": 594,
+    "name": "L2EPIC.RU",
+    "url": "https://l2epic.ru/",
+    "chronicle": "C4",
+    "rate": 10,
+    "startDate": "2026-10-30",
+    "cardType": "basic",
+    "icons": [
+      "bonus-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-28",
+    "expiresAt": null
+  },
+  {
     "id": 589,
     "name": "ELARIA.WORLD",
     "url": "https://elaria.world",
