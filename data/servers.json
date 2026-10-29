@@ -1830,6 +1830,23 @@
     "expiresAt": null
   },
   {
+    "id": 595,
+    "name": "L2HELIOS.NET",
+    "url": "https://l2helios.net",
+    "chronicle": "High Five+",
+    "rate": 2000,
+    "startDate": "2026-11-06",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-29",
+    "expiresAt": null
+  },
+  {
     "id": 580,
     "name": "FLAURON.COM",
     "url": "https://flauron.com",
