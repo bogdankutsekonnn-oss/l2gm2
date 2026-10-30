@@ -1770,6 +1770,21 @@
     "expiresAt": null
   },
   {
+    "id": 596,
+    "name": "L2PIT",
+    "url": "https://www.l2pit.ru/",
+    "chronicle": "C4",
+    "rate": 10,
+    "startDate": "2026-11-05",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-30",
+    "expiresAt": null
+  },
+  {
     "id": 449,
     "name": "SCRYDE X50",
     "url": "https://scryde.game",
