@@ -421,21 +421,6 @@
     "expiresAt": null
   },
   {
-    "id": 538,
-    "name": "LA2 MAIN — БЕЗ ДОНАТА",
-    "url": "https://la2main.ru/",
-    "chronicle": "High Five",
-    "rate": 50,
-    "startDate": "2026-10-01",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-10-06",
-    "expiresAt": null
-  },
-  {
     "id": 491,
     "name": "ETERNAL.MS",
     "url": "https://eternal.ms",
@@ -683,24 +668,6 @@
     "description": null,
     "createdAt": "2026-10-03",
     "expiresAt": null
-  },
-  {
-    "id": 401,
-    "name": "WESTEROS.WS",
-    "url": "https://westeros.ws/",
-    "chronicle": "Interlude",
-    "rate": 100,
-    "startDate": "2026-10-09",
-    "cardType": "basic",
-    "icons": [],
-    "avatarUrl": null,
-    "ownerId": null,
-    "description": null,
-    "createdAt": "2026-07-10",
-    "expiresAt": null,
-    "features": [
-      "multicraft"
-    ]
   },
   {
     "id": 440,
@@ -1862,6 +1829,24 @@
     "expiresAt": null
   },
   {
+    "id": 401,
+    "name": "WESTEROS.WS",
+    "url": "https://westeros.ws/",
+    "chronicle": "Interlude",
+    "rate": 100,
+    "startDate": "2026-11-07",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-07-10",
+    "expiresAt": null,
+    "features": [
+      "multicraft"
+    ]
+  },
+  {
     "id": 580,
     "name": "FLAURON.COM",
     "url": "https://flauron.com",
@@ -1944,6 +1929,21 @@
     "createdAt": "2026-10-25",
     "expiresAt": null,
     "category": "х1000"
+  },
+  {
+    "id": 538,
+    "name": "LA2 MAIN — БЕЗ ДОНАТА",
+    "url": "https://la2main.ru/",
+    "chronicle": "High Five",
+    "rate": 50,
+    "startDate": "2026-11-15",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-10-06",
+    "expiresAt": null
   },
   {
     "id": 533,
