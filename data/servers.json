@@ -1931,6 +1931,23 @@
     "category": "х1000"
   },
   {
+    "id": 597,
+    "name": "ARTEAS X1000",
+    "url": "https://l2arteas.com",
+    "chronicle": "High Five",
+    "rate": 1000,
+    "startDate": "2026-11-14",
+    "cardType": "basic",
+    "icons": [
+      "hot-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-05",
+    "expiresAt": null
+  },
+  {
     "id": 538,
     "name": "LA2 MAIN — БЕЗ ДОНАТА",
     "url": "https://la2main.ru/",
