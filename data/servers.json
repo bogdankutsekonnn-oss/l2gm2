@@ -1650,6 +1650,22 @@
     "expiresAt": null
   },
   {
+    "id": 615,
+    "name": "RIVALIS",
+    "url": "https://l2rivalis.com/?utm_source=l2gm",
+    "chronicle": "Interlude",
+    "rate": null,
+    "startDate": "2026-11-27",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-10",
+    "expiresAt": null,
+    "category": "gve"
+  },
+  {
     "id": 473,
     "name": "L2SAVAGE",
     "url": "https://l2savage.fun",
