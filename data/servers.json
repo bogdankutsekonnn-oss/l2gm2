@@ -1605,6 +1605,21 @@
     "expiresAt": null
   },
   {
+    "id": 616,
+    "name": "L2MAJOR.COM",
+    "url": "https://l2major.com/ru",
+    "chronicle": "Interlude+",
+    "rate": 50000,
+    "startDate": "2026-11-20",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-22",
+    "expiresAt": null
+  },
+  {
     "id": 471,
     "name": "GRAND-WARS.COM",
     "url": "https://grand-wars.com",
@@ -1733,5 +1748,22 @@
     "features": [
       "multiprof"
     ]
+  },
+  {
+    "id": 617,
+    "name": "MISTWORLD X55",
+    "url": "https://mistworld.pro/",
+    "chronicle": "High Five",
+    "rate": 55,
+    "startDate": "2026-12-25",
+    "cardType": "basic",
+    "icons": [
+      "bonus-start"
+    ],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-22",
+    "expiresAt": null
   }
 ]
