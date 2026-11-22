@@ -1750,6 +1750,21 @@
     ]
   },
   {
+    "id": 618,
+    "name": "BELARENA - SIEGHARDT",
+    "url": "https://l2belarena.com/",
+    "chronicle": "High Five",
+    "rate": 1200,
+    "startDate": "2026-12-18",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-22",
+    "expiresAt": null
+  },
+  {
     "id": 617,
     "name": "MISTWORLD X55",
     "url": "https://mistworld.pro/",
