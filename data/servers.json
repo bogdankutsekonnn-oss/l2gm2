@@ -1750,6 +1750,21 @@
     ]
   },
   {
+    "id": 619,
+    "name": "L2SAMAEL",
+    "url": "https://l2samael.com",
+    "chronicle": "Interlude",
+    "rate": 300,
+    "startDate": "2026-12-12",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-28",
+    "expiresAt": null
+  },
+  {
     "id": 618,
     "name": "BELARENA - SIEGHARDT",
     "url": "https://l2belarena.com/",
@@ -1762,6 +1777,21 @@
     "ownerId": null,
     "description": null,
     "createdAt": "2026-11-22",
+    "expiresAt": null
+  },
+  {
+    "id": 620,
+    "name": "L2CRAFT X25",
+    "url": "https://l2craft.eu/",
+    "chronicle": "High Five",
+    "rate": 25,
+    "startDate": "2026-12-19",
+    "cardType": "basic",
+    "icons": [],
+    "avatarUrl": null,
+    "ownerId": null,
+    "description": null,
+    "createdAt": "2026-11-28",
     "expiresAt": null
   },
   {
